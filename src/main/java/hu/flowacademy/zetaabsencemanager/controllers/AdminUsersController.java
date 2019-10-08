@@ -23,8 +23,8 @@ public class AdminUsersController {
     }
 
     @PostMapping("")
-    public User createUser() {
-        return userService.create();
+    public User createUser(@RequestBody User user) {
+        return userService.create(user);
     }
 
     @PutMapping("/:userId")
