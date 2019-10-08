@@ -1,61 +1,39 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
+import lombok.Builder;
+import lombok.Data;
+
 import java.util.List;
 import java.util.UUID;
 
+@Builder
+@Data
+@Entity
+@Table
 public class GroupModel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
     private Integer id;
+
+    @Column
     private String name;
+
+    @Column
+    @OneToOne
     private Integer leaderId;
+
+    @Column
+    @ManyToOne
+    @JoinColumn
     private Integer departmentId;
+
+    @Column
+    @OneToMany
+    @JsonIgnore
     private Integer employeeId;
 
-    public GroupModel(String name, Integer leaderId, Integer departmentId) {
-        this.name = name;
-        this.leaderId = leaderId;
-        this.departmentId = departmentId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public Integer getLeaderId() {
-        return leaderId;
-    }
-
-    public void setLeaderId(Integer leaderId) {
-        this.leaderId = leaderId;
-    }
-
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
 }
 
 
