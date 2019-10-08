@@ -1,0 +1,40 @@
+package hu.flowacademy.zetaabsencemanager.controllers;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+
+@RestController
+@RequestMapping("/admin/absence")
+public class AdminAbsencesController {
+
+    @Autowired
+    private AbsenceService absenceService;
+
+    @GetMapping("/:absenceId")
+    public Absence getOne(@RequestParam Integer absenceId) {
+        return absenceService.getUserById(absenceId);
+    }
+
+    @GetMapping("")
+    public ArrayList<Absence> getAll() {
+        return absenceService.getAll();
+    }
+
+    @PostMapping("")
+    public Absence createAbsence(@RequestBody Absence absence) {
+        return absenceService.create();
+    }
+
+    @PutMapping("/:absenceId")
+    public Absence update(@RequestParam Integer userId, @RequestBody Absence absence) {
+        return absenceService.update(userId, absence);
+    }
+
+    @DeleteMapping("")
+    public void delete(@RequestParam Integer absenceId) {
+        return absenceService.delete(absenceId);
+    }
+}

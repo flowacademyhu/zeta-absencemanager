@@ -3,11 +3,9 @@ package hu.flowacademy.zetaabsencemanager.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @RestController
-@RequestMapping("/admin/user")
-public class AdminUsersController {
+@RequestMapping("/user")
+public class CurrentUserController {
 
     @Autowired
     private UserService userService;
@@ -15,16 +13,6 @@ public class AdminUsersController {
     @GetMapping("/:userId")
     public User getOne(@RequestParam Integer userId) {
         return userService.getUserById(userId);
-    }
-
-    @GetMapping("")
-    public ArrayList<User> getAll() {
-        return userService.getAll();
-    }
-
-    @PostMapping("")
-    public User createUser() {
-        return userService.create();
     }
 
     @PutMapping("/:userId")
