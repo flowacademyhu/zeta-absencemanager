@@ -9,9 +9,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-import javax.transaction.Transactional;
+
 
 @Configuration
 @Transactional
@@ -29,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(s);
         }
-        System.out.println(user.getUsername() + "load");
         return new User(s, user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole())));
     }
 
@@ -39,7 +39,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new IllegalArgumentException("nincs pw vagy username");
         }
         user.setUsername(user.getUsername());
-        System.out.println("saveP" + user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
         userRepository.save(user);
