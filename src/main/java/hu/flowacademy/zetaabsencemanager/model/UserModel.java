@@ -15,38 +15,27 @@ public class UserModel {
     private Date dateOfEntry;
     private Date dateOfEndTrial;
     private Boolean isOnTrial;
-    private GroupModel groupModel;
+    private Integer groupId;
     private String position;
-    private String leader;
+    private Integer leaderId;
     private Integer numberOfChildren;
     private String otherAbsenceEnt;
 
-    private List<AbsenceModel> absences;
-    private Integer totalAbsences;
-    private Integer availableAbsences;
-    private Double proratedTakenAbsence;
+    private Integer absenceId;
 
-    private Integer totalSickAbsence;
-    private Integer takenSickAbsence;
-    private Integer availableSickAbsence;
 
-    private Integer takenSickPay;
-    // private Double sickAbsenceSickPayRate;
-
-    private Integer childSickPay;
-
-    public UserModel(String firstName, String lastName, Date dateOfBirth, Email email, Date dateOfEntry, Date dateOfEndTrial, GroupModel groupModel, String position, Integer numberOfChildren, String otherAbsenceEnt, Integer childSickPay) {
+    public UserModel(String firstName, String lastName, Date dateOfBirth, Email email, Date dateOfEntry, Date dateOfEndTrial, Integer groupId, String position, Integer leaderId, Integer numberOfChildren, String otherAbsenceEnt, Integer childSickPay) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.dateOfEntry = dateOfEntry;
         this.dateOfEndTrial = dateOfEndTrial;
-        this.groupModel = groupModel;
+        this.groupId = groupId;
         this.position = position;
+        this.leaderId = leaderId;
         this.numberOfChildren = numberOfChildren;
         this.otherAbsenceEnt = otherAbsenceEnt;
-        this.childSickPay = childSickPay;
     }
 
     public Integer getId() {
@@ -113,12 +102,12 @@ public class UserModel {
         isOnTrial = onTrial;
     }
 
-    public GroupModel getGroupModel() {
-        return groupModel;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setGroupModel(GroupModel groupModel) {
-        this.groupModel = groupModel;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public String getPosition() {
@@ -129,12 +118,12 @@ public class UserModel {
         this.position = position;
     }
 
-    public String getLeader() {
-        return leader;
+    public Integer getLeaderId() {
+        return leaderId;
     }
 
-    public void setLeader(String leader) {
-        this.leader = leader;
+    public void setLeaderId(Integer leaderId) {
+        this.leaderId = leaderId;
     }
 
     public Integer getNumberOfChildren() {
@@ -153,75 +142,4 @@ public class UserModel {
         this.otherAbsenceEnt = otherAbsenceEnt;
     }
 
-    public List<AbsenceModel> getAbsences() {
-        return absences;
-    }
-
-    public void setAbsences(List<AbsenceModel> absences) {
-        this.absences = absences;
-    }
-
-    public Integer getTotalAbsences() {
-        return totalAbsences;
-    }
-
-    public void setTotalAbsences(Integer totalAbsences) {
-        this.totalAbsences = totalAbsences;
-    }
-
-    public Integer getAvailableAbsences() {
-        return availableAbsences;
-    }
-
-    public void setAvailableAbsences(Integer availableAbsences) {
-        this.availableAbsences = availableAbsences;
-    }
-
-    public Double getProratedTakenAbsence() {
-        return proratedTakenAbsence;
-    }
-
-    public void setProratedTakenAbsence(Double proratedTakenAbsence) {
-        this.proratedTakenAbsence = proratedTakenAbsence;
-    }
-
-    public Integer getTotalSickAbsence() {
-        return totalSickAbsence;
-    }
-
-    public void setTotalSickAbsence(Integer totalSickAbsence) {
-        this.totalSickAbsence = totalSickAbsence;
-    }
-
-    public Integer getTakenSickAbsence() {
-        return takenSickAbsence;
-    }
-
-    public void setTakenSickAbsence(Integer takenSickAbsence) {
-        this.takenSickAbsence = takenSickAbsence;
-    }
-
-    public Integer getAvailableSickAbsence() {
-        return availableSickAbsence;
-    }
-
-    public void setAvailableSickAbsence(Integer availableSickAbsence) {
-        this.availableSickAbsence = availableSickAbsence;
-    }
-
-    public Integer getTakenSickPay() {
-        return takenSickPay;
-    }
-
-    public void setTakenSickPay(Integer takenSickPay) {
-        this.takenSickPay = takenSickPay;
-    }
-
-    public Integer getChildSickPay() {
-        return childSickPay;
-    }
-
-    public void setChildSickPay(Integer childSickPay) {
-        this.childSickPay = childSickPay;
-    }
 }

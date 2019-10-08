@@ -7,26 +7,13 @@ public class DepartmentModel {
 
     private Integer id;
     private String name;
-    private String leader;
-    private List<GroupModel> groups;
+    private Integer leaderId;
+    private Integer groupId;
 
-    private Integer totalAbsences;
-    private Integer takenAbsences;
-    private Integer availableAbsences;
-    private Double proratedTakenAbsence;
-
-    private Integer totalSickAbsence;
-    private Integer takenSickAbsence;
-    private Integer availableSickAbsence;
-
-    private Integer takenSickPay;
-    // private Double sickAbsenceSickPayRate;
-
-    private Integer childSickPay;
-
-    public DepartmentModel(String name, String leader) {
+    public DepartmentModel(String name, Integer leaderId, Integer groupId) {
         this.name = name;
-        this.leader = leader;
+        this.leaderId = leaderId;
+        this.groupId = groupId;
     }
 
     public Integer getId() {
@@ -45,91 +32,20 @@ public class DepartmentModel {
         this.name = name;
     }
 
-    public String getLeader() {
-        return leader;
+    public Integer getLeaderId() {
+        return leaderId;
     }
 
-    public void setLeader(String leader) {
-        this.leader = leader;
+    public void setLeaderId(Integer leaderId) {
+        this.leaderId = leaderId;
     }
 
-    public List<GroupModel> getUsers() {
-        return groups;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setUsers(List<GroupModel> users) {
-        this.groups = users;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
-    public Integer getTotalAbsences() {
-        return totalAbsences;
-    }
-
-    public void setTotalAbsences(Integer totalAbsences) {
-        this.totalAbsences = totalAbsences;
-    }
-
-    public Integer getTakenAbsences() {
-        return takenAbsences;
-    }
-
-    public void setTakenAbsences(Integer takenAbsences) {
-        this.takenAbsences = takenAbsences;
-    }
-
-    public Integer getAvailableAbsences() {
-        return availableAbsences;
-    }
-
-    public void setAvailableAbsences(Integer availableAbsences) {
-        this.availableAbsences = availableAbsences;
-    }
-
-    public Double getProratedTakenAbsence() {
-        return proratedTakenAbsence;
-    }
-
-    public void setProratedTakenAbsence(Double proratedTakenAbsence) {
-        this.proratedTakenAbsence = proratedTakenAbsence;
-    }
-
-    public Integer getTotalSickAbsence() {
-        return totalSickAbsence;
-    }
-
-    public void setTotalSickAbsence(Integer totalSickAbsence) {
-        this.totalSickAbsence = totalSickAbsence;
-    }
-
-    public Integer getTakenSickAbsence() {
-        return takenSickAbsence;
-    }
-
-    public void setTakenSickAbsence(Integer takenSickAbsence) {
-        this.takenSickAbsence = takenSickAbsence;
-    }
-
-    public Integer getAvailableSickAbsence() {
-        return availableSickAbsence;
-    }
-
-    public void setAvailableSickAbsence(Integer availableSickAbsence) {
-        this.availableSickAbsence = availableSickAbsence;
-    }
-
-    public Integer getTakenSickPay() {
-        return takenSickPay;
-    }
-
-    public void setTakenSickPay(Integer takenSickPay) {
-        this.takenSickPay = takenSickPay;
-    }
-
-    public Integer getChildSickPay() {
-        return childSickPay;
-    }
-
-    public void setChildSickPay(Integer childSickPay) {
-        this.childSickPay = childSickPay;
-    }
 }

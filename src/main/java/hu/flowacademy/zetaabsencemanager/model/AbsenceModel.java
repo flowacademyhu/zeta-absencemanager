@@ -15,17 +15,73 @@ public class AbsenceModel {
     private String summary;
     private Date begin;
     private Date end;
-    private UserModel reporter; // ManyToOne
-    private UserModel assignee;
+    private Integer reporterId; // ManyToOne
+    private Integer assigneeId;
     private enum status {
 
     }
 
-    public AbsenceModel(String summary, Date begin, Date end, UserModel reporter, UserModel assignee) {
+    public AbsenceModel(String summary, Date begin, Date end, Integer reporterId, Integer assigneeId) {
         this.summary = summary;
         this.begin = begin;
         this.end = end;
-        this.reporter = reporter;
-        this.assignee = assignee;
+        this.reporterId = reporterId;
+        this.assigneeId = assigneeId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public Date getBegin() {
+        return begin;
+    }
+
+    public void setBegin(Date begin) {
+        this.begin = begin;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+    public Integer getReporterId() {
+        return reporterId;
+    }
+
+    public void setReporterId(Integer reporterId) {
+        this.reporterId = reporterId;
+    }
+
+    public Integer getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(Integer assigneeId) {
+        this.assigneeId = assigneeId;
     }
 }
