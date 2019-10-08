@@ -3,7 +3,7 @@ package hu.flowacademy.zetaabsencemanager.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Builder
 @Data
@@ -34,7 +34,7 @@ public class AbsenceModel {
     private Date begin;
 
     @Column
-    private Date end;
+    private java.util.Date end;
 
     @Column
     @OneToOne
