@@ -34,23 +34,24 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public void saveUser(hu.flowacademy.zetaabsencemanager.model.User user) {
-        hu.flowacademy.zetaabsencemanager.model.User newUser = new hu.flowacademy.zetaabsencemanager.model.User();
         if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("nincs pw vagy username");
         }
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setDateOfBirth(user.getDateOfBirth());
-        newUser.setDateOfEntry(user.getDateOfEntry());
-        newUser.setDateOfEndTrial(user.getDateOfEndTrial());
-        newUser.setEmail(user.getEmail());
-        newUser.setGroups(user.getGroups());
-        //Departments according to the groups?
-        newUser.setPosition(user.getPosition());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setRole(user.getRole());
-        newUser.setNumberOfChildren(user.getNumberOfChildren());
-        newUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
+        hu.flowacademy.zetaabsencemanager.model.User newUser = hu.flowacademy.zetaabsencemanager.model.User.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .dateOfEntry(user.getDateOfEntry())
+                .dateOfEndTrial(user.getDateOfEndTrial())
+                .email(user.getEmail())
+                .groups(user.getGroups())
+                //Departments according to the groups?
+                .position(user.getPosition())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .role(user.getRole())
+                .numberOfChildren(user.getNumberOfChildren())
+                .otherAbsenceEnt(user.getOtherAbsenceEnt())
+                .build();
         userRepository.save(newUser);
     }
 }
