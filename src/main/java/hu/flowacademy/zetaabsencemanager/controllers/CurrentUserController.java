@@ -1,9 +1,14 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
+import hu.flowacademy.zetaabsencemanager.model.Department;
+import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -15,11 +20,26 @@ public class CurrentUserController {
     //private UserService userService;
 
     @GetMapping("/{userId}")
-    public User getOne(@PathVariable("userId") Integer userId) {
+    public User getOne(@PathVariable("userId") Long userId) {
         //return userService.getUserById(userId);
-        User user = new User("József", "Kiss", new LocalDate(1970, 2,28), "jozsef.kiss@test.com", new LocalDate (2010,  5, 12), new LocalDate (2010,  8, 12),  false, new ArrayList<String>(Arrays.asList("group1", "group2")), new ArrayList<String>(Arrays.asList("dep1", "dep2")), "testposition", "role", 3, "none");
+        User user = new User();
+        user.setFirstName("József");
+        user.setLastName("Kiss");
+        user.setEmail("jozsef.kiss@test.com");
+        user.setPassword("test");
+        user.setDateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28));
+        user.setDateOfEntry(LocalDate.of(2010, Month.MAY, 12));
+        user.setDateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12));
+        user.setIsOnTrial(false);
+        Group group1 = new Group();
+        user.setGroups(new ArrayList<Group>(Arrays.asList(group1)));
+        Department dep1=new Department();
+        user.setDepartments(new ArrayList<Department>(Arrays.asList(dep1)));
+        user.setPosition("testposition");
+        user.setRole(Roles.EMPLOYEE);
+        user.setNumberOfChildren(3);
+        user.setOtherAbsenceEnt("none");
         return user;
-
     }
 
     @PutMapping("/{userId}")

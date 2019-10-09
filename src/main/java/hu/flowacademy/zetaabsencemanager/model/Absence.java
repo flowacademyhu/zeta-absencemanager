@@ -2,6 +2,7 @@ package hu.flowacademy.zetaabsencemanager.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table
+@NoArgsConstructor
 public class Absence {
 
     @Id
@@ -25,7 +27,7 @@ public class Absence {
     private Type type;
 
     @Column
-    private String summary;
+    private Integer summary;
 
     @Column
     private LocalDate begin;
