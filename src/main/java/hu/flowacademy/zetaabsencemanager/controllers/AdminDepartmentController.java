@@ -9,31 +9,31 @@ import java.util.ArrayList;
 @RequestMapping("/admin/department")
 public class AdminDepartmentController {
 
-    @Autowired
-    private DepartmentService departmentService;
+    //@Autowired
+    //private DepartmentService departmentService;
 
-    @GetMapping("/:departmentId")
-    public Department getOne(@RequestParam Integer departmentId) {
-        return departmentService.getUserById(departmentId);
+    @GetMapping("/{departmentId}")
+    public Department getOne(@PathVariable("departmentId") Integer departmentId) {
+        //return departmentService.getUserById(departmentId);
     }
 
     @GetMapping("")
     public ArrayList<Department> getAll() {
-        return departmentService.getAll();
+        //return departmentService.getAll();
     }
 
     @PostMapping("")
     public Department createDepartment(@RequestBody Department department) {
-        return departmentService.create(department);
+        //return departmentService.create(department);
     }
 
-    @PutMapping("/:departmentId")
-    public Department update(@RequestParam Integer departmentId, @RequestBody Department department) {
-        return departmentService.update(departmentId, department);
+    @PutMapping("/{departmentId}")
+    public Department update(@PathVariable("departmentId") Integer departmentId,  @RequestBody Department department) {
+        //return departmentService.update(departmentId, department);
     }
 
-    @DeleteMapping("")
-    public void delete(@RequestParam Integer departmentId) {
-        return departmentService.delete(departmentId);
+    @DeleteMapping("/{departmentId}")
+    public void delete(@PathVariable("departmentId") Integer departmentId) {
+        //return departmentService.delete(departmentId);
     }
 }

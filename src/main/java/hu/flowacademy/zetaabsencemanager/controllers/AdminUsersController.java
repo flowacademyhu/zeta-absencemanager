@@ -9,31 +9,31 @@ import java.util.ArrayList;
 @RequestMapping("/admin/user")
 public class AdminUsersController {
 
-    @Autowired
-    private UserService userService;
+    //@Autowired
+    //private UserService userService;
 
-    @GetMapping("/:userId")
-    public User getOne(@RequestParam Integer userId) {
-        return userService.getUserById(userId);
+    @GetMapping("/{userId}")
+    public User getOne(@PathVariable("userId") Integer userId) {
+        //return userService.getUserById(userId);
     }
 
     @GetMapping("")
     public ArrayList<User> getAll() {
-        return userService.getAll();
+        //return userService.getAll();
     }
 
     @PostMapping("")
     public User createUser(@RequestBody User user) {
-        return userService.create(user);
+        //return userService.create(user);
     }
 
-    @PutMapping("/:userId")
-    public User update(@RequestParam Integer userId, @RequestBody User user) {
-        return userService.update(userId, user);
+    @PutMapping("/{userId}")
+    public User update(@PathVariable("userId") Integer userId, @RequestBody User user) {
+        //return userService.update(userId, user);
     }
 
-    @DeleteMapping("")
-    public void delete(@RequestParam Integer userID) {
-        return userService.delete(userID);
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable("userId") Integer userId) {
+        //return userService.delete(userID);
     }
 }

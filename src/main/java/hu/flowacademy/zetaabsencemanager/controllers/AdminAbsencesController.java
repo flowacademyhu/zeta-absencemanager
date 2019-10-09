@@ -10,31 +10,33 @@ import java.util.ArrayList;
 @RequestMapping("/admin/absence")
 public class AdminAbsencesController {
 
-    @Autowired
-    private AbsenceService absenceService;
+    //@Autowired
+    //private AbsenceService absenceService;
 
-    @GetMapping("/:absenceId")
-    public Absence getOne(@RequestParam Integer absenceId) {
-        return absenceService.getUserById(absenceId);
+    @GetMapping("/{absenceId}")
+    public Absence getOne(@PathVariable("absenceId") Integer absenceId) {
+        //return absenceService.getUserById(absenceId);
     }
 
     @GetMapping("")
     public ArrayList<Absence> getAll() {
-        return absenceService.getAll();
+        //return absenceService.getAll();
     }
 
     @PostMapping("")
     public Absence createAbsence(@RequestBody Absence absence) {
-        return absenceService.create();
+        //return absenceService.create();
+        return absence;
     }
 
-    @PutMapping("/:absenceId")
-    public Absence update(@RequestParam Integer userId, @RequestBody Absence absence) {
-        return absenceService.update(userId, absence);
+    @PutMapping("/{absenceId}")
+    public Absence update(@PathVariable("absenceId") Integer absenceId, @RequestBody Absence absence) {
+        //return absenceService.update(userId, absence);
+        return absence;
     }
 
-    @DeleteMapping("")
-    public void delete(@RequestParam Integer absenceId) {
-        return absenceService.delete(absenceId);
+    @DeleteMapping("/{absenceId}")
+    public void delete(@PathVariable("absenceId") Integer absenceId) {
+        //return absenceService.delete(absenceId);
     }
 }
