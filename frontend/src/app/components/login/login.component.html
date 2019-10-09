@@ -1,0 +1,33 @@
+
+<mat-card>
+    <mat-card-title>
+        Login
+    </mat-card-title>
+    <mat-card-content>
+        <form #Form="ngForm">
+            <p> Username
+                <mat-form-field>
+                <input type="text" matInput placeholder="" value="" required>
+                </mat-form-field>
+            </p>
+
+            <p> Password
+                <mat-form-field>
+                <input type="password" matInput placeholder="" value="" required >
+                </mat-form-field>
+            </p>
+        
+            <p>
+            <mat-form-field>
+            <a mat-button href="" target="_blank" font color="white">Forgot password?</a>
+                </mat-form-field>
+            </p>
+
+            <div class="button">
+                <button type="submit" mat-button [hidden]="!form.Form.valid">Login</button>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>
+
