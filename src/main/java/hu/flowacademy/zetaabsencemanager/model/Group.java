@@ -12,8 +12,7 @@ import java.util.UUID;
 @Builder
 @Data
 @Entity
-@NoArgsConstructor
-@Table(name = "group")
+@Table(name = "_group")
 public class Group {
 
     @Id
