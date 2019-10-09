@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table
-@NoArgsConstructor
 public class Absence {
 
     @Id
