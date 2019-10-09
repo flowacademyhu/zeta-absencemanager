@@ -19,8 +19,8 @@ public class AdminUsersController {
     //@Autowired
     //private UserService userService;
 
-    @GetMapping("/{userId}")
-    public User getOne(@PathVariable("userId") Integer userId) {
+    @GetMapping("/{id}")
+    public User getOne(@PathVariable("id") Long id) {
         //return userService.getUserById(userId);
         User user = new User();
         user.setFirstName("József");
@@ -54,14 +54,14 @@ public class AdminUsersController {
         return user;
     }
 
-    @PutMapping("/{userId}")
-    public User update(@PathVariable("userId") Integer userId, @RequestBody User user) {
-        //return userService.update(userId, user);
+    @PutMapping("/{id}")
+    public User update(@PathVariable("id") Long id, @RequestBody User user) {
+        //return userService.update(id, user);
         return user;
     }
 
-    @DeleteMapping("/{userId}")
-    public void delete(@PathVariable("userId") Integer userId) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
         //return userService.delete(userID);
     }
 }

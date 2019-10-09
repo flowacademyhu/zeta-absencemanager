@@ -20,8 +20,8 @@ public class AdminGroupController {
     //@Autowired
     //private GroupService groupService;
 
-    @GetMapping("/{groupId}")
-    public Group getOne(@PathVariable("groupId") Integer groupId) {
+    @GetMapping("/{id}")
+    public Group getOne(@PathVariable("id") Long id) {
         //return groupService.getGroupById(groupId);
         Group group = new Group();
         group.setDepartment(new Department());
@@ -41,15 +41,15 @@ public class AdminGroupController {
         return group;
     }
 
-    @PutMapping("/{departmentId}")
-    public Group update(@PathVariable("departmentId") Integer groupId, @RequestBody Group group) {
-        //return groupService.update(groupId, group);
+    @PutMapping("/{id}")
+    public Group update(@PathVariable("id") Long id, @RequestBody Group group) {
+        //return groupService.update(id, group);
         return group;
     }
 
-    @DeleteMapping("/{departmentId}")
-    public void delete(@PathVariable("departmentId") Integer groupId) {
-        //return groupService.delete(groupId);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        //return groupService.delete(id);
     }
 
 }

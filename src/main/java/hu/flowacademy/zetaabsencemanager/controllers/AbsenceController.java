@@ -19,9 +19,9 @@ public class AbsenceController {
     //@Autowired
     //private AbsenceService absenceService;
 
-    @GetMapping("/{absenceId}")
-    public Absence getOne(@PathVariable("absenceId") Integer absenceId) {
-        ///return absenceService.getAbsenceById(absenceId);
+    @GetMapping("/{id}")
+    public Absence getOne(@PathVariable("id") Long id) {
+        ///return absenceService.getAbsenceById(id);
         Absence absence=new Absence();
         absence.setAssignee(new User());
         absence.setBegin(LocalDate.of(2019, Month.DECEMBER, 12));
@@ -46,14 +46,14 @@ public class AbsenceController {
         return absence;
     }
 
-    @PutMapping("/{absenceId}")
-    public Absence update(@PathVariable("absenceId") Integer absenceId, @RequestBody Absence absence) {
-        //return absenceService.update(absenceId, absence);
+    @PutMapping("/{id}")
+    public Absence update(@PathVariable("id") Long id, @RequestBody Absence absence) {
+        //return absenceService.update(id, absence);
         return absence;
     }
 
-    @DeleteMapping("{absenceId}")
-    public void delete(@PathVariable("absenceId") Integer absenceId) {
-        //return absenceService.delete(absenceId);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        //return absenceService.delete(id);
     }
 }

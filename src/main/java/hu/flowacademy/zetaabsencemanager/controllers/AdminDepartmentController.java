@@ -16,9 +16,9 @@ public class AdminDepartmentController {
     //@Autowired
     //private DepartmentService departmentService;
 
-    @GetMapping("/{departmentId}")
-    public Department getOne(@PathVariable("departmentId") Integer departmentId) {
-        //return departmentService.getUserById(departmentId);
+    @GetMapping("/{id}")
+    public Department getOne(@PathVariable("id") Long id) {
+        //return departmentService.getUserById(id);
         Department dep=new Department();
         dep.setGroups(new ArrayList<Group>(Arrays.asList()));
         dep.setLeaders(new ArrayList<User>(Arrays.asList()));
@@ -38,14 +38,14 @@ public class AdminDepartmentController {
         return department;
     }
 
-    @PutMapping("/{departmentId}")
-    public Department update(@PathVariable("departmentId") Integer departmentId,  @RequestBody Department department) {
-        //return departmentService.update(departmentId, department);
+    @PutMapping("/{id}")
+    public Department update(@PathVariable("id") Integer id,  @RequestBody Department department) {
+        //return departmentService.update(id, department);
         return department;
     }
 
-    @DeleteMapping("/{departmentId}")
-    public void delete(@PathVariable("departmentId") Integer departmentId) {
-        //return departmentService.delete(departmentId);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Integer id) {
+        //return departmentService.delete(id);
     }
 }
