@@ -26,7 +26,7 @@ public class AdminDepartmentController {
 
     @GetMapping("")
     public ArrayList<Department> getAll() {
-        //return departmentService.getAll();
+        //return departmentService.findAllDepartments();
         return new ArrayList<>();
     }
 
