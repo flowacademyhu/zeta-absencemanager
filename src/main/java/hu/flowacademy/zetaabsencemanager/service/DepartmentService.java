@@ -19,6 +19,11 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
+    public Department create(Department department){
+        departmentRepository.save(department);
+        return department;
+    }
+
     public void delete(Long id){
         departmentRepository.deleteById(id);
     }
