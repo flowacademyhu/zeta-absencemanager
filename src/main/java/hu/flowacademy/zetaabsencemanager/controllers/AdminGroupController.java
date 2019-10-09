@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/group")
@@ -23,9 +24,15 @@ public class AdminGroupController {
     @GetMapping("/{id}")
     public Group getOne(@PathVariable("id") Long id) {
         //return groupService.getGroupById(groupId);
-        Group group = new Group();
-        group.setDepartment(new Department());
-        group.setEmployees(new ArrayList<User>(Arrays.asList()));
+        Department dep=Department.builder()
+                .groups(List.of())
+                .leaders(List.of())
+                .name("TestDepartment")
+                .build();
+        Group group = Group.builder()
+                .department(dep)
+                .employees(List.of())
+                .build();
         return group;
     }
 

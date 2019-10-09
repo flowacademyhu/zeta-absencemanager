@@ -1,9 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
-import hu.flowacademy.zetaabsencemanager.model.Absence;
-import hu.flowacademy.zetaabsencemanager.model.Status;
-import hu.flowacademy.zetaabsencemanager.model.Type;
-import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +19,29 @@ public class AbsenceController {
     @GetMapping("/{id}")
     public Absence getOne(@PathVariable("id") Long id) {
         ///return absenceService.getAbsenceById(id);
-        Absence absence=new Absence();
-        absence.setAssignee(new User());
-        absence.setBegin(LocalDate.of(2019, Month.DECEMBER, 12));
-        absence.setEnd(LocalDate.of(2019, Month.DECEMBER, 25));
-        absence.setCreatedAt(LocalDateTime.now());
-        absence.setStatus(Status.OPEN);
-        absence.setType(Type.ABSENCE);
-        absence.setReporter(new User());
-        absence.setSummary(8);
+        User user=User.builder()
+                .firstName("Tamás")
+                .lastName("Juhász")
+                .dateOfBirth(LocalDate.of(1985, Month.MAY, 5))
+                .role(Roles.EMPLOYEE)
+                .dateOfEntry(LocalDate.of(2019, Month.JANUARY, 6))
+                .dateOfEndTrial(LocalDate.of(2019, Month.APRIL, 6))
+                .email("tamas.juhasz@test.com")
+                .password("test")
+                .numberOfChildren(0)
+                .isOnTrial(false)
+                .otherAbsenceEnt("none")
+                .build();
+        Absence absence= Absence.builder()
+                .assignee(user)
+                .begin(LocalDate.of(2019, Month.DECEMBER, 12))
+                .end(LocalDate.of(2019, Month.DECEMBER, 25))
+                .createdAt(LocalDateTime.now())
+                .status(Status.OPEN)
+                .type(Type.ABSENCE)
+                .reporter(user)
+                .summary(8)
+                .build();
         return absence;
     }
 

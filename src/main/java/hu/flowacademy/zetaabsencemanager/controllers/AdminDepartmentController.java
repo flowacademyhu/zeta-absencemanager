@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/department")
@@ -19,10 +20,11 @@ public class AdminDepartmentController {
     @GetMapping("/{id}")
     public Department getOne(@PathVariable("id") Long id) {
         //return departmentService.getUserById(id);
-        Department dep=new Department();
-        dep.setGroups(new ArrayList<Group>(Arrays.asList()));
-        dep.setLeaders(new ArrayList<User>(Arrays.asList()));
-        dep.setName("TestDepartment");
+        Department dep=Department.builder()
+                .groups(List.of())
+                .leaders(List.of())
+                .name("TestDepartment")
+                .build();
         return dep;
     }
 
