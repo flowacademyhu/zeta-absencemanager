@@ -24,15 +24,8 @@ public class AdminGroupController {
     @GetMapping("/{id}")
     public Group getOne(@PathVariable("id") Long id) {
         //return groupService.getGroupById(groupId);
-        Department dep=Department.builder()
-                .groups(List.of())
-                .leaders(List.of())
-                .name("TestDepartment")
-                .build();
-        Group group = Group.builder()
-                .department(dep)
-                .employees(List.of())
-                .build();
+
+        Group group = Group.builder().build();
         return group;
     }
 

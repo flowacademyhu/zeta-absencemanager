@@ -20,11 +20,7 @@ public class AdminDepartmentController {
     @GetMapping("/{id}")
     public Department getOne(@PathVariable("id") Long id) {
         //return departmentService.getUserById(id);
-        Department dep=Department.builder()
-                .groups(List.of())
-                .leaders(List.of())
-                .name("TestDepartment")
-                .build();
+        Department dep=Department.builder().build();
         return dep;
     }
 
