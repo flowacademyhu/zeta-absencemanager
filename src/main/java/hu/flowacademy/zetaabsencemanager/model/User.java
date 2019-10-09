@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,16 +31,16 @@ public class User {
     private String password;
 
     @Column
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column
     private String email;
 
     @Column
-    private Date dateOfEntry;
+    private LocalDate dateOfEntry;
 
     @Column
-    private Date dateOfEndTrial;
+    private LocalDate dateOfEndTrial;
 
     @Column
     private Boolean isOnTrial;

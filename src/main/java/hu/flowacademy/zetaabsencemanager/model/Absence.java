@@ -4,8 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Builder
 @Data
@@ -28,10 +28,10 @@ public class Absence {
     private String summary;
 
     @Column
-    private Date begin;
+    private LocalDate begin;
 
     @Column
-    private Date end;
+    private LocalDate end;
 
     @ManyToOne
     private User reporter;
