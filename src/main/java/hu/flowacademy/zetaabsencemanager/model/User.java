@@ -13,7 +13,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table
-@NoArgsConstructor
 public class User {
 
     @Id
