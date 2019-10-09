@@ -10,5 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 public class AbsenceService {
 
     @Autowired
-    AbsenceRepository absenceRepository;
+    private AbsenceRepository absenceRepository;
 }

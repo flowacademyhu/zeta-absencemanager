@@ -10,5 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 public class GroupService {
 
     @Autowired
-    GroupRepository groupRepository;
+    private GroupRepository groupRepository;
 }

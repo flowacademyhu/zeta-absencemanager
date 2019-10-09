@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public User findByEmail(String email) {
         return this.userRepository.findByEmail(email);

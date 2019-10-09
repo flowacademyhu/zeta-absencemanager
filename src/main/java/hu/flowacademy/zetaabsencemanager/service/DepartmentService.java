@@ -10,5 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 public class DepartmentService {
 
     @Autowired
-    DepartmentRepository departmentRepository;
+    private DepartmentRepository departmentRepository;
 }
