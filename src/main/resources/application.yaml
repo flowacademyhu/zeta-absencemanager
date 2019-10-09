@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/absenceManager
     username: root
-    password: qqwwee
+    password: linuxconfig.org
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
