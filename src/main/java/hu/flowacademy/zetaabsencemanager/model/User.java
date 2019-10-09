@@ -28,9 +28,6 @@ public class User {
     private String lastName;
 
     @Column
-    private String userName;
-
-    @Column
     private String password;
 
     @Column
