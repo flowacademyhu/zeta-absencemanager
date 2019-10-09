@@ -31,7 +31,7 @@ public class User {
     private Date dateOfBirth;
 
     @Column
-    private Email email;
+    private String email;
 
     @Column
     private Date dateOfEntry;
@@ -42,14 +42,19 @@ public class User {
     @Column
     private Boolean isOnTrial;
 
-    // ??? ide kell @Column??
-    // ??? A lenti helyett ManyToMany nem lenne jobb? Mert ha vezetői minőségben lesz 
-    @ManyToOne
-    @JoinColumn
-    private Group group;
+    @ManyToMany
+    private List<Group> groups;
+
+    // kell-e ManyToOne a group-hoz, employee minőségben???
+
+    @ManyToMany
+    private List<Department> departments;
 
     @Column
     private String position;
+
+    @Column
+    private Roles role;
 
     @Column
     private Integer numberOfChildren;
@@ -57,10 +62,10 @@ public class User {
     @Column
     private String otherAbsenceEnt;
 
-    // ide kell @Column??
-    @OneToMany
+    @OneToMany(mappedBy = "assignee")
     @JsonIgnore
-    private Absence absence;
-    // private List<Absence> absences; ??
+    private List<Absence> absences;
+
+    //?? Kell-e OneToMany List az absences-shez, mint reporter??
 
 }

@@ -17,21 +17,21 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Integer id;
+    private Long id;
 
     @Column
     private String name;
 
-    // ??? ide kell @Column??
-    @OneToMany
-    @JsonIgnore
-    private User leader;
-    // ???: private List<User> leaders;
+    @ManyToMany
+    @JoinTable(
+            name = "user_department",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id"))
+    private List<User> leaders;
 
-    // ??? ide kell @Column??
-    @OneToMany
+
+    @OneToMany(mappedBy = "department")
     @JsonIgnore
-    private Group group;
-    // ???: private List<Group> groups;
+    private List<Group> groups;
 
 }

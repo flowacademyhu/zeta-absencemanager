@@ -16,7 +16,7 @@ public class Absence {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Integer id;
+    private Long id;
 
     @Column
     private LocalDateTime createdAt;
@@ -33,14 +33,11 @@ public class Absence {
     @Column
     private Date end;
 
-    // ??? ide kell @ManyToOne Annotáció??
-    // ??? ide kell @Column??
     @ManyToOne
     private User reporter;
 
-    // ??? ide kell @ManyToOne Annotáció??
-    // ??? ide kell @Column??
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
     private User assignee;
 
     @Column

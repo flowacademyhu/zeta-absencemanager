@@ -11,33 +11,34 @@ import java.util.UUID;
 @Builder
 @Data
 @Entity
-@Table
+@Table(name = "group")
 public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Integer id;
+    private Long id;
 
     @Column
     private String name;
 
-    // ??? ide kell @Column??
-    @OneToMany
-    @JsonIgnore
-    private User leader;
-    // private List<User> leaders; ??
+    @ManyToMany
+    @JoinTable(
+            name = "leader_user_group",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private List<User> leaders;
 
-    // ??? ide kell @Column??
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "department_id")
     private Department department;
 
-    // ??? ide kell @Column??
-    @OneToMany
-    @JsonIgnore
-    private User employee;
-    // ???: private List<User> employees;
+    @ManyToMany
+    @JoinTable(
+            name = "employee_user_group",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    private List<User> employees;
 
 }
 
