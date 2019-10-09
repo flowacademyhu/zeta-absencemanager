@@ -25,21 +25,21 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        final User user = userRepository.findByEmail(s);
+        final hu.flowacademy.zetaabsencemanager.model.User user = userRepository.findByEmail(s);
         if (user == null) {
             throw new UsernameNotFoundException(s);
         }
-        return new User(s, user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole())));
+        return new User(s, user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().toString())));
     }
 
-    public void saveUser(User user) {
-        User newUser = new User();
-        if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+    public void saveUser(hu.flowacademy.zetaabsencemanager.model.User user) {
+        hu.flowacademy.zetaabsencemanager.model.User newUser = new hu.flowacademy.zetaabsencemanager.model.User();
+        if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("nincs pw vagy username");
         }
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setRole("");
+        newUser.setRole();
         userRepository.save(newUser);
     }
 }
