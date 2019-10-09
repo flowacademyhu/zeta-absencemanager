@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.auth;
 
+import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,9 +38,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("nincs pw vagy username");
         }
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        newUser.setDateOfBirth(user.getDateOfBirth());
+        newUser.setDateOfEntry(user.getDateOfEntry());
+        newUser.setDateOfEndTrial(user.getDateOfEndTrial());
         newUser.setEmail(user.getEmail());
+        newUser.setGroups(user.getGroups());
+        //Departments according to the groups?
+        newUser.setPosition(user.getPosition());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setRole();
+        newUser.setRole(user.getRole());
+        newUser.setNumberOfChildren(user.getNumberOfChildren());
+        newUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
         userRepository.save(newUser);
     }
 }
