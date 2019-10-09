@@ -1,4 +1,4 @@
-/*package hu.flowacademy.zetaabsencemanager.auth;
+package hu.flowacademy.zetaabsencemanager.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 
-
 @Configuration
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
@@ -26,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        final User user = userRepository.findByUsername(s);
+        final User user = userRepository.findByEmail(s);
         if (user == null) {
             throw new UsernameNotFoundException(s);
         }
@@ -38,9 +37,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
             throw new IllegalArgumentException("nincs pw vagy username");
         }
-        user.setUsername(user.getUsername());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("USER");
-        userRepository.save(user);
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setRole("");
+        userRepository.save(newUser);
     }
-}*/
+}

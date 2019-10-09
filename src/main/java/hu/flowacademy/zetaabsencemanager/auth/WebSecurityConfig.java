@@ -15,13 +15,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    /*@Autowired
-    private CustomUserDetailsService customUserDetailsService;*/
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
 
-        //auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
