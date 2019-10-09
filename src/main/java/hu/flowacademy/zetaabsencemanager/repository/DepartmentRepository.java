@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.repository;
 
+import hu.flowacademy.zetaabsencemanager.model.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
