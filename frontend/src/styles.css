@@ -1,19 +1,2 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #424242; }
-
-.header{
-    background: #c54b3c;
-}
-
-.footer {
-    text-align: center;
-    background: #c54b3c;
-}
-
-.content-card {
-    background: #424242;
-    max-width: auto;
-    max-height: auto;
-    min-width: 600px;
-    min-height: 600px;
-}
