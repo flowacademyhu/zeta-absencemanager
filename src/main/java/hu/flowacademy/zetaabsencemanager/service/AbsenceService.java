@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -17,5 +18,9 @@ public class AbsenceService {
 
     public List<Absence> findAllAbsence() {
         return this.absenceRepository.findAll();
+    }
+
+    public Optional<Absence> findById(Long id){
+        return absenceRepository.findById(id);
     }
 }
