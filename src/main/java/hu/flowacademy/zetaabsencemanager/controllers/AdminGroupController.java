@@ -1,18 +1,12 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
-import hu.flowacademy.zetaabsencemanager.model.Department;
+
 import hu.flowacademy.zetaabsencemanager.model.Group;
-import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/admin/group")
