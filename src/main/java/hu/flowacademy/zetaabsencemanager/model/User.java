@@ -48,8 +48,6 @@ public class User {
     @ManyToMany
     private List<Group> groups;
 
-    // kell-e ManyToOne a group-hoz, employee minőségben???
-
     @ManyToMany
     private List<Department> departments;
 
@@ -68,7 +66,5 @@ public class User {
     @OneToMany(mappedBy = "assignee")
     @JsonIgnore
     private List<Absence> absences;
-
-    //?? Kell-e OneToMany List az absences-shez, mint reporter??
 
 }
