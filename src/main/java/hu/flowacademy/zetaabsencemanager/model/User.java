@@ -3,12 +3,11 @@ package hu.flowacademy.zetaabsencemanager.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder

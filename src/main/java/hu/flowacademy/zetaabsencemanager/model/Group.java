@@ -3,6 +3,7 @@ package hu.flowacademy.zetaabsencemanager.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.UUID;
 @Builder
 @Data
 @Entity
-@Table(name = "group")
+@Table(name = "_group")
 public class Group {
 
     @Id

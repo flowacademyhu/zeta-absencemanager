@@ -1,3 +1,5 @@
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, 
@@ -7,14 +9,14 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material'
 
 
-import { AppRoutingModule } from './app-routing.module';
+//Own Components
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { AdminUserShowComponent } from './components/admin-user-index/admin-user-show.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { FilterComponent } from './components/filter/filter.component';
     FooterComponent,
     ContentComponent,
     AdminUserShowComponent,
-    FilterComponent
+    FilterComponent,
+    AbsencesIndexComponent
   ],
   imports: [
     BrowserModule,

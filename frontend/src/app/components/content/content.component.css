@@ -1,7 +1,9 @@
 .content-card {
+    box-shadow: none;
     background: #424242;
     max-width: auto;
     max-height: auto;
     min-width: 600px;
     min-height: 600px;
+    margin: 5%;
 }
