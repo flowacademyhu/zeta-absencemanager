@@ -10,10 +10,10 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
 
-  public isLoggedIn : Observable<boolean>;
+  public isLoggedIn$ : Observable<boolean>;
 
   constructor(private router : Router, private sessionService : SessionService) { 
-    this.isLoggedIn = sessionService.isLoggedIn();
+    this.isLoggedIn$ = sessionService.isLoggedIn();
   }
 
   ngOnInit() {
@@ -21,8 +21,9 @@ export class HeaderComponent implements OnInit {
 
 
   public logout(){
-    this.sessionService.logout();
-    this.router.navigateByUrl('');
+    this.sessionService.logout().then(() => {
+      this.router.navigateByUrl('');
+    });
   }
 
 }

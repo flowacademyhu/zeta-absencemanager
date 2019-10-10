@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SessionService } from 'src/app/services/session.service';
-import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { SessionService, LoginRejectionReason } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -19,15 +17,18 @@ export class LoginComponent implements OnInit {
   @Input()
   error: string | null;
 
-  constructor(private sessionService : SessionService, private router : Router) { }
+  constructor(private sessionService : SessionService) { }
 
   ngOnInit() {
   }
 
-  submit() {
+  onSubmit() {
     if (this.credentials.valid) {
-     this.sessionService.login(this.credentials.value.username, this.credentials.value.password);
-     this.router.navigate(["admin/absence-index"]);
+     this.sessionService.login(this.credentials.value.username, this.credentials.value.password)
+      .catch( (error: LoginRejectionReason) => {
+        this.error = error;
+      })
+     ;
     }
   }
 
