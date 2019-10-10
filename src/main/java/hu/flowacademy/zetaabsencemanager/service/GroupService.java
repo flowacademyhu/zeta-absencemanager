@@ -31,7 +31,7 @@ public class GroupService {
         return groupRepository.findById(id);
     }
 
-    public @NotNull Group create(Group group) {
+    public Group create(@NotNull Group group) {
         if (StringUtils.isEmpty(group.getName()) || CollectionUtils.isEmpty(group.getLeaders()) || group.getDepartment() == null
                 || CollectionUtils.isEmpty(group.getEmployees()) )
         {
