@@ -4,6 +4,7 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -19,6 +20,9 @@ public class AdminUserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
         return this.userRepository.findByEmail(email);
@@ -73,6 +77,44 @@ public class AdminUserService {
 
     public void delete(@NotNull Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User saveUser(@NotNull User user) {
+        if (StringUtils.isEmpty(user.getFirstName())
+                || StringUtils.isEmpty(user.getLastName())
+                || user.getDateOfBirth() == null
+                || StringUtils.isEmpty(user.getEmail())
+                || user.getDateOfEntry() == null
+                || user.getDateOfEndTrial() == null
+                || user.getIsOnTrial() == null
+                || CollectionUtils.isEmpty(user.getDepartments())
+                || CollectionUtils.isEmpty(user.getGroups())
+                || StringUtils.isEmpty(user.getPosition())
+                || user.getRole() == null
+                || user.getNumberOfChildren() == null
+                || user.getOtherAbsenceEnt() == null
+        ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            User newUser = User.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .dateOfBirth(user.getDateOfBirth())
+                    .dateOfEntry(user.getDateOfEntry())
+                    .dateOfEndTrial(user.getDateOfEndTrial())
+                    .isOnTrial(user.getIsOnTrial())
+                    .email(user.getEmail())
+                    .groups(user.getGroups())
+                    .departments(user.getDepartments())
+                    .position(user.getPosition())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .role(user.getRole())
+                    .numberOfChildren(user.getNumberOfChildren())
+                    .otherAbsenceEnt(user.getOtherAbsenceEnt())
+                    .build();
+            userRepository.save(newUser);
+            return newUser;
+        }
     }
 
 }
