@@ -57,7 +57,7 @@ public class DepartmentService {
         }
     }
 
-    public void delete(Long id) {
+    public void delete(@NotNull Long id) {
         departmentRepository.deleteById(id);
     }
 }
