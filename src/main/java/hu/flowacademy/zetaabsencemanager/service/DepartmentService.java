@@ -27,4 +27,5 @@ public class DepartmentService {
     public void delete(Long id){
         departmentRepository.deleteById(id);
     }
+
 }
