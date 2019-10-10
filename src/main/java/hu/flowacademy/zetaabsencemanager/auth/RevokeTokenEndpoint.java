@@ -16,7 +16,7 @@ public class RevokeTokenEndpoint {
     @Resource(name = "tokenServices")
     private ConsumerTokenServices tokenServices;
 
-    @DeleteMapping("/oauth/token/revoke/")
+    @DeleteMapping("/auth/token/revoke/")
     @ResponseBody
     public ResponseEntity<Void> revokeToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");

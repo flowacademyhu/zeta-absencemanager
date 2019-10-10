@@ -27,6 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         final hu.flowacademy.zetaabsencemanager.model.User user = userRepository.findByEmail(s);
+        System.out.println(s);
         if (user == null) {
             throw new UsernameNotFoundException(s);
         }

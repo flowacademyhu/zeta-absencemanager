@@ -1,8 +1,10 @@
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatCardModule, MatTableModule } from '@angular/material/';
+import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
+import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule } from '@angular/material/';
 
 //Own Components
 import { AppComponent } from './app.component';
@@ -10,6 +12,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
+import { LoginComponent } from './components/login/login.component';
+import { SessionService } from './services/session.service';
 
 @NgModule({
   declarations: [
@@ -17,12 +21,15 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
     HeaderComponent,
     FooterComponent,
     ContentComponent,
-    AbsencesIndexComponent
+    AbsencesIndexComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -30,9 +37,11 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
     MatIconModule,
     MatGridListModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatInputModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [SessionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
