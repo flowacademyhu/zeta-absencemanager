@@ -21,6 +21,7 @@ public class AdminAbsencesController {
 
     @GetMapping("/{id}")
     public Absence getOne(@PathVariable("id") Long id) {
+
         return absenceService.findOne(id);
         //Absence absence=Absence.builder().build();
         //return absence;
@@ -46,6 +47,6 @@ public class AdminAbsencesController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
-        return absenceService.delete(id);
+      absenceService.delete(id);
     }
 }

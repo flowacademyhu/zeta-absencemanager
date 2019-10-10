@@ -25,7 +25,7 @@ public class AdminUsersController {
 
 
     @GetMapping("/{id}")
-    public Optional<User> getOne(@PathVariable("id") Long id) {
+    public User getOne(@PathVariable("id") Long id) {
         return userService.findOneUser(id);
         /*Department dep = Department.builder()
                 .groups(List.of())
@@ -76,6 +76,6 @@ public class AdminUsersController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
-        return userService.delete(id);
+        userService.delete(id);
     }
 }

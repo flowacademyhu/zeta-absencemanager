@@ -20,7 +20,7 @@ public class AbsenceService {
         return this.absenceRepository.findAll();
     }
 
-    public Optional<Absence> findById(Long id){
+    public Optional<Absence> findOne(Long id){
         return absenceRepository.findById(id);
     }
 }
