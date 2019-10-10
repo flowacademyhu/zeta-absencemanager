@@ -29,9 +29,6 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
-    public void delete(Long id) {
-        departmentRepository.deleteById(id);
-    }
 
 
     public Department create(@NotNull Department department) {
@@ -58,5 +55,9 @@ public class DepartmentService {
             departmentRepository.save(modifyDep);
             return modifyDep;
         }
+    }
+
+    public void delete(@NotNull Long id) {
+        departmentRepository.deleteById(id);
     }
 }
