@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +31,9 @@ public class GroupService {
         return groupRepository.findById(id);
     }
 
-    public Group create(Group group) {
-        if (group.getId() != null || group.getName().equals("") || group.getName() == null ||
-                group.getLeaders().size() == 0 || group.getDepartment() == null || group.getEmployees().size() == 0)
+    public @NotNull Group create(Group group) {
+        if (StringUtils.isEmpty(group.getName()) || CollectionUtils.isEmpty(group.getLeaders()) || group.getDepartment() == null
+                || CollectionUtils.isEmpty(group.getEmployees()) )
         {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
