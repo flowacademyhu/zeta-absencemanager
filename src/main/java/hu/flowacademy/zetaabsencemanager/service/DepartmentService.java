@@ -25,13 +25,14 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public Optional<Department> findOne(Long id){
+    public Optional<Department> findOne(Long id) {
         return departmentRepository.findById(id);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         departmentRepository.deleteById(id);
     }
+
 
     public Department create(@NotNull Department department) {
         if (StringUtils.isEmpty(department.getName())
@@ -44,4 +45,18 @@ public class DepartmentService {
         return department;
     }
 
+    public Department updateDempartment(Long id, @NotNull Department department) {
+        Department modifyDep = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
+        if (StringUtils.isEmpty(department.getName()) ||
+                CollectionUtils.isEmpty(department.getLeaders()) ||
+                CollectionUtils.isEmpty(department.getGroups())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            modifyDep.setName(department.getName());
+            modifyDep.setLeaders(department.getLeaders());
+            modifyDep.setGroups(department.getGroups());
+            departmentRepository.save(modifyDep);
+            return modifyDep;
+        }
+    }
 }

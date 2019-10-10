@@ -13,7 +13,6 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table
-@NoArgsConstructor
 public class Department {
 
     @Id
