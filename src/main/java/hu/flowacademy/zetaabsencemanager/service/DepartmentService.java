@@ -29,9 +29,6 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
-    public void delete(Long id) {
-        departmentRepository.deleteById(id);
-    }
 
     public Department updateDempartment(Long id, @NotNull Department department) {
         Department modifyDep = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
@@ -46,5 +43,9 @@ public class DepartmentService {
             departmentRepository.save(modifyDep);
             return modifyDep;
         }
+    }
+
+    public void delete(Long id) {
+        departmentRepository.deleteById(id);
     }
 }
