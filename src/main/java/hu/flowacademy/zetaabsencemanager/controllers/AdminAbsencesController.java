@@ -19,7 +19,7 @@ public class AdminAbsencesController {
 
     @GetMapping("/{id}")
     public Absence getOne(@PathVariable("id") Long id) {
-        //return absenceService.getUserById(id);
+        //return absenceService.findOne(id);
         Absence absence=Absence.builder().build();
         return absence;
     }
