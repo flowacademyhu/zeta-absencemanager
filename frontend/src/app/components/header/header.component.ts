@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,11 @@ import { SessionService } from 'src/app/services/session.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private router : Router, private sessionService : SessionService) { }
+  public isLoggedIn : Observable<boolean>;
+
+  constructor(private router : Router, private sessionService : SessionService) { 
+    this.isLoggedIn = sessionService.isLoggedIn();
+  }
 
   ngOnInit() {
   }

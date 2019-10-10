@@ -16,7 +16,7 @@ const httpOptions = {
 export class SessionService {
 
   private _userData$: BehaviorSubject<any> = new BehaviorSubject(undefined);
-  private _isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(this.hasToken());
   private body : HttpParams;
 
   
@@ -30,18 +30,29 @@ export class SessionService {
       .set('password', password)
       .set('grant_type', 'password');
     
-    this.http.post(URL + 'oauth/token', this.body, httpOptions).subscribe(data => console.log(data));
+    this.http.post(URL + 'oauth/token', this.body, httpOptions).subscribe((data : any) => {
+      localStorage.setItem('token', data.access_token);
+      this._isLoggedIn$.next(true);
+    });
 
   }
 
   public logout(){
-    localStorage.removeItem('userData');
-    this._userData$.next(null);
+    localStorage.removeItem('token');
+    this._isLoggedIn$.next(false);
   }
 
   public get currentUserData(): BehaviorSubject<any> {
     return this._userData$.value;
 }
+
+  private hasToken() : boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  public isLoggedIn() : Observable<boolean> {
+    return this._isLoggedIn$.asObservable();
+  }
 
   private log(message: string) {
     console.log(message);

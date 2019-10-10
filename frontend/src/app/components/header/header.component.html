@@ -5,15 +5,16 @@
       <span class="menu-spacer"></span>
       <div>
         <ul>
-          <li><a mat-button [routerLink]="'/absences'" > Absences </a></li>
-          <li><a mat-button [routerLink]="'/profile'"> Profile </a></li>
-          <li><a mat-button [routerLink]="'/'"> Admin </a></li>
+          <li><a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn | async)">Login</a></li>
+          <li><a mat-button [routerLink]="'/absences'" *ngIf="(isLoggedIn | async)"> Absences </a></li>
+          <li><a mat-button [routerLink]="'/profile'" *ngIf="(isLoggedIn | async)"> Profile </a></li>
+          <li><a mat-button [routerLink]="'/'" *ngIf="(isLoggedIn | async)"> Admin </a></li>
       </ul>
       </div>
       <span class="fill-remaining-space"></span>
       <div class="logout">
         <ul>
-          <li><a mat-button (click)="logout()">Logout </a></li>
+          <li><a mat-button (click)="logout()" *ngIf="(isLoggedIn | async)">Logout </a></li>
         </ul>
       </div>
     </mat-toolbar-row>
