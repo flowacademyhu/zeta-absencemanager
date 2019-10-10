@@ -53,8 +53,10 @@ public class UserService {
                 || user.getOtherAbsenceEnt() == null
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            userRepository.save(user);
         }
-        userRepository.save(user);
+
         return user;
     }
 }
