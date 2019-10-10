@@ -25,12 +25,12 @@ public class GroupService {
         return groupRepository.findAll();
     }
 
-    public Optional<Group> findOneGroup(Long id) {
+    public Optional<Group> findOne(Long id) {
         return groupRepository.findById(id);
     }
 
     public Group updateGroup(Long id, @NotNull Group group) {
-        Group modifyGroup = findOneGroup(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+        Group modifyGroup = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
         if (group.getDepartment() == null ||
                 StringUtils.isEmpty(group.getName()) ||
                 CollectionUtils.isEmpty(group.getEmployees()) ||

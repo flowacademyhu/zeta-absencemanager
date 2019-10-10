@@ -3,9 +3,14 @@ package hu.flowacademy.zetaabsencemanager.service;
 import hu.flowacademy.zetaabsencemanager.model.Department;
 import hu.flowacademy.zetaabsencemanager.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +25,26 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public Optional<Department> findOne(Long id){
+    public Optional<Department> findOne(Long id) {
         return departmentRepository.findById(id);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         departmentRepository.deleteById(id);
+    }
+
+    public Department updateDempartment(Long id, @NotNull Department department) {
+        Department modifyDep = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
+        if (StringUtils.isEmpty(department.getName()) ||
+                CollectionUtils.isEmpty(department.getLeaders()) ||
+                CollectionUtils.isEmpty(department.getGroups())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            modifyDep.setName(department.getName());
+            modifyDep.setLeaders(department.getLeaders());
+            modifyDep.setGroups(department.getGroups());
+            departmentRepository.save(modifyDep);
+            return modifyDep;
+        }
     }
 }
