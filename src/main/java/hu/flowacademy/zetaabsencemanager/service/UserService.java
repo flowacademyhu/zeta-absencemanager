@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,24 +33,17 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User createUser(User user) {
-        if (user == null
-                || user.getFirstName() == null
-                || user.getFirstName().equals("")
-                || user.getLastName() == null
-                || user.getLastName().equals("")
+    public User createUser(@NotNull User user) {
+        if (StringUtils.isEmpty(user.getFirstName())
+                || StringUtils.isEmpty(user.getLastName())
                 || user.getDateOfBirth() == null
-                || user.getEmail() == null
-                || user.getEmail().equals("")
+                || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || user.getDepartments() == null
-                || user.getDepartments().size() == 0
-                || user.getGroups() == null
-                || user.getGroups().size() == 0
-                || user.getPosition() == null
-                || user.getPosition().equals("")
+                || CollectionUtils.isEmpty(user.getDepartments())
+                || CollectionUtils.isEmpty(user.getGroups())
+                || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
                 || user.getOtherAbsenceEnt() == null
