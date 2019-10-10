@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
-
-
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,9 +24,26 @@ public class GroupService {
     public List<Group> findAllGroup() {
         return groupRepository.findAll();
     }
-  
-    public Optional<Group> findOne(Long id){
+
+    public Optional<Group> findOneGroup(Long id) {
         return groupRepository.findById(id);
+    }
+
+    public Group updateGroup(Long id, @NotNull Group group) {
+        Group modifyGroup = findOneGroup(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+        if (group.getDepartment() == null ||
+                StringUtils.isEmpty(group.getName()) ||
+                CollectionUtils.isEmpty(group.getEmployees()) ||
+                CollectionUtils.isEmpty(group.getLeaders())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            modifyGroup.setName(group.getName());
+            modifyGroup.setDepartment(group.getDepartment());
+            modifyGroup.setEmployees(group.getEmployees());
+            modifyGroup.setLeaders(group.getLeaders());
+            groupRepository.save(modifyGroup);
+            return modifyGroup;
+        }
     }
 
     public Group create(@NotNull Group group) {
