@@ -21,10 +21,10 @@ import java.util.List;
 @Transactional
 public class DataLoader implements CommandLineRunner {
 
-    private AbsenceRepository absenceRepository;
-    private DepartmentRepository departmentRepository;
-    private GroupRepository groupRepository;
-    private UserRepository userRepository;
+    private final AbsenceRepository absenceRepository;
+    private final DepartmentRepository departmentRepository;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public DataLoader(AbsenceRepository absenceRepository,
