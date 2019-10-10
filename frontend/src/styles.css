@@ -1,2 +1,9 @@
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #424242; }
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #424242;}
+
+.actionButton button,
+.actionButton-row a {
+  margin-right: 8px;
+margin-bottom: 10px;
+}
