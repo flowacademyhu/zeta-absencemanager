@@ -67,8 +67,7 @@ public class AdminUsersController {
 
     @PostMapping("")
     public User createUser(@RequestBody User user) {
-        authService.saveUser(user);
-        return user;
+        return authService.saveUser(user);
     }
 
     @PutMapping("/{id}")
