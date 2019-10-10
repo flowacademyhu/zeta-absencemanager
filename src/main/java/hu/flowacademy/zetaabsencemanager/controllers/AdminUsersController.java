@@ -23,8 +23,6 @@ public class AdminUsersController {
     @Autowired
     private AdminUserService userService;
 
-    @Autowired
-    private CustomUserDetailsService authService;
 
     @GetMapping("/{id}")
     public Optional<User> getOne(@PathVariable("id") Long id) {
@@ -67,7 +65,7 @@ public class AdminUsersController {
 
     @PostMapping("")
     public User createUser(@RequestBody User user) {
-        return authService.saveUser(user);
+        return userService.saveUser(user);
     }
 
     @PutMapping("/{id}")
