@@ -32,8 +32,13 @@ public class DepartmentService {
 
     public Department updateDempartment(Long id, Department department) {
         Department modifyDep = findOneDepartment(id).orElse(null);
-        if (modifyDep == null || department.getName() == null || department.getName().equals("") ||
-                department.getLeaders().size() == 0 || department.getGroups().size() == 0) {
+        if (modifyDep == null ||
+                department.getName() == null ||
+                department.getName().equals("") ||
+                department.getLeaders() == null ||
+                department.getLeaders().size() == 0 ||
+                department.getGroups() == null ||
+                department.getGroups().size() == 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
             modifyDep.setName(department.getName());
