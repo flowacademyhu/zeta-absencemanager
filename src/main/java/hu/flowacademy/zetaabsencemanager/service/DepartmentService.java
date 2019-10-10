@@ -30,6 +30,18 @@ public class DepartmentService {
     }
 
 
+
+    public Department create(@NotNull Department department) {
+        if (StringUtils.isEmpty(department.getName())
+                || CollectionUtils.isEmpty(department.getLeaders())
+        ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            departmentRepository.save(department);
+        }
+        return department;
+    }
+
     public Department updateDempartment(Long id, @NotNull Department department) {
         Department modifyDep = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
         if (StringUtils.isEmpty(department.getName()) ||
