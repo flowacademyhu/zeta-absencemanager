@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,37 +24,9 @@ public class UserService {
         return this.userRepository.findByEmail(email);
     }
 
-    public List<User> findAllUser() {
-        return this.userRepository.findAll();
-    }
-
     public Optional<User> findOneUser(Long id) {
         return userRepository.findById(id);
     }
-
-    public User createUser(@NotNull User user) {
-        if (StringUtils.isEmpty(user.getFirstName())
-                || StringUtils.isEmpty(user.getLastName())
-                || user.getDateOfBirth() == null
-                || StringUtils.isEmpty(user.getEmail())
-                || user.getDateOfEntry() == null
-                || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
-                || StringUtils.isEmpty(user.getPosition())
-                || user.getRole() == null
-                || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
-            userRepository.save(user);
-        }
-
-        return user;
-    }
-
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
         User modifyUser = findOneUser(id).orElse(null);
@@ -80,20 +51,14 @@ public class UserService {
             modifyUser.setLastName(user.getLastName());
             modifyUser.setFirstName(user.getFirstName());
             modifyUser.setPassword(user.getPassword());
-            modifyUser.setDateOfBirth(user.getDateOfBirth());
             modifyUser.setEmail(user.getEmail());
-            modifyUser.setDateOfEntry(user.getDateOfEntry());
-            modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
-            modifyUser.setIsOnTrial(user.getIsOnTrial());
-            modifyUser.setDepartments(user.getDepartments());
-            modifyUser.setGroups(user.getGroups());
-            modifyUser.setPosition(user.getPosition());
-            modifyUser.setRole(user.getRole());
-            modifyUser.setNumberOfChildren(user.getNumberOfChildren());
-            modifyUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
             userRepository.save(user);
             return modifyUser;
         }
 
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 }
