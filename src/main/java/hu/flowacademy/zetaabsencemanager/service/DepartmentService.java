@@ -25,16 +25,16 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public Optional<Department> findOneDepartment(Long id) {
+    public Optional<Department> findOne(Long id) {
         return departmentRepository.findById(id);
     }
 
-    public void deleteDepartment(Long id) {
+    public void delete(Long id) {
         departmentRepository.deleteById(id);
     }
 
     public Department updateDempartment(Long id, @NotNull Department department) {
-        Department modifyDep = findOneDepartment(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
+        Department modifyDep = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
         if (StringUtils.isEmpty(department.getName()) ||
                 CollectionUtils.isEmpty(department.getLeaders()) ||
                 CollectionUtils.isEmpty(department.getGroups())) {
