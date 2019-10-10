@@ -33,6 +33,30 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public User createUser(@NotNull User user) {
+        if (StringUtils.isEmpty(user.getFirstName())
+                || StringUtils.isEmpty(user.getLastName())
+                || user.getDateOfBirth() == null
+                || StringUtils.isEmpty(user.getEmail())
+                || user.getDateOfEntry() == null
+                || user.getDateOfEndTrial() == null
+                || user.getIsOnTrial() == null
+                || CollectionUtils.isEmpty(user.getDepartments())
+                || CollectionUtils.isEmpty(user.getGroups())
+                || StringUtils.isEmpty(user.getPosition())
+                || user.getRole() == null
+                || user.getNumberOfChildren() == null
+                || user.getOtherAbsenceEnt() == null
+        ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            userRepository.save(user);
+        }
+
+        return user;
+    }
+
+
     public User updateUser(@NotNull Long id, @NotNull User user) {
         User modifyUser = findOneUser(id).orElse(null);
         if (modifyUser == null
