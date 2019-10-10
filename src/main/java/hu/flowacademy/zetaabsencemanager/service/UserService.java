@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,27 +33,20 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User updateUser(Long id, User user) {
-        User modifyUser=findOneUser(id).orElse(null);
+    public User updateUser(@NotNull Long id, @NotNull User user) {
+        User modifyUser = findOneUser(id).orElse(null);
         if (modifyUser == null
-                || user.getFirstName() == null
-                || user.getFirstName().equals("")
-                || user.getLastName() == null
-                || user.getLastName().equals("")
-                ||user.getPassword()==null
-                || user.getPassword().equals("")
+                || StringUtils.isEmpty(user.getFirstName())
+                || StringUtils.isEmpty(user.getLastName())
+                || StringUtils.isEmpty(user.getPassword())
                 || user.getDateOfBirth() == null
-                || user.getEmail() == null
-                || user.getEmail().equals("")
+                || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || user.getDepartments() == null
-                || user.getDepartments().size() == 0
-                || user.getGroups() == null
-                || user.getGroups().size() == 0
-                || user.getPosition() == null
-                || user.getPosition().equals("")
+                || CollectionUtils.isEmpty(user.getDepartments())
+                || CollectionUtils.isEmpty(user.getGroups())
+                || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
                 || user.getOtherAbsenceEnt() == null
