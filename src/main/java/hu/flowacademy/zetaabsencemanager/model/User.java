@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.List;
 @Builder
 @Entity
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -65,5 +68,7 @@ public class User {
     @OneToMany(mappedBy = "assignee")
     @JsonIgnore
     private List<Absence> absences;
+
+
 
 }
