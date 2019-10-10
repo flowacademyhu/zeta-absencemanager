@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new User(s, user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().toString())));
     }
 
-    public void saveUser(@NotNull hu.flowacademy.zetaabsencemanager.model.User user) {
+    public hu.flowacademy.zetaabsencemanager.model.User saveUser(@NotNull hu.flowacademy.zetaabsencemanager.model.User user) {
         if (StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
                 || user.getDateOfBirth() == null
@@ -72,6 +72,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())
                     .build();
             userRepository.save(newUser);
+            return newUser;
         }
     }
 }

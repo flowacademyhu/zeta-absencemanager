@@ -12,7 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,7 +20,7 @@ public class AdminUserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findByEmail(String email) {
+    public User findByEmail(@NotNull String email) {
         return this.userRepository.findByEmail(email);
     }
 
@@ -29,14 +28,13 @@ public class AdminUserService {
         return this.userRepository.findAll();
     }
 
-    public Optional<User> findOneUser(Long id) {
-        return userRepository.findById(id);
+    public User findOneUser(@NotNull Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id).orElse(null);
-        if (modifyUser == null
-                || StringUtils.isEmpty(user.getFirstName())
+        User modifyUser = findOneUser(id);
+        if (StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
                 || StringUtils.isEmpty(user.getPassword())
                 || user.getDateOfBirth() == null
@@ -73,9 +71,8 @@ public class AdminUserService {
 
     }
 
-    public void delete(Long id) {
+    public void delete(@NotNull Long id) {
         userRepository.deleteById(id);
     }
-
 
 }
