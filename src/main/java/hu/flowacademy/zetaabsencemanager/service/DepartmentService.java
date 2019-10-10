@@ -29,7 +29,23 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
-    public void delete(Long id){
+
+    public Department updateDempartment(@NotNull Long id, @NotNull Department department) {
+        Department modifyDep = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
+        if (StringUtils.isEmpty(department.getName()) ||
+                CollectionUtils.isEmpty(department.getLeaders()) ||
+                CollectionUtils.isEmpty(department.getGroups())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            modifyDep.setName(department.getName());
+            modifyDep.setLeaders(department.getLeaders());
+            modifyDep.setGroups(department.getGroups());
+            departmentRepository.save(modifyDep);
+            return modifyDep;
+        }
+    }
+
+    public void delete(Long id) {
         departmentRepository.deleteById(id);
     }
 
