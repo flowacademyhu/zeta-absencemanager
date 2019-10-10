@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +33,11 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
-    public Department updateDempartment(Long id, Department department) {
-        Department modifyDep = findOneDepartment(id).orElse(null);
-        if (modifyDep == null ||
-                department.getName() == null ||
-                department.getName().equals("") ||
-                department.getLeaders() == null ||
-                department.getLeaders().size() == 0 ||
-                department.getGroups() == null ||
-                department.getGroups().size() == 0) {
+    public Department updateDempartment(Long id, @NotNull Department department) {
+        Department modifyDep = findOneDepartment(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Department not found"));
+        if (StringUtils.isEmpty(department.getName()) ||
+                CollectionUtils.isEmpty(department.getLeaders()) ||
+                CollectionUtils.isEmpty(department.getGroups())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
             modifyDep.setName(department.getName());
