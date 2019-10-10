@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,16 +21,21 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    public Optional<Department> findOne(Long id) {
+    public List<Department> findAllDepartments() {
+        return departmentRepository.findAll();
+    }
+
+    public Optional<Department> findOne(Long id){
         return departmentRepository.findById(id);
     }
 
-    public Department create(Department department) {
-        if (department == null
-                || department.getName() == null
-                || department.getName().equals("")
-                || department.getLeaders().size() == 0
-                || department.getLeaders() == null
+    public void delete(Long id){
+        departmentRepository.deleteById(id);
+    }
+
+    public Department create(@NotNull Department department) {
+        if (StringUtils.isEmpty(department.getName())
+                || CollectionUtils.isEmpty(department.getLeaders())
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
@@ -35,7 +44,4 @@ public class DepartmentService {
         return department;
     }
 
-    public void delete(Long id) {
-        departmentRepository.deleteById(id);
-    }
 }
