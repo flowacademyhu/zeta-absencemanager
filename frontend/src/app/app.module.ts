@@ -7,7 +7,7 @@ import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatBu
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material'
-
+import { MatMenuModule} from '@angular/material/menu';
 
 //Own Components
 import { AppComponent } from './app.component';
@@ -44,7 +44,8 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
     FormsModule,
     ReactiveFormsModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule,
+    MatMenuModule
 
   ],
   providers: [],
