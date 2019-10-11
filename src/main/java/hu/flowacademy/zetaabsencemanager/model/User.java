@@ -69,4 +69,6 @@ public class User {
     @JsonIgnore
     private List<Absence> absences;
 
+
+
 }
