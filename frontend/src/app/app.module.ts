@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
-import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
+import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule, MatDialogModule } from '@angular/material/';
 
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -22,6 +22,7 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
 import { AbsenceCreateComponent } from './components/admin/absence-create/absence-create.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
+import { AdminAbsenceCreateComponent } from './modals/admin-absence-create/admin-absence-create.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SessionService } from './services/session.service';
     AdminUserShowComponent,
     FilterComponent,
     AbsencesIndexComponent,
-    AbsenceCreateComponent
+    AbsenceCreateComponent,
+    AdminAbsenceCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { SessionService } from './services/session.service';
     ReactiveFormsModule,
     MatNativeDateModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatDialogModule
 
   ],
   providers: [
@@ -67,6 +70,7 @@ import { SessionService } from './services/session.service';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AdminAbsenceCreateComponent]
 })
 export class AppModule { }
