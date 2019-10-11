@@ -82,7 +82,7 @@ export class SessionService {
     return this._userData$.getValue();
 }
 
-  private hasToken() : boolean {
+  public hasToken() : boolean {
     return !!localStorage.getItem('token');
   }
 
