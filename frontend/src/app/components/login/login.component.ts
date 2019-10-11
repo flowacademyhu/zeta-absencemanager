@@ -14,8 +14,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  @Input()
-  error: string | null;
+  public error: string;
 
   constructor(private sessionService : SessionService) { }
 
