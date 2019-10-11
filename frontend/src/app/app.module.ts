@@ -2,6 +2,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
 import { NgModule } from '@angular/core';
 
 import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
@@ -59,8 +60,8 @@ import { AdminAbsenceCreateComponent } from './modals/admin-absence-create/admin
     MatNativeDateModule,
     MatInputModule,
     MatFormFieldModule,
-    MatDialogModule
-
+    MatDialogModule,
+    MatMenuModule
   ],
   providers: [
     SessionService,
