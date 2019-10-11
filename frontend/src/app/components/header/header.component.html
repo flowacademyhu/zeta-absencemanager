@@ -10,7 +10,14 @@
           <li><a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a></li>
           <li><a mat-button [routerLink]="'/absences'" *ngIf="(isLoggedIn$ | async)"> Absences </a></li>
           <li><a mat-button [routerLink]="'/profile'" *ngIf="(isLoggedIn$ | async)"> Profile </a></li>
-          <li><a mat-button [routerLink]="'/'" *ngIf="(isLoggedIn$ | async)"> Admin </a></li>
+          
+          <li><a mat-button [routerLink]="'/'" *ngIf="(isLoggedIn$ | async)" [matMenuTriggerFor]="menu"> Admin </a>  
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item [routerLink]="admin/user-index">Employees</button>
+              <button mat-menu-item>Groups</button>
+              <button mat-menu-item>Departments</button>
+            </mat-menu>
+          </li>   
       </ul>
       </div>
       <span class="fill-remaining-space"></span>
