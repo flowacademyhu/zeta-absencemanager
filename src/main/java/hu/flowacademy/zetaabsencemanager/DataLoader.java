@@ -10,6 +10,8 @@ import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class DataLoader implements CommandLineRunner {
     private final DepartmentRepository departmentRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+
+    @Autowired
+    @Lazy
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public DataLoader(AbsenceRepository absenceRepository,
@@ -56,7 +62,7 @@ public class DataLoader implements CommandLineRunner {
 
         this.userRepository.save( User.builder()
                 .email("admin@admin.com")
-                .password("YWRtaW4=") // passwordEncoder.encode("admin")
+                .password(passwordEncoder.encode("admin")) // passwordEncoder.encode("admin")
                 .firstName("admin")
                 .lastName("admin")
                 .role(Roles.ADMIN)
