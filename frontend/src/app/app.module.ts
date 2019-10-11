@@ -17,6 +17,7 @@ import { ContentComponent } from './components/content/content.component';
 import { AdminUserShowComponent } from './components/admin-user-index/admin-user-show.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
+import { AbsenceCreateComponent } from './components/admin/absence-create/absence-create.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
     ContentComponent,
     AdminUserShowComponent,
     FilterComponent,
-    AbsencesIndexComponent
+    AbsencesIndexComponent,
+    AbsenceCreateComponent
   ],
   imports: [
     BrowserModule,
