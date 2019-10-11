@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
-import { AdminUserShowComponent } from './components/admin-user-index/admin-user-show.component';
+import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 
