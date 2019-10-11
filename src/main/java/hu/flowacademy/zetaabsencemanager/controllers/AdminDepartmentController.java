@@ -22,14 +22,11 @@ public class AdminDepartmentController {
     @GetMapping("/{id}")
     public Optional<Department> getOne(@PathVariable("id") Long id) {
         return departmentService.findOne(id);
-        //Department dep=Department.builder().build();
-        //return dep;
     }
 
     @GetMapping("")
     public List<Department> getAll() {
         return departmentService.findAllDepartments();
-        //return new ArrayList<>();
     }
 
     @PostMapping("")

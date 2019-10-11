@@ -21,26 +21,24 @@ public class AdminGroupController {
     @GetMapping("/{id}")
     public Optional<Group> getOne(@PathVariable("id") Long id) {
         return groupService.findOne(id);
-        //Group group = Group.builder().build();
-        //return group;
+
     }
 
     @GetMapping("")
     public List<Group> getAll() {
         return groupService.findAllGroup();
-        //return new ArrayList<>();
+
     }
 
     @PostMapping("")
     public Group createGroup(@RequestBody Group group) {
         return groupService.create(group);
-        //return group;
+
     }
 
     @PutMapping("/{id}")
     public Group update(@PathVariable("id") Long id, @RequestBody Group group) {
         return groupService.updateGroup(id, group);
-        //return group;
     }
 
     @DeleteMapping("/{id}")

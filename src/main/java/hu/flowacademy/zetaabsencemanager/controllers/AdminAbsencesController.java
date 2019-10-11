@@ -23,26 +23,22 @@ public class AdminAbsencesController {
     public Absence getOne(@PathVariable("id") Long id) {
 
         return absenceService.findOne(id);
-        //Absence absence=Absence.builder().build();
-        //return absence;
+
     }
 
     @GetMapping("")
     public List<Absence> getAll() {
         return absenceService.findAllAbsence();
-        //return new ArrayList<>();
     }
 
     @PostMapping("")
     public Absence createAbsence(@RequestBody Absence absence) {
         return absenceService.create(absence);
-        //return absence;
     }
 
     @PutMapping("/{id}")
     public Absence update(@PathVariable("id") Long id, @RequestBody Absence absence) {
         return absenceService.update(id, absence);
-        //return absence;
     }
 
     @DeleteMapping("/{id}")
