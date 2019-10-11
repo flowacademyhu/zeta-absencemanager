@@ -5,21 +5,22 @@
       <span class="menu-spacer"></span>
       <div>
         <ul>
-          <li><a mat-button [routerLink]="'/absences'" > Absences </a></li>
-          <li><a mat-button [routerLink]="'/profile'"> Profile </a></li>
-          <li><a mat-button [matMenuTriggerFor]="menu" [routerLink]="'/'"> Admin </a>
+          <li><a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a></li>
+          <li><a mat-button [routerLink]="'/absences'" *ngIf="(isLoggedIn$ | async)"> Absences </a></li>
+          <li><a mat-button [routerLink]="'/profile'" *ngIf="(isLoggedIn$ | async)"> Profile </a></li>
+          <li><a mat-button [routerLink]="'/'" *ngIf="(isLoggedIn$ | async)" [matMenuTriggerFor]="menu"> Admin </a>  
             <mat-menu #menu="matMenu">
               <button onclick="location.href='admin/user-index'" mat-menu-item>Employees</button>
               <button mat-menu-item>Groups</button>
               <button mat-menu-item>Departments</button>
             </mat-menu>
-          </li>
+          </li>   
       </ul>
       </div>
       <span class="fill-remaining-space"></span>
       <div class="logout">
         <ul>
-          <li><a mat-button (click)="logout()">Logout </a></li>
+          <li><a mat-button (click)="logout()" *ngIf="(isLoggedIn$ | async)">Logout </a></li>
         </ul>
       </div>
     </mat-toolbar-row>
