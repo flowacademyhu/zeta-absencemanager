@@ -48,7 +48,7 @@ export class SessionService {
         resolve();
       }, (error: HttpErrorResponse) => {
         //Invalid credentials
-        if (error.status === 401) {
+        if (error.status === 401 || error.status === 400) {
           reject(LoginRejectionReason.BAD_CREDENTIALS);
         } else if (error.status === 0 || error.status == 503) {
           reject(LoginRejectionReason.SERVICE_UNAVAILABLE);
