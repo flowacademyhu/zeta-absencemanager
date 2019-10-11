@@ -14,8 +14,8 @@ import java.util.List;
 @Builder
 @Entity
 @Table
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
