@@ -8,6 +8,8 @@ import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@an
 import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
 
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './token.interceptor';
 
 //Own Components
 import { AppComponent } from './app.component';
@@ -54,7 +56,14 @@ import { SessionService } from './services/session.service';
     MatFormFieldModule
 
   ],
-  providers: [SessionService],
+  providers: [
+    SessionService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
