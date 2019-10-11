@@ -1,12 +1,12 @@
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, 
-         MatGridListModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material'
+import { NgModule } from '@angular/core';
+
+import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
+import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
+
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
@@ -19,6 +19,8 @@ import { ContentComponent } from './components/content/content.component';
 import { AdminUserShowComponent } from './components/admin-user-index/admin-user-show.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
+import { LoginComponent } from './components/login/login.component';
+import { SessionService } from './services/session.service';
 
 @NgModule({
   declarations: [
@@ -26,14 +28,17 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
     HeaderComponent,
     FooterComponent,
     ContentComponent,
+    AbsencesIndexComponent,
+    LoginComponent,
     AdminUserShowComponent,
-    FilterComponent,
-    AbsencesIndexComponent
+    FilterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -42,18 +47,23 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
     MatGridListModule,
     MatCardModule,
     MatTableModule,
-    MatFormFieldModule,
+    MatInputModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule, 
+    MatFormFieldModule
 
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptor,
-    multi: true
-  }],
+  providers: [
+    SessionService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
