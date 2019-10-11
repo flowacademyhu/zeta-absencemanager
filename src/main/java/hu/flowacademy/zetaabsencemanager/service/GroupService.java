@@ -55,7 +55,7 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    public void delete(@NotNull Long id){
+    public void delete(@NotNull Long id) {
         groupRepository.deleteById(id);
     }
 
