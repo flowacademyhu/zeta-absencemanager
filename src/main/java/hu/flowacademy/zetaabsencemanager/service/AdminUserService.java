@@ -34,11 +34,7 @@ public class AdminUserService {
     }
 
     public User findOneUser(@NotNull Long id) {
-        User user=userRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-        if(user.getDeletedAt()!=null){
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-        return user;
+        return userRepository.findById(id).filter(user -> user.getDeletedAt() != null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
@@ -81,8 +77,8 @@ public class AdminUserService {
     }
 
     public void delete(@NotNull Long id) {
-        if(findOneUser(id).getDeletedAt()==null){
-            User mod=findOneUser(id);
+        if (findOneUser(id).getDeletedAt() == null) {
+            User mod = findOneUser(id);
             mod.setDeletedAt(LocalDateTime.now());
             updateUser(id, mod);
         }
