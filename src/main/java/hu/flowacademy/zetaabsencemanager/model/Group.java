@@ -35,6 +35,7 @@ public class Group {
 
 
     @OneToMany(mappedBy = "group")
+    @JsonIgnore
     private List<User> employees;
 
 }
