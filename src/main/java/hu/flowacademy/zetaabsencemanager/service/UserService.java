@@ -11,6 +11,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,15 +23,15 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmail(email).filter(u -> u.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
-    public Optional<User> findOneUser(Long id) {
-        return userRepository.findById(id);
+    public User findOneUser(Long id) {
+        return this.userRepository.findById(id).filter(u -> u.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id).orElse(null);
+        User modifyUser = findOneUser(id);
         if (modifyUser == null
                 || StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
@@ -55,10 +57,13 @@ public class UserService {
             userRepository.save(user);
             return modifyUser;
         }
-
     }
 
-    public void delete(Long id) {
-        userRepository.deleteById(id);
+
+    public void delete(@NotNull Long id) {
+        User mod = findOneUser(id);
+        mod.setDeletedAt(LocalDateTime.now());
+        updateUser(id, mod);
     }
+
 }
