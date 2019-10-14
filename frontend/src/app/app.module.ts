@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule} from '@angular/material/menu';
 import { NgModule } from '@angular/core';
+import { MatDialogModule, MatPaginatorModule } from '@angular/material';
 
 import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
 import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
@@ -22,6 +23,9 @@ import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
+import { EmployeeService } from './services/employee.service';
+import { AbsenceIndexComponent } from './components/employee/emp-absence-index/absence-index.component';
+import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,12 @@ import { SessionService } from './services/session.service';
     AbsencesIndexComponent,
     LoginComponent,
     AdminUserShowComponent,
-    FilterComponent
+    FilterComponent,
+    AbsenceIndexComponent,
+    AdminUserEditDestroyShowComponent
+  ],
+  entryComponents: [
+    AbsencesIndexComponent
   ],
   imports: [
     BrowserModule,
@@ -55,10 +64,13 @@ import { SessionService } from './services/session.service';
     MatNativeDateModule,
     MatInputModule,
     MatMenuModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatDialogModule,
+    MatPaginatorModule
 
   ],
   providers: [
+    EmployeeService,
     SessionService,
     {
       provide: HTTP_INTERCEPTORS,
