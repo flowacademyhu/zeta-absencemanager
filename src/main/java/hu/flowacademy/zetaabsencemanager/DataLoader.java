@@ -76,7 +76,6 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
                 .isOnTrial(false)
                 .group(group)
-                // .departments(List.of(dep))
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
