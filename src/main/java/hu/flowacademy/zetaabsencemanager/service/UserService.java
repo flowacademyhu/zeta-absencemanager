@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -20,11 +21,11 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmail(email).filter(u -> u.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User findOneUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        return this.userRepository.findById(id).filter(u -> u.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
@@ -54,10 +55,13 @@ public class UserService {
             userRepository.save(user);
             return modifyUser;
         }
-
     }
 
-    public void delete(Long id) {
-        userRepository.deleteById(id);
+
+    public void delete(@NotNull Long id) {
+        User mod = findOneUser(id);
+        mod.setDeletedAt(LocalDateTime.now());
+        updateUser(id, mod);
     }
+
 }

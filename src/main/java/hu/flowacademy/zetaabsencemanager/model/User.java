@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -69,6 +70,7 @@ public class User {
     @JsonIgnore
     private List<Absence> absences;
 
-
+    @Column
+    private LocalDateTime deletedAt;
 
 }
