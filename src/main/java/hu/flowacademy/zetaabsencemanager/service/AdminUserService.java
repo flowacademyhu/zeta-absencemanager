@@ -77,11 +77,9 @@ public class AdminUserService {
     }
 
     public void delete(@NotNull Long id) {
-        if (findOneUser(id).getDeletedAt() == null) {
-            User mod = findOneUser(id);
-            mod.setDeletedAt(LocalDateTime.now());
-            updateUser(id, mod);
-        }
+        User mod = findOneUser(id);
+        mod.setDeletedAt(LocalDateTime.now());
+        updateUser(id, mod);
     }
 
     public User saveUser(@NotNull User user) {
