@@ -25,6 +25,9 @@ public class AbsenceService {
 
     public Long getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (email == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
+        }
         return userService.findByEmail(email).getId();
     }
 

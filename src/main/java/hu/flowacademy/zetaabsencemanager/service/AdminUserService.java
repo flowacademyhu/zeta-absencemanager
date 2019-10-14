@@ -26,7 +26,7 @@ public class AdminUserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmail(email).filter(user -> user.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public List<User> findAllUser() {
