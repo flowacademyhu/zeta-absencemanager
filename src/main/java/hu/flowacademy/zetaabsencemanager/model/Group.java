@@ -33,15 +33,8 @@ public class Group {
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<User> leaders;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "department_id")
-    private Department department;
 
-    @ManyToMany
-    @JoinTable(
-            name = "employee_user_group",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @OneToMany(mappedBy = "group")
     private List<User> employees;
 
 }

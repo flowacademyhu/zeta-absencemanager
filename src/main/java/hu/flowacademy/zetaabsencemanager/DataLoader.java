@@ -1,11 +1,9 @@
 package hu.flowacademy.zetaabsencemanager;
 
-import hu.flowacademy.zetaabsencemanager.model.Department;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
-import hu.flowacademy.zetaabsencemanager.repository.DepartmentRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -24,7 +22,6 @@ import java.util.List;
 public class DataLoader implements CommandLineRunner {
 
     private final AbsenceRepository absenceRepository;
-    private final DepartmentRepository departmentRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
@@ -34,11 +31,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     public DataLoader(AbsenceRepository absenceRepository,
-                      DepartmentRepository departmentRepository,
                       GroupRepository groupRepository,
                       UserRepository userRepository) {
         this.absenceRepository = absenceRepository;
-        this.departmentRepository = departmentRepository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
     }
@@ -46,15 +41,8 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Department dep = Department.builder()
-                .groups(List.of())
-                .leaders(List.of())
-                .name("TestDepartment")
-                .build();
-        this.departmentRepository.save(dep);
 
         Group group = Group.builder()
-                .department(dep)
                 .employees(List.of())
                 .name("TestGroup")
                 .build();

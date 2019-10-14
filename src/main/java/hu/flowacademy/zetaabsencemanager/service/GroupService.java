@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
+
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,14 +32,12 @@ public class GroupService {
 
     public Group updateGroup(Long id, @NotNull Group group) {
         Group modifyGroup = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
-        if (group.getDepartment() == null ||
-                StringUtils.isEmpty(group.getName()) ||
+        if (StringUtils.isEmpty(group.getName()) ||
                 CollectionUtils.isEmpty(group.getEmployees()) ||
                 CollectionUtils.isEmpty(group.getLeaders())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
             modifyGroup.setName(group.getName());
-            modifyGroup.setDepartment(group.getDepartment());
             modifyGroup.setEmployees(group.getEmployees());
             modifyGroup.setLeaders(group.getLeaders());
             groupRepository.save(modifyGroup);
@@ -47,10 +46,8 @@ public class GroupService {
     }
 
     public Group create(@NotNull Group group) {
-        if (StringUtils.isEmpty(group.getName()) || CollectionUtils.isEmpty(group.getLeaders()) || group.getDepartment() == null
-                || CollectionUtils.isEmpty(group.getEmployees()) )
-        {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        if (StringUtils.isEmpty(group.getName()) || CollectionUtils.isEmpty(group.getLeaders()) || CollectionUtils.isEmpty(group.getEmployees())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
         return groupRepository.save(group);
     }
