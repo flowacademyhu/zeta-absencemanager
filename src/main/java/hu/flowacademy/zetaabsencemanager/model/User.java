@@ -49,7 +49,7 @@ public class User {
     private Boolean isOnTrial;
 
     @JoinColumn
-    private Long groupId;
+    private Group group;
 
     @Column
     private String position;
