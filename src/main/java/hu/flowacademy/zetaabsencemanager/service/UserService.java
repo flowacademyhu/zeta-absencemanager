@@ -29,8 +29,11 @@ public class UserService {
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id).orElse(null);
-        if (modifyUser == null
+        User modifyUser = findOneUser(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        if (user.getDeletedAt() != null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        else if (modifyUser == null
                 || StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
                 || StringUtils.isEmpty(user.getPassword())
@@ -55,8 +58,8 @@ public class UserService {
             userRepository.save(user);
             return modifyUser;
         }
-
     }
+
 
     public void delete(Long id) {
         userRepository.deleteById(id);

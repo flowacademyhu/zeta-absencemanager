@@ -4,6 +4,7 @@ import hu.flowacademy.zetaabsencemanager.model.Department;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,8 @@ import java.util.List;
 @RequestMapping("/user")
 public class CurrentUserController {
 
-    //@Autowired
-    //private UserService userService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/{userId}")
     public User getOne(@PathVariable("userId") Long userId) {
@@ -54,9 +55,8 @@ public class CurrentUserController {
     }
 
     @PutMapping("/{userId}")
-    public User update(@PathVariable("userId") Integer userId, @RequestBody User user) {
-        //return userService.update(userId, user);
-        return user;
+    public User update(@PathVariable("userId") Long userId, @RequestBody User user) {
+        return userService.updateUser(userId, user);
     }
 
     @DeleteMapping("/{userId}")
