@@ -34,7 +34,11 @@ public class AdminUserService {
     }
 
     public User findOneUser(@NotNull Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        User user=userRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        if(user.getDeletedAt()!=null){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        return user;
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
