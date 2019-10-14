@@ -49,7 +49,7 @@ public class User {
     private Boolean isOnTrial;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @Column
