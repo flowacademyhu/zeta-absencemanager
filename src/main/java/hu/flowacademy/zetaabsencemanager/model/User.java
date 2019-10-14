@@ -48,6 +48,7 @@ public class User {
     @Column
     private Boolean isOnTrial;
 
+    @ManyToOne
     @JoinColumn
     private Group group;
 
