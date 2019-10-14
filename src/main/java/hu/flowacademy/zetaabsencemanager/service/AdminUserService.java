@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -76,7 +77,11 @@ public class AdminUserService {
     }
 
     public void delete(@NotNull Long id) {
-        userRepository.deleteById(id);
+        if(findOneUser(id).getDeletedAt()==null){
+            User mod=findOneUser(id);
+            mod.setDeletedAt(LocalDateTime.now());
+            updateUser(id, mod);
+        }
     }
 
     public User saveUser(@NotNull User user) {
