@@ -1,0 +1,29 @@
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+}
+
+mat-grid-list {
+    display: flex;
+    border: 1px solid white;
+    align-content: left;
+    justify-items: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+    position: relative;
+}
+
+mat-grid-tile {
+    align-content: left;
+    border: 1px solid white;
+    justify-content: start !important;
+    justify-items: start !important;
+    text-align: left !important;
+    
+  }
+
+  .mat-raised-button {
+    border: 1px solid white;
+  }
+  
+

@@ -22,6 +22,8 @@ import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
+import { EmployeeShowComponent } from './components/employee/employee-show/employee-show.component';
+import { EmployeeEditComponent } from './components/employee/employee-edit/employee-edit.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { SessionService } from './services/session.service';
     AbsencesIndexComponent,
     LoginComponent,
     AdminUserShowComponent,
-    FilterComponent
+    FilterComponent,
+    EmployeeShowComponent,
+    EmployeeEditComponent
   ],
   imports: [
     BrowserModule,
