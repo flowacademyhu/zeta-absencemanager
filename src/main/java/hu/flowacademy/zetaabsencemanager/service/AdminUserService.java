@@ -47,8 +47,7 @@ public class AdminUserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
+                || user.getGroupId() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -64,8 +63,7 @@ public class AdminUserService {
             modifyUser.setDateOfEntry(user.getDateOfEntry());
             modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
             modifyUser.setIsOnTrial(user.getIsOnTrial());
-            modifyUser.setDepartments(user.getDepartments());
-            modifyUser.setGroups(user.getGroups());
+            modifyUser.setGroupId(user.getGroupId());
             modifyUser.setPosition(user.getPosition());
             modifyUser.setRole(user.getRole());
             modifyUser.setNumberOfChildren(user.getNumberOfChildren());
@@ -90,8 +88,7 @@ public class AdminUserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
+                || user.getGroupId() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -107,8 +104,7 @@ public class AdminUserService {
                     .dateOfEndTrial(user.getDateOfEndTrial())
                     .isOnTrial(user.getIsOnTrial())
                     .email(user.getEmail())
-                    .groups(user.getGroups())
-                    .departments(user.getDepartments())
+                    .groupId(user.getGroupId())
                     .position(user.getPosition())
                     .password(passwordEncoder.encode(user.getPassword()))
                     .role(user.getRole())

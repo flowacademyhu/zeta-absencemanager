@@ -48,11 +48,9 @@ public class User {
     @Column
     private Boolean isOnTrial;
 
-    @ManyToMany
-    private List<Group> groups;
-
-    @ManyToMany
-    private List<Department> departments;
+    @ManyToOne
+    @JoinColumn
+    private Group group;
 
     @Column
     private String position;

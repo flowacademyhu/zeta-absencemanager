@@ -39,8 +39,7 @@ public class UserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
+                || user.getGroupId() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
