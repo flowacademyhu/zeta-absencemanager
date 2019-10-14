@@ -48,7 +48,7 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.groupRepository.save(group);
 
-        this.userRepository.save( User.builder()
+        this.userRepository.save(User.builder()
                 .email("admin@admin.com")
                 .password(passwordEncoder.encode("admin")) // passwordEncoder.encode("admin")
                 .firstName("admin")
@@ -59,6 +59,24 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
                 .isOnTrial(false)
                 .group(group)
+                .position("testposition")
+                .numberOfChildren(3)
+                .otherAbsenceEnt("none")
+                .build()
+        );
+
+        this.userRepository.save(User.builder()
+                .email("user@user.com")
+                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
+                .firstName("user")
+                .lastName("user")
+                .role(Roles.EMPLOYEE)
+                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
+                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
+                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+                .isOnTrial(false)
+                .groups(List.of(group))
+                .departments(List.of(dep))
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
