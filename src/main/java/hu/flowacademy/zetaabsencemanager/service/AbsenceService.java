@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +57,7 @@ public class AbsenceService {
         modifyAbsence.setBegin(absence.getBegin());
         modifyAbsence.setEnd(absence.getEnd());
         modifyAbsence.setReporter(absence.getReporter());
-        modifyAbsence.setStatus(absence.getStatus());
+        modifyAbsence.setStatus(Status.OPEN);
         modifyAbsence.setType(absence.getType());
         absenceRepository.save(modifyAbsence);
         return modifyAbsence;
