@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.auth;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -14,6 +15,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**", "/oauth/**", "/tokens/**", "/register").permitAll()
+                .antMatchers("/admin/**").hasAuthority(Roles.ADMIN.name())
                 .anyRequest().authenticated();
 
 
