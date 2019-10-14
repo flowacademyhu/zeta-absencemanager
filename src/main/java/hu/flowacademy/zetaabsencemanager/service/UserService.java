@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,19 +23,16 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmail(email).filter(u -> u.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User findOneUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        return this.userRepository.findById(id).filter(u -> u.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = List.of(findOneUser(id)).stream().filter(getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-        if (user.getDeletedAt() != null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-        else if (modifyUser == null
+        User modifyUser = findOneUser(id);
+        if (modifyUser == null
                 || StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
                 || StringUtils.isEmpty(user.getPassword())
@@ -62,7 +60,10 @@ public class UserService {
     }
 
 
-    public void delete(Long id) {
-        userRepository.deleteById(id);
+    public void delete(@NotNull Long id) {
+        User mod = findOneUser(id);
+        mod.setDeletedAt(LocalDateTime.now());
+        updateUser(id, mod);
     }
+
 }

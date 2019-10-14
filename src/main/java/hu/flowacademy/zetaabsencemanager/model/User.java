@@ -72,5 +72,5 @@ public class User {
 
     @Column
     private LocalDateTime deletedAt;
-    
+
 }
