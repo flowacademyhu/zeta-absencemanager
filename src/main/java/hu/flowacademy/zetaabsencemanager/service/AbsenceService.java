@@ -41,10 +41,14 @@ public class AbsenceService {
     }
 
     public Absence create(@NotNull Absence absence) {
-        if (absence.getType() == null || absence.getBegin() == null || absence.getEnd() == null || absence.getReporter() == null ||
-                absence.getAssignee() == null) {
+        if (absence.getType() == null ||
+                absence.getBegin() == null ||
+                absence.getEnd() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
+        absence.setReporter(userService.findOneUser(getCurrentUser()));
+        // TODO absence.setAssignee();
+        absence.setStatus(Status.OPEN);
         return absenceRepository.save(absence);
     }
 
@@ -57,7 +61,7 @@ public class AbsenceService {
         modifyAbsence.setBegin(absence.getBegin());
         modifyAbsence.setEnd(absence.getEnd());
         modifyAbsence.setReporter(absence.getReporter());
-        modifyAbsence.setStatus(Status.OPEN);
+        modifyAbsence.setStatus(absence.getStatus());
         modifyAbsence.setType(absence.getType());
         absenceRepository.save(modifyAbsence);
         return modifyAbsence;
