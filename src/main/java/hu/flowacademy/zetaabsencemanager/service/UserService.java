@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,12 +25,12 @@ public class UserService {
         return this.userRepository.findByEmail(email);
     }
 
-    public Optional<User> findOneUser(Long id) {
-        return userRepository.findById(id);
+    public User findOneUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        User modifyUser = List.of(findOneUser(id)).stream().filter(getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
         if (user.getDeletedAt() != null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
