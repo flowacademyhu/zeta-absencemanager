@@ -48,11 +48,8 @@ public class User {
     @Column
     private Boolean isOnTrial;
 
-    @ManyToMany
-    private List<Group> groups;
-
-    @ManyToMany
-    private List<Department> departments;
+    @ManyToOne
+    private Long groupId;
 
     @Column
     private String position;
