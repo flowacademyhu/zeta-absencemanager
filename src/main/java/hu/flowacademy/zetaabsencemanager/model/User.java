@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -47,11 +48,9 @@ public class User {
     @Column
     private Boolean isOnTrial;
 
-    @ManyToMany
-    private List<Group> groups;
-
-    @ManyToMany
-    private List<Department> departments;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     @Column
     private String position;
@@ -69,6 +68,7 @@ public class User {
     @JsonIgnore
     private List<Absence> absences;
 
-
+    @Column
+    private LocalDateTime deletedAt;
 
 }

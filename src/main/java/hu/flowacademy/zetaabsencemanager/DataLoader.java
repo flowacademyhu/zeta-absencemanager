@@ -1,11 +1,9 @@
 package hu.flowacademy.zetaabsencemanager;
 
-import hu.flowacademy.zetaabsencemanager.model.Department;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
-import hu.flowacademy.zetaabsencemanager.repository.DepartmentRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import java.util.List;
 public class DataLoader implements CommandLineRunner {
 
     private final AbsenceRepository absenceRepository;
-    private final DepartmentRepository departmentRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
@@ -34,11 +31,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     public DataLoader(AbsenceRepository absenceRepository,
-                      DepartmentRepository departmentRepository,
                       GroupRepository groupRepository,
                       UserRepository userRepository) {
         this.absenceRepository = absenceRepository;
-        this.departmentRepository = departmentRepository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
     }
@@ -46,21 +41,14 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Department dep = Department.builder()
-                .groups(List.of())
-                .leaders(List.of())
-                .name("TestDepartment")
-                .build();
-        this.departmentRepository.save(dep);
 
         Group group = Group.builder()
-                .department(dep)
                 .employees(List.of())
                 .name("TestGroup")
                 .build();
         this.groupRepository.save(group);
 
-        this.userRepository.save( User.builder()
+        this.userRepository.save(User.builder()
                 .email("admin@admin.com")
                 .password(passwordEncoder.encode("admin")) // passwordEncoder.encode("admin")
                 .firstName("admin")
@@ -70,8 +58,24 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
                 .isOnTrial(false)
-                .groups(List.of(group))
-                .departments(List.of(dep))
+                .group(group)
+                .position("testposition")
+                .numberOfChildren(3)
+                .otherAbsenceEnt("none")
+                .build()
+        );
+
+        this.userRepository.save(User.builder()
+                .email("user@user.com")
+                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
+                .firstName("user")
+                .lastName("user")
+                .role(Roles.EMPLOYEE)
+                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
+                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
+                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+                .isOnTrial(false)
+                .group(group)
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
