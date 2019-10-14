@@ -47,7 +47,7 @@ public class AdminUserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || user.getGroupId() == null
+                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -63,7 +63,7 @@ public class AdminUserService {
             modifyUser.setDateOfEntry(user.getDateOfEntry());
             modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
             modifyUser.setIsOnTrial(user.getIsOnTrial());
-            modifyUser.setGroupId(user.getGroupId());
+            modifyUser.setGroup(user.getGroup());
             modifyUser.setPosition(user.getPosition());
             modifyUser.setRole(user.getRole());
             modifyUser.setNumberOfChildren(user.getNumberOfChildren());
@@ -88,7 +88,7 @@ public class AdminUserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || user.getGroupId() == null
+                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -104,7 +104,7 @@ public class AdminUserService {
                     .dateOfEndTrial(user.getDateOfEndTrial())
                     .isOnTrial(user.getIsOnTrial())
                     .email(user.getEmail())
-                    .groupId(user.getGroupId())
+                    .group(user.getGroup())
                     .position(user.getPosition())
                     .password(passwordEncoder.encode(user.getPassword()))
                     .role(user.getRole())
