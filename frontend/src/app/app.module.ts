@@ -23,6 +23,7 @@ import { AbsencesIndexComponent } from './components/admin/absences-index/absenc
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
 import { ApiCommunicationService } from './services/ApiCommunication.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ApiCommunicationService } from './services/ApiCommunication.service';
   providers: [
     SessionService,
     ApiCommunicationService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
