@@ -1,8 +1,9 @@
-/*.example-button-row button,
+.example-button-row button,
 .example-button-row a {
   margin-right: 8px;
+  
 }
-
+/*
 mat-grid-list {
   padding-left: 0% !important;
   margin-left: 0% !important;
@@ -15,39 +16,31 @@ mat-grid-list {
     position: relative;
 } */
 
-mat-grid-tile {
-    align-content: left;
-    border: 1px solid white;
-    justify-content: start !important;
-    justify-items: start !important;
-    text-align: left !important;
-    
-  }
-
- mat-list-item {
-    padding-left: 0% !important;
-   margin-left: 0% !important;
-    align-content: left;
-    justify-items: start !important;
-    justify-content: start !important;
-    text-align: left !important; 
-    position: relative;
-  } 
-
-
-.mat-grid-tile .mat-figure{
-  justify-content: none !important;
+.grid-container {
+  border: 1px solid white;
+  border-radius: 1px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0,9fr 0,9fr 0,9fr;
+  grid-template-areas: "grid1 grid2 grid2 grid2" "grid1 grid2 grid2 grid2" "grid3 grid4 grid5 grid6";
 }
 
-/**main**/
-.table-mobile {
-	display: table !important;
+.grid2 { grid-area: grid2; }
+
+.grid1 { grid-area: grid1; }
+
+.grid3 { grid-area: grid3; 
+  border-top: 1px solid white;}
+
+.grid4 { grid-area: grid4; 
+  border-top: 1px solid white;}
+
+.grid5 { grid-area: grid5; 
+  border-top: 1px solid white;
+  border-left: 1px solid white;
 }
 
-.table-mobile .row {
-	display: table-row !important;
-}
-
-.table-mobile .cell {
-	display: table-cell;
+.grid6 { 
+  grid-area: grid6; 
+  border-top: 1px solid white;
 }

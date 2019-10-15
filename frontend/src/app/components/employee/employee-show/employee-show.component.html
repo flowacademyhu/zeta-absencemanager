@@ -1,65 +1,60 @@
 
 <a mat-raised-button routerLink=".">Change password</a>
+<div class="grid-container">
 
-<mat-grid-list cols="2" rowHeight="7:3" align="start">
-        <mat-grid-tile>
-                <mat-list role="list">
-                        <mat-list-item role="listitem">Name</mat-list-item>
-                        <mat-list-item role="listitem">DOB</mat-list-item>
-                        <mat-list-item role="listitem">DOE</mat-list-item>
-                        <mat-list-item role="listitem">Trial exp</mat-list-item>
-                        <mat-list-item role="listitem">Position</mat-list-item>
-                        <mat-list-item role="listitem">Supervisor</mat-list-item>
-                        <mat-list-item role="listitem">Number of children</mat-list-item>
-                        <mat-list-item role="listitem">Other</mat-list-item>
-                      </mat-list>
-        </mat-grid-tile>
+    <div class="grid1"><mat-list role="list">
+        <mat-list-item role="listitem">Name:</mat-list-item>
+                        <mat-list-item role="listitem">Date of birth:</mat-list-item>
+                        <mat-list-item role="listitem">Date of entry:</mat-list-item>
+                        <mat-list-item role="listitem">Trial expired:</mat-list-item>
+                        <mat-list-item role="listitem">Position:</mat-list-item>
+                        <mat-list-item role="listitem">Supervisor:</mat-list-item>
+                        <mat-list-item role="listitem">Number of children:</mat-list-item>
+                        <mat-list-item role="listitem">Other:</mat-list-item>
+      </mat-list></div>
 
-        <mat-grid-tile>
-          <mat-list role="list">
-                  <mat-list-item role="listitem">{{ Data.name }}</mat-list-item>
-                  <mat-list-item role="listitem">{{ Data.dob }}</mat-list-item>
-                  <mat-list-item role="listitem">DOE</mat-list-item>
-                  <mat-list-item role="listitem">Trial exp</mat-list-item>
-                  <mat-list-item role="listitem">Position</mat-list-item>
-                  <mat-list-item role="listitem">Supervisor</mat-list-item>
-                  <mat-list-item role="listitem">Number of children</mat-list-item>
-                  <mat-list-item role="listitem">Other</mat-list-item>
-                </mat-list>
-  </mat-grid-tile>
-
-        <mat-grid-tile>
-            
-            <mat-list role="list">
+  <div class="grid2"> <mat-list role="list">
+      <mat-list-item role="listitem">{{ name }}</mat-list-item>
+      <mat-list-item role="listitem">{{ dob }}</mat-list-item>
+      <mat-list-item role="listitem">{{ doe }}</mat-list-item>
+      <mat-list-item role="listitem">{{ trialexp }}</mat-list-item>
+      <mat-list-item role="listitem">{{ position }}</mat-list-item>
+      <mat-list-item role="listitem">{{ supervisor }}</mat-list-item>
+      <mat-list-item role="listitem">{{ numberOfChildren }}</mat-list-item>
+      <mat-list-item role="listitem">{{ other }}</mat-list-item>
+  </mat-list></div>
+  
+  <div class="grid3"> <mat-list role="list">
                         
-                <mat-list-item role="listitem">Total</mat-list-item>
-                <mat-list-item role="listitem">Aviable</mat-list-item>
-                <mat-list-item role="listitem">Used</mat-list-item>
-                <mat-list-item role="listitem">Total%</mat-list-item>
-                
-              </mat-list>
-            </mat-grid-tile>
-        <mat-grid-tile>
-            <mat-list role="list">
+    <mat-list-item role="listitem">Total:</mat-list-item>
+    <mat-list-item role="listitem">Aviable:</mat-list-item>
+    <mat-list-item role="listitem">Used:</mat-list-item>
+    <mat-list-item role="listitem">Total rate:</mat-list-item>
+    
+  </mat-list></div>
+  <div class="grid4"> <mat-list role="list">
                         
-                <mat-list-item role="listitem">Betegszabadság</mat-list-item>
-                <mat-list-item role="listitem">Total</mat-list-item>
-                <mat-list-item role="listitem">Aviable</mat-list-item>
-                <mat-list-item role="listitem">Used</mat-list-item>
-              </mat-list>
-            </mat-grid-tile>
-      </mat-grid-list>
-      
-
-<!--
-      <div fxLayout="row" fxLayout.xs="column" class="table" ngClass.xs="table-mobile">
-        <div fxLayout="column" fxLayout.xs="row" class="row">
-          <div class="cell">Fname:</div>
-          <div fxFlex class="cell">Lname</div>
-        </div>
-        <div fxLayout="column" fxLayout.xs="row" class="row">
-          <div class="cell">fnamevaliue</div>
-          <div fxFlex class="cell">Bravo Content</div>
-        </div>
-      </div>
-    -->
+    <mat-list-item role="listitem">{{ total }}</mat-list-item>
+    <mat-list-item role="listitem">{{ aviable }}</mat-list-item>
+    <mat-list-item role="listitem">{{ used }}</mat-list-item>
+    <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>
+    
+  </mat-list></div>
+  <div class="grid5"><mat-list role="list">
+                        
+    <mat-list-item role="listitem">Sick-leave</mat-list-item>
+    <mat-list-item role="listitem">Total:</mat-list-item>
+    <mat-list-item role="listitem">Aviable:</mat-list-item>
+    <mat-list-item role="listitem">Used:</mat-list-item>
+    <mat-list-item role="listitem">Total rate:</mat-list-item>
+  </mat-list></div>
+  <div class="grid6"><mat-list role="list">
+                        
+    <mat-list-item role="listitem">Sick-leave</mat-list-item>
+    <mat-list-item role="listitem">{{ total }}</mat-list-item>
+    <mat-list-item role="listitem">{{ aviable }}</mat-list-item>
+    <mat-list-item role="listitem">{{ used }}</mat-list-item>
+    <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>
+    
+  </mat-list></div>
+</div>
