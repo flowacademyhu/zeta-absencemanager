@@ -26,15 +26,15 @@ public class AdminUserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
-        return this.userRepository.findByEmailAndDeletedAtNotNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public List<User> findAllUser() {
-        return this.userRepository.findByDeletedAtNotNull();
+        return this.userRepository.findByDeletedAtNull();
     }
 
     public User findOneUser(@NotNull Long id) {
-        return userRepository.findByIdAndDeletedAtNotNull(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+        return userRepository.findByIdAndDeletedAtNull(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
