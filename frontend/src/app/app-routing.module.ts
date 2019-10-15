@@ -7,6 +7,7 @@ import { UserAbsenceIndexComponent } from './components/employee/emp-absence-ind
 import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
 
 
+
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },

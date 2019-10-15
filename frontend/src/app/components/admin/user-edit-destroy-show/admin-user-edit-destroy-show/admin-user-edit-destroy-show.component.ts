@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatFormFieldControl, MatPaginator } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AbsencesIndexComponent } from '../../absences-index/absences-index.component';
+import { AdminAbsencesIndexComponent } from '../../absences-index/admin-absences-index.component';
 
 
 
@@ -44,7 +44,7 @@ export class AdminUserEditDestroyShowComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   openDialog(){
-    this.dialog.open(AbsencesIndexComponent);
+    this.dialog.open(AdminAbsencesIndexComponent);
   }
 
   ngOnInit() {

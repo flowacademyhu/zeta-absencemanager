@@ -6,10 +6,12 @@ const MOCK_DATA: any[] = [
 ];
 
 @Component({
-  selector: 'app-absences-index',
-  templateUrl: './absences-index.component.html',
-  styleUrls: ['./absences-index.component.css']
+  selector: 'app-admin-absences-index',
+  templateUrl: './admin-absences-index.component.html', //'./absences-index.component.html',
+  styleUrls: ['./admin-absences-index.component.css']  
 })
+  // templateUrl: './admin-user-edit-destroy-show.component.html',
+  
 export class AdminAbsencesIndexComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'begin', 'end', 'days', 'type', 'status', 'created_at', 'responsible', 'reporter', 'on_trial'];
   dataSource = MOCK_DATA;

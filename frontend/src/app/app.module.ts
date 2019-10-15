@@ -20,12 +20,12 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
 import { FilterComponent } from './components/filter/filter.component';
-import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
+import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
 import { EmployeeService } from './services/employee.service';
-import { AbsenceIndexComponent } from './components/employee/emp-absence-index/absence-index.component';
-import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
+import { UserAbsenceIndexComponent } from './components/employee/emp-absence-index/user-absence-index.component';
+import { AdminAbsencesIndexComponent } from './components/admin/absences-index/admin-absences-index.component';
 
 @NgModule({
   declarations: [
@@ -33,15 +33,17 @@ import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-
     HeaderComponent,
     FooterComponent,
     ContentComponent,
-    AbsencesIndexComponent,
+    AdminAbsencesIndexComponent,
+    AdminUserEditDestroyShowComponent,  
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
-    AbsenceIndexComponent,
-    AdminUserEditDestroyShowComponent
+    UserAbsenceIndexComponent
+    
+    
   ],
   entryComponents: [
-    AbsencesIndexComponent
+    AdminAbsencesIndexComponent
   ],
   imports: [
     BrowserModule,

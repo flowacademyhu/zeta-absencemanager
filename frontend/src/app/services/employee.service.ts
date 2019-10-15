@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AbsencesIndexComponent } from '../components/admin/absences-index/absences-index.component';
+import { AdminAbsencesIndexComponent } from '../components/admin/absences-index/admin-absences-index.component';
 import { Observable } from 'rxjs';
 import { Absence } from '../models/Absence.model';
 
