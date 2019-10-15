@@ -7,7 +7,7 @@ import { Absence } from 'src/app/models/Absence.model'
   templateUrl: './absence-index.component.html',
   styleUrls: ['./absence-index.component.css']
 })
-export class AbsenceIndexComponent implements OnInit {
+export class UserAbsenceIndexComponent implements OnInit {
 
   displayedColumns = Absence; 
   private empAbsence = [];
