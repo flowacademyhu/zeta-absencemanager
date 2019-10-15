@@ -1,28 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 
-export enum Connectors {
-    AUTH,
-    USER,
-    ABSENCE
-}
 
-export abstract class AbstractApiConnector<T> {
 
-    protected readonly baseURL = environment.baseURL;
+export abstract class AbstractApiConnector{
 
-    protected httpOptions = {
-        headers: new HttpHeaders({
-          'Authorization': 'Basic ' + btoa("fooClientIdPassword:secret"),
-          'Content-type': 'application/x-www-form-urlencoded'
-        })
-      };
+    protected abstract readonly apiRoute: string;
 
-    protected constructor(protected _http: HttpClient, protected connector : Connectors){
+    public constructor(protected http: HttpClient, protected apiBaseUrl: string){
+      if (!http) {
+        throw new Error("Http client required.")
+      } 
+
+      if (!apiBaseUrl) {
+        throw new Error("BaseUrl required.")
+      }
     }
 
-    public get<T>(){
-    }
 
 }
