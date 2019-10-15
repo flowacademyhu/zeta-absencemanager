@@ -3,18 +3,6 @@
   margin-right: 8px;
   
 }
-/*
-mat-grid-list {
-  padding-left: 0% !important;
-  margin-left: 0% !important;
-    display: flex;
-    border: 1px solid white;
-    align-content: left;
-    justify-items: start !important;
-    justify-content: start !important;
-    text-align: left !important;
-    position: relative;
-} */
 
 .grid-container {
   border: 1px solid white;
