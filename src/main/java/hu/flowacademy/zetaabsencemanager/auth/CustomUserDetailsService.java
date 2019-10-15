@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        final hu.flowacademy.zetaabsencemanager.model.User user = userRepository.findByEmail(s).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The submitted arguments are invalid."));
+        final hu.flowacademy.zetaabsencemanager.model.User user = userRepository.findByEmailAndDeletedAtNotNull(s).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The submitted arguments are invalid."));
 
         return new User(s, user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().toString())));
     }
