@@ -19,7 +19,7 @@ public class AdminGroupController {
     private GroupService groupService;
 
     @GetMapping("/{id}")
-    public Optional<Group> getOne(@PathVariable("id") Long id) {
+    public Group getOne(@PathVariable("id") Long id) {
         return groupService.findOne(id);
 
     }
