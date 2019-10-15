@@ -31,7 +31,6 @@ export class AdminUserShowComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe(data => console.log(data));
   }
   
   
