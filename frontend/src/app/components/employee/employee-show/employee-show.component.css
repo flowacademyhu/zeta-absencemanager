@@ -1,9 +1,11 @@
-.example-button-row button,
+/*.example-button-row button,
 .example-button-row a {
   margin-right: 8px;
 }
 
 mat-grid-list {
+  padding-left: 0% !important;
+  margin-left: 0% !important;
     display: flex;
     border: 1px solid white;
     align-content: left;
@@ -22,8 +24,30 @@ mat-grid-tile {
     
   }
 
-  .mat-raised-button {
-    border: 1px solid white;
-  }
-  
+ mat-list-item {
+    padding-left: 0% !important;
+   margin-left: 0% !important;
+    align-content: left;
+    justify-items: start !important;
+    justify-content: start !important;
+    text-align: left !important;
+    position: relative;
+  } 
+*/
 
+.mat-grid-tile .mat-figure{
+  justify-content: none !important;
+}
+
+/**main**/
+.table-mobile {
+	display: table !important;
+}
+
+.table-mobile .row {
+	display: table-row !important;
+}
+
+.table-mobile .cell {
+	display: table-cell;
+}

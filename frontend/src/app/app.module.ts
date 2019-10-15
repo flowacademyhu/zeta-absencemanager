@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule} from '@angular/material/menu';
 import { NgModule } from '@angular/core';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
 import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
 
@@ -39,6 +39,7 @@ import { EmployeeEditComponent } from './components/employee/employee-edit/emplo
     EmployeeEditComponent
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -59,7 +60,8 @@ import { EmployeeEditComponent } from './components/employee/employee-edit/emplo
     MatNativeDateModule,
     MatInputModule,
     MatMenuModule,
-    MatFormFieldModule
+    MatFormFieldModule, 
+    FlexLayoutModule,
 
   ],
   providers: [
