@@ -1,6 +1,8 @@
-
-<app-filter [dataSource]="dataSource"></app-filter>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="actionButton">
+  <button mat-flat-button color="warn" (click)="createUser()">Create User</button> 
+  <app-filter [dataSource]="dataSource"></app-filter>
+</div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   

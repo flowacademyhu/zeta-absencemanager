@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
+import { CreateUserComponent } from './modals/create-user/create-user.component';
 
 
 const routes: Routes = [

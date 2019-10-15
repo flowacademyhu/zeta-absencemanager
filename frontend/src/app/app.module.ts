@@ -6,8 +6,9 @@ import { MatMenuModule} from '@angular/material/menu';
 import { NgModule } from '@angular/core';
 
 import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
-import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
-
+import { MatToolbarModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
+import { MatDialogModule } from '@angular/material/dialog'; 
+import { MatSelectModule } from '@angular/material/select'; 
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
@@ -22,6 +23,7 @@ import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
+import { CreateUserComponent } from './modals/create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { SessionService } from './services/session.service';
     AbsencesIndexComponent,
     LoginComponent,
     AdminUserShowComponent,
-    FilterComponent
+    FilterComponent,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -55,8 +58,10 @@ import { SessionService } from './services/session.service';
     MatNativeDateModule,
     MatInputModule,
     MatMenuModule,
-    MatFormFieldModule
-
+    MatFormFieldModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatSelectModule
   ],
   providers: [
     SessionService,
@@ -66,6 +71,7 @@ import { SessionService } from './services/session.service';
       multi: true
     }
    ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CreateUserComponent],
 })
 export class AppModule { }

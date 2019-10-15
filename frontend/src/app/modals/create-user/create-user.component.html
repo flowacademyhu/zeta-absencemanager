@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>CREATE USER</h1>
+<div mat-dialog-content [formGroup]="createUserForm" style="text-align: center;">
+    <div><mat-form-field>
+        <input matInput required formControlName="firstName" placeholder="First Name"    >
+    </mat-form-field></div>
+    <div><mat-form-field>
+        <input matInput required placeholder="Last Name" formControlName="lastName">
+    </mat-form-field></div>
+    <div><mat-form-field>
+        <input matInput required [matDatepicker]="dateofbirth" formControlName="dateOfBirth" placeholder="Date of Birth">
+        <mat-datepicker-toggle matSuffix [for]="dateofbirth"></mat-datepicker-toggle>
+        <mat-datepicker #dateofbirth></mat-datepicker>
+      </mat-form-field></div>
+    <div><mat-form-field>
+        <input matInput required [matDatepicker]="dateofentry" formControlName="dateOfEntry" placeholder="Date of Entry">
+        <mat-datepicker-toggle matSuffix [for]="dateofentry"></mat-datepicker-toggle>
+        <mat-datepicker #dateofentry></mat-datepicker>
+      </mat-form-field></div>   
+    <div><mat-form-field>
+        <input matInput required placeholder="Position" formControlName="position" >
+    </mat-form-field></div>
+    <div><mat-form-field>
+        <mat-label>Group</mat-label>
+        <mat-select formControlName="group">
+          <mat-option *ngFor="let g of groups" [value]="g.name">
+            {{g.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field></div>
+    <div><mat-form-field>
+        <input type="email" matInput required placeholder="E-mail" formControlName="email">
+    </mat-form-field></div>
+<div><mat-form-field>
+    <input type="number" matInput required placeholder="Number of Children" formControlName="numberOfChildren">
+</mat-form-field></div>
+
+</div>
+<div mat-dialog-actions style="justify-content: center;">
+  <button mat-button (click)="onNoClick()" style="border: 2px solid white;">Cancel</button>
+  <button mat-button [disabled]='!createUserForm.valid' [mat-dialog-close]="createUserForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
+</div>
