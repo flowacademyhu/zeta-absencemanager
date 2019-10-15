@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
+
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,23 +23,20 @@ public class GroupService {
     private GroupRepository groupRepository;
 
     public List<Group> findAllGroup() {
-        return groupRepository.findAll();
+        return groupRepository.findAllByDeletedAtIsNull();
     }
 
-    public Optional<Group> findOne(Long id) {
-        return groupRepository.findById(id);
+    public Group findOne(@NotNull Long id) {
+        return groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
     }
 
-    public Group updateGroup(Long id, @NotNull Group group) {
-        Group modifyGroup = findOne(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
-        if (group.getDepartment() == null ||
-                StringUtils.isEmpty(group.getName()) ||
-                CollectionUtils.isEmpty(group.getEmployees()) ||
-                CollectionUtils.isEmpty(group.getLeaders())) {
+    public Group updateGroup(@NotNull Long id, @NotNull Group group) {
+        Group modifyGroup = findOne(id);
+        if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
             modifyGroup.setName(group.getName());
-            modifyGroup.setDepartment(group.getDepartment());
+            modifyGroup.setParentId(group.getParentId());
             modifyGroup.setEmployees(group.getEmployees());
             modifyGroup.setLeaders(group.getLeaders());
             groupRepository.save(modifyGroup);
@@ -47,16 +45,16 @@ public class GroupService {
     }
 
     public Group create(@NotNull Group group) {
-        if (StringUtils.isEmpty(group.getName()) || CollectionUtils.isEmpty(group.getLeaders()) || group.getDepartment() == null
-                || CollectionUtils.isEmpty(group.getEmployees()) )
-        {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
         return groupRepository.save(group);
     }
 
     public void delete(@NotNull Long id) {
-        groupRepository.deleteById(id);
+        Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
+        group.setDeletedAt(LocalDateTime.now());
+        groupRepository.save(group);
     }
 
 }

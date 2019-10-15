@@ -48,11 +48,9 @@ public class User {
     @Column
     private Boolean isOnTrial;
 
-    @ManyToMany
-    private List<Group> groups;
-
-    @ManyToMany
-    private List<Department> departments;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     @Column
     private String position;
@@ -72,7 +70,5 @@ public class User {
 
     @Column
     private LocalDateTime deletedAt;
-
-
 
 }
