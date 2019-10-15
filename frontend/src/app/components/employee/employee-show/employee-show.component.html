@@ -1,8 +1,8 @@
 
 <a mat-raised-button routerLink=".">Change password</a>
 
-<mat-grid-list cols="2" rowHeight="2:1" align="start">
-        <mat-grid-tile colspan="2">
+<mat-grid-list cols="2" rowHeight="7:3" align="start">
+        <mat-grid-tile>
                 <mat-list role="list">
                         <mat-list-item role="listitem">Name</mat-list-item>
                         <mat-list-item role="listitem">DOB</mat-list-item>
@@ -14,6 +14,20 @@
                         <mat-list-item role="listitem">Other</mat-list-item>
                       </mat-list>
         </mat-grid-tile>
+
+        <mat-grid-tile>
+          <mat-list role="list">
+                  <mat-list-item role="listitem">{{ Data.name }}</mat-list-item>
+                  <mat-list-item role="listitem">{{ Data.dob }}</mat-list-item>
+                  <mat-list-item role="listitem">DOE</mat-list-item>
+                  <mat-list-item role="listitem">Trial exp</mat-list-item>
+                  <mat-list-item role="listitem">Position</mat-list-item>
+                  <mat-list-item role="listitem">Supervisor</mat-list-item>
+                  <mat-list-item role="listitem">Number of children</mat-list-item>
+                  <mat-list-item role="listitem">Other</mat-list-item>
+                </mat-list>
+  </mat-grid-tile>
+
         <mat-grid-tile>
             
             <mat-list role="list">
@@ -37,7 +51,7 @@
       </mat-grid-list>
       
 
-
+<!--
       <div fxLayout="row" fxLayout.xs="column" class="table" ngClass.xs="table-mobile">
         <div fxLayout="column" fxLayout.xs="row" class="row">
           <div class="cell">Fname:</div>
@@ -48,3 +62,4 @@
           <div fxFlex class="cell">Bravo Content</div>
         </div>
       </div>
+    -->

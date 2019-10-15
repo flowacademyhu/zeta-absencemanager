@@ -13,7 +13,7 @@ mat-grid-list {
     justify-content: start !important;
     text-align: left !important;
     position: relative;
-}
+} */
 
 mat-grid-tile {
     align-content: left;
@@ -30,10 +30,10 @@ mat-grid-tile {
     align-content: left;
     justify-items: start !important;
     justify-content: start !important;
-    text-align: left !important;
+    text-align: left !important; 
     position: relative;
   } 
-*/
+
 
 .mat-grid-tile .mat-figure{
   justify-content: none !important;
