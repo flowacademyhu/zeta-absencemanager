@@ -2,7 +2,7 @@
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
-  (ngSubmit)="onSubmit(createAbsenceForm.value)"
+  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
 >
   <mat-dialog-content>
     <mat-form-field>
@@ -59,6 +59,7 @@
       ></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
     </mat-form-field>
+    <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">

@@ -30,7 +30,7 @@ export class ApiCommunicationService {
     );
     this.registerConnector(
       Connector.ABSENCE,
-      new UserApiConnector(http, this.apiBaseUrl)
+      new AbsenceApiConnector(http, this.apiBaseUrl)
     );
   }
 

@@ -16,6 +16,7 @@ import { ApiCommunicationService } from "src/app/services/ApiCommunication.servi
 export class AbsencesCreateComponent implements OnInit {
   private createAbsenceForm: FormGroup;
   private types;
+  private error: string;
 
   enumSelector(definition) {
     return Object.keys(definition).map(key => ({
@@ -40,7 +41,7 @@ export class AbsencesCreateComponent implements OnInit {
     });
   }
 
-  public onSubmit(createAbsenceFormValue): void {
+  public OnSubmit(createAbsenceFormValue): void {
     if (this.createAbsenceForm.valid) {
       let newAbsence = new Absence(
         createAbsenceFormValue.type,
@@ -51,8 +52,14 @@ export class AbsencesCreateComponent implements OnInit {
       this.api
         .absence()
         .createAbsence(newAbsence)
-        .subscribe(() => {});
-      console.log(newAbsence);
+        .subscribe(
+          data => {
+            this.dialogRef.close();
+          },
+          err => {
+            this.error = err.error.message;
+          }
+        );
     }
   }
 
