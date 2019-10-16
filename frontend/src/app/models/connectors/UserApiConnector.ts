@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 export class UserApiConnector extends AbstractApiConnector {
 
-    protected apiRoute: string = this.apiBaseUrl + 'admin/user';
+    protected apiRoute: string = this.apiBaseUrl + 'admin/user/';
 
     public getUser(id: number): Observable<any> {
         return this.http.get(this.apiRoute + id);
@@ -19,11 +19,11 @@ export class UserApiConnector extends AbstractApiConnector {
     }
 
     public updateUser(id: number, user: any): Observable<any> {
-        return this.http.put(this.apiRoute + "/" + id, user, {});
+        return this.http.put(this.apiRoute + id, user, {});
     }
 
     //TODO backend delete method is void yet
     public deleteUser(id: number): Observable<any> {
-        return this.http.delete(this.apiRoute + "/" + id);
+        return this.http.delete(this.apiRoute + id);
     }
 }
