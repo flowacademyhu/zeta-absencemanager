@@ -11,8 +11,6 @@ import java.util.Optional;
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Optional<Group> findByIdAndDeletedAtIsNull(Long id);
-
     List<Group> findAllByDeletedAtIsNull();
-
-    List<Group> findByParentId(Long id);
+    List<Group> findAllByParentId(Long id);
 }
