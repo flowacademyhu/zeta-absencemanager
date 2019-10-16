@@ -1,6 +1,8 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,9 @@ public class GroupService {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private UserService userService;
 
     public List<Group> findAllGroup() {
         return groupRepository.findAllByDeletedAtIsNull();
@@ -32,7 +38,7 @@ public class GroupService {
 
     public Group updateGroup(@NotNull Long id, @NotNull Group group) {
         Group modifyGroup = findOne(id);
-        if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
+        if (StringUtils.isEmpty(group.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
             modifyGroup.setName(group.getName());
@@ -40,13 +46,21 @@ public class GroupService {
             modifyGroup.setEmployees(group.getEmployees());
             modifyGroup.setLeaders(group.getLeaders());
             groupRepository.save(modifyGroup);
+            for (User u : group.getLeaders()) {
+                u.setRole(Roles.LEADER);
+                userService.updateUser(u.getId(), u);
+            }
             return modifyGroup;
         }
     }
 
     public Group create(@NotNull Group group) {
-        if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
+        if (StringUtils.isEmpty(group.getName()) || CollectionUtils.isEmpty(group.getLeaders())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        }
+        for (User u : group.getLeaders()) {
+            u.setRole(Roles.LEADER);
+            userService.updateUser(u.getId(), u);
         }
         return groupRepository.save(group);
     }
@@ -55,6 +69,7 @@ public class GroupService {
         Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
         group.setDeletedAt(LocalDateTime.now());
         groupRepository.save(group);
+
     }
 
 }
