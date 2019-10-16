@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.auth;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/swagger-ui.html", "/webjars/**", "/login", "/swagger-resources/**", "/v2/api-docs/**", "/oauth/**", "/tokens/**", "/register").permitAll()
+                .antMatchers("/admin/**").hasAuthority(Roles.ADMIN.name())
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()
                 .and().csrf().disable();

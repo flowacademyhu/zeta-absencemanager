@@ -1,12 +1,8 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
-import hu.flowacademy.zetaabsencemanager.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import hu.flowacademy.zetaabsencemanager.model.Absence;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 
 @RestController
@@ -19,7 +15,7 @@ public class AbsenceController {
     @GetMapping("/{id}")
     public Absence getOne(@PathVariable("id") Long id) {
         ///return absenceService.getAbsenceById(id);
-       Absence absence= Absence.builder().build();
+        Absence absence = Absence.builder().build();
         return absence;
     }
 
@@ -41,8 +37,4 @@ public class AbsenceController {
         return absence;
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        //return absenceService.delete(id);
-    }
 }

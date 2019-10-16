@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -21,15 +21,15 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
-    public Optional<User> findOneUser(Long id) {
-        return userRepository.findById(id);
+    public User findOneUser(Long id) {
+        return this.userRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id).orElse(null);
+        User modifyUser = findOneUser(id);
         if (modifyUser == null
                 || StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
@@ -39,8 +39,7 @@ public class UserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
+                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -55,10 +54,13 @@ public class UserService {
             userRepository.save(user);
             return modifyUser;
         }
-
     }
 
-    public void delete(Long id) {
-        userRepository.deleteById(id);
+
+    public void delete(@NotNull Long id) {
+        User mod = findOneUser(id);
+        mod.setDeletedAt(LocalDateTime.now());
+        updateUser(id, mod);
     }
+
 }

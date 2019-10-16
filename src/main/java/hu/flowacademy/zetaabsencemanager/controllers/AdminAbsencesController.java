@@ -1,16 +1,17 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
 
-import hu.flowacademy.zetaabsencemanager.model.*;
+import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /*import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;*/
-import java.util.List;
 
 @RestController
 @RequestMapping("/admin/absence")
@@ -21,9 +22,7 @@ public class AdminAbsencesController {
 
     @GetMapping("/{id}")
     public Absence getOne(@PathVariable("id") Long id) {
-
         return absenceService.findOne(id);
-
     }
 
     @GetMapping("")
@@ -39,10 +38,5 @@ public class AdminAbsencesController {
     @PutMapping("/{id}")
     public Absence update(@PathVariable("id") Long id, @RequestBody Absence absence) {
         return absenceService.update(id, absence);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-      absenceService.delete(id);
     }
 }

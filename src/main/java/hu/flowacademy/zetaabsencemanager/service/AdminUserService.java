@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,15 +26,15 @@ public class AdminUserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public List<User> findAllUser() {
-        return this.userRepository.findAll();
+        return this.userRepository.findByDeletedAtNull();
     }
 
     public User findOneUser(@NotNull Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        return userRepository.findByIdAndDeletedAtNull(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
@@ -46,8 +47,7 @@ public class AdminUserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
+                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -63,8 +63,7 @@ public class AdminUserService {
             modifyUser.setDateOfEntry(user.getDateOfEntry());
             modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
             modifyUser.setIsOnTrial(user.getIsOnTrial());
-            modifyUser.setDepartments(user.getDepartments());
-            modifyUser.setGroups(user.getGroups());
+            modifyUser.setGroup(user.getGroup());
             modifyUser.setPosition(user.getPosition());
             modifyUser.setRole(user.getRole());
             modifyUser.setNumberOfChildren(user.getNumberOfChildren());
@@ -76,7 +75,9 @@ public class AdminUserService {
     }
 
     public void delete(@NotNull Long id) {
-        userRepository.deleteById(id);
+        User mod = findOneUser(id);
+        mod.setDeletedAt(LocalDateTime.now());
+        updateUser(id, mod);
     }
 
     public User saveUser(@NotNull User user) {
@@ -87,8 +88,7 @@ public class AdminUserService {
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
                 || user.getIsOnTrial() == null
-                || CollectionUtils.isEmpty(user.getDepartments())
-                || CollectionUtils.isEmpty(user.getGroups())
+                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -104,8 +104,7 @@ public class AdminUserService {
                     .dateOfEndTrial(user.getDateOfEndTrial())
                     .isOnTrial(user.getIsOnTrial())
                     .email(user.getEmail())
-                    .groups(user.getGroups())
-                    .departments(user.getDepartments())
+                    .group(user.getGroup())
                     .position(user.getPosition())
                     .password(passwordEncoder.encode(user.getPassword()))
                     .role(user.getRole())

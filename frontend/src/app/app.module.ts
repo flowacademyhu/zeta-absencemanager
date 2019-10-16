@@ -22,8 +22,13 @@ import { FilterComponent } from './components/filter/filter.component';
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
+<<<<<<< HEAD
 import { EmployeeShowComponent } from './components/employee/employee-show/employee-show.component';
 import { EmployeeEditComponent } from './components/employee/employee-edit/employee-edit.component';
+=======
+import { ApiCommunicationService } from './services/ApiCommunication.service';
+import { UserService } from './services/user.service';
+>>>>>>> development
 
 @NgModule({
   declarations: [
@@ -66,6 +71,8 @@ import { EmployeeEditComponent } from './components/employee/employee-edit/emplo
   ],
   providers: [
     SessionService,
+    ApiCommunicationService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
