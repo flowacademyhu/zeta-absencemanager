@@ -34,6 +34,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./token.interceptor";
 
 //Own Components
+
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
@@ -44,6 +45,8 @@ import { AbsencesIndexComponent } from "./components/admin/absences-index/absenc
 import { LoginComponent } from "./components/login/login.component";
 import { SessionService } from "./services/session.service";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { ApiCommunicationService } from "./services/ApiCommunication.service";
+import { UserService } from "./services/user.service";
 
 @NgModule({
   declarations: [
@@ -84,6 +87,8 @@ import { AbsencesCreateComponent } from "./components/employee/absences-create/a
   ],
   providers: [
     SessionService,
+    ApiCommunicationService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
