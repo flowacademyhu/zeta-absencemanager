@@ -6,6 +6,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
+import { ApiCommunicationService } from "src/app/services/ApiCommunication.service";
 
 @Component({
   selector: "app-absences-create",
@@ -24,6 +25,7 @@ export class AbsencesCreateComponent implements OnInit {
   }
 
   constructor(
+    private api: ApiCommunicationService,
     private dialogRef: MatDialogRef<AbsencesCreateComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
@@ -46,7 +48,10 @@ export class AbsencesCreateComponent implements OnInit {
         createAbsenceFormValue.start,
         createAbsenceFormValue.end
       );
-
+      this.api
+        .absence()
+        .createAbsence(newAbsence)
+        .subscribe(() => {});
       console.log(newAbsence);
     }
   }
