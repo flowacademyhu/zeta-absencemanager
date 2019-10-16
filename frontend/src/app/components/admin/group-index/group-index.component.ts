@@ -9,6 +9,7 @@ import { ApiCommunicationService } from 'src/app/services/ApiCommunication.servi
 export class GroupIndexComponent implements OnInit {
   displayedColumns: string[] = ['name', 'parentId', 'parent', 'leaders', 'employees'];
   dataSource: any;
+  error: string;
 
   constructor(private apiCommunicationService: ApiCommunicationService) { }
 
@@ -18,9 +19,15 @@ export class GroupIndexComponent implements OnInit {
       this.dataSource = data;
       this.dataSource.forEach(element => {
         if (element.parentId !== null) {
-          element.parent = this.apiCommunicationService.group().getGroup(element.parentId).subscribe();
+          this.dataSource.forEach(group => {
+            if (element.parentId === group.id) {
+              element.parent = group.name;
+            }
+          });
         }
       });
+    }, (error) => {
+      this.error = error;
     })
   }
 }

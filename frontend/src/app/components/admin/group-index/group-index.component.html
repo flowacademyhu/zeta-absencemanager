@@ -3,6 +3,10 @@
     <button mat-flat-button color="warn">PLACEHOLDER</button>
 </div>
 
+<mat-error *ngIf="error !== undefined">
+    {{ error }}
+</mat-error>
+
 <mat-table [dataSource]="dataSource" class="table-responsive mat-elevation-z8">
 
     <ng-container matColumnDef="name">
@@ -17,7 +21,7 @@
 
     <ng-container matColumnDef="parent">
         <mat-header-cell *matHeaderCellDef> Parent </mat-header-cell>
-        <mat-cell *matCellDef="let group"> {{ group.parentId }} </mat-cell>
+        <mat-cell *matCellDef="let group"> {{ group.parent }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="leaders">
