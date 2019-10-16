@@ -4,11 +4,13 @@ import { AbstractApiConnector } from '../models/connectors/AbstractApiConnector'
 import { HttpClient } from '@angular/common/http';
 import { AuthApiConnector } from '../models/connectors/AuthApiConnector';
 import { UserApiConnector } from '../models/connectors/UserApiConnector';
+import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
 
 export enum Connector {
     AUTH = 'Auth',
     USER = 'User',
-    ABSENCE = 'Absence'
+    ABSENCE = 'Absence',
+    GROUP = 'Group'
 }
 
 @Injectable()
@@ -18,11 +20,12 @@ export class ApiCommunicationService {
     private connectors: Map<Connector, AbstractApiConnector>
 
 
-    constructor(private http: HttpClient){
+    constructor(private http: HttpClient) {
         this.connectors = new Map<Connector, AbstractApiConnector>();
-        
+
         this.registerConnector(Connector.AUTH, new AuthApiConnector(http, this.apiBaseUrl));
         this.registerConnector(Connector.USER, new UserApiConnector(http, this.apiBaseUrl));
+        this.registerConnector(Connector.GROUP, new GroupApiConnector(http, this.apiBaseUrl));
     }
 
     private registerConnector(id: Connector, connector: AbstractApiConnector) {
@@ -37,7 +40,7 @@ export class ApiCommunicationService {
     }
 
     private getConnector(id: Connector): AbstractApiConnector {
-        if(this.connectors.has(id)){
+        if (this.connectors.has(id)) {
             return this.connectors.get(id);
         } else {
             console.error("No connector is registered for this id.");
@@ -50,6 +53,10 @@ export class ApiCommunicationService {
 
     public user(): UserApiConnector {
         return this.getConnector(Connector.USER) as UserApiConnector;
+    }
+
+    public group(): GroupApiConnector {
+        return this.getConnector(Connector.GROUP) as GroupApiConnector;
     }
 
 
