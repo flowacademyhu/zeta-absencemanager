@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Absence } from "src/app/models/Absence.model";
+import { Absence, AbsenceType } from "src/app/models/Absence.model";
 import {
   MatDialog,
   MatDialogRef,
@@ -14,6 +14,14 @@ import {
 })
 export class AbsencesCreateComponent implements OnInit {
   private createAbsenceForm: FormGroup;
+  private types;
+
+  enumSelector(definition) {
+    return Object.keys(definition).map(key => ({
+      value: key,
+      title: definition[key]
+    }));
+  }
 
   constructor(
     private dialogRef: MatDialogRef<AbsencesCreateComponent>,
@@ -21,6 +29,7 @@ export class AbsencesCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.types = this.enumSelector(AbsenceType);
     this.createAbsenceForm = new FormGroup({
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
@@ -32,16 +41,12 @@ export class AbsencesCreateComponent implements OnInit {
   public onSubmit(createAbsenceFormValue): void {
     if (this.createAbsenceForm.valid) {
       let newAbsence = new Absence(
-        null,
-        null,
+        createAbsenceFormValue.type,
         createAbsenceFormValue.summary,
         createAbsenceFormValue.start,
-        createAbsenceFormValue.end,
-        null,
-        null,
-        null,
-        createAbsenceFormValue.type
+        createAbsenceFormValue.end
       );
+
       console.log(newAbsence);
     }
   }

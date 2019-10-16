@@ -27,7 +27,8 @@ import {
   MatDatepickerModule,
   MatDialogTitle,
   MatDialogRef,
-  MAT_DIALOG_DATA
+  MAT_DIALOG_DATA,
+  MatSelectModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -83,7 +84,8 @@ import { UserService } from "./services/user.service";
     MatMenuModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSelectModule
   ],
   providers: [
     SessionService,
