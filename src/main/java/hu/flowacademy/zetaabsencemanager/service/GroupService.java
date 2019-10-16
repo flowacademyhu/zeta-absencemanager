@@ -68,8 +68,12 @@ public class GroupService {
     public void delete(@NotNull Long id) {
         Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
         group.setDeletedAt(LocalDateTime.now());
+        List<Group> needToBeModifiedGroups = groupRepository.findAllByParentId(group.getId());
+        for (Group g : needToBeModifiedGroups) {
+            g.setParentId(null);
+            groupRepository.save(g);
+        }
         groupRepository.save(group);
-
     }
 
 }
