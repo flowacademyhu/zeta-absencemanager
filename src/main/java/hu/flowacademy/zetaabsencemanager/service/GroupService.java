@@ -46,7 +46,7 @@ public class GroupService {
             modifyGroup.setEmployees(group.getEmployees());
             modifyGroup.setLeaders(group.getLeaders());
             groupRepository.save(modifyGroup);
-            if (group.getLeaders() != null && !group.getLeaders().isEmpty()) {
+            if (!CollectionUtils.isEmpty(group.getLeaders())) {
                 for (User u : group.getLeaders()) {
                     u.setRole(Roles.LEADER);
                     userService.updateUser(u.getId(), u);
@@ -60,7 +60,7 @@ public class GroupService {
         if (StringUtils.isEmpty(group.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        if (group.getLeaders() != null && !group.getLeaders().isEmpty()) {
+        if (!CollectionUtils.isEmpty(group.getLeaders())) {
             for (User u : group.getLeaders()) {
                 u.setRole(Roles.LEADER);
                 userService.updateUser(u.getId(), u);
