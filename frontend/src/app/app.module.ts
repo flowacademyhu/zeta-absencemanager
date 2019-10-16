@@ -23,10 +23,12 @@ import {
   MatCardModule,
   MatTableModule,
   MatFormFieldModule,
+  MatDialogModule,
+  MatDatepickerModule,
   MatDialogTitle,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialogModule
+  MatSelectModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -43,6 +45,9 @@ import { AbsencesIndexComponent } from "./components/admin/absences-index/absenc
 import { LoginComponent } from "./components/login/login.component";
 import { SessionService } from "./services/session.service";
 import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-index/emp-absences-index.component";
+import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { ApiCommunicationService } from "./services/ApiCommunication.service";
+import { UserService } from "./services/user.service";
 
 @NgModule({
   declarations: [
@@ -54,7 +59,8 @@ import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-in
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
-    EmpAbsencesIndexComponent
+    EmpAbsencesIndexComponent,
+    AbsencesCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -78,10 +84,14 @@ import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-in
     MatInputModule,
     MatMenuModule,
     MatFormFieldModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatSelectModule
   ],
   providers: [
     SessionService,
+    ApiCommunicationService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
@@ -91,6 +101,7 @@ import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-in
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AbsencesCreateComponent]
 })
 export class AppModule {}
