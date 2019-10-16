@@ -37,4 +37,9 @@ public class AbsenceController {
         return absence;
     }
 
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable("userId") Long userId) {
+        // absenceService.delete(userId);
+    }
+
 }

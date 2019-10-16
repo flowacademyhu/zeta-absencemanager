@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,17 @@ public class GroupService {
         return groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
     }
 
+    public Group create(@NotNull Group group) {
+        if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            group.setCreatedAt(LocalDateTime.now());
+            groupRepository.save(group);
+        }
+        return group;
+    }
+
+
     public Group updateGroup(@NotNull Long id, @NotNull Group group) {
         Group modifyGroup = findOne(id);
         if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
@@ -39,16 +51,10 @@ public class GroupService {
             modifyGroup.setParentId(group.getParentId());
             modifyGroup.setEmployees(group.getEmployees());
             modifyGroup.setLeaders(group.getLeaders());
+            modifyGroup.setUpdatedAt(LocalDateTime.now());
             groupRepository.save(modifyGroup);
             return modifyGroup;
         }
-    }
-
-    public Group create(@NotNull Group group) {
-        if (StringUtils.isEmpty(group.getName()) || group.getParentId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        }
-        return groupRepository.save(group);
     }
 
     public void delete(@NotNull Long id) {
