@@ -1,31 +1,16 @@
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="firstName" value= "" FormControl="firstName" >
+  </mat-form-field>
 
-              <form formGroup="profileForm" (ngSubmit)="onSubmit()">
-  
-                <label>
-                  First Name:
-                  <input type="text" formControlName="firstName">
-                </label>
-              
-                <label>
-                  Last Name:
-                  <input type="text" formControlName="lastName">
-                </label>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="lastName" value="" FormControl="lastName" >
+  </mat-form-field>
 
-                <label>
-                  Name:
-                  <input type="text" [formControl]="email">
-                </label>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="email" value="" FormControl="email">
+  </mat-form-field>
 
-                <p>
-                  <button (click)="updateProfile()">Update Profile</button>
-                </p>
-              
-
-
-              <p>
-                Form Status: {{ profileForm.status }}
-              </p>
-              </form>
-
-             
-             
+  <button (click)=update()>update profile</button>
+</form>
+          

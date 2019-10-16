@@ -20,16 +20,8 @@ export class EmployeeProfileEditComponent implements OnInit {
   ngOnInit() {
   }
 
-
-  updateProfile() {
-    this.profileForm.patchValue({
-      firstName: 'Nancy',
-    lastName: 'Pista', 
-    email: 'a@b.com'
-      
-      
-    });
+  update() {
+    this.profileForm = this.profileForm
+    console.log(this.profileForm)
   }
- 
-
 }
