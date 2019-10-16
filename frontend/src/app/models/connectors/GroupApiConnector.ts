@@ -10,8 +10,8 @@ export class GroupApiConnector extends AbstractApiConnector {
         return this.http.get(this.apiRoute + id) as Observable<Group>;
     }
 
-    public getGroups(): Observable<Group> {
-        return this.http.get(this.apiRoute) as Observable<Group>;
+    public getGroups(): Observable<Group[]> {
+        return this.http.get(this.apiRoute) as Observable<Group[]>;
     }
 
     public createGroup(group: Group): Observable<Group> {

@@ -1,1 +1,35 @@
-<p>group-index works!</p>
+<div class="actionButton">
+    <button mat-flat-button color="warn">PLACEHOLDER</button>
+    <button mat-flat-button color="warn">PLACEHOLDER</button>
+</div>
+
+<mat-table [dataSource]="dataSource" class="table-responsive mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let group"> {{ group.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="parentId">
+        <mat-header-cell *matHeaderCellDef> ParentId </mat-header-cell>
+        <mat-cell *matCellDef="let group"> {{ group.parentId }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="parent">
+        <mat-header-cell *matHeaderCellDef> Parent </mat-header-cell>
+        <mat-cell *matCellDef="let group"> {{ group.parentId }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="leaders">
+        <mat-header-cell *matHeaderCellDef> Leaders </mat-header-cell>
+        <mat-cell *matCellDef="let group"> {{ group.leaders }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="employees">
+        <mat-header-cell *matHeaderCellDef> Employees </mat-header-cell>
+        <mat-cell *matCellDef="let group"> {{ group.employees }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

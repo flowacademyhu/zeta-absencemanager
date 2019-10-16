@@ -7,7 +7,7 @@
       <span class="menu-spacer"></span>
       <div>
         <ul>
-          
+
           <li>
             <a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a>
           </li>
@@ -26,7 +26,7 @@
               <button mat-menu-item [routerLink]="'/admin/user-index'">
                 Employees
               </button>
-              <button mat-menu-item>Groups</button>
+              <button mat-menu-item [routerLink]="'/admin/group/index'">Groups</button>
             </mat-menu>
           </li>
         </ul>
@@ -35,8 +35,7 @@
       <div class="logout">
         <ul>
           <li>
-            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async"
-              >Logout
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout
             </a>
           </li>
         </ul>
