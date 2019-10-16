@@ -36,7 +36,7 @@ public class AdminAbsenceService {
     public Group getEmployees(Group g) {
         employees.addAll(g.getLeaders());
         employees.addAll(g.getEmployees());
-        List<Group> children = groupRepository.findByParentId(g.getId());
+        List<Group> children = groupRepository.findAllByParentId(g.getId());
         ListIterator<Group> iterator = children.listIterator();
         while (iterator.hasNext()) {
             return getEmployees(iterator.next());
