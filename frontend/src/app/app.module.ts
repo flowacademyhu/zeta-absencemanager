@@ -5,29 +5,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatMenuModule } from "@angular/material/menu";
 import { NgModule } from "@angular/core";
 
-<<<<<<< HEAD
-import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
-import { MatToolbarModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
-import { MatDialogModule } from '@angular/material/dialog'; 
-import { MatSelectModule } from '@angular/material/select'; 
-
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './token.interceptor';
-
-//Own Components
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { ContentComponent } from './components/content/content.component';
-import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
-import { FilterComponent } from './components/filter/filter.component';
-import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
-import { LoginComponent } from './components/login/login.component';
-import { SessionService } from './services/session.service';
-import { CreateUserComponent } from './modals/create-user/create-user.component';
-import { ApiCommunicationService } from './services/ApiCommunication.service';
-import { UserService } from './services/user.service';
-=======
 import {
   HttpClientModule,
   HttpInterceptor,
@@ -58,7 +35,6 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./token.interceptor";
 
 //Own Components
-
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
@@ -71,7 +47,7 @@ import { SessionService } from "./services/session.service";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { ApiCommunicationService } from "./services/ApiCommunication.service";
 import { UserService } from "./services/user.service";
->>>>>>> development
+import { CreateUserComponent } from './modals/create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +59,7 @@ import { UserService } from "./services/user.service";
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
-    CreateUserComponent
+    CreateUserComponent,
     AbsencesCreateComponent
   ],
   imports: [
@@ -120,19 +96,12 @@ import { UserService } from "./services/user.service";
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-<<<<<<< HEAD
-    }
-   ],
-  bootstrap: [AppComponent],
-  entryComponents: [CreateUserComponent],
-=======
     },
     { provide: MatDialogTitle, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: [] }
-  ],
+   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
->>>>>>> development
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
 })
 export class AppModule {}
