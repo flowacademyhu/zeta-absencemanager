@@ -15,7 +15,12 @@
         <input matInput required [matDatepicker]="dateofentry" formControlName="dateOfEntry" placeholder="Date of Entry">
         <mat-datepicker-toggle matSuffix [for]="dateofentry"></mat-datepicker-toggle>
         <mat-datepicker #dateofentry></mat-datepicker>
-      </mat-form-field></div>   
+      </mat-form-field></div>
+      <div><mat-form-field>
+          <input matInput required [matDatepicker]="dateofendtrial" formControlName="dateOfEndTrial" placeholder="Date of End Trial">
+          <mat-datepicker-toggle matSuffix [for]="dateofendtrial"></mat-datepicker-toggle>
+          <mat-datepicker #dateofendtrial></mat-datepicker>
+        </mat-form-field></div>
     <div><mat-form-field>
         <input matInput required placeholder="Position" formControlName="position" >
     </mat-form-field></div>
@@ -32,6 +37,9 @@
     </mat-form-field></div>
 <div><mat-form-field>
     <input type="number" matInput required placeholder="Number of Children" formControlName="numberOfChildren">
+</mat-form-field></div>
+<div><mat-form-field>
+    <input matInput placeholder="Other Absence Ent" formControlName="otherAbsenceEnt">
 </mat-form-field></div>
 
 </div>

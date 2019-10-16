@@ -2,20 +2,20 @@
   <button mat-flat-button color="warn" (click)="createUser()">Create User</button> 
   <app-filter [dataSource]="dataSource"></app-filter>
 </div>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="usersList" class="mat-elevation-z8">
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   
      <!-- Name Column -->
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element">  {{element.name}}  </td>
+        <td mat-cell *matCellDef="let element">  {{element.firstName}} {{element.lastName}}  </td>
       </ng-container>   
 
     <!-- Dob Column -->
     <ng-container matColumnDef="dob">
-      <th mat-header-cell *matHeaderCellDef> D.O.B. </th>
-      <td mat-cell *matCellDef="let element"> {{element.dob}} </td>
+      <th mat-header-cell *matHeaderCellDef> Date of Birth </th>
+      <td mat-cell *matCellDef="let element"> {{element.dateOfBirth}} </td>
     </ng-container>
   
     <!-- Position Column -->
@@ -32,8 +32,8 @@
 
     <!-- DOE  Column-->
     <ng-container matColumnDef="doe">
-        <th mat-header-cell *matHeaderCellDef> D.O.E </th>
-        <td mat-cell *matCellDef="let element"> {{element.doe}}</td>
+        <th mat-header-cell *matHeaderCellDef> Date of Entry </th>
+        <td mat-cell *matCellDef="let element"> {{element.dateOfEntry}}</td>
       </ng-container>
   
      

@@ -5,14 +5,8 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { resolve } from 'q';
 import { User } from '../models/User.model';
+import { ApiCommunicationService } from './ApiCommunication.service';
 
-const URL = 'http://localhost:8080/';
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Authorization': 'Basic ' + btoa("fooClientIdPassword:secret"),
-    'Content-type': 'application/x-www-form-urlencoded'
-  })
-};
 
 /* Reasons for login rejection */ 
 export enum LoginRejectionReason {
@@ -30,18 +24,13 @@ export class SessionService {
   private _isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(this.hasToken());
 
   
-  constructor(private http : HttpClient, private router : Router) { }
+  constructor(private api: ApiCommunicationService, private router : Router) { }
 
 
   public login(username, password):  Promise<LoginRejectionReason> {
 
-    const body = new HttpParams()
-      .set('username', username)
-      .set('password', password)
-      .set('grant_type', 'password');
-    
     return new Promise<any>((resolve, reject) => {  
-      this.http.post(URL + 'oauth/token', body, httpOptions).subscribe((data : any) => {
+      this.api.auth().getToken(username, password).subscribe((data : any) => {
         localStorage.setItem('token', data.access_token);
         this._isLoggedIn$.next(true);
         this.router.navigate(["admin/absence-index"]);

@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,15 @@ public class AdminUserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
-        return this.userRepository.findByEmail(email).filter(user -> user.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public List<User> findAllUser() {
-        return this.userRepository.findAll();
+        return this.userRepository.findByDeletedAtNull();
     }
 
     public User findOneUser(@NotNull Long id) {
-        return userRepository.findById(id).filter(user -> user.getDeletedAt() == null).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        return userRepository.findByIdAndDeletedAtNull(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
@@ -87,12 +88,9 @@ public class AdminUserService {
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
                 || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
-                || user.getRole() == null
                 || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
@@ -106,8 +104,8 @@ public class AdminUserService {
                     .email(user.getEmail())
                     .group(user.getGroup())
                     .position(user.getPosition())
-                    .password(passwordEncoder.encode(user.getPassword()))
-                    .role(user.getRole())
+                    .password(passwordEncoder.encode("seggem"))
+                    .role(Roles.EMPLOYEE)
                     .numberOfChildren(user.getNumberOfChildren())
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())
                     .build();
