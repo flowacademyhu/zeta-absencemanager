@@ -45,6 +45,7 @@ public class DataLoader implements CommandLineRunner {
         Group group = Group.builder()
                 .employees(List.of())
                 .name("TestGroup")
+                .parentId(null)
                 .build();
         this.groupRepository.save(group);
 
