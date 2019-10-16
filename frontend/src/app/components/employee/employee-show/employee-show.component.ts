@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
 import { User } from 'src/app/models/User.model';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -9,6 +10,8 @@ import { User } from 'src/app/models/User.model';
   styleUrls: ['./employee-show.component.css']
 })
 export class EmployeeShowComponent implements OnInit {
+
+  private user: User = new User();
   public name = "employee";
   public dob = '1990-10-11';
   public doe = '2000-10-10';
@@ -24,9 +27,14 @@ export class EmployeeShowComponent implements OnInit {
   public totalrate = this.used/this.total
 
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
   }
 
+  loaduser() {
+    this.userService.getUsers().subscribe((user) => {
+      this.user = user;
+    })
+  }
 }
