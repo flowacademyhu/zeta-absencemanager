@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AbsencesIndexComponent } from "../../admin/absences-index/absences-index.component";
+import { AbsencesCreateComponent } from "../absences-create/absences-create.component";
 const MOCK_DATA: any[] = [
   {
     id: 1,
@@ -44,7 +45,7 @@ export class EmpAbsencesIndexComponent implements OnInit {
 
     dialogConfig.data = {};
 
-    const dialogRef = this.dialog.open(AbsencesIndexComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AbsencesCreateComponent, dialogConfig);
 
     dialogRef
       .afterClosed()
