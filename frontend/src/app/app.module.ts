@@ -24,6 +24,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
 import { ApiCommunicationService } from './services/ApiCommunication.service';
 import { UserService } from './services/user.service';
+import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { UserService } from './services/user.service';
     AbsencesIndexComponent,
     LoginComponent,
     AdminUserShowComponent,
-    FilterComponent
+    FilterComponent,
+    GroupIndexComponent
   ],
   imports: [
     BrowserModule,
