@@ -11,4 +11,8 @@ table {
   th {
     border-bottom: 1px solid black;
   }
+
+  button {
+    align-items: right;
+  }
   
