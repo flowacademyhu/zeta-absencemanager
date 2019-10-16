@@ -1,16 +1,19 @@
 import { User } from 'src/app/models/User.model';
-import { Department } from 'src/app/models/Department.model';
+import { DataEntity } from './DataEntity';
 
-export class Group {
-    constructor(
-        public id: number,
-        public name: string,
-        public leaders: User[], 
-        public department: Department, 
-        public employees: User[]
-        
+export class Group extends DataEntity {
+        public name: string;
+        public parentId: number;
+        public leaders: User[]; 
+        public employees: User[];
 
-    ){}
+    constructor(name: string, parentId?: number, leaders?: User[], employees?: User[]) {
+        super();
+        this.name = name;
+        this.parentId = parentId;
+        this.leaders = leaders;
+        this.employees = employees;
+    }
 }
 
 
