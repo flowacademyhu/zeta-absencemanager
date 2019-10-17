@@ -1,0 +1,107 @@
+<h2 mat-dialog-title align="center">Edit User</h2>
+<form
+  [formGroup]="editUserData"
+  autocomplete="off"
+  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+>
+ <mat-dialog-content>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="firstname"
+        formControlName="firstName"
+      />
+    </mat-form-field>
+    <br>
+
+    <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="lastname"
+          formControlName="lastName"
+        />
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="dateOfBirth"
+          placeholder="date of birth"
+          formControlName="dateOfBirth"
+          id="dateOfBirth"
+          readonly
+          required
+          (click)="dateOfBirth.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="dateOfBirth"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBirth></mat-datepicker>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="position"
+          formControlName="position"
+        />
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="supervisor"
+          formControlName="supervisor"
+        />
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="endOfTrial"
+          placeholder="endOfTrial"
+          formControlName="endOfTrial"
+          id="endOfTrial"
+          readonly
+          required
+          (click)="endOfTrial.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="endOfTrial"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #endOfTrial></mat-datepicker>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <input
+          matInput
+          type="email"
+          placeholder="E-mail"
+          formControlName="email"
+        />
+      </mat-form-field>
+      <br>
+
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button [disabled]="!editUserData.valid">
+      Edit
+    </button>
+    <button mat-raised-button color="warn" (click)="onCancel()">
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</form>

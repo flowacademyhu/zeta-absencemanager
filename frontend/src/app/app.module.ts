@@ -29,7 +29,8 @@ import {
   MatDialogTitle,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatSelectModule
+  MatSelectModule,
+  
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -53,6 +54,7 @@ import { UserService } from "./services/user.service";
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+import { AdminUserEditComponent } from './components/admin/admin-user-edit/admin-user-edit.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,8 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     AbsencesCreateComponent,
-    UserAbsenceIndexComponent
+    UserAbsenceIndexComponent,
+    AdminUserEditComponent
   ],
   imports: [
     BrowserModule,
@@ -111,6 +114,6 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
+  entryComponents: [AbsencesCreateComponent, AdminUserEditComponent]
 })
 export class AppModule {}

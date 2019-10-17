@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource, MatFormFieldControl, MatPaginator } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AdminAbsencesIndexComponent } from '../../absences-index/admin-absences-index.component';
+import { AdminUserEditComponent } from '../../admin-user-edit/admin-user-edit.component';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/User.model';
 import { Subject } from 'rxjs';
@@ -17,17 +17,20 @@ export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
 
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
 
-  users: User[];  
+  users: User[];
+  showUser: User [] = [];
+  // user : User[];  
   dataSource : any;
 
   @ViewChild(MatPaginator, {static: true}) paginator : MatPaginator;
 
   constructor(private route: ActivatedRoute ,public dialog: MatDialog) { }
 
-  displayedColumns: string[] = ['dateOfBirth', 'firstName', 'lastName', 'position', 'supervisor', 'dateOfEndTrial', 'dateOfEntry', 'email'];
+  displayedColumns: string[] = ['dateOfBirth', 'firstName', 'lastName', 'position', 'supervisor', 
+                                'dateOfEndTrial', 'dateOfEntry', 'email', 'edit', 'delete'];
 
   openDialog(){
-    this.dialog.open(AdminAbsencesIndexComponent);
+    this.dialog.open(AdminUserEditComponent);
   }
 
   ngOnInit() {
@@ -35,7 +38,10 @@ export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((data: any) => {
         this.users = data.userList;
-        this.dataSource = new MatTableDataSource(this.users); 
+       // this.showUser.push(this.users);
+       // this.dataSource = new MatTableDataSource(this.showUser); 
+        this.dataSource = new MatTableDataSource(this.users);
+        console.log(this.users);
         this.dataSource.paginator = this.paginator;
 
       });
