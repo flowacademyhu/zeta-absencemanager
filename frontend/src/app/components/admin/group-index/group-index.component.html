@@ -21,11 +21,20 @@
 
     <ng-container matColumnDef="leaders">
         <mat-header-cell *matHeaderCellDef> Leaders </mat-header-cell>
-        <mat-cell *matCellDef="let group"> {{ group.leaders }} </mat-cell>
+        <mat-cell *matCellDef="let group">
+            <div *ngFor="let leader of group.leaders; let i = index">
+                {{ leader.name }} <span *ngIf="i !== group.leaders.length-1">,</span>
+            </div>
+        </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="employees">
         <mat-header-cell *matHeaderCellDef> Employees </mat-header-cell>
+        <mat-cell *matCellDef="let group"> {{ group.employees }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="modify">
+        <mat-header-cell *matHeaderCellDef> Modify </mat-header-cell>
         <mat-cell *matCellDef="let group"> {{ group.employees }} </mat-cell>
     </ng-container>
 

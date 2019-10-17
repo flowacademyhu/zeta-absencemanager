@@ -9,7 +9,7 @@ import { Group } from 'src/app/models/Group.model';
   styleUrls: ['./group-index.component.css']
 })
 export class GroupIndexComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees'];
+  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees', 'modify'];
   dataSource: any;
   error: string;
 
@@ -25,6 +25,7 @@ export class GroupIndexComponent implements OnInit {
             }
           });
         }
+        element.leaders = [{ name: "Kovács Béla" }, { name: "ASDasdasd Feri" }, { name: "Nagy Tibi" }];
       });
     }, (error) => {
       this.error = error;
