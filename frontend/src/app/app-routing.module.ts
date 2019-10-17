@@ -8,11 +8,14 @@ import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-
 import { UserResolver } from "./UserResolver";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { AbsenceShowEditComponent } from "./components/employee/absence-show-edit/absence-show-edit.component";
+import { GroupIndexComponent } from "./components/admin/group-index/group-index.component";
+import { CreateUserComponent } from "./modals/create-user/create-user.component";
+import { GroupResolver } from "./resolvers/GroupResolver";
+import { AdminAbsenceResolver } from "./components/resolvers/AdminAbsenceResolver";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
-  { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
   { path: "admin/user-index", component: AdminUserShowComponent },
   { path: "user/absence-index", component: UserAbsenceIndexComponent },
   {
@@ -24,12 +27,23 @@ const routes: Routes = [
   {
     path: "employee/absence-show-edit/:id",
     component: AbsenceShowEditComponent
-  }
+  },
+  {
+    path: "admin/group/index",
+    component: GroupIndexComponent,
+    resolve: { groupResolver: GroupResolver }
+  },
+  {
+    path: "admin/absence-index",
+    component: AdminAbsencesIndexComponent,
+    resolve: { adminAbsenceList: AdminAbsenceResolver }
+  },
+  { path: "employee/absence-create", component: AbsencesCreateComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [UserResolver]
+  providers: [GroupResolver, UserResolver]
 })
 export class AppRoutingModule {}
