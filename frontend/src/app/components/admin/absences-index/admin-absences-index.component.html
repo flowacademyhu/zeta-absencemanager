@@ -9,11 +9,6 @@
     <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.name }} </mat-cell>
-  </ng-container>
-
   <ng-container matColumnDef="begin">
     <mat-header-cell *matHeaderCellDef> Begin </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.begin }} </mat-cell>
@@ -44,21 +39,19 @@
     <mat-cell *matCellDef="let absence"> {{ absence.created_at }} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="responsible">
-    <mat-header-cell *matHeaderCellDef> Responsible </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.responsible }} </mat-cell>
-  </ng-container>
-
   <ng-container matColumnDef="reporter">
     <mat-header-cell *matHeaderCellDef> Reporter </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.reporter }} </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="on_trial">
-    <mat-header-cell *matHeaderCellDef> OnTrial </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.on_trial }} </mat-cell>
+  <ng-container matColumnDef="assignee">
+    <mat-header-cell *matHeaderCellDef> Assignee </mat-header-cell>
+    <mat-cell *matCellDef="let absence"> {{ absence.assignee }} </mat-cell>
   </ng-container>
+
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
+
+
