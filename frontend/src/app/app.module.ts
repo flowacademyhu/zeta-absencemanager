@@ -2,7 +2,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatPaginatorModule } from '@angular/material';
@@ -59,6 +59,12 @@ import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
 import { employeeshowresolver } from 'src/app/employeeshowresolver';
+import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
+import { CreateUserComponent } from './modals/create-user/create-user.component';
+
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,12 +72,14 @@ import { employeeshowresolver } from 'src/app/employeeshowresolver';
     FooterComponent,
     ContentComponent,
     AdminAbsencesIndexComponent,
-    AdminUserEditDestroyShowComponent,  
+    AdminUserEditDestroyShowComponent,
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
     EmployeeShowComponent,
     
+    GroupIndexComponent,
+    CreateUserComponent,
     AbsencesCreateComponent,
     UserAbsenceIndexComponent
   ],
@@ -124,6 +132,6 @@ import { employeeshowresolver } from 'src/app/employeeshowresolver';
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
 })
-export class AppModule {}
+export class AppModule { }

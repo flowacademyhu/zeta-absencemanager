@@ -6,10 +6,15 @@ import { LoginComponent } from './components/login/login.component';
 import { EmployeeShowComponent } from './components/employee/employee-show/employee-show.component';
 
 
+import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
 import { UserAbsenceIndexComponent } from './components/employee/emp-absence-index/user-absence-index.component';
 import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
 import { UserResolver } from './UserResolver';
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { CreateUserComponent } from './modals/create-user/create-user.component';
+import { GroupResolver } from './resolvers/GroupResolver';
+import { AdminAbsenceResolver } from './components/resolvers/AdminAbsenceResolver';
+
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -17,9 +22,10 @@ const routes: Routes = [
   { path: 'admin/user-index', component: AdminUserShowComponent }, 
   { path: 'employee/employeeshow', component: EmployeeShowComponent },
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
-  { path: 'admin/user-index', component: AdminUserShowComponent },
+  { path: 'admin/group/index', component: GroupIndexComponent, resolve: { groupResolver: GroupResolver } },
+  { path: "admin/absence-index", component: AdminAbsencesIndexComponent, resolve: {adminAbsenceList: AdminAbsenceResolver} },
   { path: "user/absence-index", component: UserAbsenceIndexComponent },
-  { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent, resolve: { userList: UserResolver }},
+  { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent, resolve: { userList: UserResolver } },
   { path: "employee/absence-create", component: AbsencesCreateComponent }
 ]
 
@@ -27,6 +33,9 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [UserResolver]
+  providers: [
+    GroupResolver,
+    UserResolver
+  ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
