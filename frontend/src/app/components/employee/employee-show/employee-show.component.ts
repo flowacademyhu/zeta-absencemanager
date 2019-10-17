@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
-import { User } from 'src/app/models/User.model';
-import { UserService } from 'src/app/services/user.service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormsModule, FormBuilder, Validators } from '@angular/forms';
+import { User } from 'src/app/models/User.model';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -9,10 +12,12 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './employee-show.component.html',
   styleUrls: ['./employee-show.component.css']
 })
-export class EmployeeShowComponent implements OnInit {
+export class EmployeeShowComponent implements OnInit {
+  private _unsubscribe$: Subject<boolean> = new Subject();
+  public user: User = new User();
 
-  private user: User = new User();
-  public name = "employee";
+  
+public name = "employee";
   public dob = '1990-10-11';
   public doe = '2000-10-10';
   public trialexp = '2001-01-01';
@@ -25,16 +30,43 @@ export class EmployeeShowComponent implements OnInit {
   public used = 10;
   public aviable = this.total-this.used; 
   public totalrate = this.used/this.total
+  
+  constructor(private formbuild: FormBuilder, private route: ActivatedRoute) { }
 
+  ngOnInit() {
+    this.route.data
+    .pipe(takeUntil(this._unsubscribe$))
+    .subscribe((data: any) => {
+      this.user = data.user;
+      console.log(this.user);
+    })
+  }
 
-  constructor(private userService: UserService) { }
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
+    
+  }
 
-  ngOnInit() {
-  }
+  update() {
+    this.user = this.user
+   
+  }
 
-  loaduser() {
-    this.userService.getUsers().subscribe((user) => {
-      this.user = user;
-    })
-  }
+  
 }
+
+
+
+
+
+
+
+  
+  
+
+
+  
+
+  
+

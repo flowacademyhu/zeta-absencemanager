@@ -1,0 +1,10 @@
+mat-dialog-content {
+  display: grid;
+  align-content: center;
+  font-size: 15px;
+}
+
+.error {
+  font-size: 14px;
+  color: red;
+}
