@@ -13,15 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 @Service
 @Transactional
 public class AdminAbsenceService {
-
-    private List<User> employees = new ArrayList();
 
     @Autowired
     private AbsenceRepository absenceRepository;
@@ -30,26 +26,25 @@ public class AdminAbsenceService {
     private GroupRepository groupRepository;
 
     @Autowired
-    private AbsenceService absenceService;
+    private UserService userService;
 
-    public Group getEmployees(Group g) {
+    public Set<User> getEmployees(Group g, Set<User> employees) {
         employees.addAll(g.getLeaders());
         employees.addAll(g.getEmployees());
         List<Group> children = groupRepository.findAllByParentId(g.getId());
         ListIterator<Group> iterator = children.listIterator();
         while (iterator.hasNext()) {
-            return getEmployees(iterator.next());
+            return getEmployees(iterator.next(), employees);
         }
-        return null;
+        return employees;
     }
 
     public List<Absence> findAllAbsence() {
-        User current = absenceService.getCurrentUser();
+        User current = userService.getCurrentUser();
         if (current.getRole() == Roles.ADMIN) {
             return this.absenceRepository.findAll();
         } else {
-            this.employees.clear();
-            getEmployees(current.getGroup());
+            Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
             List<Absence> absences = new ArrayList<>();
             for (User emp : employees) {
                 absences.addAll(emp.getAbsences());
@@ -59,10 +54,9 @@ public class AdminAbsenceService {
     }
 
     public Absence findOne(@NotNull Long id) {
-        User current = absenceService.getCurrentUser();
+        User current = userService.getCurrentUser();
         Absence foundAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        this.employees.clear();
-        getEmployees(current.getGroup());
+        Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(foundAbsence.getReporter()))) {
             return foundAbsence;
         } else {
@@ -71,13 +65,12 @@ public class AdminAbsenceService {
     }
 
     public Absence create(Absence absence) {
-        User current = absenceService.getCurrentUser();
+        User current = userService.getCurrentUser();
         if (absence.getType() == null || absence.getBegin() == null || absence.getEnd() == null || absence.getReporter() == null ||
                 absence.getAssignee() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        this.employees.clear();
-        getEmployees(current.getGroup());
+        Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(absence.getReporter()))) {
             return absenceRepository.save(absence);
         } else {
@@ -87,9 +80,8 @@ public class AdminAbsenceService {
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        User current = absenceService.getCurrentUser();
-        this.employees.clear();
-        getEmployees(current.getGroup());
+        User current = userService.getCurrentUser();
+        Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(modifyAbsence.getReporter()))) {
             modifyAbsence.setAssignee(absence.getAssignee());
             modifyAbsence.setBegin(absence.getBegin());

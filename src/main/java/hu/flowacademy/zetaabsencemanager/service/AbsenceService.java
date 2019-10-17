@@ -2,12 +2,9 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
-import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,25 +22,17 @@ public class AbsenceService {
     @Autowired
     private UserService userService;
 
-    public User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
-        }
-        String email = auth.getName();
-        return userService.findByEmail(email);
-    }
 
     public Absence findOne(@NotNull Long id) {
         Absence absence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
-        if (!absence.getReporter().getId().equals(getCurrentUser().getId())) {
+        if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
         }
         return absence;
     }
 
     public List<Absence> findAll() {
-        return getCurrentUser().getAbsences();
+        return userService.getCurrentUser().getAbsences();
     }
 
     public Absence create(@NotNull Absence absence) {
@@ -52,7 +41,7 @@ public class AbsenceService {
                 absence.getEnd() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        absence.setReporter(userService.findOneUser(getCurrentUser().getId()));
+        absence.setReporter(userService.findOneUser(userService.getCurrentUser().getId()));
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
         return absenceRepository.save(absence);
@@ -60,7 +49,7 @@ public class AbsenceService {
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        if (!absence.getReporter().getId().equals(getCurrentUser().getId())) {
+        if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
         }
         modifyAbsence.setAssignee(absence.getAssignee());
