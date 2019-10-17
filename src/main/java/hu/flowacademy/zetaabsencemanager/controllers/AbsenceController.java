@@ -34,9 +34,4 @@ public class AbsenceController {
         return absenceService.update(id, absence);
     }
 
-    @DeleteMapping("/{userId}")
-    public void delete(@PathVariable("userId") Long userId) {
-        // absenceService.delete(userId);
-    }
-
 }
