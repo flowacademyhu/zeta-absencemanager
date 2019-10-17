@@ -12,4 +12,5 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     Optional<Group> findByIdAndDeletedAtIsNull(Long id);
     List<Group> findAllByDeletedAtIsNull();
+    List<Group> findAllByParentId(Long id);
 }

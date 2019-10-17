@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
+import { UserService } from 'src/app/services/user.service';
 
 export interface UserElement {
   name: string;
@@ -27,7 +28,7 @@ export class AdminUserShowComponent implements OnInit {
   
 
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
   }

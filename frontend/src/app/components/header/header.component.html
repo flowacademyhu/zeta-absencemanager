@@ -23,11 +23,15 @@
           <li>
             <a mat-button *ngIf="isLoggedIn$ | async" [matMenuTriggerFor]="menu"> Admin </a>
             <mat-menu #menu="matMenu">
+              <button mat-menu-item [routerLink]="'admin/user-esd'">
+              User-EDS
+              </button>
+
               <button mat-menu-item [routerLink]="'/admin/user-index'">
                 Employees
               </button>
+
               <button mat-menu-item>Groups</button>
-              <button mat-menu-item>Departments</button>
             </mat-menu>
           </li>
         </ul>

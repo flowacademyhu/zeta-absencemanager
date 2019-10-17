@@ -26,6 +26,8 @@ import { SessionService } from './services/session.service';
 import { EmployeeService } from './services/employee.service';
 import { UserAbsenceIndexComponent } from './components/employee/emp-absence-index/user-absence-index.component';
 import { AdminAbsencesIndexComponent } from './components/admin/absences-index/admin-absences-index.component';
+import { ApiCommunicationService } from './services/ApiCommunication.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,8 @@ import { AdminAbsencesIndexComponent } from './components/admin/absences-index/a
   providers: [
     EmployeeService,
     SessionService,
+    ApiCommunicationService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

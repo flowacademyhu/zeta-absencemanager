@@ -5,6 +5,7 @@ import { AdminAbsencesIndexComponent } from './components/admin/absences-index/a
 import { LoginComponent } from './components/login/login.component';
 import { UserAbsenceIndexComponent } from './components/employee/emp-absence-index/user-absence-index.component';
 import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
+import { BasicResolver } from './UserResolver';
 
 
 
@@ -14,12 +15,13 @@ const routes: Routes = [
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
   { path: 'admin/user-index', component: AdminUserShowComponent },
   { path: "user/absence-index", component: UserAbsenceIndexComponent },
-  { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent}
+  { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent, resolve: { userList: BasicResolver }}
 ]
 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [BasicResolver]
 })
 export class AppRoutingModule { }
