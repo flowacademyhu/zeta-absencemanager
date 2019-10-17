@@ -50,28 +50,28 @@ public class DataLoader implements CommandLineRunner {
         Group group1 = Group.builder()
                 .employees(List.of())
                 .name("Group1")
-                .parentId(1L)
+                .parentId(cLevel.getId())
                 .build();
         this.groupRepository.save(group1);
 
         Group group2 = Group.builder()
                 .employees(List.of())
                 .name("Group2")
-                .parentId(1L)
+                .parentId(cLevel.getId())
                 .build();
         this.groupRepository.save(group2);
 
         Group group3 = Group.builder()
                 .employees(List.of())
                 .name("Group3")
-                .parentId(2L)
+                .parentId(group1.getId())
                 .build();
         this.groupRepository.save(group3);
 
         Group group4 = Group.builder()
                 .employees(List.of())
                 .name("Group4")
-                .parentId(2L)
+                .parentId(group1.getId())
                 .build();
         this.groupRepository.save(group4);
 
@@ -79,7 +79,7 @@ public class DataLoader implements CommandLineRunner {
         Group group5 = Group.builder()
                 .employees(List.of())
                 .name("Group5")
-                .parentId(3L)
+                .parentId(group2.getId())
                 .build();
         this.groupRepository.save(group5);
 
@@ -87,21 +87,21 @@ public class DataLoader implements CommandLineRunner {
         Group group6 = Group.builder()
                 .employees(List.of())
                 .name("Group6")
-                .parentId(3L)
+                .parentId(group2.getId())
                 .build();
         this.groupRepository.save(group6);
 
         Group group7 = Group.builder()
                 .employees(List.of())
                 .name("Group7")
-                .parentId(7L)
+                .parentId(group6.getId())
                 .build();
         this.groupRepository.save(group7);
 
         Group group8 = Group.builder()
                 .employees(List.of())
                 .name("Group8")
-                .parentId(7L)
+                .parentId(group6.getId())
                 .build();
         this.groupRepository.save(group8);
 
