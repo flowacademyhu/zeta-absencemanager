@@ -47,11 +47,15 @@ export class EmployeeProfileEditComponent implements OnInit {
 
   update() {
     this.userService.updateUser(this.user.id, this.profileForm.value)
-    .subscribe();
-    this.profileForm = this.profileForm
+    .subscribe((user) => {
+      this.user = user
+    });
+    
     console.log(this.profileForm)
   }
 
+
+ 
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.profileForm.value);
