@@ -29,7 +29,7 @@ public class Absence {
     private Type type;
 
     @Column
-    private Integer summary;
+    private String summary;
 
     @Column
     private LocalDate begin;
