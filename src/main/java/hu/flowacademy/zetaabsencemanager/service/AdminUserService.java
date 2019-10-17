@@ -90,6 +90,7 @@ public class AdminUserService {
                 || user.getDateOfEndTrial() == null
                 || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
+                || user.getRole() == null
                 || user.getNumberOfChildren() == null
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
@@ -104,8 +105,8 @@ public class AdminUserService {
                     .email(user.getEmail())
                     .group(user.getGroup())
                     .position(user.getPosition())
-                    .password(passwordEncoder.encode("jelszo"))
-                    .role(Roles.EMPLOYEE)
+                    .password(user.getPassword())
+                    .role(user.getRole())
                     .numberOfChildren(user.getNumberOfChildren())
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())
                     .build();
