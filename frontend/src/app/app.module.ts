@@ -50,9 +50,11 @@ import { GroupIndexComponent } from './components/admin/group-index/group-index.
 import { AdminAbsencesIndexComponent } from "./components/admin/absences-index/admin-absences-index.component";
 import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { CreateUserComponent } from './modals/create-user/create-user.component';
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     GroupIndexComponent,
+    CreateUserComponent,
     AbsencesCreateComponent,
     UserAbsenceIndexComponent
   ],
@@ -112,6 +115,6 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
 })
 export class AppModule { }

@@ -8,7 +8,7 @@ import { ApiCommunicationService } from '../services/ApiCommunication.service';
   providedIn: 'root'
 })
 
-export class GroupResolverService implements Resolve<Group[]> {
+export class GroupResolver implements Resolve<Group[]> {
 
   constructor(private http: HttpClient, private api: ApiCommunicationService) { }
 
