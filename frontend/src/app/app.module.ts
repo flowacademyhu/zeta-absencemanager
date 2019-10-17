@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule} from '@angular/material/menu';
 import { NgModule } from '@angular/core';
 import { MatPaginatorModule } from '@angular/material';
-
+import { EmployeeProfileEditComponent } from './components/employee/employee-profile-edit/employee-profile-edit.component';
+import { userprofileupdateresolver } from 'src/app/userprofileupdateresolver';
 import {
   HttpClientModule,
   HttpInterceptor,
@@ -66,7 +67,8 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     AbsencesCreateComponent,
-    UserAbsenceIndexComponent
+    UserAbsenceIndexComponent, 
+    EmployeeProfileEditComponent
   ],
   imports: [
     BrowserModule,
@@ -96,11 +98,13 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     MatSelectModule
   ],
   providers: [
+    userprofileupdateresolver,
     UserResolver,
     EmployeeService,
     SessionService,
     ApiCommunicationService,
     UserService,
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

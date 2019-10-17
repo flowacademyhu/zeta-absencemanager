@@ -9,6 +9,7 @@ import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-
 import { UserResolver } from './UserResolver';
 
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { userprofileupdateresolver } from './userprofileupdateresolver';
 
 
 const routes: Routes = [
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
 
   { path: 'admin/user-index', component: AdminUserShowComponent },
-  { path: 'employee/employeeedit', component: EmployeeProfileEditComponent },
+  { path: 'employee/employeeedit', component: EmployeeProfileEditComponent, resolve:  { user: userprofileupdateresolver} },
 
 
 
