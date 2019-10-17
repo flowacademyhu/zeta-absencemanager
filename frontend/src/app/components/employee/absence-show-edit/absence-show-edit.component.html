@@ -1,11 +1,15 @@
-<h2 mat-dialog-title align="center">Create new absence</h2>
+<h2 mat-dialog-title align="center">Show absence</h2>
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
   (ngSubmit)="OnSubmit(createAbsenceForm.value)"
 >
   <mat-dialog-content>
-    <p *ngIf="!update">Type: {{ absence.type }}</p>
+    <div class="showData">
+      <p *ngIf="!update">Type:</p>
+      <p *ngIf="!update">{{ absence.type }}</p>
+    </div>
+
     <mat-form-field *ngIf="update">
       <mat-label>Type</mat-label>
       <mat-select formControlName="type">
@@ -15,7 +19,10 @@
       </mat-select>
     </mat-form-field>
 
-    <p *ngIf="!update">Summary: {{ absence.summary }}</p>
+    <div class="showData">
+      <p *ngIf="!update">Summary:</p>
+      <p *ngIf="!update">{{ absence.summary }}</p>
+    </div>
     <mat-form-field *ngIf="update">
       <input
         matInput
@@ -26,9 +33,10 @@
       />
     </mat-form-field>
 
-    <p *ngIf="!update">
-      Start of absence: {{ absence.begin.toISOString().substring(0, 10) }}
-    </p>
+    <div class="showData">
+      <p *ngIf="!update">Start of absence:</p>
+      <p *ngIf="!update">{{ absence.begin | date: "yyyy - MM - dd" }}</p>
+    </div>
     <mat-form-field *ngIf="update">
       <input
         matInput
@@ -46,9 +54,10 @@
       <mat-datepicker #pickerStart></mat-datepicker>
     </mat-form-field>
 
-    <p *ngIf="!update">
-      End of absence: {{ absence.end.toISOString().substring(0, 10) }}
-    </p>
+    <div class="showData">
+      <p *ngIf="!update">End of absence:</p>
+      <p *ngIf="!update">{{ absence.end | date: "yyyy - MM - dd" }}</p>
+    </div>
     <mat-form-field *ngIf="update">
       <input
         matInput

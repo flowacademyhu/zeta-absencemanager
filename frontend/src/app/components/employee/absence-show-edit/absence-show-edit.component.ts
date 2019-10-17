@@ -3,6 +3,7 @@ import { ApiCommunicationService } from "src/app/services/ApiCommunication.servi
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { FormGroup, FormControl } from "@angular/forms";
 import { AbsenceType, Absence } from "src/app/models/Absence.model";
+import { ActivatedRoute, Params } from "@angular/router";
 
 @Component({
   selector: "app-absence-show-edit",
@@ -13,23 +14,25 @@ export class AbsenceShowEditComponent implements OnInit {
   private createAbsenceForm: FormGroup;
   private types;
   private error: string;
-  private absence: Absence = new Absence(
-    AbsenceType.ABSENCE,
+  private absence: Absence;
+  /*private absence: Absence = new Absence(
+    <AbsenceType>"ABSENCE",
     "valami",
     new Date(2019, 10, 13),
     new Date(2019, 10, 17)
-  );
+  );*/
   private update: boolean = false;
-  private message: string = "Modify";
+  private message = "Modify";
 
   constructor(
+    private route: ActivatedRoute,
     private api: ApiCommunicationService,
     private dialogRef: MatDialogRef<AbsenceShowEditComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   ngOnInit() {
-    /*this.route.params.subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       this.api
         .absence()
         .getAbsence(params.id)
@@ -42,7 +45,7 @@ export class AbsenceShowEditComponent implements OnInit {
             this.error = err.error.message;
           }
         );
-    });*/
+    });
     this.types = Absence.enumSelector(AbsenceType);
     this.createAbsenceForm = new FormGroup({
       type: new FormControl(this.absence.type),
@@ -61,7 +64,7 @@ export class AbsenceShowEditComponent implements OnInit {
           (this.absence.summary = createAbsenceFormValue.summary),
           (this.absence.begin = createAbsenceFormValue.start),
           (this.absence.end = createAbsenceFormValue.end);
-        /*this.api
+        this.api
           .absence()
           .updateAbsence(this.absence.id, this.absence)
           .subscribe(
@@ -70,7 +73,6 @@ export class AbsenceShowEditComponent implements OnInit {
               this.error = err.error.message;
             }
           );
-          */
       }
     } else {
       this.update = !this.update;
