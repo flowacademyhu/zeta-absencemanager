@@ -37,6 +37,7 @@ public class Group {
             name = "leader_user_group",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @JsonSerialize(using = UserSerializer.class)
     private List<User> leaders;
 
 
