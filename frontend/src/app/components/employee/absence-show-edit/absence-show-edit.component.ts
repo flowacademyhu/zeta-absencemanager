@@ -69,7 +69,7 @@ export class AbsenceShowEditComponent implements OnInit {
           (this.absence.summary = createAbsenceFormValue.summary),
           (this.absence.begin = createAbsenceFormValue.start),
           (this.absence.end = createAbsenceFormValue.end);
-        /* this.api
+        this.api
           .absence()
           .updateAbsence(this.absence.id, this.absence)
           .subscribe(
@@ -77,7 +77,7 @@ export class AbsenceShowEditComponent implements OnInit {
             err => {
               this.error = err.error.message;
             }
-          ); */
+          );
       }
     } else {
       this.update = !this.update;
