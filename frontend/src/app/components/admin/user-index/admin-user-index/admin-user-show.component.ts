@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-user-show',
-  templateUrl: './admin-user-show.component.html',
+  templateUrl: './admin-user-show.component.html',  
   styleUrls: ['./admin-user-show.component.css']
 })
 export class AdminUserShowComponent implements OnInit {
