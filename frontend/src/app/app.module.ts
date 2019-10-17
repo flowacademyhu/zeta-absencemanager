@@ -48,6 +48,7 @@ import { SessionService } from "./services/session.service";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { ApiCommunicationService } from "./services/ApiCommunication.service";
 import { UserService } from "./services/user.service";
+import { GroupCreateComponent } from './components/admin/group-create/group-create.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { UserService } from "./services/user.service";
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
-    AbsencesCreateComponent
+    AbsencesCreateComponent,
+    GroupCreateComponent
   ],
   imports: [
     BrowserModule,
