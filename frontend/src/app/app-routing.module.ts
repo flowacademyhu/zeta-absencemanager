@@ -10,14 +10,15 @@ import { UserResolver } from './UserResolver';
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { CreateUserComponent } from './modals/create-user/create-user.component';
 import { GroupResolver } from './resolvers/GroupResolver';
+import { AdminAbsenceResolver } from './components/resolvers/AdminAbsenceResolver';
+
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
   { path: 'admin/user-index', component: AdminUserShowComponent },
   { path: 'admin/group/index', component: GroupIndexComponent, resolve: { groupResolver: GroupResolver } },
-  { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
-  { path: 'admin/user-index', component: AdminUserShowComponent },
+  { path: "admin/absence-index", component: AdminAbsencesIndexComponent, resolve: {adminAbsenceList: AdminAbsenceResolver} },
   { path: "user/absence-index", component: UserAbsenceIndexComponent },
   { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent, resolve: { userList: UserResolver } },
   { path: "employee/absence-create", component: AbsencesCreateComponent }

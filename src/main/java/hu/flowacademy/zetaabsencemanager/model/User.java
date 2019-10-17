@@ -74,6 +74,16 @@ public class User {
     private List<Absence> absences;
 
     @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private LocalDateTime updatedAt;
+
+    @Column
     private LocalDateTime deletedAt;
+
+    // TODO User updatedBy;
+
+    // TODO User deletedBy
 
 }
