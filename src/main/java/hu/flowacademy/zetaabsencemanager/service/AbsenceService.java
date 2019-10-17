@@ -7,8 +7,6 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,7 +33,7 @@ public class AbsenceService {
 
     public Absence findOne(@NotNull Long id) {
         Absence absence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
-        if (absence.getReporter().getId() != userService.getCurrentUser().getId()) {
+        if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
         }
         return absence;
@@ -61,7 +59,7 @@ public class AbsenceService {
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        if (absence.getReporter().getId() != userService.getCurrentUser().getId()
+        if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())
                 || absence.getCreatedAt() == null
                 || absence.getType() == null
                 || absence.getBegin() == null
