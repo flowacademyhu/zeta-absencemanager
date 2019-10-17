@@ -19,26 +19,26 @@
     <mat-form-field>
         <mat-label>Parent Group</mat-label>
         <mat-select formControlName="group">
-          <mat-option *ngFor="let group of groups" [value]="group.value">
-            {{ group.name group.id }}
+          <mat-option *ngFor="let group of groups" [value]="group.name">
+            {{ group.id }} {{ group.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Leaders</mat-label>
-        <mat-select formControlName="user">
-          <mat-option *ngFor="let user of users" [value]="user.value">
-            {{ user.firstname user.lastname }}
+        <mat-select formControlName="leader">
+          <mat-option *ngFor="let leader of leaders" [value]="leader.value">
+            {{ leader.firstname }} {{ leader.lastname }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Employees</mat-label>
-        <mat-select formControlName="user">
-          <mat-option *ngFor="let user of users" [value]="user.value">
-            {{ user.firstname user.lastname}}
+        <mat-select formControlName="employee">
+          <mat-option *ngFor="let employee of employees" [value]="employee.value">
+            {{ employee.firstname }} {{ employee.lastname }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -46,7 +46,7 @@
     <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button [disabled]="!createAbsenceForm.valid">
+    <button mat-raised-button [disabled]="!createGroupForm.valid">
       Create
     </button>
     <button mat-raised-button color="warn" (click)="onCancel()">

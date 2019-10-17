@@ -21,7 +21,7 @@ export class GroupApiConnector extends AbstractApiConnector {
     return this.http.put(this.apiRoute + id, group, {});
   }
 
-  public deleteAbsence(id: number): Observable<any> {
+  public deleteGroup(id: number): Observable<any> {
     return this.http.delete(this.apiRoute + id);
   }
 }
