@@ -1,16 +1,19 @@
-<form class="example-form">
+<h2>Update personal datas</h2>
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="firstName" value= "" FormControl="firstName" >
+    <input matInput placeholder="firstName"  [(ngModel)]="name" formControlName="firstName" >
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="lastName" value="" FormControl="lastName" >
+    <input matInput placeholder="lastName" value="Lacc" formControlName="lastName" >
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="email" value="" FormControl="email">
+    <input matInput placeholder="email" value="emil" formControlName="email">
   </mat-form-field>
-
-  <button (click)=update()>update profile</button>
+  <div class="button">
+    <button id="button" type="submit" mat-button [disabled]="!profileForm.valid">Edit datas</button>
+  </div>
+  
 </form>
           
