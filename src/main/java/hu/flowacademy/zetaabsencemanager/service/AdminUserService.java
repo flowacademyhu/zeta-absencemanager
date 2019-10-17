@@ -30,15 +30,6 @@ public class AdminUserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
-        }
-        String email = auth.getName();
-        return userService.findByEmail(email);
-    }
-
     public User findByEmail(@NotNull String email) {
         return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
@@ -120,7 +111,7 @@ public class AdminUserService {
             modifyUser.setNumberOfChildren(user.getNumberOfChildren());
             modifyUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
             modifyUser.setUpdatedAt(LocalDateTime.now());
-            // TODO modifyUser.setUpdatedBy(getCurrentUser());
+            // TODO modifyUser.setUpdatedBy(userService.getCurrentUser());
             userRepository.save(user);
             return modifyUser;
         }
@@ -129,7 +120,7 @@ public class AdminUserService {
     public void delete(@NotNull Long id) {
         User mod = findOneUser(id);
         mod.setDeletedAt(LocalDateTime.now());
-        // TODO mod.setDeletedBy(getCurrentUser());
+        // TODO mod.setDeletedBy(userService.getCurrentUser());
         updateUser(id, mod);
     }
 }

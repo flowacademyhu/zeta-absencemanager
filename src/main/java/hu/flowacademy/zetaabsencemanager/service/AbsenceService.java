@@ -33,25 +33,16 @@ public class AbsenceService {
     @Autowired
     private UserService userService;
 
-    public User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
-        }
-        String email = auth.getName();
-        return userService.findByEmail(email);
-    }
-
     public Absence findOne(@NotNull Long id) {
         Absence absence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
-        if (absence.getReporter().getId() != getCurrentUser().getId()) {
+        if (absence.getReporter().getId() != userService.getCurrentUser().getId()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
         }
         return absence;
     }
 
     public List<Absence> findAll() {
-        return getCurrentUser().getAbsences();
+        return userService.getCurrentUser().getAbsences();
     }
 
     public Absence create(@NotNull Absence absence) {
@@ -60,9 +51,9 @@ public class AbsenceService {
                 absence.getEnd() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        absence.setReporter(getCurrentUser());
+        absence.setReporter(userService.getCurrentUser());
         absence.setCreatedAt(LocalDateTime.now());
-        absence.setCreatedBy(getCurrentUser());
+        absence.setCreatedBy(userService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
         return absenceRepository.save(absence);
@@ -70,7 +61,7 @@ public class AbsenceService {
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        if (absence.getReporter().getId() != getCurrentUser().getId()
+        if (absence.getReporter().getId() != userService.getCurrentUser().getId()
                 || absence.getCreatedAt() == null
                 || absence.getType() == null
                 || absence.getBegin() == null
@@ -88,7 +79,7 @@ public class AbsenceService {
         modifyAbsence.setAssignee(absence.getAssignee());
         modifyAbsence.setStatus(absence.getStatus());
         modifyAbsence.setUpdatedAt(LocalDateTime.now());
-        // TODO modifyAbsence.setUpdatedBy(getCurrentUser())
+        // TODO modifyAbsence.setUpdatedBy(userService.getCurrentUser())
         absenceRepository.save(modifyAbsence);
         return modifyAbsence;
     }
@@ -96,7 +87,7 @@ public class AbsenceService {
     public void delete(@NotNull Long id) {
         Absence deleted = findOne(id);
         deleted.setDeletedAt(LocalDateTime.now());
-        // TODO modifyAbsence.setDeletedBy(getCurrentUser())
+        // TODO modifyAbsence.setDeletedBy(userService.getCurrentUser())
         update(id, deleted);
     }
 }

@@ -26,15 +26,6 @@ public class AdminAbsenceService {
     @Autowired
     private UserService userService;
 
-    public User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
-        }
-        String email = auth.getName();
-        return userService.findByEmail(email);
-    }
-
     public List<Absence> findAllAbsence() {
         return this.absenceRepository.findAll();
     }
@@ -48,7 +39,7 @@ public class AdminAbsenceService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
         absence.setCreatedAt(LocalDateTime.now());
-        absence.setCreatedBy(getCurrentUser());
+        absence.setCreatedBy(userService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
         return absenceRepository.save(absence);
@@ -73,7 +64,7 @@ public class AdminAbsenceService {
         modifyAbsence.setAssignee(absence.getAssignee());
         modifyAbsence.setStatus(absence.getStatus());
         modifyAbsence.setUpdatedAt(LocalDateTime.now());
-        // TODO modifyAbsence.setUpdatedBy(getCurrentUser())
+        // TODO modifyAbsence.setUpdatedBy(userService.getCurrentUser())
         absenceRepository.save(modifyAbsence);
         return modifyAbsence;
     }
@@ -81,7 +72,7 @@ public class AdminAbsenceService {
     public void delete(@NotNull Long id) {
         Absence deleted = findOne(id);
         deleted.setDeletedAt(LocalDateTime.now());
-        // TODO modifyAbsence.setDeletedBy(getCurrentUser())
+        // TODO modifyAbsence.setDeletedBy(userService.getCurrentUser())
         update(id, deleted);
     }
 
