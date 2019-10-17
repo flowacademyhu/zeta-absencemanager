@@ -28,6 +28,7 @@ import { UserAbsenceIndexComponent } from './components/employee/emp-absence-ind
 import { AdminAbsencesIndexComponent } from './components/admin/absences-index/admin-absences-index.component';
 import { ApiCommunicationService } from './services/ApiCommunication.service';
 import { UserService } from './services/user.service';
+import { UserResolver } from '../app/UserResolver';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { UserService } from './services/user.service';
 
   ],
   providers: [
+    UserResolver,
     EmployeeService,
     SessionService,
     ApiCommunicationService,

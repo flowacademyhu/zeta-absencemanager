@@ -10,7 +10,7 @@ import { ApiCommunicationService } from './services/ApiCommunication.service';
 
 
 @Injectable()
-export class BasicResolver implements Resolve<User[]>{
+export class UserResolver implements Resolve<User[]>{
 
     constructor(private api: ApiCommunicationService){}
 
