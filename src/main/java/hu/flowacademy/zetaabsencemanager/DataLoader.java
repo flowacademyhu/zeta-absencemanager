@@ -1,8 +1,6 @@
 package hu.flowacademy.zetaabsencemanager;
 
-import hu.flowacademy.zetaabsencemanager.model.Group;
-import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.*;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
@@ -108,8 +106,7 @@ public class DataLoader implements CommandLineRunner {
         this.groupRepository.save(group8);
 
 
-
-        this.userRepository.save(User.builder()
+        User admin = User.builder()
                 .email("admin@admin.com")
                 .password(passwordEncoder.encode("admin")) // passwordEncoder.encode("admin")
                 .firstName("admin")
@@ -123,11 +120,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(admin);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user1 = User.builder()
+                .email("user1@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -140,11 +137,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user1);
 
-        this.userRepository.save(User.builder()
-                .email("testuser1@user.com")
+        User user2 = User.builder()
+                .email("user2@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user1")
                 .lastName("user1")
@@ -157,11 +154,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user2);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user3 = User.builder()
+                .email("user3@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -174,11 +171,12 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user3);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+
+        User user4 = User.builder()
+                .email("user4@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -191,11 +189,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user4);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user5 = User.builder()
+                .email("user5@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -208,11 +206,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user5);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user6 = User.builder()
+                .email("user6@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -225,11 +223,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user6);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user7 = User.builder()
+                .email("user7@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -242,11 +240,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user7);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user8 = User.builder()
+                .email("user8@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -259,11 +257,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user8);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user9 = User.builder()
+                .email("user9@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -276,11 +274,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user9);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user10 = User.builder()
+                .email("user10@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -293,11 +291,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user10);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user11 = User.builder()
+                .email("user11@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -310,11 +308,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user11);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user12 = User.builder()
+                .email("user12@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -327,11 +325,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user12);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user13 = User.builder()
+                .email("user13@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -344,12 +342,12 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user13);
 
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user14 = User.builder()
+                .email("user14@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -362,11 +360,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user14);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user15 = User.builder()
+                .email("user15@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -379,11 +377,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user15);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user16 = User.builder()
+                .email("user16@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -396,12 +394,12 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user16);
 
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user17 = User.builder()
+                .email("user17@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -414,11 +412,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user17);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user18 = User.builder()
+                .email("user18@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -431,11 +429,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user18);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user19 = User.builder()
+                .email("user19@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -448,11 +446,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user19);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user20 = User.builder()
+                .email("user20@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -465,11 +463,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user20);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user21 = User.builder()
+                .email("user21@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -482,11 +480,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user21);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user22 = User.builder()
+                .email("user22@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -499,11 +497,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user22);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user23 = User.builder()
+                .email("user23@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -516,11 +514,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user23);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user24 = User.builder()
+                .email("user24@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -533,11 +531,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user24);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user25 = User.builder()
+                .email("user25@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -550,11 +548,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user25);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user26 = User.builder()
+                .email("user26@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -567,11 +565,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user26);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user27 = User.builder()
+                .email("user27@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -584,11 +582,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user27);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user28 = User.builder()
+                .email("user28@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -601,11 +599,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user28);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user29 = User.builder()
+                .email("user29@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -618,11 +616,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user29);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user30 = User.builder()
+                .email("user30@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -635,11 +633,11 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user30);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user31 = User.builder()
+                .email("user31@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -652,11 +650,12 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user31);
 
-        this.userRepository.save(User.builder()
-                .email("user@user.com")
+        User user32;
+        user32 = User.builder()
+                .email("user32@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
                 .firstName("user")
                 .lastName("user")
@@ -669,9 +668,42 @@ public class DataLoader implements CommandLineRunner {
                 .position("testposition")
                 .numberOfChildren(3)
                 .otherAbsenceEnt("none")
-                .build()
-        );
+                .build();
+        this.userRepository.save(user32);
+
+
+        Absence absence1 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 25))
+                .reporter(user32)
+                .type(Type.ABSENCE)
+                .build();
+        this.absenceRepository.save(absence1);
+
+        Absence absence2 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 25))
+                .reporter(user17)
+                .type(Type.NON_WORKING)
+                .build();
+        this.absenceRepository.save(absence2);
+
+
+        Absence absence3 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 25))
+                .reporter(user20)
+                .type(Type.CHILD_SICK_PAY)
+                .build();
+        this.absenceRepository.save(absence3);
+
+        Absence absence4 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 25))
+                .reporter(user13)
+                .type(Type.UNPAID_HOLIDAY)
+                .build();
+        this.absenceRepository.save(absence4);
+
     }
-
-
 }
