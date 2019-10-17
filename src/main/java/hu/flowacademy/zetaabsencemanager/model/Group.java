@@ -43,6 +43,12 @@ public class Group {
     private List<User> employees;
 
     @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private LocalDateTime updatedAt;
+
+    @Column
     private LocalDateTime deletedAt;
 
 }
