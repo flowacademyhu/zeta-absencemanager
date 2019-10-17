@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { User } from 'src/app/models/User.model';
 import { Group } from 'src/app/models/Group.model';
+import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class CreateUserComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CreateUserComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User, public fb: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: User, public fb: FormBuilder, private api : ApiCommunicationService) {
       this.createUserForm = new FormGroup({
         firstName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
         lastName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
@@ -28,14 +29,19 @@ export class CreateUserComponent implements OnInit {
         email: new FormControl('' , [Validators.required, Validators.email]),
         numberOfChildren: new FormControl('', [Validators.required]),
         otherAbsenceEnt: new FormControl(''),
-        group: new FormControl(/* [Validators.required] */)
+        group: new FormControl('', [Validators.required])
      });
 
     
     }
 
   ngOnInit() {
+    this.api.group().getGroups().subscribe(g => {
+      this.groups = g;
+      console.log(g);
+    })
     this.dialogRef.updateSize('25%', '90%');
   }
+
 
 }

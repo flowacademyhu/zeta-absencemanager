@@ -29,8 +29,6 @@ export class AdminUserShowComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.userData = result;
       this.userData.isOnTrial = true;
-      this.userData.group = new Group("GroupEGY");
-      this.userData.group.id = 1;
       this.dateConverter();
       console.log(this.userData);      
       this.api.user().createUser(this.userData).subscribe(u => console.log("created:" + u));
