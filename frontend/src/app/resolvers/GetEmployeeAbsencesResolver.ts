@@ -6,7 +6,7 @@ import { Absence } from "../models/Absence.model";
 import { ApiCommunicationService } from "../services/ApiCommunication.service";
 
 @Injectable()
-export class GetEmployeeAbsences implements Resolve<Absence[]> {
+export class GetEmployeeAbsencesResolver implements Resolve<Absence[]> {
   constructor(private api: ApiCommunicationService) {}
 
   resolve(
