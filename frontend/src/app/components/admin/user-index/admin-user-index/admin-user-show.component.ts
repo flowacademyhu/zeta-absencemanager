@@ -31,6 +31,7 @@ export class AdminUserShowComponent implements OnInit {
     dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.userData = result;
       this.userData.isOnTrial = true;
+      this.userData.role = "EMPLOYEE";
       this.dateConverter();
       console.log(this.userData);      
       this.api.user().createUser(this.userData).subscribe(u => console.log("created:" + u));
