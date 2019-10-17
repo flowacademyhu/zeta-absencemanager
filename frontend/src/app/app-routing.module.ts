@@ -9,13 +9,23 @@ import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-
 import { UserResolver } from "./UserResolver";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { GetEmployeeAbsences } from "./resolvers/GetEmployeeAbsences";
+import { CreateUserComponent } from "./modals/create-user/create-user.component";
+import { AdminAbsenceResolver } from "./components/resolvers/AdminAbsenceResolver";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
-  { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
+  {
+    path: "employee/absence-index",
+    component: EmpAbsencesIndexComponent,
+    resolve: { absences: GetEmployeeAbsences }
+  },
+  {
+    path: "admin/absence-index",
+    component: AdminAbsencesIndexComponent,
+    resolve: { adminAbsenceList: AdminAbsenceResolver }
+  },
   { path: "admin/user-index", component: AdminUserShowComponent },
-  { path: "employee/absence-index", component: EmpAbsencesIndexComponent },
   { path: "user/absence-index", component: UserAbsenceIndexComponent },
   {
     path: "admin/user-esd",
@@ -24,8 +34,7 @@ const routes: Routes = [
   },
   {
     path: "employee/absence-create",
-    component: AbsencesCreateComponent,
-    resolve: { absences: GetEmployeeAbsences }
+    component: AbsencesCreateComponent
   }
 ];
 

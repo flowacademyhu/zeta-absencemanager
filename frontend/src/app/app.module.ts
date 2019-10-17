@@ -50,6 +50,7 @@ import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-in
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { ApiCommunicationService } from "./services/ApiCommunication.service";
 import { UserService } from "./services/user.service";
+import { CreateUserComponent } from "./modals/create-user/create-user.component";
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
@@ -66,6 +67,7 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     EmpAbsencesIndexComponent,
+    CreateUserComponent,
     AbsencesCreateComponent,
     UserAbsenceIndexComponent
   ],
@@ -112,6 +114,6 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
 })
 export class AppModule {}

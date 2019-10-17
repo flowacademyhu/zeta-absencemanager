@@ -26,6 +26,12 @@ public class Absence {
     private LocalDateTime createdAt;
 
     @Column
+    private LocalDateTime updatedAt;
+
+    @Column
+    private LocalDateTime deletedAt;
+
+    @Column
     private Type type;
 
     @Column
@@ -38,9 +44,16 @@ public class Absence {
     private LocalDate end;
 
     @ManyToOne
+    private User createdBy;
+
+    // TODO User updatedBy;
+
+    // TODO User deletedBy
+
+    @ManyToOne
     private User reporter;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User assignee;
 

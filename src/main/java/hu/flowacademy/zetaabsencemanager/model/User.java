@@ -1,6 +1,8 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,15 +36,18 @@ public class User {
     private String password;
 
     @Column
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfBirth;
 
     @Column
     private String email;
 
     @Column
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfEntry;
 
     @Column
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfEndTrial;
 
     @Column
@@ -69,6 +74,16 @@ public class User {
     private List<Absence> absences;
 
     @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private LocalDateTime updatedAt;
+
+    @Column
     private LocalDateTime deletedAt;
+
+    // TODO User updatedBy;
+
+    // TODO User deletedBy
 
 }
