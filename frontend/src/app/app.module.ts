@@ -53,6 +53,7 @@ import { UserService } from "./services/user.service";
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+import { AbsenceShowEditComponent } from './components/employee/absence-show-edit/absence-show-edit.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     AbsencesCreateComponent,
-    UserAbsenceIndexComponent
+    UserAbsenceIndexComponent,
+    AbsenceShowEditComponent
   ],
   imports: [
     BrowserModule,
