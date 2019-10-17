@@ -42,14 +42,15 @@ import { FooterComponent } from "./components/footer/footer.component";
 import { ContentComponent } from "./components/content/content.component";
 import { AdminUserShowComponent } from "./components/admin/user-index/admin-user-index/admin-user-show.component";
 import { FilterComponent } from "./components/filter/filter.component";
-import { AdminAbsencesIndexComponent } from "./components/admin/absences-index/admin-absences-index.component";
-import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component";
 import { LoginComponent } from "./components/login/login.component";
 import { SessionService } from "./services/session.service";
-import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-index/emp-absences-index.component";
-import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { ApiCommunicationService } from "./services/ApiCommunication.service";
 import { UserService } from "./services/user.service";
+import { GroupIndexComponent } from "./components/admin/group-index/group-index.component";
+import { AdminAbsencesIndexComponent } from "./components/admin/absences-index/admin-absences-index.component";
+import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component";
+import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-index/emp-absences-index.component";
+import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { CreateUserComponent } from "./modals/create-user/create-user.component";
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
@@ -67,6 +68,7 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     EmpAbsencesIndexComponent,
+    GroupIndexComponent,
     CreateUserComponent,
     AbsencesCreateComponent,
     UserAbsenceIndexComponent
