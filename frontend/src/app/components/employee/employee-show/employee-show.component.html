@@ -13,19 +13,31 @@
                         <mat-list-item role="listitem">Other:</mat-list-item>
       </mat-list></div>
 
-  <div class="grid2"> <mat-list role="list">
-      <mat-list-item role="listitem">{{ name }}</mat-list-item>
-      <mat-list-item role="listitem">{{ dob }}</mat-list-item>
-      <mat-list-item role="listitem">{{ doe }}</mat-list-item>
-      <mat-list-item role="listitem">{{ trialexp }}</mat-list-item>
-      <mat-list-item role="listitem">{{ position }}</mat-list-item>
-      <mat-list-item role="listitem">{{ supervisor }}</mat-list-item>
-      <mat-list-item role="listitem">{{ numberOfChildren }}</mat-list-item>
-      <mat-list-item role="listitem">{{ other }}</mat-list-item>
+  <div class="grid2" *ngIf="user"> <mat-list role="list">
+      <mat-list-item role="listitem">{{ user.firstName }} {{ user.lastName }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.dateOfBirth }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.dateOfEntry }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.dateOfEndTrial }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.position }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.supervisor }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.numberOfChildren }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.otherAbsenceEnt }}</mat-list-item>
   </mat-list></div>
-
- 
-  
+<!--
+  public firstName: string;
+  public lastName: string;
+  public email: string;
+  public dateOfBirth: Date;
+  public dateOfEntry: Date;
+  public dateOfEndTrial: Date;
+  public isOnTrial: boolean;
+  public position: string;
+  public numberOfChildren: number;
+  public otherAbsenceEnt: string;
+  public group: Group;
+  public role: string;
+  public absences: Absence[];
+  -->
   <div class="grid3"> <mat-list role="list">
                         
     <mat-list-item role="listitem">Total:</mat-list-item>
