@@ -67,7 +67,6 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     AdminUserShowComponent,
     FilterComponent,
     CreateUserComponent,
-    AbsencesCreateComponent
     AbsencesCreateComponent,
     UserAbsenceIndexComponent
   ],
