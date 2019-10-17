@@ -35,6 +35,7 @@ export class AdminUserShowComponent implements OnInit {
       console.log(this.userData);      
       this.api.user().createUser(this.userData).subscribe(u => console.log("created:" + u));
     });
+    
   }
 
   
