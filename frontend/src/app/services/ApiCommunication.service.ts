@@ -5,11 +5,13 @@ import { HttpClient } from "@angular/common/http";
 import { AuthApiConnector } from "../models/connectors/AuthApiConnector";
 import { UserApiConnector } from "../models/connectors/UserApiConnector";
 import { AbsenceApiConnector } from "../models/connectors/AbsenceApiConnector";
+import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
 
 export enum Connector {
   AUTH = "Auth",
   USER = "User",
-  ABSENCE = "Absence"
+  ABSENCE = "Absence",
+  GROUP = "Group"
 }
 
 @Injectable()
@@ -31,6 +33,10 @@ export class ApiCommunicationService {
     this.registerConnector(
       Connector.ABSENCE,
       new AbsenceApiConnector(http, this.apiBaseUrl)
+    );
+    this.registerConnector(
+      Connector.GROUP,
+      new GroupApiConnector(http, this.apiBaseUrl)
     );
   }
 
@@ -63,5 +69,9 @@ export class ApiCommunicationService {
 
   public absence(): AbsenceApiConnector {
     return this.getConnector(Connector.ABSENCE) as AbsenceApiConnector;
+  }
+
+  public group(): GroupApiConnector {
+    return this.getConnector(Connector.GROUP) as GroupApiConnector;
   }
 }

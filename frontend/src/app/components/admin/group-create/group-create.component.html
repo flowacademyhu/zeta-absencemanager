@@ -1,8 +1,8 @@
 <h2 mat-dialog-title align="center">Create new Group</h2>
 <form
-  [formGroup]="createAbsenceForm"
+  [formGroup]="createGroupForm"
   autocomplete="off"
-  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+  (ngSubmit)="OnSubmit(createGroupForm.value)"
 >
   <mat-dialog-content>
     
@@ -18,48 +18,30 @@
 
     <mat-form-field>
         <mat-label>Parent Group</mat-label>
-        <mat-select formControlName="type">
-          <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.title }}
+        <mat-select formControlName="group">
+          <mat-option *ngFor="let group of groups" [value]="group.value">
+            {{ group.name group.id }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-    <mat-form-field>
-      <input
-        matInput
-        [matDatepicker]="pickerStart"
-        placeholder="Choose the start of the absence"
-        formControlName="start"
-        id="start"
-        readonly
-        required
-        (click)="pickerStart.open()"
-      />
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="pickerStart"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #pickerStart></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Leaders</mat-label>
+        <mat-select formControlName="user">
+          <mat-option *ngFor="let user of users" [value]="user.value">
+            {{ user.firstname user.lastname }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field>
-      <input
-        matInput
-        [matDatepicker]="pickerEnd"
-        placeholder="Choose the end of the absence"
-        formControlName="end"
-        id="end"
-        readonly
-        required
-        (click)="pickerEnd.open()"
-      />
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="pickerEnd"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #pickerEnd></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Employees</mat-label>
+        <mat-select formControlName="user">
+          <mat-option *ngFor="let user of users" [value]="user.value">
+            {{ user.firstname user.lastname}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
     <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>

@@ -1,12 +1,15 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Absence, AbsenceType } from "src/app/models/Absence.model";
+import { Group } from 'src/app/models/Group.model';
 import {
   MatDialog,
   MatDialogRef,
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
 import { ApiCommunicationService } from "src/app/services/ApiCommunication.service";
+import { GroupApiConnector } from 'src/app/models/connectors/GroupApiConnector';
+import { UserApiConnector } from 'src/app/models/connectors/UserApiConnector';
+
 
 @Component({
   selector: 'app-group-create',
@@ -14,8 +17,10 @@ import { ApiCommunicationService } from "src/app/services/ApiCommunication.servi
   styleUrls: ['./group-create.component.css']
 })
 export class GroupCreateComponent implements OnInit {
-  private createAbsenceForm: FormGroup;
-  private types;
+  private createGroupForm: FormGroup;
+  // private types;
+  private groups: any;
+  private users: any;
   private error: string;
 
   enumSelector(definition) {
@@ -27,31 +32,44 @@ export class GroupCreateComponent implements OnInit {
 
   constructor(
     private api: ApiCommunicationService,
+    private groupApi: GroupApiConnector,
+    private userApi: UserApiConnector,
     private dialogRef: MatDialogRef<GroupCreateComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   ngOnInit() {
-    this.types = this.enumSelector(AbsenceType);
-    this.createAbsenceForm = new FormGroup({
-      type: new FormControl("", Validators.required),
-      summary: new FormControl(""),
-      start: new FormControl("", Validators.required),
-      end: new FormControl("", Validators.required)
+    // this.types = this.enumSelector(AbsenceType);
+    this.groupApi.getGroups().subscribe(k => this.groups = k);
+    this.userApi.getUsers().subscribe(k => this.users = k)
+    this.createGroupForm = new FormGroup({
+      name: new FormControl("", Validators.required),
+      parentId: new FormControl(""),
+      leaders: new FormControl(""),
+      employees: new FormControl("")
     });
   }
 
-  public OnSubmit(createAbsenceFormValue): void {
-    if (this.createAbsenceForm.valid) {
-      let newAbsence = new Absence(
-        createAbsenceFormValue.type,
-        createAbsenceFormValue.summary,
-        createAbsenceFormValue.start,
-        createAbsenceFormValue.end
+  // Lehet, h nem jó!
+  private async getGroups() {
+    this.groupApi.getGroups().subscribe();
+  }
+
+  private async getUsers() {
+    this.userApi.getUsers().subscribe();
+  }
+
+  public OnSubmit(createGroupFormValue): void {
+    if (this.createGroupForm.valid) {
+      let newGroup = new Group(
+        createGroupFormValue.type,
+        createGroupFormValue.summary,
+        createGroupFormValue.start,
+        createGroupFormValue.end
       );
       this.api
-        .absence()
-        .createAbsence(newAbsence)
+        .group()
+        .createGroup(newGroup)
         .subscribe(
           data => {
             this.dialogRef.close();
