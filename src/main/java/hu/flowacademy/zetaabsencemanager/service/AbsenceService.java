@@ -2,22 +2,14 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
-import hu.flowacademy.zetaabsencemanager.model.Type;
-import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -54,6 +46,8 @@ public class AbsenceService {
         absence.setCreatedBy(userService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
+        /*userService.getCurrentUser().getAbsences().add(absence);
+        userService.updateUser(userService.getCurrentUser().getId(), userService.getCurrentUser());*/
         return absenceRepository.save(absence);
     }
 
