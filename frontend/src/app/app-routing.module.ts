@@ -8,11 +8,12 @@ import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-
 import { UserResolver } from './UserResolver';
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { CreateUserComponent } from './modals/create-user/create-user.component';
+import { AdminAbsenceResolver } from './components/resolvers/AdminAbsenceResolver';
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
-  { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
+  { path: "admin/absence-index", component: AdminAbsencesIndexComponent, resolve: {adminAbsenceList: AdminAbsenceResolver} },
   { path: 'admin/user-index', component: AdminUserShowComponent },
   { path: "user/absence-index", component: UserAbsenceIndexComponent },
   { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent, resolve: { userList: UserResolver }},
