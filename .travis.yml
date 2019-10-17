@@ -1,0 +1,15 @@
+jdk: openjdk11
+language: java
+jobs:
+  include:
+    - stage: "Testing backend"
+      name: "Running e2e tests"
+      script:
+        - "./mvnw clean test"
+#    - stage: "Run ng build"
+#      name: "Running ng build"
+#      script:
+#        - "ng build"
+#    - stage: deploy
+#      name: "Deployment"
+#      script: skip
