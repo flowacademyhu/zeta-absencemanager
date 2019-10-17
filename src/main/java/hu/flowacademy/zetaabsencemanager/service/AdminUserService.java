@@ -1,9 +1,12 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,9 @@ public class AdminUserService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
@@ -37,17 +43,48 @@ public class AdminUserService {
         return userRepository.findByIdAndDeletedAtNull(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
     }
 
-    public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id);
+    public User saveUser(@NotNull User user) {
         if (StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
-                || StringUtils.isEmpty(user.getPassword())
                 || user.getDateOfBirth() == null
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || user.getGroup() == null
+                || StringUtils.isEmpty(user.getPosition())
+                || user.getRole() == null
+                || user.getNumberOfChildren() == null
+        ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            User newUser = User.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .dateOfBirth(user.getDateOfBirth())
+                    .dateOfEntry(user.getDateOfEntry())
+                    .dateOfEndTrial(user.getDateOfEndTrial())
+                    .isOnTrial(user.getIsOnTrial())
+                    .email(user.getEmail())
+                    .group(user.getGroup())
+                    .position(user.getPosition())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .role(user.getRole())
+                    .numberOfChildren(user.getNumberOfChildren())
+                    .otherAbsenceEnt(user.getOtherAbsenceEnt())
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            userRepository.save(newUser);
+            return newUser;
+        }
+    }
+
+    public User updateUser(@NotNull Long id, @NotNull User user) {
+        User modifyUser = findOneUser(id);
+        if (StringUtils.isEmpty(user.getFirstName())
+                || StringUtils.isEmpty(user.getLastName())
+                || user.getDateOfBirth() == null
+                || StringUtils.isEmpty(user.getEmail())
+                || user.getDateOfEntry() == null
+                || user.getDateOfEndTrial() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -68,52 +105,17 @@ public class AdminUserService {
             modifyUser.setRole(user.getRole());
             modifyUser.setNumberOfChildren(user.getNumberOfChildren());
             modifyUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
+            modifyUser.setUpdatedAt(LocalDateTime.now());
+            // TODO modifyUser.setUpdatedBy(userService.getCurrentUser());
             userRepository.save(user);
             return modifyUser;
         }
-
     }
 
     public void delete(@NotNull Long id) {
         User mod = findOneUser(id);
         mod.setDeletedAt(LocalDateTime.now());
+        // TODO mod.setDeletedBy(userService.getCurrentUser());
         updateUser(id, mod);
     }
-
-    public User saveUser(@NotNull User user) {
-        if (StringUtils.isEmpty(user.getFirstName())
-                || StringUtils.isEmpty(user.getLastName())
-                || user.getDateOfBirth() == null
-                || StringUtils.isEmpty(user.getEmail())
-                || user.getDateOfEntry() == null
-                || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || user.getGroup() == null
-                || StringUtils.isEmpty(user.getPosition())
-                || user.getRole() == null
-                || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
-            User newUser = User.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .dateOfBirth(user.getDateOfBirth())
-                    .dateOfEntry(user.getDateOfEntry())
-                    .dateOfEndTrial(user.getDateOfEndTrial())
-                    .isOnTrial(user.getIsOnTrial())
-                    .email(user.getEmail())
-                    .group(user.getGroup())
-                    .position(user.getPosition())
-                    .password(passwordEncoder.encode(user.getPassword()))
-                    .role(user.getRole())
-                    .numberOfChildren(user.getNumberOfChildren())
-                    .otherAbsenceEnt(user.getOtherAbsenceEnt())
-                    .build();
-            userRepository.save(newUser);
-            return newUser;
-        }
-    }
-
 }

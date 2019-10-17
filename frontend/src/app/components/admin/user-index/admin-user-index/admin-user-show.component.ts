@@ -1,37 +1,70 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
-import { UserService } from 'src/app/services/user.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CreateUserComponent } from 'src/app/modals/create-user/create-user.component';
+import { User } from 'src/app/models/User.model';
+import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-export interface UserElement {
-  name: string;
-  dob: string;
-  position: string;
-  supervisor: string;
-  doe: string;
-  email: string;
-}
-
-const Data: UserElement[] = [
-  {name: 'employee', dob: '1990-10-11', position: 'developer', supervisor: 'ceo', doe: '2019-10-10', email: 'emp@samplemail.com'},
-  {name: 'employeenr2', dob: '1995-10-11', position: 'staff', supervisor: 'ceo', doe: '2018-10-10', email: 'employee@samplemail.com'}
-]
 
 @Component({
   selector: 'app-admin-user-show',
-  templateUrl: './admin-user-show.component.html',
+  templateUrl: './admin-user-show.component.html',  
   styleUrls: ['./admin-user-show.component.css']
 })
 export class AdminUserShowComponent implements OnInit {
-
   displayedColumns: string[] = ['name', 'dob', 'position', 'supervisor', 'doe', 'email'];
-  dataSource = new MatTableDataSource(Data); // --> filter
-  
+  dataSource; // --> filter
 
+  userData: User;
+  usersList: User[];
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private userService: UserService) { }
+  constructor(private api: ApiCommunicationService, public dialog: MatDialog) {}
+
+  createUser(): void {
+    const dialogRef = this.dialog.open(CreateUserComponent, {
+      data: {user: this.userData}
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+      this.userData = result;
+      this.userData.isOnTrial = true;
+      this.userData.role = "EMPLOYEE";
+      this.dateConverter();
+      console.log(this.userData);      
+      this.api.user().createUser(this.userData).subscribe(u => console.log("created:" + u));
+    });
+    
+  }
 
   ngOnInit() {
+    this.api.user().getUsers().subscribe(users => {
+      this.usersList = users;
+      this.dataSource = new MatTableDataSource(this.usersList);
+      console.log(this.usersList);
+    })
   }
   
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete(); 
+  }
+
+  private dateConverter() {
+    this.userData.dateOfEndTrial = (this.userData.dateOfEndTrial as Date).toISOString().split("T")[0].split("-");
+    this.userData.dateOfBirth = (this.userData.dateOfBirth as Date).toISOString().split("T")[0].split("-");
+    this.userData.dateOfEntry = (this.userData.dateOfEntry as Date).toISOString().split("T")[0].split("-"); 
+    for (let i = 0; i < 3; i++) {
+      this.userData.dateOfEntry[i] = parseInt(this.userData.dateOfEntry[i]);
+    }
+    for (let i = 0; i < 3; i++) {
+      this.userData.dateOfBirth[i] = parseInt(this.userData.dateOfBirth[i]);
+    }
+    for (let i = 0; i < 3; i++) {
+      this.userData.dateOfEndTrial[i] = parseInt(this.userData.dateOfEndTrial[i]);
+    }
+  }
   
 }
