@@ -24,6 +24,7 @@ export class EmpAbsencesIndexComponent implements OnInit {
     "status"
   ];
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
+  private _unsubscribe2$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];
 
   constructor(
@@ -51,13 +52,16 @@ export class EmpAbsencesIndexComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AbsencesCreateComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(data2 => {
-      this.api
-        .absence()
-        .getAbsences()
-        .subscribe(data => {
-          this.absences = data;
-        });
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe2$))
+      .subscribe(data2 => {
+        this.api
+          .absence()
+          .getAbsences()
+          .subscribe(data => {
+            this.absences = data;
+          });
+      });
   }
 }
