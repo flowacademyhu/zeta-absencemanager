@@ -104,7 +104,7 @@ public class AdminUserService {
                     .email(user.getEmail())
                     .group(user.getGroup())
                     .position(user.getPosition())
-                    .password(passwordEncoder.encode("jelszo"))
+                    .password(user.getPassword())
                     .role(user.getRole())
                     .numberOfChildren(user.getNumberOfChildren())
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())
