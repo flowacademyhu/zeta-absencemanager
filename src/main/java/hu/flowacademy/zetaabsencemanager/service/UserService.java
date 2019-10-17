@@ -61,6 +61,8 @@ public class UserService {
             modifyUser.setFirstName(user.getFirstName());
             modifyUser.setPassword(user.getPassword());
             modifyUser.setEmail(user.getEmail());
+            modifyUser.setUpdatedAt(LocalDateTime.now());
+            // TODO modifyUser.setUpdatedBy(getCurrentUser());
             userRepository.save(user);
             return modifyUser;
         }
@@ -68,9 +70,10 @@ public class UserService {
 
 
     public void delete(@NotNull Long id) {
-        User mod = findOneUser(id);
-        mod.setDeletedAt(LocalDateTime.now());
-        updateUser(id, mod);
+        User deleted = findOneUser(id);
+        deleted.setDeletedAt(LocalDateTime.now());
+        // TODO modifyUser.setDeletedBy(getCurrentUser())
+        updateUser(id, deleted);
     }
 
 }

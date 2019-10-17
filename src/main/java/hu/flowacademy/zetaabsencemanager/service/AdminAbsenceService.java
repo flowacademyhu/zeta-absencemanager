@@ -1,15 +1,24 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import hu.flowacademy.zetaabsencemanager.model.*;
+
+import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.*;
 
 @Service
@@ -20,10 +29,11 @@ public class AdminAbsenceService {
     private AbsenceRepository absenceRepository;
 
     @Autowired
-    private GroupRepository groupRepository;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private GroupRepository groupRepository;
+
 
     public Set<User> getEmployees(Group g, Set<User> employees) {
         employees.addAll(g.getLeaders());
@@ -67,6 +77,10 @@ public class AdminAbsenceService {
                 absence.getAssignee() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
+        absence.setCreatedAt(LocalDateTime.now());
+        absence.setCreatedBy(userService.getCurrentUser());
+        // TODO absence.setAssignee();
+        absence.setStatus(Status.OPEN);
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(absence.getReporter()))) {
             absence.setStatus(Status.OPEN);
@@ -78,20 +92,40 @@ public class AdminAbsenceService {
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
+        if (absence.getCreatedAt() == null
+                || absence.getType() == null
+                || absence.getBegin() == null
+                || absence.getEnd() == null
+                || absence.getCreatedBy() == null
+                || absence.getReporter() == null
+                || absence.getAssignee() == null
+                || absence.getStatus() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        }
         User current = userService.getCurrentUser();
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(modifyAbsence.getReporter()))) {
-            modifyAbsence.setAssignee(absence.getAssignee());
+            modifyAbsence.setType(absence.getType());
             modifyAbsence.setBegin(absence.getBegin());
             modifyAbsence.setEnd(absence.getEnd());
             modifyAbsence.setReporter(absence.getReporter());
+            modifyAbsence.setAssignee(absence.getAssignee());
             modifyAbsence.setStatus(absence.getStatus());
-            modifyAbsence.setType(absence.getType());
+            modifyAbsence.setUpdatedAt(LocalDateTime.now());
+            // TODO modifyAbsence.setUpdatedBy(userService.getCurrentUser())
             absenceRepository.save(modifyAbsence);
             return modifyAbsence;
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
         }
+            else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+            }
+        }
+
+    public void delete(@NotNull Long id) {
+        Absence deleted = findOne(id);
+        deleted.setDeletedAt(LocalDateTime.now());
+        // TODO modifyAbsence.setDeletedBy(userService.getCurrentUser())
+        update(id, deleted);
     }
 
 }
