@@ -10,4 +10,8 @@ export class UserService {
   getUsers(): Observable<any> {
     return this.api.user().getUsers();
   }
+
+  updateUser(id: number, user: any): Observable<any> {
+    return this.api.user().updateUser(id, user);
+  }
 }

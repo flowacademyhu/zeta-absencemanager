@@ -1,15 +1,15 @@
 <h2>Update personal datas</h2>
-<form [formGroup]="user"  (ngSubmit)="onSubmit()">
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="user.firstName"  [(ngModel)]="user.firstName" formControlName="user.firstName" >
+    <input matInput placeholder="firstName"  formControlName="firstName" >
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="user.lastName" value="Lacc" formControlName="user.lastName" >
+    <input matInput placeholder="lastName"  formControlName="lastName" >
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="email" value="emil" formControlName="email">
+    <input matInput placeholder="email"  formControlName="email">
   </mat-form-field>
   <div class="button">
     <button id="button" type="submit" mat-button [disabled]="!profileForm.valid">Edit datas</button>

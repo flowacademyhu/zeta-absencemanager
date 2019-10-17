@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UserService } from 'src/app/services/user.service';
 
 
 
@@ -15,21 +16,26 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class EmployeeProfileEditComponent implements OnInit {
   private _unsubscribe$: Subject<boolean> = new Subject();
-  public user: User = new User();
-  
-  
-
+  public user: User;
   
 
+  profileForm  = this.formbuild.group({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl(''),
+  });
+
   
-  constructor(private formbuild: FormBuilder, private route: ActivatedRoute) { }
+  constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.data
     .pipe(takeUntil(this._unsubscribe$))
     .subscribe((data: any) => {
       this.user = data.user;
-      console.log(this.user.firstName);
+      console.log(this.user);
+      this.profileForm.patchValue(this.user)
+      
     })
   }
 
@@ -40,12 +46,16 @@ export class EmployeeProfileEditComponent implements OnInit {
   }
 
   update() {
-    this.user = this.user
-   
+    this.userService.updateUser(this.user.id, this.profileForm.value)
+    .subscribe();
+    this.profileForm = this.profileForm
+    console.log(this.profileForm)
   }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    
+    console.warn(this.profileForm.value);
   }
+
+
 }
