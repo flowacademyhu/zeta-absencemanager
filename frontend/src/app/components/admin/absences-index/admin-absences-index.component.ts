@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Absence } from 'src/app/models/Absence.model';
 import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
 import { User } from '../../../models/User.model';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const MOCK_DATA: any[] = [
   {id: 1, begin: 1.0079, end: 'H', days: '3', type: 'absence', status: 'open', created_at: 1990-10-10, responsible: 'mockRes', reporter: 'Reporter', on_trial: true},
@@ -16,13 +19,19 @@ const MOCK_DATA: any[] = [
   // templateUrl: './admin-user-edit-destroy-show.component.html',
   
 export class AdminAbsencesIndexComponent implements OnInit {
+  private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   displayedColumns: string[] = ['id', 'begin', 'end', 'days', 'type', 'status', 'created_at', 'reporter', 'assignee'];
-  dataSource: Absence[];
+  absencesList: Absence[];
 
-  constructor(public api: ApiCommunicationService) { }
+  constructor(public api: ApiCommunicationService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.api.adminAbsence().getAbsences().subscribe(absences => {this.dataSource = absences; console.log(this.dataSource);});
+    this.route.data
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe((absences: any) => {
+        this.absencesList = absences.adminAbsenceList;
+        console.log(this.absencesList);
+      });
   }
 
 }

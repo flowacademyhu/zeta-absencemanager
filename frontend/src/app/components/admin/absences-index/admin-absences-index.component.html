@@ -1,9 +1,8 @@
 <div class="actionButton">
   <button mat-flat-button color="warn">PLACEHOLDER</button>
-  <button mat-flat-button color="warn">PLACEHOLDER</button>
 </div>
 
-<mat-table [dataSource]="dataSource" class="table-responsive mat-elevation-z8">
+<mat-table [dataSource]="absencesList" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
@@ -36,17 +35,17 @@
 
   <ng-container matColumnDef="created_at">
     <mat-header-cell *matHeaderCellDef> Created At </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.created_at }} </mat-cell>
+    <mat-cell *matCellDef="let absence"> {{ absence.createdAt }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="reporter">
     <mat-header-cell *matHeaderCellDef> Reporter </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.reporter }} </mat-cell>
+    <mat-cell *matCellDef="let absence"> {{ absence.reporter.firstName}} {{ absence.reporter.lastName}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="assignee">
     <mat-header-cell *matHeaderCellDef> Assignee </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.assignee }} </mat-cell>
+    <mat-cell *matCellDef="let absence"> {{ absence.assignee.firstName }} {{ absence.assignee.lastName }} </mat-cell>
   </ng-container>
 
 

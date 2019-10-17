@@ -40,7 +40,7 @@ public class Absence {
     @ManyToOne
     private User reporter;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User assignee;
 
