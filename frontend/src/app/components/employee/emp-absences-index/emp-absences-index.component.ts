@@ -5,6 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Absence } from "src/app/models/Absence.model";
+import { ApiCommunicationService } from "src/app/services/ApiCommunication.service";
 
 @Component({
   selector: "app-emp-absences-index",
@@ -25,7 +26,11 @@ export class EmpAbsencesIndexComponent implements OnInit {
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog) {}
+  constructor(
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private api: ApiCommunicationService
+  ) {}
 
   ngOnInit() {
     this.route.data
@@ -46,8 +51,13 @@ export class EmpAbsencesIndexComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AbsencesCreateComponent, dialogConfig);
 
-    dialogRef
-      .afterClosed()
-      .subscribe(data => console.log("Dialog output:", data));
+    dialogRef.afterClosed().subscribe(data2 => {
+      this.api
+        .absence()
+        .getAbsences()
+        .subscribe(data => {
+          this.absences = data;
+        });
+    });
   }
 }
