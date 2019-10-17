@@ -34,10 +34,6 @@ export class CreateUserComponent implements OnInit {
     
     }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   ngOnInit() {
     this.dialogRef.updateSize('25%', '90%');
   }
