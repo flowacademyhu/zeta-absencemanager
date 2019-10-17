@@ -42,7 +42,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ContentComponent } from './components/content/content.component';
 import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
 import { FilterComponent } from './components/filter/filter.component';
-import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { SessionService } from './services/session.service';
 import { ApiCommunicationService } from './services/ApiCommunication.service';

@@ -13,7 +13,6 @@ export class GroupResolverService implements Resolve<Group[]> {
   constructor(private http: HttpClient, private api: ApiCommunicationService) { }
 
   resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot): Group[] | import("rxjs").Observable<Group[]> | Promise<Group[]> {
-    console.log('Collected route params: ', route.params);
     return this.api.group().getGroups();
   }
 }

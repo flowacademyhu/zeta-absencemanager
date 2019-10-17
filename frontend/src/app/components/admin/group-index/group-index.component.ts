@@ -9,13 +9,12 @@ import { Group } from 'src/app/models/Group.model';
   styleUrls: ['./group-index.component.css']
 })
 export class GroupIndexComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees', 'modify'];
+  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees'];
   dataSource: any;
   error: string;
 
   constructor(private api: ApiCommunicationService, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.data.subscribe((data) => {
-      console.log(data);
       this.dataSource = data.groupResolver;
       this.dataSource.forEach(element => {
         if (element.parentId !== null) {
@@ -25,14 +24,11 @@ export class GroupIndexComponent implements OnInit {
             }
           });
         }
-        element.leaders = [{ name: "Kovács Béla" }, { name: "ASDasdasd Feri" }, { name: "Nagy Tibi" }];
       });
     }, (error) => {
       this.error = error;
     })
   }
 
-  ngOnInit() {
-    console.log("Page loaded.")
-  }
+  ngOnInit() { }
 }
