@@ -5,6 +5,7 @@ import { AbsencesIndexComponent } from "./components/admin/absences-index/absenc
 import { LoginComponent } from "./components/login/login.component";
 import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-index/emp-absences-index.component";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { GetEmployeeAbsences } from "./resolvers/GetEmployeeAbsences";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -12,7 +13,11 @@ const routes: Routes = [
   { path: "admin/absence-index", component: AbsencesIndexComponent },
   { path: "admin/user-index", component: AdminUserShowComponent },
   { path: "employee/absence-index", component: EmpAbsencesIndexComponent },
-  { path: "employee/absence-create", component: AbsencesCreateComponent }
+  {
+    path: "employee/absence-create",
+    component: AbsencesCreateComponent,
+    resolve: { absences: GetEmployeeAbsences }
+  }
 ];
 
 @NgModule({

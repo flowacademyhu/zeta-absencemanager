@@ -6,7 +6,7 @@
     PLACEHOLDER
   </button>
 </div>
-<mat-table [dataSource]="dataSource" class="table-responsive mat-elevation-z8">
+<mat-table [dataSource]="absences" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>

@@ -1,19 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { AbsencesIndexComponent } from "../../admin/absences-index/absences-index.component";
 import { AbsencesCreateComponent } from "../absences-create/absences-create.component";
-const MOCK_DATA: any[] = [
-  {
-    id: 1,
-    begin: 2019 - 10 - 15,
-    end: 2019 - 10 - 18,
-    days: "4",
-    type: "absence",
-    status: "open",
-    created_at: 1990 - 10 - 10,
-    summary: "Summary"
-  }
-];
+import { ActivatedRoute } from "@angular/router";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { Absence } from "src/app/models/Absence.model";
+
 @Component({
   selector: "app-emp-absences-index",
   templateUrl: "./emp-absences-index.component.html",
@@ -30,11 +22,18 @@ export class EmpAbsencesIndexComponent implements OnInit {
     "days",
     "status"
   ];
-  dataSource = MOCK_DATA;
+  private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
+  absences: Absence[];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(private route: ActivatedRoute, private dialog: MatDialog) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.data
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe((data: any) => {
+        this.absences = data.absences;
+      });
+  }
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
