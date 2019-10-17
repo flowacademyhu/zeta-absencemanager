@@ -36,7 +36,6 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./token.interceptor";
 
 //Own Components
-
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
@@ -50,9 +49,11 @@ import { SessionService } from "./services/session.service";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { ApiCommunicationService } from "./services/ApiCommunication.service";
 import { UserService } from "./services/user.service";
+import { CreateUserComponent } from './modals/create-user/create-user.component';
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+
 
 @NgModule({
   declarations: [
@@ -65,6 +66,8 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
+    CreateUserComponent,
+    AbsencesCreateComponent
     AbsencesCreateComponent,
     UserAbsenceIndexComponent
   ],
@@ -109,8 +112,8 @@ import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-ind
     { provide: MatDialogTitle, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: [] }
-  ],
+   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
 })
 export class AppModule {}
