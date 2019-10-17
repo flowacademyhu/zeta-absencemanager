@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,9 @@ public class Group {
     private Long id;
 
     @Column
+    private Long parentId;
+
+    @Column
     private String name;
 
     @ManyToMany
@@ -37,6 +41,9 @@ public class Group {
     @OneToMany(mappedBy = "group")
     @JsonIgnore
     private List<User> employees;
+
+    @Column
+    private LocalDateTime deletedAt;
 
 }
 
