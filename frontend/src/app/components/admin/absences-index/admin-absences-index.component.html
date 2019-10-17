@@ -10,12 +10,12 @@
 
   <ng-container matColumnDef="begin">
     <mat-header-cell *matHeaderCellDef> Begin </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.begin }} </mat-cell>
+    <mat-cell *matCellDef="let absence"> {{absence.begin[0]}}.{{absence.begin[1]}}.{{absence.begin[2]}}.</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="end">
     <mat-header-cell *matHeaderCellDef> End </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.end }} </mat-cell>
+    <mat-cell *matCellDef="let absence"> {{absence.end[0]}}.{{absence.end[1]}}.{{absence.end[2]}}.</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="days">

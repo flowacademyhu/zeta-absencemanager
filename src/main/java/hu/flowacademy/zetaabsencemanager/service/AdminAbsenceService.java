@@ -1,9 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import hu.flowacademy.zetaabsencemanager.model.Absence;
-import hu.flowacademy.zetaabsencemanager.model.Group;
-import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.*;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +69,7 @@ public class AdminAbsenceService {
         }
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(absence.getReporter()))) {
+            absence.setStatus(Status.OPEN);
             return absenceRepository.save(absence);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
