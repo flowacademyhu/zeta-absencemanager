@@ -50,6 +50,7 @@ public class AdminUserService {
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
+                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -70,7 +71,6 @@ public class AdminUserService {
                     .role(user.getRole())
                     .numberOfChildren(user.getNumberOfChildren())
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())
-                    .createdAt(LocalDateTime.now())
                     .build();
             userRepository.save(newUser);
             return newUser;
