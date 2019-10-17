@@ -7,6 +7,7 @@ import { UserAbsenceIndexComponent } from './components/employee/emp-absence-ind
 import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
 import { UserResolver } from './UserResolver';
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
+import { CreateUserComponent } from './modals/create-user/create-user.component';
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
