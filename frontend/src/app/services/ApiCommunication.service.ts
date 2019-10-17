@@ -1,15 +1,20 @@
-import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { AbstractApiConnector } from "../models/connectors/AbstractApiConnector";
-import { HttpClient } from "@angular/common/http";
-import { AuthApiConnector } from "../models/connectors/AuthApiConnector";
-import { UserApiConnector } from "../models/connectors/UserApiConnector";
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment'
+import { AbstractApiConnector } from '../models/connectors/AbstractApiConnector';
+import { HttpClient } from '@angular/common/http';
+import { AuthApiConnector } from '../models/connectors/AuthApiConnector';
+import { UserApiConnector } from '../models/connectors/UserApiConnector';
+import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
 import { AbsenceApiConnector } from "../models/connectors/AbsenceApiConnector";
+import { AdminAbsenceApiConnector } from '../models/connectors/AdminAbsenceApiConnector';
 
 export enum Connector {
   AUTH = "Auth",
   USER = "User",
-  ABSENCE = "Absence"
+  ABSENCE = "Absence",
+  GROUP = 'Group',
+  ADMIN_ABSENCE ="AdminAbsence"
+
 }
 
 @Injectable()
@@ -32,7 +37,18 @@ export class ApiCommunicationService {
       Connector.ABSENCE,
       new AbsenceApiConnector(http, this.apiBaseUrl)
     );
+    this.registerConnector(
+      Connector.GROUP,
+      new GroupApiConnector(http, this.apiBaseUrl)
+      );
+    this.registerConnector(
+      Connector.ADMIN_ABSENCE,
+      new AdminAbsenceApiConnector(http, this.apiBaseUrl)
+    );
   }
+
+
+
 
   private registerConnector(id: Connector, connector: AbstractApiConnector) {
     if (this.connectors.has(id)) {
@@ -61,7 +77,15 @@ export class ApiCommunicationService {
     return this.getConnector(Connector.USER) as UserApiConnector;
   }
 
+  public group(): GroupApiConnector {
+    return this.getConnector(Connector.GROUP) as GroupApiConnector;
+  }
+
   public absence(): AbsenceApiConnector {
     return this.getConnector(Connector.ABSENCE) as AbsenceApiConnector;
+  }
+
+  public adminAbsence(): AdminAbsenceApiConnector {
+    return this.getConnector(Connector.ADMIN_ABSENCE) as AdminAbsenceApiConnector;
   }
 }
