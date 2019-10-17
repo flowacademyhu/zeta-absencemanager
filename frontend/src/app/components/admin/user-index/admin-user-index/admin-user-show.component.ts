@@ -4,7 +4,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialo
 import { CreateUserComponent } from 'src/app/modals/create-user/create-user.component';
 import { User } from 'src/app/models/User.model';
 import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
-import { Group } from 'src/app/models/Group.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class AdminUserShowComponent implements OnInit {
 
   userData: User;
   usersList: User[];
+  private unsubscribe$ = new Subject<void>();
 
   constructor(private api: ApiCommunicationService, public dialog: MatDialog) {}
 
@@ -26,7 +28,7 @@ export class AdminUserShowComponent implements OnInit {
       data: {user: this.userData}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.userData = result;
       this.userData.isOnTrial = true;
       this.dateConverter();
@@ -36,8 +38,6 @@ export class AdminUserShowComponent implements OnInit {
     
   }
 
-  
-
   ngOnInit() {
     this.api.user().getUsers().subscribe(users => {
       this.usersList = users;
@@ -46,6 +46,10 @@ export class AdminUserShowComponent implements OnInit {
     })
   }
   
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete(); 
+  }
 
   private dateConverter() {
     this.userData.dateOfEndTrial = (this.userData.dateOfEndTrial as Date).toISOString().split("T")[0].split("-");
