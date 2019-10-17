@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
+import { ActivatedRoute } from '@angular/router';
+import { Group } from 'src/app/models/Group.model';
 
 @Component({
   selector: 'app-group-index',
@@ -7,16 +9,14 @@ import { ApiCommunicationService } from 'src/app/services/ApiCommunication.servi
   styleUrls: ['./group-index.component.css']
 })
 export class GroupIndexComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'parentId', 'parent', 'leaders', 'employees'];
+  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees'];
   dataSource: any;
   error: string;
 
-  constructor(private apiCommunicationService: ApiCommunicationService) { }
-
-  ngOnInit() {
-    this.apiCommunicationService.group().getGroups().subscribe((data) => {
+  constructor(private api: ApiCommunicationService, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.data.subscribe((data) => {
       console.log(data);
-      this.dataSource = data;
+      this.dataSource = data.groupResolver;
       this.dataSource.forEach(element => {
         if (element.parentId !== null) {
           this.dataSource.forEach(group => {
@@ -29,5 +29,9 @@ export class GroupIndexComponent implements OnInit {
     }, (error) => {
       this.error = error;
     })
+  }
+
+  ngOnInit() {
+    console.log("Page loaded.")
   }
 }

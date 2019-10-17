@@ -4,6 +4,7 @@ import { AdminUserShowComponent } from './components/admin/user-index/admin-user
 import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
+import { GroupResolverService } from './resolvers/group-resolver.service';
 
 
 const routes: Routes = [
@@ -11,12 +12,13 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "admin/absence-index", component: AbsencesIndexComponent },
   { path: 'admin/user-index', component: AdminUserShowComponent },
-  { path: 'admin/group/index', component: GroupIndexComponent }
+  { path: 'admin/group/index', component: GroupIndexComponent, resolve: { groupResolver: GroupResolverService } }
 ]
 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [GroupResolverService]
 })
 export class AppRoutingModule { }

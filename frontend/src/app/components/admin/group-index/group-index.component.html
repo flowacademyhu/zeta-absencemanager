@@ -14,11 +14,6 @@
         <mat-cell *matCellDef="let group"> {{ group.name }} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="parentId">
-        <mat-header-cell *matHeaderCellDef> ParentId </mat-header-cell>
-        <mat-cell *matCellDef="let group"> {{ group.parentId }} </mat-cell>
-    </ng-container>
-
     <ng-container matColumnDef="parent">
         <mat-header-cell *matHeaderCellDef> Parent </mat-header-cell>
         <mat-cell *matCellDef="let group"> {{ group.parent }} </mat-cell>
