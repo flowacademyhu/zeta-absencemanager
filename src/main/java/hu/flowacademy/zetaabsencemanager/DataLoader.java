@@ -722,6 +722,16 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.absenceRepository.save(absence4);
 
+        Absence absence5 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 31))
+                .reporter(admin)
+                .assignee(admin)
+                .createdAt(LocalDateTime.now())
+                .type(Type.ABSENCE)
+                .build();
+        this.absenceRepository.save(absence5);
+
         List<User> users=userRepository.findByDeletedAtNull();
         ListIterator<User> it=users.listIterator();
         while (it.hasNext()){
