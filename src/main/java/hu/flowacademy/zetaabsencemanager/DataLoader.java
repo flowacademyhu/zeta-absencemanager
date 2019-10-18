@@ -1,10 +1,6 @@
 package hu.flowacademy.zetaabsencemanager;
 
-import hu.flowacademy.zetaabsencemanager.model.Absence;
-import hu.flowacademy.zetaabsencemanager.model.Group;
-import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
-import hu.flowacademy.zetaabsencemanager.model.Type;
+import hu.flowacademy.zetaabsencemanager.model.*;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
@@ -688,6 +684,7 @@ public class DataLoader implements CommandLineRunner {
                 .createdAt(LocalDateTime.now())
                 .assignee(user28)
                 .type(Type.ABSENCE)
+                .status(Status.OPEN)
                 .build();
         this.absenceRepository.save(absence1);
 
@@ -698,6 +695,7 @@ public class DataLoader implements CommandLineRunner {
                 .assignee(user14)
                 .createdAt(LocalDateTime.now())
                 .type(Type.NON_WORKING)
+                .status(Status.OPEN)
                 .build();
         this.absenceRepository.save(absence2);
 
@@ -709,6 +707,7 @@ public class DataLoader implements CommandLineRunner {
                 .assignee(user17)
                 .createdAt(LocalDateTime.now())
                 .type(Type.CHILD_SICK_PAY)
+                .status(Status.OPEN)
                 .build();
         this.absenceRepository.save(absence3);
 
@@ -719,6 +718,7 @@ public class DataLoader implements CommandLineRunner {
                 .assignee(user9)
                 .createdAt(LocalDateTime.now())
                 .type(Type.UNPAID_HOLIDAY)
+                .status(Status.OPEN)
                 .build();
         this.absenceRepository.save(absence4);
 
@@ -728,6 +728,7 @@ public class DataLoader implements CommandLineRunner {
                 .reporter(admin)
                 .assignee(admin)
                 .createdAt(LocalDateTime.now())
+                .status(Status.OPEN)
                 .type(Type.ABSENCE)
                 .build();
         this.absenceRepository.save(absence5);
