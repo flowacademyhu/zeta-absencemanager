@@ -8,6 +8,7 @@ import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
@@ -18,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @Component
 @Transactional
@@ -27,6 +30,7 @@ public class DataLoader implements CommandLineRunner {
     private final AbsenceRepository absenceRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final GroupService groupService;
 
     @Autowired
     @Lazy
@@ -35,10 +39,11 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     public DataLoader(AbsenceRepository absenceRepository,
                       GroupRepository groupRepository,
-                      UserRepository userRepository) {
+                      UserRepository userRepository, GroupService groupService) {
         this.absenceRepository = absenceRepository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
+        this.groupService=groupService;
     }
 
     @Override
@@ -717,6 +722,21 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.absenceRepository.save(absence4);
 
+
+        List<User> users=userRepository.findByDeletedAtNull();
+        ListIterator<User> it=users.listIterator();
+        while (it.hasNext()){
+            User user = it.next();
+            List<User> leaders=new ArrayList<>();
+            if(user.getRole()==Roles.LEADER){
+                leaders.add(user);
+                List<User> actualLeader=new ArrayList<>();
+                actualLeader.add(user);
+                user.getGroup().setLeaders(actualLeader);
+                Group modified=user.getGroup();
+                groupService.updateGroup(user.getGroup().getId(), modified);
+            }
+        }
 
     }
 }
