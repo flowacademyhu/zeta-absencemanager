@@ -1,6 +1,8 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import hu.flowacademy.zetaabsencemanager.model.serializer.UserSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,11 +37,12 @@ public class Group {
             name = "leader_user_group",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @JsonSerialize(using = UserSerializer.class)
     private List<User> leaders;
 
 
     @OneToMany(mappedBy = "group")
-    @JsonIgnore
+    @JsonSerialize(using = UserSerializer.class)
     private List<User> employees;
 
     @Column

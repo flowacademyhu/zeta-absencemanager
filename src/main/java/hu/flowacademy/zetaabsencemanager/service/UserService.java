@@ -63,6 +63,7 @@ public class UserService {
             modifyUser.setEmail(user.getEmail());
             modifyUser.setUpdatedAt(LocalDateTime.now());
             // TODO modifyUser.setUpdatedBy(getCurrentUser());
+            //modifyUser.setAbsences(user.getAbsences());
             userRepository.save(user);
             return modifyUser;
         }

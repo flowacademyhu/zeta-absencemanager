@@ -2,22 +2,15 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
-import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,7 +33,8 @@ public class AbsenceService {
     }
 
     public List<Absence> findAll() {
-        return userService.getCurrentUser().getAbsences();
+        User current = userService.getCurrentUser();
+        return absenceRepository.findByReporterAndDeletedAtNull(current);
     }
 
     public Absence create(@NotNull Absence absence) {
@@ -54,20 +48,23 @@ public class AbsenceService {
         absence.setCreatedBy(userService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
+        /*userService.getCurrentUser().getAbsences().add(absence);
+        userService.updateUser(userService.getCurrentUser().getId(), userService.getCurrentUser());*/
         return absenceRepository.save(absence);
     }
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
         if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())
-                || absence.getCreatedAt() == null
+                //|| absence.getCreatedAt() == null
                 || absence.getType() == null
                 || absence.getBegin() == null
-                || absence.getEnd() == null
-                || absence.getCreatedBy() == null
-                || absence.getReporter() == null
-                || absence.getAssignee() == null
-                || absence.getStatus() == null) {
+                || absence.getEnd() == null)
+        //|| absence.getCreatedBy() == null
+        //|| absence.getReporter() == null
+        //|| absence.getAssignee() == null
+        //|| absence.getStatus() == null) {
+        {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found or the submitted arguments are invalid.");
         }
         modifyAbsence.setType(absence.getType());

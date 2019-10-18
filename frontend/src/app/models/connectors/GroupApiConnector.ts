@@ -1,27 +1,28 @@
-import { AbstractApiConnector } from "./AbstractApiConnector";
-import { Observable } from "rxjs";
+import { AbstractApiConnector } from './AbstractApiConnector';
+import { Observable } from 'rxjs';
 import { Group } from '../Group.model';
 
 export class GroupApiConnector extends AbstractApiConnector {
-  protected apiRoute: string = this.apiBaseUrl + "admin/group";
 
-  public getGroup(id: number): Observable<any> {
-    return this.http.get(this.apiRoute + id);
-  }
+    protected apiRoute: string = this.apiBaseUrl + 'admin/group/';
 
-  public getGroups(): Observable<any> {
-    return this.http.get(this.apiRoute);
-  }
+    public getGroup(id: number): Observable<Group> {
+        return this.http.get(this.apiRoute + id) as Observable<Group>;
+    }
 
-  public createGroup(group: Group): Observable<any> {
-    return this.http.post(this.apiRoute, group);
-  }
+    public getGroups(): Observable<Group[]> {
+        return this.http.get(this.apiRoute) as Observable<Group[]>;
+    }
 
-  public updateGroup(id: number, group: Group): Observable<any> {
-    return this.http.put(this.apiRoute + id, group, {});
-  }
+    public createGroup(group: Group): Observable<Group> {
+        return this.http.post(this.apiRoute, group) as Observable<Group>;
+    }
 
-  public deleteGroup(id: number): Observable<any> {
-    return this.http.delete(this.apiRoute + id);
-  }
+    public updateGroup(id: number, group: Group): Observable<Group> {
+        return this.http.put(this.apiRoute + id, group, {}) as Observable<Group>;
+    }
+
+    public deleteGroup(id: number): Observable<Group> {
+        return this.http.delete(this.apiRoute + id) as Observable<Group>;
+    }
 }
