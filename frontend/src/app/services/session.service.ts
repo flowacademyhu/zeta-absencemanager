@@ -22,7 +22,7 @@ export class SessionService {
 
   private _userData$: BehaviorSubject<User> = new BehaviorSubject(undefined);
   private _isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(this.hasToken());
-
+  
   
   constructor(private api: ApiCommunicationService, private router : Router) { }
 
@@ -33,6 +33,7 @@ export class SessionService {
       this.api.auth().getToken(username, password).subscribe((data : any) => {
         localStorage.setItem('token', data.access_token);
         this._isLoggedIn$.next(true);
+        this.api.employee().getCurrent().subscribe(d => this._userData$.next(d));
         this.router.navigate(["employee/absence-index"]);
         resolve();
       }, (error: HttpErrorResponse) => {
@@ -66,6 +67,9 @@ export class SessionService {
     });
   }
 
+  get userData(){
+    return this._userData$;
+  }
 
   public getUserData(): User {
     return this._userData$.getValue();

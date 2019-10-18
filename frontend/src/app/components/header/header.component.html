@@ -21,7 +21,7 @@
           </li>
 
           <li>
-            <a mat-button *ngIf="isLoggedIn$ | async" [matMenuTriggerFor]="menu"> Admin </a>
+            <a mat-button *ngIf="(this.user && this.user.role === 'ADMIN')" [matMenuTriggerFor]="menu"> Admin </a>
             <mat-menu #menu="matMenu">
               <button mat-menu-item [routerLink]="'admin/absence-index'">
                 Absences
