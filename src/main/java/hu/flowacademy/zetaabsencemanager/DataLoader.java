@@ -1,8 +1,10 @@
 package hu.flowacademy.zetaabsencemanager;
 
+import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
 
@@ -40,7 +43,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
 
         Group cLevel = Group.builder()
                 .employees(List.of())
@@ -127,10 +129,10 @@ public class DataLoader implements CommandLineRunner {
 
         User user1 = User.builder()
                 .email("user1@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
+                .password(passwordEncoder.encode("user"))
                 .firstName("user")
                 .lastName("user")
-                .role(Roles.EMPLOYEE)
+                .role(Roles.LEADER)
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
@@ -658,7 +660,7 @@ public class DataLoader implements CommandLineRunner {
         User user32;
         user32 = User.builder()
                 .email("user32@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
+                .password(passwordEncoder.encode("user"))
                 .firstName("user")
                 .lastName("user")
                 .role(Roles.EMPLOYEE)
@@ -678,6 +680,8 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
                 .reporter(user32)
+                .createdAt(LocalDateTime.now())
+                .assignee(user28)
                 .type(Type.ABSENCE)
                 .build();
         this.absenceRepository.save(absence1);
@@ -685,7 +689,9 @@ public class DataLoader implements CommandLineRunner {
         Absence absence2 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
-                .reporter(user17)
+                .reporter(user16)
+                .assignee(user14)
+                .createdAt(LocalDateTime.now())
                 .type(Type.NON_WORKING)
                 .build();
         this.absenceRepository.save(absence2);
@@ -694,7 +700,9 @@ public class DataLoader implements CommandLineRunner {
         Absence absence3 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
-                .reporter(user20)
+                .reporter(user19)
+                .assignee(user17)
+                .createdAt(LocalDateTime.now())
                 .type(Type.CHILD_SICK_PAY)
                 .build();
         this.absenceRepository.save(absence3);
@@ -703,9 +711,12 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
                 .reporter(user13)
+                .assignee(user9)
+                .createdAt(LocalDateTime.now())
                 .type(Type.UNPAID_HOLIDAY)
                 .build();
         this.absenceRepository.save(absence4);
+
 
     }
 }
