@@ -11,7 +11,6 @@ import { AbsencesCreateComponent } from "./components/employee/absences-create/a
 import { GetEmployeeAbsencesResolver } from "./resolvers/GetEmployeeAbsencesResolver";
 import { AdminAbsenceResolver } from "./components/resolvers/AdminAbsenceResolver";
 import { GroupIndexComponent } from "./components/admin/group-index/group-index.component";
-import { CreateUserComponent } from "./modals/create-user/create-user.component";
 import { GroupResolver } from "./resolvers/GroupResolver";
 import { AbsenceShowEditComponent } from "./components/employee/absence-show-edit/absence-show-edit.component";
 
@@ -53,6 +52,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [GroupResolver, UserResolver, GetEmployeeAbsencesResolver]
+  providers: [GroupResolver, UserResolver, GetEmployeeAbsencesResolver, AdminAbsenceResolver]
 })
 export class AppRoutingModule {}
