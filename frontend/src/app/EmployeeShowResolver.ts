@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
 import { Resolve } from '@angular/router';
-
 import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { User } from './models/User.model';
@@ -9,7 +7,7 @@ import { ApiCommunicationService } from './services/ApiCommunication.servic
 
 
 @Injectable()
-export class employeeshowresolver implements Resolve<User>{
+export class EmployeeShowResolver implements Resolve<User>{
 
     constructor(private api: ApiCommunicationService){}
 

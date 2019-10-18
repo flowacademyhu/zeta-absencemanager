@@ -42,6 +42,21 @@ export class AbsencesCreateComponent implements OnInit {
         createAbsenceFormValue.start,
         createAbsenceFormValue.end
       );
+      newAbsence.begin = (newAbsence.begin as Date)
+        .toISOString()
+        .split("T")[0]
+        .split("-");
+      for (let i = 0; i < 3; i++) {
+        newAbsence.begin[i] = parseInt(newAbsence.begin[i]);
+      }
+      newAbsence.end = (newAbsence.end as Date)
+        .toISOString()
+        .split("T")[0]
+        .split("-");
+      for (let i = 0; i < 3; i++) {
+        newAbsence.end[i] = parseInt(newAbsence.end[i]);
+      }
+      console.log(newAbsence);
       this.api
         .absence()
         .createAbsence(newAbsence)
