@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
   { path: 'admin/user-index', component: AdminUserShowComponent }, 
-  { path: 'employee/employeeshow', component: EmployeeShowComponent },
+  { path: 'profile', component: EmployeeShowComponent },
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
   { path: 'admin/group/index', component: GroupIndexComponent, resolve: { groupResolver: GroupResolver } },
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent, resolve: {adminAbsenceList: AdminAbsenceResolver} },

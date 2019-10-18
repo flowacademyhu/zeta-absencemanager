@@ -7,13 +7,15 @@ import { UserApiConnector } from '../models/connectors/UserApiConnector';
 import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
 import { AbsenceApiConnector } from "../models/connectors/AbsenceApiConnector";
 import { AdminAbsenceApiConnector } from '../models/connectors/AdminAbsenceApiConnector';
+import { EmployeeApiConnector } from '../models/connectors/EmployeeApiConnector';
 
 export enum Connector {
   AUTH = "Auth",
   USER = "User",
   ABSENCE = "Absence",
   GROUP = 'Group',
-  ADMIN_ABSENCE ="AdminAbsence"
+  ADMIN_ABSENCE ="AdminAbsence",
+  EMPLOYEE = 'Employee'
 
 }
 
@@ -45,6 +47,9 @@ export class ApiCommunicationService {
       Connector.ADMIN_ABSENCE,
       new AdminAbsenceApiConnector(http, this.apiBaseUrl)
     );
+    this.registerConnector(
+      Connector.EMPLOYEE, new EmployeeApiConnector(http, this.apiBaseUrl)
+    )
   }
 
 
@@ -87,5 +92,9 @@ export class ApiCommunicationService {
 
   public adminAbsence(): AdminAbsenceApiConnector {
     return this.getConnector(Connector.ADMIN_ABSENCE) as AdminAbsenceApiConnector;
+  }
+
+  public employee(): EmployeeApiConnector {
+    return this.getConnector(Connector.EMPLOYEE) as EmployeeApiConnector;
   }
 }

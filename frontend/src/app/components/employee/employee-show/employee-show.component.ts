@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
+import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
 
 
 @Component({
@@ -17,31 +18,22 @@ export class EmployeeShowComponent implements OnInit {
     private _unsubscribe$: Subject<boolean> = new Subject();
     public user: User;
 
-constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute) { }
+constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute, private api: ApiCommunicationService) { }
 
-    ngOnInit() {
-      this.route.data
-      .pipe(takeUntil(this._unsubscribe$))
-      .subscribe((data: any) => {
-        this.user = data.user;
-        console.log(this.user);
-        this.user;
-      })
+ngOnInit() {
   this.showuser();
-    }
-  
-    ngOnDestroy(): void {
-      this._unsubscribe$.next();
-      this._unsubscribe$.complete();
-      
-    }
-    
-  showuser(){
-    this.userService.getUser(1).subscribe((user) => {
-    this.user = user;
-       })
+}
 
-       
+ngOnDestroy(): void {
+  this._unsubscribe$.next();
+  this._unsubscribe$.complete();
+  }
+    
+showuser(){
+  this.api.employee().getCurrent().subscribe((user: User) => {
+  this.user = user;
+    })
+      
  }
 }
 
