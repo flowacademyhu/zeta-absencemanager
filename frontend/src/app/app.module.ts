@@ -1,5 +1,4 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
@@ -105,8 +104,6 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     MatInputModule,
     MatMenuModule,
     MatFormFieldModule, 
-    FlexLayoutModule,
-
     MatFormFieldModule,
     MatDialogModule,
     MatPaginatorModule,
