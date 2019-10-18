@@ -1,0 +1,18 @@
+mat-dialog-content {
+  display: grid;
+  font-size: 15px;
+}
+
+h2 {
+  text-align: left;
+}
+
+.error {
+  font-size: 14px;
+  color: red;
+}
+
+.showData {
+  display: grid;
+  grid-template-columns: 20% 20% 60%;
+}

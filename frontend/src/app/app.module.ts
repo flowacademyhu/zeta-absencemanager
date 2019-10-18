@@ -58,11 +58,15 @@ import { AbsencesCreateComponent } from "./components/employee/absences-create/a
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+<<<<<<< HEAD
 import { employeeshowresolver } from 'src/app/employeeshowresolver';
 import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
 import { CreateUserComponent } from './modals/create-user/create-user.component';
 
 
+=======
+import { AbsenceShowEditComponent } from './components/employee/absence-show-edit/absence-show-edit.component';
+>>>>>>> development
 
 
 @NgModule({
@@ -81,7 +85,8 @@ import { CreateUserComponent } from './modals/create-user/create-user.component'
     GroupIndexComponent,
     CreateUserComponent,
     AbsencesCreateComponent,
-    UserAbsenceIndexComponent
+    UserAbsenceIndexComponent,
+    AbsenceShowEditComponent
   ],
   imports: [
     

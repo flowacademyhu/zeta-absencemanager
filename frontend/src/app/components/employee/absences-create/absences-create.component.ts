@@ -18,13 +18,6 @@ export class AbsencesCreateComponent implements OnInit {
   private types;
   private error: string;
 
-  enumSelector(definition) {
-    return Object.keys(definition).map(key => ({
-      value: key,
-      title: definition[key]
-    }));
-  }
-
   constructor(
     private api: ApiCommunicationService,
     private dialogRef: MatDialogRef<AbsencesCreateComponent>,
@@ -32,7 +25,7 @@ export class AbsencesCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.types = this.enumSelector(AbsenceType);
+    this.types = Absence.enumSelector(AbsenceType);
     this.createAbsenceForm = new FormGroup({
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
