@@ -22,7 +22,7 @@ import { MatTableDataSource } from '@angular/material';
 export class GroupCreateComponent implements OnInit {
   private createGroupForm: FormGroup;
   // private types;
-  private groups: any;
+/*   private groups: any;
   private users: any;
 
   private leaders = this.users;
@@ -30,9 +30,12 @@ export class GroupCreateComponent implements OnInit {
 
   private parentGroupId: any
   private addedLeaders: any;
-  private addedEmployees: any;
+  private addedEmployees: any; */
 
-  private error: string;
+ /*  private error: string; */
+
+ private selectedLeaders: User[] = [];
+ private selectedEmployees: User[] = [];
 
   displayedColumnsGroup: string[] = ['name', 'id', 'leader1', 'leader2'];
   displayedColumnsUser: string[] = ['name', 'id'];
@@ -43,6 +46,9 @@ export class GroupCreateComponent implements OnInit {
 
   userData: User;
   usersList: User[];
+
+  employeeList: User[];
+  leaderList: User[];
 
   private unsubscribe$ = new Subject<void>();
 
@@ -83,9 +89,9 @@ export class GroupCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.parentGroupId = this.groupSelector(Group)
+/*     this.parentGroupId = this.groupSelector(Group)
     this.addedLeaders = this.userSelector(User);
-    this.addedEmployees = this.userSelector(User);
+    this.addedEmployees = this.userSelector(User); */
   
     this.api.group().getGroups().subscribe(groups => {
       this.groupsList = groups;
@@ -94,9 +100,11 @@ export class GroupCreateComponent implements OnInit {
     })
 
     this.api.user().getUsers().subscribe(users => {
-      this.usersList = users;
+      this.employeeList = users;
+      this.leaderList = users;
       // this.dataSourceUser = new MatTableDataSource(this.usersList);
-      console.log(this.usersList);
+      console.log(this.employeeList);
+      console.log(this.leaderList);
     })
 
     this.createGroupForm = new FormGroup({
@@ -105,6 +113,20 @@ export class GroupCreateComponent implements OnInit {
       leaders: new FormControl(""),
       employees: new FormControl("")
     });
+  }
+
+  addToSelectedLeaders(leader: User, index: number) {
+    console.log("leader: " + leader);
+    this.selectedLeaders.push(leader);
+    this.leaderList.slice(index, index);
+    console.log(this.selectedLeaders)
+  }
+
+  addToSelectedEmployees(employee, index) {
+    console.log("employee: " + employee);
+    this.selectedEmployees.push(employee);
+    this.employeeList.slice(index, index);
+    console.log(this.selectedEmployees)
   }
 
   
@@ -135,7 +157,6 @@ export class GroupCreateComponent implements OnInit {
     }));
   } */
   
-  private selectedLeaders: User[];
 
   public OnSubmit(createGroupFormValue): void { 
     if (this.createGroupForm.valid) {
@@ -149,16 +170,16 @@ export class GroupCreateComponent implements OnInit {
         .group()
         .createGroup(newGroup)
         .subscribe(
-          data => {
+        /*   data => {
             this.dialogRef.close();
           },
           err => {
             this.error = err.error.message;
-          }
+          } */
         );
-        if (newGroup.leaders.length > 0) {
+        /* if (newGroup.leaders.length > 0) {
           this.selectedLeaders = newGroup.leaders
-        }
+        } */
     }
   }
 

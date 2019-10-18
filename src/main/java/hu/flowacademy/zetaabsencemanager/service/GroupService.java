@@ -36,14 +36,15 @@ public class GroupService {
 
     public Group create(@NotNull Group group) {
         if (StringUtils.isEmpty(group.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid. (Group)");
         }
-        if (!CollectionUtils.isEmpty(group.getLeaders())) {
+        /*if (!CollectionUtils.isEmpty(group.getLeaders())) {
             for (User u : group.getLeaders()) {
                 u.setRole(Roles.LEADER);
                 userService.updateUser(u.getId(), u);
             }
-        }
+        } 
+         */
         group.setCreatedAt(LocalDateTime.now());
         return groupRepository.save(group);
     }

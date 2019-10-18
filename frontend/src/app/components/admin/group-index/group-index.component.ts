@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
 import { ActivatedRoute } from '@angular/router';
 import { Group } from 'src/app/models/Group.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CreateGroupComponent } from 'src/app/modals/create-group/create-group.component';
+import { User } from 'src/app/models/User.model';
 
 @Component({
   selector: 'app-group-index',
@@ -13,9 +19,13 @@ export class GroupIndexComponent implements OnInit {
   dataSource: any;
   error: string;
 
-  constructor(private api: ApiCommunicationService, private activatedRoute: ActivatedRoute) {
+  groupData: Group;
+  private unsubscribe$ = new Subject<void>();
+
+  constructor(private api: ApiCommunicationService, private activatedRoute: ActivatedRoute, public dialog: MatDialog) {
     this.activatedRoute.data.subscribe((data) => {
       this.dataSource = data.groupResolver;
+      console.log(this.dataSource)
       this.dataSource.forEach(element => {
         if (element.parentId !== null) {
           this.dataSource.forEach(group => {
@@ -31,4 +41,16 @@ export class GroupIndexComponent implements OnInit {
   }
 
   ngOnInit() { }
+
+  createGroup(): void {
+    const dialogRef = this.dialog.open(CreateGroupComponent, {
+
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((result: Group) => {
+      console.log(result);     
+      this.api.group().createGroup(result).subscribe(u => console.log("created:" + u));
+    });
+    
+  }
 }

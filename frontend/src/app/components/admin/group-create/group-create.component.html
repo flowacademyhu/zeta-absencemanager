@@ -28,7 +28,7 @@
       <mat-form-field>
         <mat-label>Leaders</mat-label>
         <mat-select formControlName="leaders">
-          <mat-option *ngFor="let leader of usersList" [value]="leader.value">
+          <mat-option *ngFor="let leader of leaderList; let i = index" [value]="selectedLeaders" (click)="addToSelectedLeaders(leader, index)">
             {{ leader.firstName }} {{ leader.lastName }} {{ leader.id}}
           </mat-option>
         </mat-select>
@@ -37,7 +37,7 @@
       <mat-form-field>
         <mat-label>Employees</mat-label>
         <mat-select formControlName="employees">
-          <mat-option *ngFor="let employee of usersList" [value]="employee.value">
+          <mat-option *ngFor="let employee of employeeList; let i = index" [value]="selectedEmployees" (click)="addToSelectedEmployees(employee, index)">
             {{ employee.firstName }} {{ employee.lastName }} {{ employee.id }}
           </mat-option>
         </mat-select>

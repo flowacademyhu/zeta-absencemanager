@@ -58,6 +58,7 @@ import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-
 import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-index/emp-absences-index.component";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { AbsenceShowEditComponent } from './components/employee/absence-show-edit/absence-show-edit.component';
+import { CreateGroupComponent } from './modals/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     CreateUserComponent,
     AbsencesCreateComponent,
     UserAbsenceIndexComponent,
-    AbsenceShowEditComponent
+    AbsenceShowEditComponent,
+    CreateGroupComponent
   ],
   imports: [
     BrowserModule,
@@ -123,6 +125,6 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent, CreateGroupComponent]
 })
 export class AppModule {}

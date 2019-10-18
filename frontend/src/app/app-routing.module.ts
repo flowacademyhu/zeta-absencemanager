@@ -19,7 +19,7 @@ import { AbsenceShowEditComponent } from "./components/employee/absence-show-edi
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
-  { path: "admin/group-create", component: GroupCreateComponent, resolve: { userList: UserResolver, groupList: GroupResolver }},
+  { path: "admin/group/create", component: GroupCreateComponent, resolve: { userList: UserResolver, groupList: GroupResolver }},
   {
     path: "employee/absence-index",
     component: EmpAbsencesIndexComponent,
