@@ -676,6 +676,7 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
                 .reporter(user32)
+                .assignee(user1)
                 .type(Type.ABSENCE)
                 .build();
         this.absenceRepository.save(absence1);
@@ -684,6 +685,7 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
                 .reporter(user17)
+                .assignee(user1)
                 .type(Type.NON_WORKING)
                 .build();
         this.absenceRepository.save(absence2);
@@ -693,6 +695,7 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
                 .reporter(user20)
+                .assignee(user2)
                 .type(Type.CHILD_SICK_PAY)
                 .build();
         this.absenceRepository.save(absence3);
@@ -701,6 +704,7 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
                 .reporter(user13)
+                .assignee(user2)
                 .type(Type.UNPAID_HOLIDAY)
                 .build();
         this.absenceRepository.save(absence4);

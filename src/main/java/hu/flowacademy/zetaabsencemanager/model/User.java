@@ -69,7 +69,7 @@ public class User {
     @Column
     private String otherAbsenceEnt;
 
-    @OneToMany(mappedBy = "reporter")
+    @OneToMany
     @JsonIgnore
     private List<Absence> absences;
 
