@@ -57,12 +57,14 @@ import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-in
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
-import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
 import { AdminUserEditComponent } from './components/admin/admin-user-edit/admin-user-edit.component';
 import { EmployeeShowResolver } from 'src/app/EmployeeShowResolver';
 import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
 import { CreateUserComponent } from './modals/create-user/create-user.component';
 import { AbsenceShowEditComponent } from './components/employee/absence-show-edit/absence-show-edit.component';
+import { AdminAbsenceResolver } from './components/resolvers/AdminAbsenceResolver';
+import { GroupResolver } from './resolvers/GroupResolver';
+import { GetEmployeeAbsencesResolver } from './resolvers/GetEmployeeAbsencesResolver';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,6 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     GroupIndexComponent,
     CreateUserComponent,
     AbsencesCreateComponent,
-    UserAbsenceIndexComponent,
     AdminUserEditComponent,
     AbsenceShowEditComponent
   ],
@@ -116,6 +117,9 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
   ],
   providers: [
     EmployeeShowResolver,
+    AdminAbsenceResolver,
+    GroupResolver,
+    GetEmployeeAbsencesResolver,
     UserResolver,
     EmployeeService,
     SessionService,
