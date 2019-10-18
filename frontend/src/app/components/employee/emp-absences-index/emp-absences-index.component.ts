@@ -15,7 +15,6 @@ import { ApiCommunicationService } from "src/app/services/ApiCommunication.servi
 export class EmpAbsencesIndexComponent implements OnInit {
   displayedColumns: string[] = [
     "id",
-    "created_at",
     "type",
     "summary",
     "begin",
@@ -24,7 +23,6 @@ export class EmpAbsencesIndexComponent implements OnInit {
     "status"
   ];
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
-  private _unsubscribe2$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];
 
   constructor(
@@ -54,7 +52,7 @@ export class EmpAbsencesIndexComponent implements OnInit {
 
     dialogRef
       .afterClosed()
-      .pipe(takeUntil(this._unsubscribe2$))
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe(data2 => {
         this.api
           .absence()
@@ -63,5 +61,10 @@ export class EmpAbsencesIndexComponent implements OnInit {
             this.absences = data;
           });
       });
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
 }
