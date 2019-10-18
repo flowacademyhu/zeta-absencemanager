@@ -30,7 +30,8 @@ import {
   MatDialogTitle,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatSelectModule
+  MatSelectModule,
+  
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -56,6 +57,8 @@ import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-in
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
+import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+import { AdminUserEditComponent } from './components/admin/admin-user-edit/admin-user-edit.component';
 import { EmployeeShowResolver } from 'src/app/EmployeeShowResolver';
 import { GroupIndexComponent } from './components/admin/group-index/group-index.component';
 import { CreateUserComponent } from './modals/create-user/create-user.component';
@@ -77,6 +80,8 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     GroupIndexComponent,
     CreateUserComponent,
     AbsencesCreateComponent,
+    UserAbsenceIndexComponent,
+    AdminUserEditComponent,
     AbsenceShowEditComponent
   ],
   imports: [
@@ -126,6 +131,6 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
+  entryComponents: [AbsencesCreateComponent, AdminUserEditComponent, CreateUserComponent]
 })
 export class AppModule {}

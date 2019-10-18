@@ -7,6 +7,7 @@ import {
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
 import { ApiCommunicationService } from "src/app/services/ApiCommunication.service";
+import { User } from 'src/app/models/User.model';
 
 @Component({
   selector: 'app-admin-user-edit',
@@ -35,21 +36,6 @@ export class AdminUserEditComponent implements OnInit {
    }
 
   ngOnInit() {
-    
   }
-
-/*    public OnSubmit(editUserDataFormValue): void {
-    if (this.editUserDataForm.valid) {
-      let newAbsence = new Absence(
-        editUserDataFormValue.type,
-        editUserDataFormValue.summary,
-        editUserDataFormValue.start,
-        editUserDataFormValue.end
-      );
-      this.api
-      .user()
-      .updateUser()
-    }  */
-
-
+  
 }

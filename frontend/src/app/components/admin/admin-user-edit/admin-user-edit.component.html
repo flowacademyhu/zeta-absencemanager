@@ -1,0 +1,87 @@
+<h2 mat-dialog-title>EDIT USER</h2>
+ <mat-dialog-content [formGroup]="editUserDataForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="firstname"
+        formControlName="firstName"
+        id="firstName"
+      /> 
+    </mat-form-field>
+    <br>
+
+    <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="lastname"
+          formControlName="lastName"
+        />
+      </mat-form-field>
+      <br>
+
+    <!--   <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="dateOfBirth"
+          placeholder="date of birth"
+          formControlName="dateOfBirth"
+          id="dateOfBirth"
+          (click)="dateOfBirth.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="dateOfBirth"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateOfBirth></mat-datepicker>
+      </mat-form-field>
+      <br>
+
+    -->
+     <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="position"
+          formControlName="position"
+        />
+      </mat-form-field>
+      <br>
+
+ <!--     <mat-form-field>
+        <input
+          matInput
+          [matDatepicker]="endOfTrial"
+          placeholder="endOfTrial"
+          formControlName="endOfTrial"
+          id="endOfTrial"
+          (click)="endOfTrial.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="endOfTrial"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #endOfTrial></mat-datepicker>
+      </mat-form-field>
+      <br> -->
+
+      <mat-form-field>
+        <input
+          matInput
+          type="email"
+          placeholder="E-mail"
+          formControlName="email"
+          required
+        />
+      </mat-form-field>
+      <br>
+
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button [disabled]='!editUserDataForm.valid' [mat-dialog-close]="editUserDataForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
+
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+  </mat-dialog-actions>
