@@ -7,7 +7,7 @@
   <mat-dialog-content>
     <div class="showData">
       <p *ngIf="!update">Type:</p>
-      <p *ngIf="!update">{{ absence.type }}</p>
+      <p *ngIf="absence && !update">{{ absence.type }}</p>
     </div>
 
     <mat-form-field *ngIf="update">
@@ -21,7 +21,7 @@
 
     <div class="showData">
       <p *ngIf="!update">Summary:</p>
-      <p *ngIf="!update">{{ absence.summary }}</p>
+      <p *ngIf="absence && !update">{{ absence.summary }}</p>
     </div>
     <mat-form-field *ngIf="update">
       <input
@@ -35,7 +35,9 @@
 
     <div class="showData">
       <p *ngIf="!update">Start of absence:</p>
-      <p *ngIf="!update">{{ absence.begin | date: "yyyy - MM - dd" }}</p>
+      <p *ngIf="absence && !update">
+        {{ absence.begin | date: "yyyy - MM - dd" }}
+      </p>
     </div>
     <mat-form-field *ngIf="update">
       <input
@@ -56,7 +58,9 @@
 
     <div class="showData">
       <p *ngIf="!update">End of absence:</p>
-      <p *ngIf="!update">{{ absence.end | date: "yyyy - MM - dd" }}</p>
+      <p *ngIf="absence && !update">
+        {{ absence.end | date: "yyyy - MM - dd" }}
+      </p>
     </div>
     <mat-form-field *ngIf="update">
       <input
