@@ -26,4 +26,9 @@ public class CurrentUserController {
     public void delete(@PathVariable("userId") Long userId) {
         userService.delete(userId);
     }
+
+    @GetMapping()
+    public  User getCurrent() {
+        return userService.getCurrentUser();
+    }
 }

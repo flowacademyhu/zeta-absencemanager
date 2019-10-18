@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,12 +39,12 @@ public class Group {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     @JsonSerialize(using = UserSerializer.class)
-    private List<User> leaders;
+    private List<User> leaders = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "group")
     @JsonSerialize(using = UserSerializer.class)
-    private List<User> employees;
+    private List<User> employees = new ArrayList<>();
 
     @Column
     private LocalDateTime createdAt;

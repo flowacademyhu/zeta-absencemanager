@@ -36,21 +36,6 @@ export class AdminUserEditComponent implements OnInit {
    }
 
   ngOnInit() {
-    
   }
-
-/*    public OnSubmit(editUserDataFormValue): void {
-    if (this.editUserDataForm.valid) {
-      let newAbsence = new Absence(
-        editUserDataFormValue.type,
-        editUserDataFormValue.summary,
-        editUserDataFormValue.start,
-        editUserDataFormValue.end
-      );
-      this.api
-      .user()
-      .updateUser()
-    }  */
-
-
+  
 }

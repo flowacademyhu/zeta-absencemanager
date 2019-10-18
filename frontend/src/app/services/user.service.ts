@@ -10,4 +10,8 @@ export class UserService {
   getUsers(): Observable<any> {
     return this.api.user().getUsers();
   }
+  getUser(id: number): Observable<any> {
+    return this.api.user().getUser(id);
+  }
+
 }

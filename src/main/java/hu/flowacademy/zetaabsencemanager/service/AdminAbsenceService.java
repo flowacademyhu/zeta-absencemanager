@@ -83,7 +83,6 @@ public class AdminAbsenceService {
         absence.setStatus(Status.OPEN);
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(absence.getReporter()))) {
-            absence.setStatus(Status.OPEN);
             return absenceRepository.save(absence);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
