@@ -70,7 +70,6 @@ public class User {
     private String otherAbsenceEnt;
 
     @OneToMany
-    @JsonIgnore
     private List<Absence> absences;
 
     @Column

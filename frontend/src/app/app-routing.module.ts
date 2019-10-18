@@ -5,7 +5,6 @@ import { AdminAbsencesIndexComponent } from './components/admin/absences-index/a
 import { LoginComponent } from './components/login/login.component';
 import { EmployeeShowComponent } from './components/employee/employee-show/employee-show.component';
 import { EmpAbsencesIndexComponent } from "./components/employee/emp-absences-index/emp-absences-index.component";
-import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
 import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component";
 import { UserResolver } from "./UserResolver";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
@@ -19,11 +18,7 @@ import { AbsenceShowEditComponent } from "./components/employee/absence-show-edi
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
-  { path: 'admin/user-index', component: AdminUserShowComponent }, 
   { path: 'profile', component: EmployeeShowComponent },
-  { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
-  { path: 'admin/group/index', component: GroupIndexComponent, resolve: { groupResolver: GroupResolver } },
-  { path: "admin/absence-index", component: AdminAbsencesIndexComponent, resolve: {adminAbsenceList: AdminAbsenceResolver} },
   {
     path: "employee/absence-index",
     component: EmpAbsencesIndexComponent,
@@ -35,7 +30,6 @@ const routes: Routes = [
     resolve: { adminAbsenceList: AdminAbsenceResolver }
   },
   { path: "admin/user-index", component: AdminUserShowComponent },
-  { path: "user/absence-index", component: UserAbsenceIndexComponent },
   {
     path: "admin/user-esd",
     component: AdminUserEditDestroyShowComponent,
