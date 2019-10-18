@@ -21,8 +21,8 @@ export enum Status {
 export class Absence extends DataEntity {
   public type: AbsenceType;
   public summary: string;
-  public begin: Date;
-  public end: Date;
+  public begin: any;
+  public end: any;
   public reporter: User;
   public assignee: User;
   public status: Status;
@@ -30,8 +30,8 @@ export class Absence extends DataEntity {
   constructor(
     type: AbsenceType,
     summary: string,
-    begin: Date,
-    end: Date,
+    begin: any,
+    end: any,
     reporter?: User,
     assignee?: User
   ) {
@@ -40,8 +40,12 @@ export class Absence extends DataEntity {
     this.summary = summary;
     this.begin = begin;
     this.end = end;
-    this.reporter = reporter;
-    this.assignee = assignee;
+    if (reporter) {
+      this.reporter = reporter;
+    }
+    if (assignee) {
+      this.assignee = assignee;
+    }
   }
 
   public static enumSelector(definition) {

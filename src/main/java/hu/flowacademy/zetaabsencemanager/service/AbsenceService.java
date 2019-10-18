@@ -2,6 +2,7 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,8 @@ public class AbsenceService {
     }
 
     public List<Absence> findAll() {
-        return userService.getCurrentUser().getAbsences();
+        User current = userService.getCurrentUser();
+        return absenceRepository.findByReporterAndDeletedAtNull(current);
     }
 
     public Absence create(@NotNull Absence absence) {
@@ -46,6 +48,8 @@ public class AbsenceService {
         absence.setCreatedBy(userService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
+        /*userService.getCurrentUser().getAbsences().add(absence);
+        userService.updateUser(userService.getCurrentUser().getId(), userService.getCurrentUser());*/
         return absenceRepository.save(absence);
     }
 
