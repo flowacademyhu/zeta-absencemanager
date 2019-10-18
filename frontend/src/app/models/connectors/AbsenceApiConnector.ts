@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { Absence } from "../Absence.model";
 
 export class AbsenceApiConnector extends AbstractApiConnector {
-  protected apiRoute: string = this.apiBaseUrl + "admin/absence/";
+  protected apiRoute: string = this.apiBaseUrl + "absence/";
 
   public getAbsence(id: number): Observable<any> {
     return this.http.get(this.apiRoute + id);

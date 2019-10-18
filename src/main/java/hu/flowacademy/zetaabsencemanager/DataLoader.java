@@ -43,7 +43,7 @@ public class DataLoader implements CommandLineRunner {
         this.absenceRepository = absenceRepository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
-        this.groupService=groupService;
+        this.groupService = groupService;
     }
 
     @Override
@@ -722,7 +722,6 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.absenceRepository.save(absence4);
 
-
         List<User> users=userRepository.findByDeletedAtNull();
         ListIterator<User> it=users.listIterator();
         while (it.hasNext()){
@@ -737,6 +736,5 @@ public class DataLoader implements CommandLineRunner {
                 groupService.updateGroup(user.getGroup().getId(), modified);
             }
         }
-
     }
 }
