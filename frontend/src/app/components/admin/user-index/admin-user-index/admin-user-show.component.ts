@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatFormFieldControl, MatPaginator } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { CreateUserComponent } from 'src/app/modals/create-user/create-user.component';
 import { User } from 'src/app/models/User.model';
@@ -7,6 +6,7 @@ import { ApiCommunicationService } from 'src/app/services/ApiCommunication.servi
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditComponent } from '../../admin-user-edit/admin-user-edit.component';
+import { MatTableDataSource } from '@angular/material';
 
 
 
@@ -24,7 +24,6 @@ export class AdminUserShowComponent implements OnInit {
   usersList: User[];
   private unsubscribe$ = new Subject<void>();
 
-  @ViewChild(MatPaginator, {static: true}) paginator : MatPaginator;
 
 
   constructor(private api: ApiCommunicationService, public dialog: MatDialog) {}
@@ -49,7 +48,6 @@ export class AdminUserShowComponent implements OnInit {
     this.api.user().getUsers().subscribe(users => {
       this.usersList = users;
       this.dataSource = new MatTableDataSource(this.usersList);
-      this.dataSource.paginator = this.paginator;
     })
   }
   

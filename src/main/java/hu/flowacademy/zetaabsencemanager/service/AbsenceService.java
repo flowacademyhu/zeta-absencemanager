@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
@@ -43,6 +44,7 @@ public class AbsenceService {
                 absence.getEnd() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
+        absence.setAssignee(userService.findOneUser(1L));
         absence.setReporter(userService.getCurrentUser());
         absence.setCreatedAt(LocalDateTime.now());
         absence.setCreatedBy(userService.getCurrentUser());
