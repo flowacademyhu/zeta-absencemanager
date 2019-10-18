@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms";
 import { Absence, AbsenceType } from "src/app/models/Absence.model";
 import {
   MatDialog,
@@ -7,6 +7,7 @@ import {
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
 import { ApiCommunicationService } from "src/app/services/ApiCommunication.service";
+import { User } from 'src/app/models/User.model';
 
 @Component({
   selector: 'app-admin-user-edit',
@@ -14,25 +15,28 @@ import { ApiCommunicationService } from "src/app/services/ApiCommunication.servi
   styleUrls: ['./admin-user-edit.component.css']
 })
 export class AdminUserEditComponent implements OnInit {
-  private editUserDataForm: FormGroup;
+  public editUserDataForm: FormGroup;
   private error: string;
 
   constructor(
     private api: ApiCommunicationService,
-    private dialogRef: MatDialogRef<AdminUserEditComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any
-  ) { }
+    public dialogRef: MatDialogRef<AdminUserEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: User,
+    public fb: FormBuilder
+  ) {
+    console.log(data);
+    this.editUserDataForm = new FormGroup({
+      firstName: new FormControl(data.firstName, Validators.required),
+      lastName: new FormControl(data.lastName, Validators.required),
+      dateOfBirth: new FormControl(data.dateOfBirth, Validators.required),
+      position: new FormControl(data.position, Validators.required),
+      endOfTrial: new FormControl(data.dateOfEndTrial, Validators.required),
+      email: new FormControl(data.email, Validators.required)
+    });
+   }
 
   ngOnInit() {
-    this.editUserDataForm = new FormGroup({
-      firstName: new FormControl("", Validators.required),
-      lastName: new FormControl(""),
-      dateOfBirth: new FormControl("", Validators.required),
-      position: new FormControl("", Validators.required),
-      supervisor: new FormControl(""),
-      endOfTrial: new FormControl("", Validators.required),
-      email: new FormControl("", Validators.required)
-    });
+    
   }
 
 /*    public OnSubmit(editUserDataFormValue): void {

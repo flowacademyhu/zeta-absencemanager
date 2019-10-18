@@ -1,17 +1,19 @@
 <h2 mat-dialog-title align="center">Edit User</h2>
-<form
-  [formGroup]="editUserData"
+<!-- <form
+  
   autocomplete="off"
-  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
->
- <mat-dialog-content>
+  (ngSubmit)="OnSubmit(editUserDatForm.value)"
+> -->
+ <mat-dialog-content [formGroup]="editUserDataForm">
+   <div>{{data.firstName}}</div>
     <mat-form-field>
       <input
         matInput
         type="text"
         placeholder="firstname"
         formControlName="firstName"
-      />
+        id="firstName"
+      /> 
     </mat-form-field>
     <br>
 
@@ -57,16 +59,6 @@
       <mat-form-field>
         <input
           matInput
-          type="text"
-          placeholder="supervisor"
-          formControlName="supervisor"
-        />
-      </mat-form-field>
-      <br>
-
-      <mat-form-field>
-        <input
-          matInput
           [matDatepicker]="endOfTrial"
           placeholder="endOfTrial"
           formControlName="endOfTrial"
@@ -97,11 +89,9 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button mat-raised-button [disabled]="!editUserData.valid">
-      Edit
-    </button>
+    <button mat-button [disabled]='!editUserDataForm.valid' [mat-dialog-close]="editUserDataForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
+
     <button mat-raised-button color="warn" (click)="onCancel()">
       Cancel
     </button>
   </mat-dialog-actions>
-</form>

@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
 
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
-
+  user: User;
   users: User[];
   showUser: User [] = [];
   // user : User[];  
@@ -29,9 +29,7 @@ export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['dateOfBirth', 'firstName', 'lastName', 'position', 'supervisor', 
                                 'dateOfEndTrial', 'dateOfEntry', 'email', 'edit', 'delete'];
 
-  openDialog(){
-    this.dialog.open(AdminUserEditComponent);
-  }
+
 
   ngOnInit() {
     this.route.data
@@ -50,6 +48,17 @@ export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
+  }
+
+  editUser(id: number){
+    this.users.filter(user => {
+      if(user.id === id){
+        this.user = user;
+      }
+    });
+    this.dialog.open(AdminUserEditComponent, {
+      data: {user: this.user}
+    });  
   }
 }
 
