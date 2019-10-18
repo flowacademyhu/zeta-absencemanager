@@ -16,11 +16,11 @@ import { AbsenceShowEditComponent } from "../absence-show-edit/absence-show-edit
 export class EmpAbsencesIndexComponent implements OnInit {
   displayedColumns: string[] = [
     "id",
-    "type",
-    "summary",
     "begin",
     "end",
     "days",
+    "type",
+    "summary",
     "status",
     "edit"
   ];

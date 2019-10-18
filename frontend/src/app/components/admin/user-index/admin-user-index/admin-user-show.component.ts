@@ -40,6 +40,7 @@ export class AdminUserShowComponent implements OnInit {
       this.dateConverter();
       console.log(this.userData);      
       this.api.user().createUser(this.userData).subscribe(u => console.log("created:" + u));
+      this.api.user().getUsers().subscribe(users => {this.usersList = users, this.dataSource = new MatTableDataSource(this.usersList)});
     });
     
   }
