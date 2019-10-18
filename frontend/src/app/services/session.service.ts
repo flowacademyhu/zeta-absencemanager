@@ -33,7 +33,7 @@ export class SessionService {
       this.api.auth().getToken(username, password).subscribe((data : any) => {
         localStorage.setItem('token', data.access_token);
         this._isLoggedIn$.next(true);
-        this.router.navigate(["admin/absence-index"]);
+        this.router.navigate(["employee/absence-index"]);
         resolve();
       }, (error: HttpErrorResponse) => {
         //Invalid credentials
