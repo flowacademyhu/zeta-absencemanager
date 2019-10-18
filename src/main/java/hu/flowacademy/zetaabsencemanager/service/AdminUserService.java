@@ -67,7 +67,7 @@ public class AdminUserService {
                     .email(user.getEmail())
                     .group(user.getGroup())
                     .position(user.getPosition())
-                    .password(passwordEncoder.encode(user.getPassword()))
+                    .password(passwordEncoder.encode("kiskacsa"))
                     .role(user.getRole())
                     .numberOfChildren(user.getNumberOfChildren())
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())

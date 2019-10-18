@@ -38,7 +38,6 @@ export class CreateUserComponent implements OnInit {
   ngOnInit() {
     this.api.group().getGroups().subscribe(g => {
       this.groups = g;
-      console.log(g);
     })
     this.dialogRef.updateSize('25%', '90%');
   }
