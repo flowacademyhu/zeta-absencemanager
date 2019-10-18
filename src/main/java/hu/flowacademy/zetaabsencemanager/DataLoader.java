@@ -4,6 +4,8 @@ import hu.flowacademy.zetaabsencemanager.model.*;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.service.GroupService;
+import javassist.bytecode.Descriptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
@@ -11,9 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.HTMLDocument;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @Component
 @Transactional
@@ -22,6 +27,7 @@ public class DataLoader implements CommandLineRunner {
     private final AbsenceRepository absenceRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final GroupService groupService;
 
     @Autowired
     @Lazy
@@ -30,10 +36,11 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     public DataLoader(AbsenceRepository absenceRepository,
                       GroupRepository groupRepository,
-                      UserRepository userRepository) {
+                      UserRepository userRepository, GroupService groupService) {
         this.absenceRepository = absenceRepository;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
+        this.groupService = groupService;
     }
 
     @Override
@@ -656,7 +663,7 @@ public class DataLoader implements CommandLineRunner {
         User user32;
         user32 = User.builder()
                 .email("user32@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
+                .password(passwordEncoder.encode("user"))
                 .firstName("user")
                 .lastName("user")
                 .role(Roles.EMPLOYEE)
@@ -704,6 +711,23 @@ public class DataLoader implements CommandLineRunner {
                 .type(Type.UNPAID_HOLIDAY)
                 .build();
         this.absenceRepository.save(absence4);
+
+
+
+        List<User> users=userRepository.findByDeletedAtNull();
+        ListIterator<User> it=users.listIterator();
+        while (it.hasNext()){
+            User user = it.next();
+            List<User> leaders=new ArrayList<>();
+           if(user.getRole()==Roles.LEADER){
+               leaders.add(user);
+               List<User> actualLeader=new ArrayList<>();
+               actualLeader.add(user);
+               user.getGroup().setLeaders(actualLeader);
+               Group modified=user.getGroup();
+               groupService.updateGroup(user.getGroup().getId(), modified);
+           }
+        }
 
     }
 }
