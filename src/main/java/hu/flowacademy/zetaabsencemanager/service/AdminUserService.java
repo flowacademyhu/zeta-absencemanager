@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,6 @@ public class AdminUserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
-        }
-        String email = auth.getName();
-        return userService.findByEmail(email);
-    }
-
     public User findByEmail(@NotNull String email) {
         return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
@@ -58,12 +50,10 @@ public class AdminUserService {
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
                 || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
@@ -81,7 +71,6 @@ public class AdminUserService {
                     .role(user.getRole())
                     .numberOfChildren(user.getNumberOfChildren())
                     .otherAbsenceEnt(user.getOtherAbsenceEnt())
-                    .createdAt(LocalDateTime.now())
                     .build();
             userRepository.save(newUser);
             return newUser;
@@ -92,13 +81,10 @@ public class AdminUserService {
         User modifyUser = findOneUser(id);
         if (StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
-                || StringUtils.isEmpty(user.getPassword())
                 || user.getDateOfBirth() == null
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
@@ -120,7 +106,7 @@ public class AdminUserService {
             modifyUser.setNumberOfChildren(user.getNumberOfChildren());
             modifyUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
             modifyUser.setUpdatedAt(LocalDateTime.now());
-            // TODO modifyUser.setUpdatedBy(getCurrentUser());
+            // TODO modifyUser.setUpdatedBy(userService.getCurrentUser());
             userRepository.save(user);
             return modifyUser;
         }
@@ -129,7 +115,7 @@ public class AdminUserService {
     public void delete(@NotNull Long id) {
         User mod = findOneUser(id);
         mod.setDeletedAt(LocalDateTime.now());
-        // TODO mod.setDeletedBy(getCurrentUser());
+        // TODO mod.setDeletedBy(userService.getCurrentUser());
         updateUser(id, mod);
     }
 }

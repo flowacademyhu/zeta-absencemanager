@@ -1,9 +1,10 @@
-import { AppRoutingModule } from "./app-routing.module";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatMenuModule } from "@angular/material/menu";
-import { NgModule } from "@angular/core";
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule} from '@angular/material/menu';
+import { NgModule } from '@angular/core';
+import { MatPaginatorModule } from '@angular/material';
 
 import {
   HttpClientModule,
@@ -35,20 +36,26 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./token.interceptor";
 
 //Own Components
-
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { ContentComponent } from "./components/content/content.component";
 import { AdminUserShowComponent } from "./components/admin/user-index/admin-user-index/admin-user-show.component";
 import { FilterComponent } from "./components/filter/filter.component";
-import { AbsencesIndexComponent } from "./components/admin/absences-index/absences-index.component";
+import { AdminAbsencesIndexComponent } from "./components/admin/absences-index/admin-absences-index.component";
+import { AdminUserEditDestroyShowComponent } from "./components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component";
 import { LoginComponent } from "./components/login/login.component";
 import { SessionService } from "./services/session.service";
 import { AbsencesCreateComponent } from "./components/employee/absences-create/absences-create.component";
 import { ApiCommunicationService } from "./services/ApiCommunication.service";
 import { UserService } from "./services/user.service";
 import { GroupCreateComponent } from './components/admin/group-create/group-create.component';
+import { CreateUserComponent } from './modals/create-user/create-user.component';
+import { EmployeeService } from "./services/employee.service";
+import { UserResolver } from "./UserResolver";
+import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
+import { GroupResolver } from './GroupResolver';
+
 
 @NgModule({
   declarations: [
@@ -56,12 +63,16 @@ import { GroupCreateComponent } from './components/admin/group-create/group-crea
     HeaderComponent,
     FooterComponent,
     ContentComponent,
-    AbsencesIndexComponent,
+    AdminAbsencesIndexComponent,
+    AdminUserEditDestroyShowComponent,  
     LoginComponent,
     AdminUserShowComponent,
     FilterComponent,
     AbsencesCreateComponent,
-    GroupCreateComponent
+    GroupCreateComponent,
+    CreateUserComponent,
+    AbsencesCreateComponent,
+    UserAbsenceIndexComponent
   ],
   imports: [
     BrowserModule,
@@ -86,10 +97,14 @@ import { GroupCreateComponent } from './components/admin/group-create/group-crea
     MatMenuModule,
     MatFormFieldModule,
     MatDialogModule,
+    MatPaginatorModule,
     MatDatepickerModule,
     MatSelectModule
   ],
   providers: [
+    UserResolver,
+    GroupResolver,
+    EmployeeService,
     SessionService,
     ApiCommunicationService,
     UserService,
@@ -101,8 +116,8 @@ import { GroupCreateComponent } from './components/admin/group-create/group-crea
     { provide: MatDialogTitle, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: [] }
-  ],
+   ],
   bootstrap: [AppComponent],
-  entryComponents: [AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
 })
 export class AppModule {}

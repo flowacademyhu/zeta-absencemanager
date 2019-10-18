@@ -6,9 +6,9 @@ export class User extends DataEntity {
     public firstName: string;
     public lastName: string;
     public email: string;
-    public dateOfBirth: Date;
-    public dateOfEntry: Date;
-    public dateOfEndTrial: Date;
+    public dateOfBirth: any;
+    public dateOfEntry: any;
+    public dateOfEndTrial: any;
     public isOnTrial: boolean;
     public position: string;
     public numberOfChildren: number;
@@ -19,7 +19,7 @@ export class User extends DataEntity {
     
     //TODO for now, added some optional variables to constructor
     constructor(
-        firstName?: string, lastName?: string, email?: string, dateOfBirth?: Date, dateOfEntry?: Date, position?: string, 
+        firstName?: string, lastName?: string, email?: string, dateOfBirth?: any, dateOfEntry?: any, position?: string, 
         numberOfChildren?: number, group?: Group) {
         
         super();

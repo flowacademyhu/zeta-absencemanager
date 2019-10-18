@@ -6,12 +6,14 @@ import { AuthApiConnector } from "../models/connectors/AuthApiConnector";
 import { UserApiConnector } from "../models/connectors/UserApiConnector";
 import { AbsenceApiConnector } from "../models/connectors/AbsenceApiConnector";
 import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
+import { AdminAbsenceApiConnector } from '../models/connectors/AdminAbsenceApiConnector';
 
 export enum Connector {
   AUTH = "Auth",
   USER = "User",
   ABSENCE = "Absence",
-  GROUP = "Group"
+  GROUP = "Group",
+  ADMIN_ABSENCE ="AdminAbsence"
 }
 
 @Injectable()
@@ -38,6 +40,12 @@ export class ApiCommunicationService {
       Connector.GROUP,
       new GroupApiConnector(http, this.apiBaseUrl)
     );
+
+    this.registerConnector(
+      Connector.ADMIN_ABSENCE,
+      new AdminAbsenceApiConnector(http, this.apiBaseUrl)
+    );
+
   }
 
   private registerConnector(id: Connector, connector: AbstractApiConnector) {
@@ -73,5 +81,9 @@ export class ApiCommunicationService {
 
   public group(): GroupApiConnector {
     return this.getConnector(Connector.GROUP) as GroupApiConnector;
+  }
+
+  public adminAbsence(): AdminAbsenceApiConnector {
+    return this.getConnector(Connector.ADMIN_ABSENCE) as AdminAbsenceApiConnector;
   }
 }

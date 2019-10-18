@@ -18,8 +18,8 @@
 
     <mat-form-field>
         <mat-label>Parent Group</mat-label>
-        <mat-select formControlName="group">
-          <mat-option *ngFor="let group of groups" [value]="group.name">
+        <mat-select formControlName="parentId">
+          <mat-option *ngFor="let group of groupsList" [value]="group.id">
             {{ group.id }} {{ group.name }}
           </mat-option>
         </mat-select>
@@ -27,18 +27,18 @@
 
       <mat-form-field>
         <mat-label>Leaders</mat-label>
-        <mat-select formControlName="leader">
-          <mat-option *ngFor="let leader of leaders" [value]="leader.value">
-            {{ leader.firstname }} {{ leader.lastname }}
+        <mat-select formControlName="leaders">
+          <mat-option *ngFor="let leader of usersList" [value]="leader.value">
+            {{ leader.firstName }} {{ leader.lastName }} {{ leader.id}}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Employees</mat-label>
-        <mat-select formControlName="employee">
-          <mat-option *ngFor="let employee of employees" [value]="employee.value">
-            {{ employee.firstname }} {{ employee.lastname }}
+        <mat-select formControlName="employees">
+          <mat-option *ngFor="let employee of usersList" [value]="employee.value">
+            {{ employee.firstName }} {{ employee.lastName }} {{ employee.id }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -54,3 +54,56 @@
     </button>
   </mat-dialog-actions>
 </form>
+
+ <p  *ngFor="let leader of selectedLeaders">
+  {{ leader.firstName }} {{ leader.lastName }}
+</p>
+
+<table mat-table [dataSource]="groupsList" class="mat-elevation-z8">
+  <!-- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+   <!-- Name Column -->
+  <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let group">  {{group.name}} </td>
+    </ng-container>   
+
+  <!-- Dob Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let group"> {{group.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="leader1">
+    <th mat-header-cell *matHeaderCellDef> Leader1 </th>
+    <td mat-cell *matCellDef="let group">  {{group.leaders[0]}}  </td>
+  </ng-container>   
+
+  <ng-container matColumnDef="leader2">
+    <th mat-header-cell *matHeaderCellDef> Leader2 </th>
+    <td mat-cell *matCellDef="let group">  {{group.leaders[1]}}  </td>
+  </ng-container>  
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumnsGroup"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumnsGroup;"></tr>
+</table>
+
+<table mat-table [dataSource]="usersList" class="mat-elevation-z9">
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+   <!-- Name Column -->
+  <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let user">  {{user.firstName}} {{user.lastName}}  </td>
+    </ng-container>   
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let user">  {{user.id}}  </td>
+    </ng-container> 
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumnsUser"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumnsUser;"></tr>
+</table>
