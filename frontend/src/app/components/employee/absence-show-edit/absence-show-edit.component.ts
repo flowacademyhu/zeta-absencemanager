@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { FormGroup, FormControl } from "@angular/forms";
 import { AbsenceType, Absence } from "src/app/models/Absence.model";
 import { ActivatedRoute, Params } from "@angular/router";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-absence-show-edit",
@@ -23,6 +25,7 @@ export class AbsenceShowEditComponent implements OnInit {
   ); */
   private update: boolean = false;
   private message = "Modify";
+  private _unsubscribe$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +39,7 @@ export class AbsenceShowEditComponent implements OnInit {
       this.api
         .absence()
         .getAbsence(params.id)
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe(
           data => {
             this.absence = data;
@@ -72,6 +76,7 @@ export class AbsenceShowEditComponent implements OnInit {
         this.api
           .absence()
           .updateAbsence(this.absence.id, this.absence)
+          .pipe(takeUntil(this._unsubscribe$))
           .subscribe(
             data => {},
             err => {
@@ -87,5 +92,10 @@ export class AbsenceShowEditComponent implements OnInit {
 
   public onCancel(): void {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
 }
