@@ -1,0 +1,91 @@
+<h2 mat-dialog-title align="center">Show absence</h2>
+<form
+  [formGroup]="createAbsenceForm"
+  autocomplete="off"
+  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+>
+  <mat-dialog-content>
+    <div class="showData">
+      <p *ngIf="!update">Type:</p>
+      <p *ngIf="absence && !update">{{ absence.type }}</p>
+    </div>
+
+    <mat-form-field *ngIf="update">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of types" [value]="type.value">
+          {{ type.title }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="showData">
+      <p *ngIf="!update">Summary:</p>
+      <p *ngIf="absence && !update">{{ absence.summary }}</p>
+    </div>
+    <mat-form-field *ngIf="update">
+      <input
+        matInput
+        type="text"
+        placeholder="Summary"
+        formControlName="summary"
+        id="summary"
+      />
+    </mat-form-field>
+
+    <div class="showData">
+      <p *ngIf="!update">Start of absence:</p>
+      <p *ngIf="absence && !update">
+        {{ absence.begin | date: "yyyy - MM - dd" }}
+      </p>
+    </div>
+    <mat-form-field *ngIf="update">
+      <input
+        matInput
+        [matDatepicker]="pickerStart"
+        placeholder="Choose the start of the absence"
+        formControlName="start"
+        id="start"
+        readonly
+        (click)="pickerStart.open()"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="pickerStart"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <div class="showData">
+      <p *ngIf="!update">End of absence:</p>
+      <p *ngIf="absence && !update">
+        {{ absence.end | date: "yyyy - MM - dd" }}
+      </p>
+    </div>
+    <mat-form-field *ngIf="update">
+      <input
+        matInput
+        [matDatepicker]="pickerEnd"
+        placeholder="Choose the end of the absence"
+        formControlName="end"
+        id="end"
+        readonly
+        (click)="pickerEnd.open()"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="pickerEnd"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+    <p *ngIf="error" class="error">{{ error }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button [disabled]="!createAbsenceForm.valid">
+      {{ message }}
+    </button>
+    <button mat-raised-button color="warn" (click)="onCancel()">
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</form>
