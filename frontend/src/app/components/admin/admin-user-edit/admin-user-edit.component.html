@@ -1,11 +1,5 @@
-<h2 mat-dialog-title align="center">Edit User</h2>
-<!-- <form
-  
-  autocomplete="off"
-  (ngSubmit)="OnSubmit(editUserDatForm.value)"
-> -->
+<h2 mat-dialog-title>EDIT USER</h2>
  <mat-dialog-content [formGroup]="editUserDataForm">
-   <div>{{data.firstName}}</div>
     <mat-form-field>
       <input
         matInput
@@ -27,15 +21,13 @@
       </mat-form-field>
       <br>
 
-      <mat-form-field>
+    <!--   <mat-form-field>
         <input
           matInput
           [matDatepicker]="dateOfBirth"
           placeholder="date of birth"
           formControlName="dateOfBirth"
           id="dateOfBirth"
-          readonly
-          required
           (click)="dateOfBirth.open()"
         />
         <mat-datepicker-toggle
@@ -46,7 +38,8 @@
       </mat-form-field>
       <br>
 
-      <mat-form-field>
+    -->
+     <mat-form-field>
         <input
           matInput
           type="text"
@@ -56,15 +49,13 @@
       </mat-form-field>
       <br>
 
-      <mat-form-field>
+ <!--     <mat-form-field>
         <input
           matInput
           [matDatepicker]="endOfTrial"
           placeholder="endOfTrial"
           formControlName="endOfTrial"
           id="endOfTrial"
-          readonly
-          required
           (click)="endOfTrial.open()"
         />
         <mat-datepicker-toggle
@@ -73,7 +64,7 @@
         ></mat-datepicker-toggle>
         <mat-datepicker #endOfTrial></mat-datepicker>
       </mat-form-field>
-      <br>
+      <br> -->
 
       <mat-form-field>
         <input
@@ -81,6 +72,7 @@
           type="email"
           placeholder="E-mail"
           formControlName="email"
+          required
         />
       </mat-form-field>
       <br>
@@ -91,7 +83,5 @@
   <mat-dialog-actions>
     <button mat-button [disabled]='!editUserDataForm.valid' [mat-dialog-close]="editUserDataForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
 
-    <button mat-raised-button color="warn" (click)="onCancel()">
-      Cancel
-    </button>
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
   </mat-dialog-actions>

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/User.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ApiCommunicationService } from 'src/app/services/ApiCommunication.service';
 
 
 @Component({
@@ -17,14 +18,13 @@ export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
 
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   user: User;
+  editedUser: User;
   users: User[];
-  showUser: User [] = [];
-  // user : User[];  
   dataSource : any;
 
   @ViewChild(MatPaginator, {static: true}) paginator : MatPaginator;
 
-  constructor(private route: ActivatedRoute ,public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute ,public dialog: MatDialog, private api: ApiCommunicationService) { }
 
   displayedColumns: string[] = ['dateOfBirth', 'firstName', 'lastName', 'position', 'supervisor', 
                                 'dateOfEndTrial', 'dateOfEntry', 'email', 'edit', 'delete'];
@@ -41,24 +41,27 @@ export class AdminUserEditDestroyShowComponent implements OnInit, OnDestroy {
         this.dataSource = new MatTableDataSource(this.users);
         console.log(this.users);
         this.dataSource.paginator = this.paginator;
-
       });
   }
 
+  
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
   }
 
-  editUser(id: number){
-    this.users.filter(user => {
-      if(user.id === id){
-        this.user = user;
-      }
+  editUser(id: number): void{
+    const dialogRef = this.dialog.open(AdminUserEditComponent, {
+      data: {user: this.users.filter(user => user.id === id)[0]}
     });
-    this.dialog.open(AdminUserEditComponent, {
-      data: {user: this.user}
-    });  
+
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      this.editedUser = this.users.filter(user => user.id === id)[0];
+      Object.assign(this.editedUser, result);
+      this.editedUser.id = id;
+      console.log(this.editedUser);      
+      this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(u => console.log("updated:" + u));
+    });
   }
 }
 

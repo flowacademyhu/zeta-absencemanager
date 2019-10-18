@@ -21,17 +21,17 @@ export class AdminUserEditComponent implements OnInit {
   constructor(
     private api: ApiCommunicationService,
     public dialogRef: MatDialogRef<AdminUserEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public fb: FormBuilder
   ) {
-    console.log(data);
+    console.log(data.user);
     this.editUserDataForm = new FormGroup({
-      firstName: new FormControl(data.firstName, Validators.required),
-      lastName: new FormControl(data.lastName, Validators.required),
-      dateOfBirth: new FormControl(data.dateOfBirth, Validators.required),
-      position: new FormControl(data.position, Validators.required),
-      endOfTrial: new FormControl(data.dateOfEndTrial, Validators.required),
-      email: new FormControl(data.email, Validators.required)
+      firstName: new FormControl(data.user.firstName, Validators.required),
+      lastName: new FormControl(data.user.lastName, Validators.required),
+      dateOfBirth: new FormControl(data.user.dateOfBirth),
+      position: new FormControl(data.user.position, Validators.required),
+      endOfTrial: new FormControl(data.user.dateOfEndTrial),
+      email: new FormControl(data.user.email, Validators.required)
     });
    }
 

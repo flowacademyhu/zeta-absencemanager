@@ -44,6 +44,6 @@
 
 </div>
 <div mat-dialog-actions style="justify-content: center;">
-  <button mat-button (click)="dialogRef.close()" style="border: 2px solid white;">Cancel</button>
+  <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
   <button mat-button [disabled]='!createUserForm.valid' [mat-dialog-close]="createUserForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
 </div>
