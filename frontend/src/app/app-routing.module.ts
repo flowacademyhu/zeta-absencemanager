@@ -13,6 +13,7 @@ import { AdminAbsenceResolver } from "./components/resolvers/AdminAbsenceResolve
 import { GroupIndexComponent } from "./components/admin/group-index/group-index.component";
 import { CreateUserComponent } from "./modals/create-user/create-user.component";
 import { GroupResolver } from "./resolvers/GroupResolver";
+import { AbsenceShowEditComponent } from "./components/employee/absence-show-edit/absence-show-edit.component";
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: "employee/absence-create",
     component: AbsencesCreateComponent
+  },
+  {
+    path: "employee/absence-show-edit/:id",
+    component: AbsenceShowEditComponent
   },
   {
     path: "admin/group/index",

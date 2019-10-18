@@ -47,4 +47,11 @@ export class Absence extends DataEntity {
       this.assignee = assignee;
     }
   }
+
+  public static enumSelector(definition) {
+    return Object.keys(definition).map(key => ({
+      value: key,
+      title: definition[key]
+    }));
+  }
 }

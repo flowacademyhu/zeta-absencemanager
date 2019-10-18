@@ -56,14 +56,15 @@ public class AbsenceService {
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
         if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())
-                || absence.getCreatedAt() == null
+                //|| absence.getCreatedAt() == null
                 || absence.getType() == null
                 || absence.getBegin() == null
-                || absence.getEnd() == null
-                || absence.getCreatedBy() == null
-                || absence.getReporter() == null
-                || absence.getAssignee() == null
-                || absence.getStatus() == null) {
+                || absence.getEnd() == null)
+        //|| absence.getCreatedBy() == null
+        //|| absence.getReporter() == null
+        //|| absence.getAssignee() == null
+        //|| absence.getStatus() == null) {
+        {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found or the submitted arguments are invalid.");
         }
         modifyAbsence.setType(absence.getType());
