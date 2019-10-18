@@ -4,7 +4,7 @@
     color: white;
     align-items: center;
     padding: 8px;
-    position:absolute;
+    position: sticky;
     bottom:0;
     width: 99%;
 }

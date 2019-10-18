@@ -26,5 +26,4 @@ export class UserApiConnector extends AbstractApiConnector {
     public deleteUser(id: number): Observable<any> {
         return this.http.delete(this.apiRoute + "/" + id);
     }
-
 }
