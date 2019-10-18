@@ -35,33 +35,31 @@ export class AbsenceShowEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
-      this.api
-        .absence()
-        .getAbsence(params.id)
-        .pipe(takeUntil(this._unsubscribe$))
-        .subscribe(
-          data => {
-            this.absence = data;
-            this.absence.begin = new Date(
-              data.begin[0],
-              data.begin[1],
-              data.begin[2]
-            );
-            this.absence.end = new Date(data.end[0], data.end[1], data.end[2]);
-            this.types = Absence.enumSelector(AbsenceType);
-            this.createAbsenceForm = new FormGroup({
-              type: new FormControl(this.absence.type),
-              summary: new FormControl(this.absence.summary),
-              start: new FormControl(this.absence.begin),
-              end: new FormControl(this.absence.end)
-            });
-          },
-          err => {
-            this.error = err.error.message;
-          }
-        );
-    });
+    console.log(this.data.absence.id);
+    this.api
+      .absence()
+      .getAbsence(this.data.absence.id)
+      .subscribe(
+        data => {
+          this.absence = data;
+          this.absence.begin = new Date(
+            data.begin[0],
+            data.begin[1],
+            data.begin[2]
+          );
+          this.absence.end = new Date(data.end[0], data.end[1], data.end[2]);
+          this.types = Absence.enumSelector(AbsenceType);
+          this.createAbsenceForm = new FormGroup({
+            type: new FormControl(this.absence.type),
+            summary: new FormControl(this.absence.summary),
+            start: new FormControl(this.absence.begin),
+            end: new FormControl(this.absence.end)
+          });
+        },
+        err => {
+          this.error = err.error.message;
+        }
+      );
   }
 
   public OnSubmit(createAbsenceFormValue): void {
