@@ -1,6 +1,7 @@
 mat-dialog-content {
   display: grid;
   font-size: 15px;
+  width: 50vh;
 }
 
 h2 {
@@ -14,5 +15,5 @@ h2 {
 
 .showData {
   display: grid;
-  grid-template-columns: 20% 20% 60%;
+  grid-template-columns: 1fr 1fr;
 }

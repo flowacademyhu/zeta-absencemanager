@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
@@ -72,6 +73,9 @@ public class AbsenceService {
         modifyAbsence.setType(absence.getType());
         modifyAbsence.setBegin(absence.getBegin());
         modifyAbsence.setEnd(absence.getEnd());
+        if(!StringUtils.isEmpty(absence.getSummary())){
+            modifyAbsence.setSummary(absence.getSummary());
+        }
         modifyAbsence.setReporter(absence.getReporter());
         modifyAbsence.setAssignee(absence.getAssignee());
         modifyAbsence.setStatus(absence.getStatus());

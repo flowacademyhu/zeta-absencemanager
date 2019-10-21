@@ -6,6 +6,7 @@ import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Absence } from "src/app/models/Absence.model";
 import { ApiCommunicationService } from "src/app/services/ApiCommunication.service";
+import { AbsenceShowEditComponent } from "../absence-show-edit/absence-show-edit.component";
 
 @Component({
   selector: "app-emp-absences-index",
@@ -15,12 +16,13 @@ import { ApiCommunicationService } from "src/app/services/ApiCommunication.servi
 export class EmpAbsencesIndexComponent implements OnInit {
   displayedColumns: string[] = [
     "id",
-    "type",
-    "summary",
     "begin",
     "end",
     "days",
-    "status"
+    "type",
+    "summary",
+    "status",
+    "edit"
   ];
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];
@@ -49,6 +51,24 @@ export class EmpAbsencesIndexComponent implements OnInit {
     dialogConfig.data = {};
 
     const dialogRef = this.dialog.open(AbsencesCreateComponent, dialogConfig);
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(data2 => {
+        this.api
+          .absence()
+          .getAbsences()
+          .subscribe(data => {
+            this.absences = data;
+          });
+      });
+  }
+
+  editAbsence(id: number): void {
+    const dialogRef = this.dialog.open(AbsenceShowEditComponent, {
+      data: { absence: this.absences.filter(absence => absence.id === id)[0] }
+    });
 
     dialogRef
       .afterClosed()

@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit {
     this.sessionService.logout().then(() => {
       this.router.navigateByUrl('');
     });
+    this.isLoggedIn$ = this.sessionService.isLoggedIn();
   }
 
 }
