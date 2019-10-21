@@ -112,7 +112,7 @@ public class AdminUserService {
                 modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
             }
             modifyUser.setUpdatedAt(LocalDateTime.now());
-            modifyUser.setUpdatedBy(userService.getCurrentUser());
+   /*         modifyUser.setUpdatedBy(userService.getCurrentUser());*/
             userRepository.save(modifyUser);
             modifyUser.setPassword(null);
             return modifyUser;
@@ -123,7 +123,7 @@ public class AdminUserService {
         User mod = findOneUser(id);
         mod.setRole(Roles.INACTIVE);
         mod.setDeletedAt(LocalDateTime.now());
-        mod.setDeletedBy(userService.getCurrentUser());
+    /*    mod.setDeletedBy(userService.getCurrentUser());*/
         updateUser(id, mod);
     }
 }

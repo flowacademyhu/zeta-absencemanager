@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,12 +19,13 @@ export enum LoginRejectionReason {
 @Injectable()
 
 export class SessionService {
-
+  public user: User;
   private _userData$: BehaviorSubject<User> = new BehaviorSubject(undefined);
   private _isLoggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(this.hasToken());
+  private get _router() { return this._injector.get(Router); }
   
   
-  constructor(private api: ApiCommunicationService, private router : Router) { }
+  constructor(private api: ApiCommunicationService, private _injector: Injector) { }
 
 
   public login(username, password):  Promise<LoginRejectionReason> {
@@ -34,7 +35,7 @@ export class SessionService {
         localStorage.setItem('token', data.access_token);
         this._isLoggedIn$.next(true);
         this.api.employee().getCurrent().subscribe(d => this._userData$.next(d));
-        this.router.navigate(["employee/absence-index"]);
+        this._router.navigate(["employee/absence-index"]);
         resolve();
       }, (error: HttpErrorResponse) => {
         //Invalid credentials
@@ -86,4 +87,13 @@ export class SessionService {
   private log(message: string) {
     console.log(message);
   }
+
+  public async initData(): Promise<User> {
+    this._userData$.subscribe(res => {
+      console.log(res);
+      this.user = res;
+    });
+    return await this.user;
+  }
+
 }

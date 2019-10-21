@@ -54,7 +54,7 @@ public class UserService {
             modifyUser.setFirstName(user.getFirstName());
             modifyUser.setEmail(user.getEmail());
             modifyUser.setUpdatedAt(LocalDateTime.now());
-            modifyUser.setUpdatedBy(getCurrentUser());
+           /* modifyUser.setUpdatedBy(getCurrentUser());*/
             userRepository.save(modifyUser);
             modifyUser.setPassword(null);
             return modifyUser;
@@ -65,7 +65,7 @@ public class UserService {
         User deleted = findOneUser(id);
         deleted.setDeletedAt(LocalDateTime.now());
         deleted.setRole(Roles.INACTIVE);
-        deleted.setDeletedBy(getCurrentUser());
+        /*deleted.setDeletedBy(getCurrentUser());*/
         updateUser(id, deleted);
     }
 

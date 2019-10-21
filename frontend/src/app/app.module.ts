@@ -65,11 +65,10 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
 import { AdminAbsenceResolver } from './components/resolvers/AdminAbsenceResolver';
 import { GroupResolver } from './resolvers/GroupResolver';
 import { GetEmployeeAbsencesResolver } from './resolvers/GetEmployeeAbsencesResolver';
-import { AppInitService } from './services/app-init.service';
 
-export function initializeApp(appInitService: AppInitService) {
+export function initializeApp(session: SessionService) {
   return (): Promise<any> => { 
-    return appInitService.initData();
+    return session.initData();
     
   }
 }
@@ -130,11 +129,10 @@ export function initializeApp(appInitService: AppInitService) {
     GetEmployeeAbsencesResolver,
     UserResolver,
     EmployeeService,
-    SessionService,
     ApiCommunicationService,
     UserService,
-    AppInitService,
-    { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [AppInitService], multi: true},
+    SessionService,
+    { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [SessionService], multi: true},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

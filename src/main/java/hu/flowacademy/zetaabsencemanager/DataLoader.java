@@ -123,7 +123,6 @@ public class DataLoader implements CommandLineRunner {
                 .group(cLevel)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(admin);
 
@@ -136,11 +135,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(cLevel)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user1);
 
@@ -153,11 +150,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(cLevel)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user2);
 
@@ -170,11 +165,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group7)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user3);
 
@@ -188,11 +181,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group7)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user4);
 
@@ -205,11 +196,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group7)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user5);
 
@@ -222,11 +211,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group8)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user6);
 
@@ -239,11 +226,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group8)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user7);
 
@@ -256,11 +241,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group8)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user8);
 
@@ -273,11 +256,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group6)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user9);
 
@@ -290,11 +271,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group6)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user10);
 
@@ -307,11 +286,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group6)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user11);
 
@@ -324,11 +301,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group6)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user12);
 
@@ -341,11 +316,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group6)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user13);
 
@@ -359,11 +332,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group5)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user14);
 
@@ -376,11 +347,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group5)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user15);
 
@@ -393,11 +362,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group5)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user16);
 
@@ -411,11 +378,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group4)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user17);
 
@@ -428,11 +393,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group4)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user18);
 
@@ -445,11 +408,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group4)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user19);
 
@@ -462,11 +423,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group3)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user20);
 
@@ -479,11 +438,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group3)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user21);
 
@@ -496,11 +453,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group3)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user22);
 
@@ -513,11 +468,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group2)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user23);
 
@@ -530,11 +483,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group2)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user24);
 
@@ -547,11 +498,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group2)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user25);
 
@@ -564,11 +513,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group2)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user26);
 
@@ -581,11 +528,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group2)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user27);
 
@@ -598,11 +543,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group1)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user28);
 
@@ -615,11 +558,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group1)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user29);
 
@@ -632,11 +573,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group1)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user30);
 
@@ -649,11 +588,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group1)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user31);
 
@@ -667,11 +604,9 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(group1)
                 .position("testposition")
                 .numberOfChildren(3)
-                .otherAbsenceEnt("none")
                 .build();
         this.userRepository.save(user32);
 
