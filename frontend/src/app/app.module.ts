@@ -4,7 +4,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatMenuModule } from "@angular/material/menu";
-import { NgModule } from "@angular/core";
+import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { MatPaginatorModule } from "@angular/material";
 import { HttpClientModule } from "@angular/common/http"
 
@@ -65,6 +65,14 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
 import { AdminAbsenceResolver } from './components/resolvers/AdminAbsenceResolver';
 import { GroupResolver } from './resolvers/GroupResolver';
 import { GetEmployeeAbsencesResolver } from './resolvers/GetEmployeeAbsencesResolver';
+import { AppInitService } from './services/app-init.service';
+
+export function initializeApp(appInitService: AppInitService) {
+  return (): Promise<any> => { 
+    return appInitService.initData();
+    
+  }
+}
 
 @NgModule({
   declarations: [
@@ -125,6 +133,8 @@ import { GetEmployeeAbsencesResolver } from './resolvers/GetEmployeeAbsencesReso
     SessionService,
     ApiCommunicationService,
     UserService,
+    AppInitService,
+    { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [AppInitService], multi: true},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

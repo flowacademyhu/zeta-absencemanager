@@ -120,7 +120,6 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .isOnTrial(false)
                 .group(cLevel)
                 .position("testposition")
                 .numberOfChildren(3)
