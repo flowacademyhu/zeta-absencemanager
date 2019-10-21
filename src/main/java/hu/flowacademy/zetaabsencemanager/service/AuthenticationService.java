@@ -2,30 +2,29 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 public class AuthenticationService {
 
+    @Autowired
+    private UserRepository userRepository;
+
     public User getCurrentUser() {
-/*        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
-        }
-        String email = auth.getName();
-        return findByEmail(email);*/
-        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findByEmailAndDeletedAtNull(principal.toString()).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+/*        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)  
                 .map(this::castUser)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));*/
     }
 
     private User castUser(Object principal) {
@@ -38,6 +37,4 @@ public class AuthenticationService {
     public Boolean hasRole(Roles role) {
         return getCurrentUser().getAuthorities().stream().anyMatch(u -> u.getAuthority().equalsIgnoreCase(role.toString()));
     }
-
-
 }
