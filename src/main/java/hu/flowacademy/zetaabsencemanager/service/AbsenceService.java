@@ -27,7 +27,7 @@ public class AbsenceService {
     private UserService userService;
 
     public Absence findOne(@NotNull Long id) {
-        Absence absence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
+        Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
         if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
         }
@@ -42,14 +42,17 @@ public class AbsenceService {
     public Absence create(@NotNull Absence absence) {
         if (absence.getType() == null ||
                 absence.getBegin() == null ||
-                absence.getEnd() == null) {
+                absence.getEnd() == null ||
+                absence.getBegin().isAfter(absence.getEnd())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        absence.setAssignee(userService.findOneUser(1L));
         absence.setReporter(userService.getCurrentUser());
         absence.setCreatedAt(LocalDateTime.now());
         absence.setCreatedBy(userService.getCurrentUser());
-        // TODO absence.setAssignee();
+       /* if(absence.getReporter().getGroup().getLeader()!=null){
+            absence.setAssignee(absence.getReporter().getGroup().getLeader());
+        }*/
+        //absence.setDuration();
         absence.setStatus(Status.OPEN);
         /*userService.getCurrentUser().getAbsences().add(absence);
         userService.updateUser(userService.getCurrentUser().getId(), userService.getCurrentUser());*/
@@ -73,7 +76,7 @@ public class AbsenceService {
         modifyAbsence.setType(absence.getType());
         modifyAbsence.setBegin(absence.getBegin());
         modifyAbsence.setEnd(absence.getEnd());
-        if(!StringUtils.isEmpty(absence.getSummary())){
+        if (!StringUtils.isEmpty(absence.getSummary())) {
             modifyAbsence.setSummary(absence.getSummary());
         }
         modifyAbsence.setReporter(absence.getReporter());

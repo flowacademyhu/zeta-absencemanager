@@ -84,9 +84,9 @@ public class User {
     @Column
     private LocalDateTime deletedAt;
 
-    @Column
+    /*@Column
     private User updatedBy;
 
     @Column
-    private User deletedBy;
+    private User deletedBy;*/
 }
