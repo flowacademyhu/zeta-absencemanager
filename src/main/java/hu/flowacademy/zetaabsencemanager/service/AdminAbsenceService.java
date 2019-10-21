@@ -29,7 +29,7 @@ public class AdminAbsenceService {
     private AbsenceRepository absenceRepository;
 
     @Autowired
-    private UserService userService;
+    private AuthenticationService authenticationService;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -47,7 +47,7 @@ public class AdminAbsenceService {
     }
 
     public List<Absence> findAllAbsence() {
-        User current = userService.getCurrentUser();
+        User current = authenticationService.getCurrentUser();
         if (current.getRole() == Roles.ADMIN) {
             return this.absenceRepository.findAll();
         } else {
@@ -61,7 +61,7 @@ public class AdminAbsenceService {
     }
 
     public Absence findOne(@NotNull Long id) {
-        User current = userService.getCurrentUser();
+        User current = authenticationService.getCurrentUser();
         Absence foundAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(foundAbsence.getReporter()))) {
@@ -72,13 +72,13 @@ public class AdminAbsenceService {
     }
 
     public Absence create(Absence absence) {
-        User current = userService.getCurrentUser();
+        User current = authenticationService.getCurrentUser();
         if (absence.getType() == null || absence.getBegin() == null || absence.getEnd() == null || absence.getReporter() == null ||
                 absence.getAssignee() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
         absence.setCreatedAt(LocalDateTime.now());
-        absence.setCreatedBy(userService.getCurrentUser());
+        absence.setCreatedBy(authenticationService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
@@ -101,7 +101,7 @@ public class AdminAbsenceService {
                 || absence.getStatus() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        User current = userService.getCurrentUser();
+        User current = authenticationService.getCurrentUser();
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
         if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(modifyAbsence.getReporter()))) {
             modifyAbsence.setType(absence.getType());

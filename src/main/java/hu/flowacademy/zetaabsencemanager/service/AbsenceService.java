@@ -24,18 +24,18 @@ public class AbsenceService {
     private AbsenceRepository absenceRepository;
 
     @Autowired
-    private UserService userService;
+    private AuthenticationService authenticationService;
 
     public Absence findOne(@NotNull Long id) {
         Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
-        if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())) {
+        if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
         }
         return absence;
     }
 
     public List<Absence> findAll() {
-        User current = userService.getCurrentUser();
+        User current = authenticationService.getCurrentUser();
         return absenceRepository.findByReporterAndDeletedAtNull(current);
     }
 
@@ -46,9 +46,9 @@ public class AbsenceService {
                 absence.getBegin().isAfter(absence.getEnd())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         }
-        absence.setReporter(userService.getCurrentUser());
+        absence.setReporter(authenticationService.getCurrentUser());
         absence.setCreatedAt(LocalDateTime.now());
-        absence.setCreatedBy(userService.getCurrentUser());
+        absence.setCreatedBy(authenticationService.getCurrentUser());
        /* if(absence.getReporter().getGroup().getLeader()!=null){
             absence.setAssignee(absence.getReporter().getGroup().getLeader());
         }*/
@@ -61,7 +61,7 @@ public class AbsenceService {
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
         Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        if (!absence.getReporter().getId().equals(userService.getCurrentUser().getId())
+        if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())
                 //|| absence.getCreatedAt() == null
                 || absence.getType() == null
                 || absence.getBegin() == null

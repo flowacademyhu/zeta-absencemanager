@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.service.AuthenticationService;
 import hu.flowacademy.zetaabsencemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,9 @@ public class CurrentUserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
     
     @GetMapping("/{userId}")
     public User getOne(@PathVariable("userId") Long userId) {
@@ -29,6 +33,6 @@ public class CurrentUserController {
 
     @GetMapping()
     public  User getCurrent() {
-        return userService.getCurrentUser();
+        return authenticationService.getCurrentUser();
     }
 }
