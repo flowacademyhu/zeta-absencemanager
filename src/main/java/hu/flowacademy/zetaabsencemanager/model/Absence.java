@@ -51,11 +51,11 @@ public class Absence {
     @ManyToOne
     private User createdBy;
 
-   /* @ManyToOne
+    @ManyToOne
     private User updatedBy;
 
     @ManyToOne
-    private User deletedBy;*/
+    private User deletedBy;
 
     @Column
     private LocalDateTime createdAt;
