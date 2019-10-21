@@ -42,7 +42,22 @@ export class AbsencesCreateComponent implements OnInit {
         createAbsenceFormValue.start,
         createAbsenceFormValue.end
       );
-      newAbsence.begin = (newAbsence.begin as Date)
+      var month = newAbsence.begin.getUTCMonth() + 1;
+      var day = newAbsence.begin.getUTCDate() + 1;
+      var year = newAbsence.begin.getUTCFullYear();
+      newAbsence.begin = [];
+      newAbsence.begin[0] = year;
+      newAbsence.begin[1] = month;
+      newAbsence.begin[2] = day;
+
+      var month = newAbsence.end.getUTCMonth() + 1;
+      var day = newAbsence.end.getUTCDate() + 1;
+      var year = newAbsence.end.getUTCFullYear();
+      newAbsence.end = [];
+      newAbsence.end[0] = year;
+      newAbsence.end[1] = month;
+      newAbsence.end[2] = day;
+      /* newAbsence.begin = (newAbsence.begin as Date)
         .toISOString()
         .split("T")[0]
         .split("-");
@@ -55,7 +70,7 @@ export class AbsencesCreateComponent implements OnInit {
         .split("-");
       for (let i = 0; i < 3; i++) {
         newAbsence.end[i] = parseInt(newAbsence.end[i]);
-      }
+      } */
       console.log(newAbsence);
       this.api
         .absence()
