@@ -29,7 +29,8 @@ import {
   MatDialogTitle,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatSelectModule
+  MatSelectModule,
+  MatCheckboxModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -106,7 +107,8 @@ import { CreateGroupComponent } from './modals/create-group/create-group.compone
     MatDialogModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     UserResolver,

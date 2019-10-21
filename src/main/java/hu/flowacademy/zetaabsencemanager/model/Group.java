@@ -41,8 +41,12 @@ public class Group {
     private List<User> leaders;
 
 
-    @OneToMany(mappedBy = "group")
-    @JsonSerialize(using = UserSerializer.class)
+    @ManyToMany
+    @JoinTable(
+            name = "employee_user_group",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @JsonIgnore
     private List<User> employees;
 
     @Column

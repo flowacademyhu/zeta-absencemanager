@@ -2,7 +2,9 @@ package hu.flowacademy.zetaabsencemanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import hu.flowacademy.zetaabsencemanager.model.serializer.UserSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,7 +56,7 @@ public class User {
     private Boolean isOnTrial;
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
+    @JsonIgnore
     private Group group;
 
     @Column

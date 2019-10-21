@@ -50,6 +50,9 @@ export class GroupIndexComponent implements OnInit {
     dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((result: Group) => {
       console.log(result);     
       this.api.group().createGroup(result).subscribe(u => console.log("created:" + u));
+      this.api.group().getGroups().subscribe((data) => {
+        this.dataSource = data;
+      })
     });
     
   }

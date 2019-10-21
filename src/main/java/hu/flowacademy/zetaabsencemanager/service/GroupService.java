@@ -38,13 +38,18 @@ public class GroupService {
         if (StringUtils.isEmpty(group.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid. (Group)");
         }
-        /*if (!CollectionUtils.isEmpty(group.getLeaders())) {
+        if (!CollectionUtils.isEmpty(group.getLeaders())) {
             for (User u : group.getLeaders()) {
                 u.setRole(Roles.LEADER);
                 userService.updateUser(u.getId(), u);
             }
-        } 
-         */
+        }
+        if (!CollectionUtils.isEmpty(group.getEmployees())) {
+            for (User u : group.getEmployees()) {
+                u.setGroup(group);
+                userService.updateUser(u.getId(), u);
+            }
+        }
         group.setCreatedAt(LocalDateTime.now());
         return groupRepository.save(group);
     }

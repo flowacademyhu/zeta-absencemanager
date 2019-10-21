@@ -18,12 +18,10 @@ import { Group } from 'src/app/models/Group.model';
 export class CreateGroupComponent implements OnInit {
 
   public createGroupForm: FormGroup;
-  private selectedLeaders: User[] = [];
-  private selectedEmployees: User[] = [];
-  // groupData: Group;
-  groupsList: Group[];
-  employeeList: User[] = [];
-  leaderList: User[] = [];
+  private groupList: Group[];
+  private userList: User[] = [];
+  private employeeList: User[] = [];
+  private leaderList: User[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<CreateGroupComponent>,
@@ -45,32 +43,29 @@ export class CreateGroupComponent implements OnInit {
   ngOnInit() {
     this.dialogRef.updateSize("60%", "90%");
     this.api.group().getGroups().subscribe(groups => {
-      this.groupsList = groups;
+      this.groupList = groups;
       // this.dataSource = new MatTableDataSource(this.groupsList);
-      console.log(this.groupsList);
+      console.log(this.groupList);
     })
 
     this.api.user().getUsers().subscribe(users => {
-      this.employeeList = users;
-      this.leaderList = users;
+      this.userList = users;
       // this.dataSourceUser = new MatTableDataSource(this.usersList);
-      console.log(this.employeeList);
-      console.log(this.leaderList);
+      console.log(this.userList);
+      for (let i = 0; i < this.userList.length; i++) {
+        if (this.userList[i].group === null) {
+        this.employeeList.push(this.userList[i])
+        }
+      }
     })
   }
 
-  addToSelectedLeaders(leader, index) {
-    console.log("leader: " + leader);
-    this.selectedLeaders.push(leader);
-    this.leaderList.slice(index);
-    console.log(this.selectedLeaders)
-  }
-
-  addToSelectedEmployees(employee, index) {
-    console.log("employee: " + employee);
-    this.selectedEmployees.push(employee);
-    this.employeeList.slice(index);
-    console.log(this.selectedEmployees)
+  addLeadersToList(group) {
+    this.leaderList.splice(0, this.leaderList.length);
+    for (let i = 0; i < group.employees.length; i++) {
+      this.leaderList.push(group.employees[i]);
+    }
+    console.log(this.leaderList);
   }
 
   groupSelector(definition) {

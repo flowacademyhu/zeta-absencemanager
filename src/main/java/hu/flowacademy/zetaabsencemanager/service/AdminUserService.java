@@ -50,7 +50,7 @@ public class AdminUserService {
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
-                || user.getGroup() == null
+                // || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
                 || user.getRole() == null
                 || user.getNumberOfChildren() == null
