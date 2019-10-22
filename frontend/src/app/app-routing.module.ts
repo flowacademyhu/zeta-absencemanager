@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
-import { EmployeeProfileEditComponent } from './components/employee/employee-profile-edit/employee-profile-edit.component';
 import { AdminAbsencesIndexComponent } from './components/admin/absences-index/admin-absences-index.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdminUserEditDestroyShowComponent } from './components/admin/user-edit-destroy-show/admin-user-edit-destroy-show/admin-user-edit-destroy-show.component';
@@ -21,24 +20,14 @@ import { AbsenceShowEditComponent } from "./components/employee/absence-show-edi
 const routes: Routes = [
   { path: "", component: LoginComponent },
   { path: "login", component: LoginComponent },
-
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
-
   { path: 'admin/user-index', component: AdminUserShowComponent },
-  { path: 'employee/employeeedit', component: EmployeeProfileEditComponent, resolve:  { user: userprofileupdateresolver} },
-
-
-
   { path: "admin/user-index", component: AdminUserShowComponent },
   { path: "employee/absence-create", component: AbsencesCreateComponent },
-
-
   { path: "admin/absence-index", component: AdminAbsencesIndexComponent },
   { path: 'admin/user-index', component: AdminUserShowComponent },
   { path: "admin/user-esd", component: AdminUserEditDestroyShowComponent, resolve: { userList: UserResolver }},
   { path: "employee/absence-create", component: AbsencesCreateComponent },
-
-
   { path: 'profile', component: EmployeeShowComponent },
   {
     path: "employee/absence-index",

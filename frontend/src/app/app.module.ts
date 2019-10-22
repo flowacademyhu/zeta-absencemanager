@@ -1,5 +1,4 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmployeeProfileEditComponent } from './components/employee/employee-profile-edit/employee-profile-edit.component';
 import { userprofileupdateresolver } from 'src/app/userprofileupdateresolver';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from "./app-routing.module";
@@ -84,7 +83,6 @@ import { GetEmployeeAbsencesResolver } from './resolvers/GetEmployeeAbsencesReso
     GroupIndexComponent,
     CreateUserComponent,
     AbsencesCreateComponent, 
-    EmployeeProfileEditComponent,
     AdminUserEditComponent,
     AbsenceShowEditComponent
   ],
