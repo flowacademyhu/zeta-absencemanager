@@ -46,13 +46,7 @@ public class AbsenceService {
     absence.setReporter(authenticationService.getCurrentUser());
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
-       /* if(absence.getReporter().getGroup().getLeader()!=null){
-            absence.setAssignee(absence.getReporter().getGroup().getLeader());
-        }*/
-    //absence.setDuration();
     absence.setStatus(Status.OPEN);
-        /*userService.getCurrentUser().getAbsences().add(absence);
-        userService.updateUser(userService.getCurrentUser().getId(), userService.getCurrentUser());*/
     return absenceRepository.save(absence);
   }
 
