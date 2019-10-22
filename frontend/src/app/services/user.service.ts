@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiCommunicationService } from './ApiCommunication.service';
+import { ApiCommunicationService } from './api-communication.service';
 
 @Injectable()
 export class UserService {

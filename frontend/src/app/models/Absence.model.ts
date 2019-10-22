@@ -1,5 +1,5 @@
 import { User } from "./User.model";
-import { DataEntity } from "./DataEntity";
+import { DataEntity } from "./DataEntity.model";
 
 //TODO enum names imported from backend, we should consider the names as well
 export enum AbsenceType {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Group } from '../models/Group.model';
 import { HttpClient } from '@angular/common/http';
-import { ApiCommunicationService } from '../services/ApiCommunication.service';
+import { ApiCommunicationService } from '../services/api-communication.service';
 
 @Injectable({
   providedIn: 'root'
