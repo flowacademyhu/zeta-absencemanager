@@ -1,13 +1,20 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -17,47 +24,56 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Absence {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column
+  private Long id;
 
-    @Column
-    private LocalDateTime createdAt;
+  @Column
+  @NotNull(message = "Type must be set.")
+  private Type type;
 
-    @Column
-    private LocalDateTime updatedAt;
+  @Column
+  private String summary;
 
-    @Column
-    private LocalDateTime deletedAt;
+  @Column
+  @NotNull(message = "Begin date is required.")
+  private LocalDate begin;
 
-    @Column
-    private Type type;
+  @Column
+  @NotNull(message = "End date is required.")
+  private LocalDate end;
 
-    @Column
-    private String summary;
+  @Column
+  private Integer duration;
 
-    @Column
-    private LocalDate begin;
+  @ManyToOne
+  private User reporter;
 
-    @Column
-    private LocalDate end;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User assignee;
 
-    @ManyToOne
-    private User createdBy;
+  @Column
+  private Status status;
 
-    // TODO User updatedBy;
+  @ManyToOne
+  private User createdBy;
 
-    // TODO User deletedBy
+  @ManyToOne
+  private User updatedBy;
 
-    @ManyToOne
-    private User reporter;
+  @ManyToOne
+  private User deletedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User assignee;
+  @Column
+  private LocalDateTime createdAt;
 
-    @Column
-    private Status status;
+  @Column
+  private LocalDateTime updatedAt;
+
+  @Column
+  private LocalDateTime deletedAt;
+
 
 }

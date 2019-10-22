@@ -6,7 +6,7 @@ public enum Status {
     APPROVED("APPROVED"),
     ADMINISTRATED("ADMINISTRATED"),
     DONE("DONE"),
-    REJECT("REJECT");
+    REJECTED("REJECTED");
 
     private String status;
 
