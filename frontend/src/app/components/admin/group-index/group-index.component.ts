@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { CreateGroupComponent } from 'src/app/modals/create-group/create-group.component';
+import { AdminGroupCreateModalComponent } from 'src/app/modals/admin-group-create-modal/admin-group-create-modal.component';
 import { User } from 'src/app/models/User.model';
 
 @Component({
@@ -43,7 +43,7 @@ export class GroupIndexComponent implements OnInit {
   ngOnInit() { }
 
   createGroup(): void {
-    const dialogRef = this.dialog.open(CreateGroupComponent, {
+    const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {
 
     });
 
