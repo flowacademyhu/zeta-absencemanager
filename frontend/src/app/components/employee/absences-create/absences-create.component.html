@@ -34,6 +34,7 @@
         readonly
         required
         (click)="pickerStart.open()"
+        (dateChange)="changeHandler($event)"
       />
       <mat-datepicker-toggle
         matSuffix
@@ -52,6 +53,7 @@
         readonly
         required
         (click)="pickerEnd.open()"
+        (dateChange)="changeHandler($event)"
       />
       <mat-datepicker-toggle
         matSuffix
@@ -61,6 +63,17 @@
     </mat-form-field>
     <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>
+
+  <mat-form-field>
+    <input
+      matInput
+      type="number"
+      placeholder="Duration"
+      formControlName="duration"
+      id="duration"
+    />
+  </mat-form-field>
+
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
       Create

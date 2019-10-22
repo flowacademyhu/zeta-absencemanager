@@ -1,5 +1,6 @@
 import { User } from "./User.model";
 import { DataEntity } from "./DataEntity";
+import * as moment from "moment";
 
 //TODO enum names imported from backend, we should consider the names as well
 export enum AbsenceType {
@@ -23,6 +24,7 @@ export class Absence extends DataEntity {
   public summary: string;
   public begin: any;
   public end: any;
+  public duration: number;
   public reporter: User;
   public assignee: User;
   public status: Status;
@@ -32,6 +34,7 @@ export class Absence extends DataEntity {
     summary: string,
     begin: any,
     end: any,
+    duration: number,
     reporter?: User,
     assignee?: User
   ) {
@@ -46,6 +49,7 @@ export class Absence extends DataEntity {
     if (assignee) {
       this.assignee = assignee;
     }
+    this.duration = duration;
   }
 
   public static enumSelector(definition) {

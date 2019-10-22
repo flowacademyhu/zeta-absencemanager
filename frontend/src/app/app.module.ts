@@ -55,7 +55,7 @@ import { CreateUserComponent } from "./modals/create-user/create-user.component"
 import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
-import { AbsenceShowEditComponent } from './components/employee/absence-show-edit/absence-show-edit.component';
+import { AbsenceShowEditComponent } from "./components/employee/absence-show-edit/absence-show-edit.component";
 
 @NgModule({
   declarations: [
