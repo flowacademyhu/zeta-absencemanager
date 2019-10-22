@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,15 +25,18 @@ public class Absence {
     private Long id;
 
     @Column
+    @NotNull
     private Type type;
 
     @Column
     private String summary;
 
     @Column
+    @NotNull
     private LocalDate begin;
 
     @Column
+    @NotNull
     private LocalDate end;
 
     @Column

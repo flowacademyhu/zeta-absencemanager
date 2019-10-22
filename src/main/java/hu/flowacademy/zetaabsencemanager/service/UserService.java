@@ -35,29 +35,21 @@ public class UserService {
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
         User modifyUser = findOneUser(id);
-        if (modifyUser == null
-                || StringUtils.isEmpty(user.getFirstName())
-                || StringUtils.isEmpty(user.getLastName())
-                || StringUtils.isEmpty(user.getEmail())
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
             modifyUser.setLastName(user.getLastName());
             modifyUser.setFirstName(user.getFirstName());
             modifyUser.setEmail(user.getEmail());
             modifyUser.setUpdatedAt(LocalDateTime.now());
-            //modifyUser.setUpdatedBy(getCurrentUser());
+            // modifyUser.setUpdatedBy(authenticationService.getCurrentUser()); not working cuz of dataloder calling it without currentuser
             userRepository.save(modifyUser);
             modifyUser.setPassword(null);
             return modifyUser;
-        }
     }
 
     public void delete(@NotNull Long id) {
         User deleted = findOneUser(id);
         deleted.setDeletedAt(LocalDateTime.now());
         deleted.setRole(Roles.INACTIVE);
-        //deleted.setDeletedBy(getCurrentUser());
+        deleted.setDeletedBy(authenticationService.getCurrentUser());
         updateUser(id, deleted);
     }
 }

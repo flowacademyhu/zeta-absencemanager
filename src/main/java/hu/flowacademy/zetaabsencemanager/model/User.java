@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +15,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -30,27 +36,34 @@ public class User implements UserDetails {
     @Column
     private Long id;
 
+    @NotBlank(message = "Firstname is required.")
     @Column
     private String firstName;
 
+    @NotBlank(message = "Lastname is required.")
     @Column
     private String lastName;
 
-    @Column
+    @NotBlank(message = "Email is required.")
+    @Column(unique = true)
     private String email;
 
     @Column
     private String password;
 
     @Column
+    @Past
+    @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfBirth;
 
     @Column
+    @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfEntry;
 
     @Column
+    @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfEndTrial;
 
@@ -58,12 +71,14 @@ public class User implements UserDetails {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @NotBlank
     @Column
     private String position;
 
     @Column
     private Roles role;
 
+    @NotNull
     @Column
     private Integer numberOfChildren;
 

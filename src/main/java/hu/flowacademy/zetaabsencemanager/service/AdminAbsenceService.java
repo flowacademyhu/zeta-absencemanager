@@ -6,12 +6,11 @@ import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +31,9 @@ public class AdminAbsenceService {
     private AuthenticationService authenticationService;
 
     @Autowired
+    private AbsenceValidator absenceValidator;
+
+    @Autowired
     private GroupRepository groupRepository;
 
 
@@ -47,11 +49,10 @@ public class AdminAbsenceService {
     }
 
     public List<Absence> findAllAbsence() {
-        User current = authenticationService.getCurrentUser();
-        if (current.getRole() == Roles.ADMIN) {
+        if (this.authenticationService.hasRole(Roles.ADMIN)) {
             return this.absenceRepository.findAll();
         } else {
-            Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
+            Set<User> employees = getEmployees(this.authenticationService.getCurrentUser().getGroup(), new HashSet<>());
             List<Absence> absences = new ArrayList<>();
             for (User emp : employees) {
                 absences.addAll(emp.getAbsences());
@@ -64,7 +65,7 @@ public class AdminAbsenceService {
         User current = authenticationService.getCurrentUser();
         Absence foundAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
-        if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(foundAbsence.getReporter()))) {
+        if (this.authenticationService.hasRole(Roles.ADMIN) || (this.authenticationService.hasRole(Roles.LEADER) && employees.contains(foundAbsence.getReporter()))) {
             return foundAbsence;
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -72,17 +73,14 @@ public class AdminAbsenceService {
     }
 
     public Absence create(Absence absence) {
+        this.absenceValidator.validateAbsenceSave(absence);
         User current = authenticationService.getCurrentUser();
-        if (absence.getType() == null || absence.getBegin() == null || absence.getEnd() == null || absence.getReporter() == null ||
-                absence.getAssignee() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        }
         absence.setCreatedAt(LocalDateTime.now());
         absence.setCreatedBy(authenticationService.getCurrentUser());
         // TODO absence.setAssignee();
         absence.setStatus(Status.OPEN);
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
-        if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(absence.getReporter()))) {
+        if (this.authenticationService.hasRole(Roles.ADMIN) || (this.authenticationService.hasRole(Roles.LEADER) && employees.contains(absence.getReporter()))) {
             return absenceRepository.save(absence);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -90,20 +88,11 @@ public class AdminAbsenceService {
     }
 
     public Absence update(@NotNull Long id, @NotNull Absence absence) {
+        this.absenceValidator.validateAbsenceSave(absence);
         Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid."));
-        if (absence.getCreatedAt() == null
-                || absence.getType() == null
-                || absence.getBegin() == null
-                || absence.getEnd() == null
-                || absence.getCreatedBy() == null
-                || absence.getReporter() == null
-                || absence.getAssignee() == null
-                || absence.getStatus() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        }
         User current = authenticationService.getCurrentUser();
         Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
-        if (current.getRole() == Roles.ADMIN || (current.getRole() == Roles.LEADER && employees.contains(modifyAbsence.getReporter()))) {
+        if (this.authenticationService.hasRole(Roles.ADMIN)|| (this.authenticationService.hasRole(Roles.LEADER) && employees.contains(modifyAbsence.getReporter()))) {
             modifyAbsence.setType(absence.getType());
             modifyAbsence.setBegin(absence.getBegin());
             modifyAbsence.setEnd(absence.getEnd());
@@ -111,7 +100,7 @@ public class AdminAbsenceService {
             modifyAbsence.setAssignee(absence.getAssignee());
             modifyAbsence.setStatus(absence.getStatus());
             modifyAbsence.setUpdatedAt(LocalDateTime.now());
-            // TODO modifyAbsence.setUpdatedBy(userService.getCurrentUser())
+            modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
             absenceRepository.save(modifyAbsence);
             return modifyAbsence;
         }
@@ -123,7 +112,7 @@ public class AdminAbsenceService {
     public void delete(@NotNull Long id) {
         Absence deleted = findOne(id);
         deleted.setDeletedAt(LocalDateTime.now());
-        // TODO modifyAbsence.setDeletedBy(userService.getCurrentUser())
+        deleted.setDeletedBy(authenticationService.getCurrentUser());
         update(id, deleted);
     }
 

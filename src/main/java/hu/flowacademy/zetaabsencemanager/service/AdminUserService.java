@@ -2,18 +2,16 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.management.relation.Role;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +21,9 @@ public class AdminUserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Autowired
     private UserService userService;
@@ -49,17 +50,6 @@ public class AdminUserService {
     }
 
     public User saveUser(@NotNull User user) {
-        if (StringUtils.isEmpty(user.getFirstName())
-                || StringUtils.isEmpty(user.getLastName())
-                || user.getDateOfBirth() == null
-                || StringUtils.isEmpty(user.getEmail())
-                || user.getDateOfEntry() == null
-                || user.getDateOfEndTrial() == null
-                || StringUtils.isEmpty(user.getPosition())
-                || user.getNumberOfChildren() == null
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
             User newUser = User.builder()
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())
@@ -81,22 +71,10 @@ public class AdminUserService {
             }
             userRepository.save(newUser);
             return newUser;
-        }
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
         User modifyUser = findOneUser(id);
-        if (StringUtils.isEmpty(user.getFirstName())
-                || StringUtils.isEmpty(user.getLastName())
-                || user.getDateOfBirth() == null
-                || StringUtils.isEmpty(user.getEmail())
-                || user.getDateOfEntry() == null
-                || user.getDateOfEndTrial() == null
-                || StringUtils.isEmpty(user.getPosition())
-                || user.getNumberOfChildren() == null
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
             modifyUser.setLastName(user.getLastName());
             modifyUser.setFirstName(user.getFirstName());
             modifyUser.setDateOfBirth(user.getDateOfBirth());
@@ -112,18 +90,17 @@ public class AdminUserService {
                 modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
             }
             modifyUser.setUpdatedAt(LocalDateTime.now());
-            //modifyUser.setUpdatedBy(userService.getCurrentUser());
+            modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
             userRepository.save(modifyUser);
             modifyUser.setPassword(null);
             return modifyUser;
-        }
     }
 
     public void delete(@NotNull Long id) {
         User mod = findOneUser(id);
         mod.setRole(Roles.INACTIVE);
         mod.setDeletedAt(LocalDateTime.now());
-        //mod.setDeletedBy(userService.getCurrentUser());
+        mod.setDeletedBy(authenticationService.getCurrentUser());
         updateUser(id, mod);
     }
 }

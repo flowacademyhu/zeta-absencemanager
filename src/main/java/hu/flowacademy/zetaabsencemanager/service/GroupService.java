@@ -35,9 +35,6 @@ public class GroupService {
     }
 
     public Group create(@NotNull Group group) {
-        if (StringUtils.isEmpty(group.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        }
         if (!CollectionUtils.isEmpty(group.getLeaders())) {
             for (User u : group.getLeaders()) {
                 u.setRole(Roles.LEADER);
@@ -50,9 +47,6 @@ public class GroupService {
 
     public Group updateGroup(@NotNull Long id, @NotNull Group group) {
         Group modifyGroup = findOne(id);
-        if (StringUtils.isEmpty(group.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
             modifyGroup.setName(group.getName());
             modifyGroup.setParentId(group.getParentId());
             modifyGroup.setEmployees(group.getEmployees());
@@ -66,7 +60,6 @@ public class GroupService {
                 }
             }
             return modifyGroup;
-        }
     }
 
     public void delete(@NotNull Long id) {
