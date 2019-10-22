@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.management.relation.Role;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class AdminUserService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(@NotNull String email) {
@@ -30,54 +35,17 @@ public class AdminUserService {
     }
 
     public List<User> findAllUser() {
-        return this.userRepository.findByDeletedAtNull();
+        List<User> users=this.userRepository.findByDeletedAtNull();
+        for (User user : users) {
+            user.setPassword(null);
+        }
+        return users;
     }
 
     public User findOneUser(@NotNull Long id) {
-        return userRepository.findByIdAndDeletedAtNull(id).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
-    }
-
-    public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id);
-        if (StringUtils.isEmpty(user.getFirstName())
-                || StringUtils.isEmpty(user.getLastName())
-                || StringUtils.isEmpty(user.getPassword())
-                || user.getDateOfBirth() == null
-                || StringUtils.isEmpty(user.getEmail())
-                || user.getDateOfEntry() == null
-                || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || user.getGroup() == null
-                || StringUtils.isEmpty(user.getPosition())
-                || user.getRole() == null
-                || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
-        ) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
-            modifyUser.setLastName(user.getLastName());
-            modifyUser.setFirstName(user.getFirstName());
-            modifyUser.setPassword(user.getPassword());
-            modifyUser.setDateOfBirth(user.getDateOfBirth());
-            modifyUser.setEmail(user.getEmail());
-            modifyUser.setDateOfEntry(user.getDateOfEntry());
-            modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
-            modifyUser.setIsOnTrial(user.getIsOnTrial());
-            modifyUser.setGroup(user.getGroup());
-            modifyUser.setPosition(user.getPosition());
-            modifyUser.setRole(user.getRole());
-            modifyUser.setNumberOfChildren(user.getNumberOfChildren());
-            modifyUser.setOtherAbsenceEnt(user.getOtherAbsenceEnt());
-            userRepository.save(user);
-            return modifyUser;
-        }
-
-    }
-
-    public void delete(@NotNull Long id) {
-        User mod = findOneUser(id);
-        mod.setDeletedAt(LocalDateTime.now());
-        updateUser(id, mod);
+        User user = userRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+        user.setPassword(null);
+        return user;
     }
 
     public User saveUser(@NotNull User user) {
@@ -87,12 +55,8 @@ public class AdminUserService {
                 || StringUtils.isEmpty(user.getEmail())
                 || user.getDateOfEntry() == null
                 || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || user.getGroup() == null
                 || StringUtils.isEmpty(user.getPosition())
-                || user.getRole() == null
                 || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
@@ -102,18 +66,64 @@ public class AdminUserService {
                     .dateOfBirth(user.getDateOfBirth())
                     .dateOfEntry(user.getDateOfEntry())
                     .dateOfEndTrial(user.getDateOfEndTrial())
-                    .isOnTrial(user.getIsOnTrial())
                     .email(user.getEmail())
                     .group(user.getGroup())
                     .position(user.getPosition())
-                    .password(passwordEncoder.encode(user.getPassword()))
-                    .role(user.getRole())
+                    .password(passwordEncoder.encode("user"))
+                    .role(Roles.EMPLOYEE)
                     .numberOfChildren(user.getNumberOfChildren())
-                    .otherAbsenceEnt(user.getOtherAbsenceEnt())
+                    .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
+                    .createdAt(LocalDateTime.now())
                     .build();
+            if (user.getExtraAbsenceDays() != null) {
+                newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
+                newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+            }
             userRepository.save(newUser);
             return newUser;
         }
     }
 
+    public User updateUser(@NotNull Long id, @NotNull User user) {
+        User modifyUser = findOneUser(id);
+        if (StringUtils.isEmpty(user.getFirstName())
+                || StringUtils.isEmpty(user.getLastName())
+                || user.getDateOfBirth() == null
+                || StringUtils.isEmpty(user.getEmail())
+                || user.getDateOfEntry() == null
+                || user.getDateOfEndTrial() == null
+                || StringUtils.isEmpty(user.getPosition())
+                || user.getNumberOfChildren() == null
+        ) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            modifyUser.setLastName(user.getLastName());
+            modifyUser.setFirstName(user.getFirstName());
+            modifyUser.setDateOfBirth(user.getDateOfBirth());
+            modifyUser.setEmail(user.getEmail());
+            modifyUser.setDateOfEntry(user.getDateOfEntry());
+            modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
+            modifyUser.setGroup(user.getGroup());
+            modifyUser.setPosition(user.getPosition());
+            modifyUser.setNumberOfChildren(user.getNumberOfChildren());
+            modifyUser.setOtherAbsenceEntitlement(user.getOtherAbsenceEntitlement());
+            if (!user.getExtraAbsenceDays().equals(modifyUser.getExtraAbsenceDays())) {
+                modifyUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
+                modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+            }
+            modifyUser.setUpdatedAt(LocalDateTime.now());
+            //modifyUser.setUpdatedBy(userService.getCurrentUser());
+            userRepository.save(modifyUser);
+            modifyUser.setPassword(null);
+            return modifyUser;
+        }
+    }
+
+    public void delete(@NotNull Long id) {
+        User mod = findOneUser(id);
+        mod.setRole(Roles.INACTIVE);
+        mod.setDeletedAt(LocalDateTime.now());
+        //mod.setDeletedBy(userService.getCurrentUser());
+        updateUser(id, mod);
+    }
 }

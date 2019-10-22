@@ -1,12 +1,14 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,12 +22,23 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user not found");
+        }
+        String email = auth.getName();
+        return findByEmail(email);
+    }
+
     public User findByEmail(String email) {
         return this.userRepository.findByEmailAndDeletedAtNull(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
     }
 
     public User findOneUser(Long id) {
-        return this.userRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        User user = this.userRepository.findByIdAndDeletedAtNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        user.setPassword(null);
+        return user;
     }
 
     public User updateUser(@NotNull Long id, @NotNull User user) {
@@ -33,34 +46,27 @@ public class UserService {
         if (modifyUser == null
                 || StringUtils.isEmpty(user.getFirstName())
                 || StringUtils.isEmpty(user.getLastName())
-                || StringUtils.isEmpty(user.getPassword())
-                || user.getDateOfBirth() == null
                 || StringUtils.isEmpty(user.getEmail())
-                || user.getDateOfEntry() == null
-                || user.getDateOfEndTrial() == null
-                || user.getIsOnTrial() == null
-                || user.getGroup() == null
-                || StringUtils.isEmpty(user.getPosition())
-                || user.getRole() == null
-                || user.getNumberOfChildren() == null
-                || user.getOtherAbsenceEnt() == null
         ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
         } else {
             modifyUser.setLastName(user.getLastName());
             modifyUser.setFirstName(user.getFirstName());
-            modifyUser.setPassword(user.getPassword());
             modifyUser.setEmail(user.getEmail());
-            userRepository.save(user);
+            modifyUser.setUpdatedAt(LocalDateTime.now());
+            //modifyUser.setUpdatedBy(getCurrentUser());
+            userRepository.save(modifyUser);
+            modifyUser.setPassword(null);
             return modifyUser;
         }
     }
 
-
     public void delete(@NotNull Long id) {
-        User mod = findOneUser(id);
-        mod.setDeletedAt(LocalDateTime.now());
-        updateUser(id, mod);
+        User deleted = findOneUser(id);
+        deleted.setDeletedAt(LocalDateTime.now());
+        deleted.setRole(Roles.INACTIVE);
+        //deleted.setDeletedBy(getCurrentUser());
+        updateUser(id, deleted);
     }
 
 }

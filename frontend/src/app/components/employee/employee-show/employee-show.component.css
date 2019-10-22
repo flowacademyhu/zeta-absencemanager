@@ -1,0 +1,49 @@
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+  
+}
+
+.grid-container {
+  border: 1px solid black;
+  background: white;
+  color: black;
+  border-radius: 1px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0,9fr 0,9fr 0,9fr;
+  grid-template-areas: "grid1 grid2 grid2 grid2" "grid1 grid2 grid2 grid2" "grid3 grid4 grid5 grid6";
+}
+
+.grid2 { grid-area: grid2; }
+
+.grid1 { grid-area: grid1; }
+
+.grid3 { grid-area: grid3; 
+  border-top: 1px solid #424242;}
+
+.grid4 { grid-area: grid4; 
+  border-top: 1px solid #424242;}
+
+.grid5 { grid-area: grid5; 
+  border-top: 1px solid #424242;
+  border-left: 1px solid #424242;
+}
+
+.grid6 { 
+  grid-area: grid6; 
+  border-top: 1px solid #424242;
+}
+
+.mat-list-base .mat-list-item {
+  color: black;
+}
+
+.mat-form-field {
+  border-color: 2px solid black;
+}
+
+.input {
+  padding: 8px;
+  border: 1px solid black;
+}

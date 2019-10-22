@@ -7,13 +7,13 @@
       <span class="menu-spacer"></span>
       <div>
         <ul>
-          
+
           <li>
             <a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a>
           </li>
 
           <li>
-            <a mat-button [routerLink]="'/admin/absence-index'" *ngIf="isLoggedIn$ | async"> Absences </a>
+            <a mat-button [routerLink]="'/employee/absence-index'" *ngIf="isLoggedIn$ | async"> Absences </a>
           </li>
 
           <li>
@@ -21,17 +21,15 @@
           </li>
 
           <li>
-            <a mat-button *ngIf="isLoggedIn$ | async" [matMenuTriggerFor]="menu"> Admin </a>
+            <a mat-button *ngIf="isLoggedIn$ && this.user && this.user.role === 'ADMIN'" [matMenuTriggerFor]="menu"> Admin </a>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item [routerLink]="'admin/user-esd'">
-              User-EDS
+              <button mat-menu-item [routerLink]="'admin/absence-index'">
+                Absences
               </button>
-
               <button mat-menu-item [routerLink]="'/admin/user-index'">
                 Employees
               </button>
-
-              <button mat-menu-item>Groups</button>
+              <button mat-menu-item [routerLink]="'/admin/group/index'">Groups</button>
             </mat-menu>
           </li>
         </ul>
@@ -40,8 +38,7 @@
       <div class="logout">
         <ul>
           <li>
-            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async"
-              >Logout
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout
             </a>
           </li>
         </ul>

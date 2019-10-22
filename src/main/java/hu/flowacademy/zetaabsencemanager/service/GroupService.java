@@ -14,9 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,32 +26,12 @@ public class GroupService {
     @Autowired
     private UserService userService;
 
-    public List<Group> findAllGroup() {
-        return groupRepository.findAllByDeletedAtIsNull();
-    }
-
     public Group findOne(@NotNull Long id) {
         return groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
     }
 
-    public Group updateGroup(@NotNull Long id, @NotNull Group group) {
-        Group modifyGroup = findOne(id);
-        if (StringUtils.isEmpty(group.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
-        } else {
-            modifyGroup.setName(group.getName());
-            modifyGroup.setParentId(group.getParentId());
-            modifyGroup.setEmployees(group.getEmployees());
-            modifyGroup.setLeaders(group.getLeaders());
-            groupRepository.save(modifyGroup);
-            if (!CollectionUtils.isEmpty(group.getLeaders())) {
-                for (User u : group.getLeaders()) {
-                    u.setRole(Roles.LEADER);
-                    userService.updateUser(u.getId(), u);
-                }
-            }
-            return modifyGroup;
-        }
+    public List<Group> findAllGroup() {
+        return groupRepository.findAllByDeletedAtIsNull();
     }
 
     public Group create(@NotNull Group group) {
@@ -66,7 +44,29 @@ public class GroupService {
                 userService.updateUser(u.getId(), u);
             }
         }
+        group.setCreatedAt(LocalDateTime.now());
         return groupRepository.save(group);
+    }
+
+    public Group updateGroup(@NotNull Long id, @NotNull Group group) {
+        Group modifyGroup = findOne(id);
+        if (StringUtils.isEmpty(group.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted arguments are invalid.");
+        } else {
+            modifyGroup.setName(group.getName());
+            modifyGroup.setParentId(group.getParentId());
+            modifyGroup.setEmployees(group.getEmployees());
+            modifyGroup.setLeaders(group.getLeaders());
+            modifyGroup.setUpdatedAt(LocalDateTime.now());
+            groupRepository.save(modifyGroup);
+            if (!CollectionUtils.isEmpty(group.getLeaders())) {
+                for (User u : group.getLeaders()) {
+                    u.setRole(Roles.LEADER);
+                    userService.updateUser(u.getId(), u);
+                }
+            }
+            return modifyGroup;
+        }
     }
 
     public void delete(@NotNull Long id) {
@@ -79,5 +79,4 @@ public class GroupService {
         }
         groupRepository.save(group);
     }
-
 }

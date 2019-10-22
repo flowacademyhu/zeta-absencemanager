@@ -14,4 +14,8 @@ export class UserService {
   updateUser(id: number, user: any): Observable<any> {
     return this.api.user().updateUser(id, user);
   }
+  getUser(id: number): Observable<any> {
+    return this.api.user().getUser(id);
+  }
+
 }

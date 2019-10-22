@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,13 +24,10 @@ public class Absence {
     private Long id;
 
     @Column
-    private LocalDateTime createdAt;
-
-    @Column
     private Type type;
 
     @Column
-    private Integer summary;
+    private String summary;
 
     @Column
     private LocalDate begin;
@@ -37,14 +35,36 @@ public class Absence {
     @Column
     private LocalDate end;
 
+    @Column
+    private Integer duration;
+
     @ManyToOne
     private User reporter;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User assignee;
 
     @Column
     private Status status;
+
+    @ManyToOne
+    private User createdBy;
+
+    @ManyToOne
+    private User updatedBy;
+
+    @ManyToOne
+    private User deletedBy;
+
+    @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private LocalDateTime updatedAt;
+
+    @Column
+    private LocalDateTime deletedAt;
+
 
 }
