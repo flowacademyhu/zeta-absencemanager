@@ -1,11 +1,10 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
-import org.springframework.util.StringUtils;
-
 public enum Roles {
     ADMIN("ADMIN"),
     LEADER("LEADER"),
-    EMPLOYEE("EMPLOYEE");
+    EMPLOYEE("EMPLOYEE"),
+    INACTIVE("INACTIVE");
 
     private String role;
 
