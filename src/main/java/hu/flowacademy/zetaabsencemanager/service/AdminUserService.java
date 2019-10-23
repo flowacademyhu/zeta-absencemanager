@@ -3,15 +3,16 @@ package hu.flowacademy.zetaabsencemanager.service;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -102,5 +103,13 @@ public class AdminUserService {
         mod.setDeletedAt(LocalDateTime.now());
         mod.setDeletedBy(authenticationService.getCurrentUser());
         updateUser(id, mod);
+    }
+
+    public List<User> findAllLeader() {
+        List<User> users = this.userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
+        for (User user : users) {
+            user.setPassword(null);
+        }
+        return users;
     }
 }
