@@ -10,4 +10,9 @@ export class EmployeeApiConnector extends AbstractApiConnector {
         return this.http.get(this.apiRoute) as Observable<User>;
     }
 
+    public updateCurrent(id: number,user: User): Observable<User> {
+        return this.http.put(this.apiRoute + "/" + id, user, {}) as Observable<User>;
+    }
+
 }
+

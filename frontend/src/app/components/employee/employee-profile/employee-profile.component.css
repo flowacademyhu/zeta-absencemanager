@@ -38,3 +38,8 @@
 .mat-list-base .mat-list-item {
   color: black;
 }
+
+.input {
+  padding: 8px;
+  border: 1px solid black;
+}
