@@ -2,7 +2,7 @@
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
-  (ngSubmit)="onSubmit()"
+  (ngSubmit)="onSubmit(createAbsenceForm.value)"
 >
   <mat-dialog-content>
     <div class="showData">

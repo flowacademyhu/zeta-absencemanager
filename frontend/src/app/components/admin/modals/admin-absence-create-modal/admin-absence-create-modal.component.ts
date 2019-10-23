@@ -44,38 +44,23 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
     this.createAbsenceForm = new FormGroup({
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
-      start: new FormControl("", Validators.required),
+      begin: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
       reporter: new FormControl("", Validators.required),
       assignee: new FormControl("", Validators.required)
     });
   }
 
-  public OnSubmit(createAbsenceFormValue): void {
+  public onSubmit(createAbsenceFormValue): void {
     if (this.createAbsenceForm.valid) {
       let newAbsence = new Absence(
         createAbsenceFormValue.type,
         createAbsenceFormValue.summary,
-        createAbsenceFormValue.start,
-        createAbsenceFormValue.end,
+        Absence.convertDate(createAbsenceFormValue.begin),
+        Absence.convertDate(createAbsenceFormValue.end),
         createAbsenceFormValue.reporter,
         createAbsenceFormValue.assignee
       );
-      newAbsence.begin = (newAbsence.begin as Date)
-        .toISOString()
-        .split("T")[0]
-        .split("-");
-      for (let i = 0; i < 3; i++) {
-        newAbsence.begin[i] = parseInt(newAbsence.begin[i]);
-      }
-      newAbsence.end = (newAbsence.end as Date)
-        .toISOString()
-        .split("T")[0]
-        .split("-");
-      for (let i = 0; i < 3; i++) {
-        newAbsence.end[i] = parseInt(newAbsence.end[i]);
-      }
-      console.log(newAbsence);
       this.api
         .adminAbsence()
         .createAbsence(newAbsence)

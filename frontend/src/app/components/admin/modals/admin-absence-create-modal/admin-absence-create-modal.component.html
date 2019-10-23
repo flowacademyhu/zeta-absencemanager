@@ -2,12 +2,12 @@
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
-  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+  (ngSubmit)="onSubmit(createAbsenceForm.value)"
 >
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Type</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="type" required>
         <mat-option *ngFor="let type of types" [value]="type.value">
           {{ type.title }}
         </mat-option>
@@ -27,19 +27,19 @@
     <mat-form-field>
       <input
         matInput
-        [matDatepicker]="pickerStart"
+        [matDatepicker]="pickerBegin"
         placeholder="Choose the start of the absence"
-        formControlName="start"
-        id="start"
+        formControlName="begin"
+        id="stbeginart"
         readonly
         required
-        (click)="pickerStart.open()"
+        (click)="pickerBegin.open()"
       />
       <mat-datepicker-toggle
         matSuffix
-        [for]="pickerStart"
+        [for]="pickerBegin"
       ></mat-datepicker-toggle>
-      <mat-datepicker #pickerStart></mat-datepicker>
+      <mat-datepicker #pickerBegin></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>
@@ -62,7 +62,7 @@
 
     <mat-form-field>
       <mat-label>Reporter</mat-label>
-      <mat-select formControlName="reporter">
+      <mat-select formControlName="reporter" required>
         <mat-option *ngFor="let reporter of users" [value]="reporter">
           {{ reporter.firstName }} {{ reporter.lastName }}
         </mat-option>
@@ -71,7 +71,7 @@
 
     <mat-form-field>
       <mat-label>Assignee</mat-label>
-      <mat-select formControlName="assignee">
+      <mat-select formControlName="assignee" required>
         <mat-option *ngFor="let leader of leaders" [value]="leader">
           {{ leader.firstName }} {{ leader.lastName }}
         </mat-option>

@@ -54,4 +54,12 @@ export class Absence extends DataEntity {
       title: definition[key]
     }));
   }
+
+  public static convertDate(date: Date): number[] {
+    var year = date.getUTCFullYear();
+    var month = date.getUTCMonth() + 1;
+    var day = date.getUTCDate() + 1;
+    var dateArray: number[] = [year, month, day];
+    return dateArray;
+  }
 }

@@ -58,12 +58,12 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
           this.absence = data;
           this.absence.begin = new Date(
             data.begin[0],
-            data.begin[1] + 1,
+            data.begin[1] - 1,
             data.begin[2]
           );
           this.absence.end = new Date(
             data.end[0],
-            data.end[1] + 1,
+            data.end[1] - 1,
             data.end[2]
           );
           this.types = Absence.enumSelector(AbsenceType);
@@ -82,12 +82,17 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       );
   }
 
-  public onSubmit(): void {
+  public onSubmit(createAbsenceFormValue): void {
     if (this.update) {
       this.update = !this.update;
       this.message = "Edit";
       if (this.createAbsenceForm.valid) {
-        this.absence = this.createAbsenceForm.getRawValue();
+        this.absence.type = createAbsenceFormValue.type;
+        this.absence.summary = createAbsenceFormValue.summary;
+        this.absence.begin = Absence.convertDate(createAbsenceFormValue.begin);
+        this.absence.end = Absence.convertDate(createAbsenceFormValue.end);
+        this.absence.reporter = createAbsenceFormValue.reporter;
+        this.absence.assignee = createAbsenceFormValue.assignee;
         this.api
           .adminAbsence()
           .updateAbsence(this.absence.id, this.absence)
