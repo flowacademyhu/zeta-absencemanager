@@ -2,7 +2,7 @@
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
-  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+  (ngSubmit)="onSubmit()"
 >
   <mat-dialog-content>
     <div class="showData">
@@ -28,7 +28,7 @@
     </div>
 
     <div class="showData">
-      <p>Start of absence:</p>
+      <p>Begin of absence:</p>
       <p *ngIf="absence && !update">
         {{ absence.begin | date: "yyyy - MM - dd" }}
       </p>
@@ -36,18 +36,18 @@
       <mat-form-field *ngIf="update">
         <input
           matInput
-          [matDatepicker]="pickerStart"
-          formControlName="start"
-          id="start"
+          [matDatepicker]="pickerBegin"
+          formControlName="begin"
+          id="begin"
           readonly
           required
-          (click)="pickerStart.open()"
+          (click)="pickerBegin.open()"
         />
         <mat-datepicker-toggle
           matSuffix
-          [for]="pickerStart"
+          [for]="pickerBegin"
         ></mat-datepicker-toggle>
-        <mat-datepicker #pickerStart></mat-datepicker>
+        <mat-datepicker #pickerBegin></mat-datepicker>
       </mat-form-field>
     </div>
 
