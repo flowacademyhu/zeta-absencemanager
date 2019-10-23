@@ -1,27 +1,19 @@
 <mat-grid-tile-header>
-  <mat-toolbar class="header">
+  <mat-toolbar>
     <mat-toolbar-row>
       <h1>
         <img src="../../../assets/csiha-logo.png" height="50" />
       </h1>
       <span class="menu-spacer"></span>
       <div>
-        <ul>
 
-          <li>
-            <a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a>
-          </li>
+            <button mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</button>
 
-          <li>
-            <a mat-button [routerLink]="'/admin/absence-index'" *ngIf="isLoggedIn$ | async"> Absences </a>
-          </li>
+            <button mat-button [routerLink]="'/admin/absence-index'" *ngIf="isLoggedIn$ | async"> Absences </button>
 
-          <li>
-            <a mat-button [routerLink]="'/profile'" *ngIf="isLoggedIn$ | async">Profile</a>
-          </li>
+            <button mat-button [routerLink]="'/profile'" *ngIf="isLoggedIn$ | async">Profile</button>
 
-          <li>
-            <a mat-button *ngIf="isLoggedIn$ | async" [matMenuTriggerFor]="menu"> Admin </a>
+            <button mat-button *ngIf="isLoggedIn$ | async" [matMenuTriggerFor]="menu"> Admin </button>
             <mat-menu #menu="matMenu">
               <button mat-menu-item [routerLink]="'admin/user-esd'">
                 User-EDS
@@ -32,17 +24,11 @@
               </button>
               <button mat-menu-item [routerLink]="'/admin/group/index'">Groups</button>
             </mat-menu>
-          </li>
-        </ul>
       </div>
       <span class="fill-remaining-space"></span>
       <div class="logout">
-        <ul>
-          <li>
-            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout
-            </a>
-          </li>
-        </ul>
+            <button mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout
+            </button>
       </div>
     </mat-toolbar-row>
   </mat-toolbar>

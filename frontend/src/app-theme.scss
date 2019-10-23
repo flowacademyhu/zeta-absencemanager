@@ -1,0 +1,95 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$app-theme-background: (
+  status-bar: green,
+  app-bar:    #c54b3c,
+  background: #424242,
+  hover:      rgba(white, 0.04), 
+  dialog:     map_get($mat-grey, 800),
+  disabled-button: $white-12-opacity,
+  raised-button: map-get($mat-grey, 800),
+  focused-button: $white-6-opacity,
+  selected-button: map_get($mat-grey, 900),
+  selected-disabled-button: map_get($mat-grey, 800),
+  disabled-button-toggle: black,
+  unselected-chip: map_get($mat-grey, 700),
+  disabled-list-option: black,
+  mat-grid-tile-footer: #c54b3c,
+);
+
+$app-theme-foreground: (
+  base:              yellow,
+  divider:           $white-12-opacity,
+  dividers:          $white-12-opacity,
+  disabled:          rgba(white, 0.3),
+  disabled-button:   rgba(white, 0.3),
+  disabled-text:     rgba(white, 0.3),
+  hint-text:         rgba(white, 0.3),
+  secondary-text:    rgba(white, 0.7),
+  icon:              white,
+  icons:             white,
+  text:              white,
+  slider-min:        white,
+  slider-off:        rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+  
+);
+
+@function create-app-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+    @return (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+      is-dark: false,
+      foreground: $app-theme-foreground,
+      background: $app-theme-background,
+    );
+}
+
+@mixin custom-theme($theme) {
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    html, body { height: 100%; width: 100%;}
+
+    body { 
+        margin: 0; 
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        background: map-get($background, background)    
+    }
+    
+    .mat-grid-tile-footer {
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        padding-top: 12px;
+        background-color: map-get($background, mat-grid-tile-footer);
+        color: map-get($foreground, text);
+    }
+
+    .mat-card .mat-card:not([class*="mat-elevation-z"]) {
+        box-shadow: none;
+        background: map-get($background, background);
+        max-width: auto;
+        max-height: auto;
+        min-width: 600px;
+        min-height: 100vh;
+        margin: 5%;
+    }
+}
+
+
+$app-primary: mat-palette($mat-grey);
+$app-accent: mat-palette($mat-red, A200, A100, A400);
+$app-warn: mat-palette($mat-red);
+$app-theme: create-app-theme($app-primary, $app-accent, $app-warn);
+
+@mixin app-theme($theme){
+    @include custom-theme($theme);
+}
+
+@include angular-material-theme($app-theme);
+@include app-theme($app-theme);
