@@ -35,7 +35,6 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.data.absence.id);
     this.api
       .absence()
       .getAbsence(this.data.absence.id)

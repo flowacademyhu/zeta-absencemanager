@@ -18,23 +18,18 @@ export class EmployeeProfileComponent implements OnInit {
     private _unsubscribe$: Subject<boolean> = new Subject();
     public user: User;
 
-constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute, private api: ApiCommunicationService) { }
+  constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute, private api: ApiCommunicationService) { }
 
-ngOnInit() {
-  this.showuser();
+  ngOnInit() {
+    this.api.employee().getCurrent()
+      .subscribe((user: User) => this.user = user);
 }
 
-ngOnDestroy(): void {
-  this._unsubscribe$.next();
-  this._unsubscribe$.complete();
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
-    
-showuser(){
-  this.api.employee().getCurrent().subscribe((user: User) => {
-  this.user = user;
-    })
-      
- }
+
 }
 
   
