@@ -1,0 +1,25 @@
+mat-dialog-content {
+  display: grid;
+  font-size: 15px;
+  width: 60vh;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-row-gap: 15px;
+}
+
+mat-form-field {
+  margin-bottom: -18.75px;
+}
+
+h2 {
+  text-align: left;
+}
+
+.error {
+  font-size: 14px;
+  color: red;
+}
+
+.showData {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

@@ -1,0 +1,118 @@
+<h2 mat-dialog-title align="center">Show absence</h2>
+<form
+  [formGroup]="createAbsenceForm"
+  autocomplete="off"
+  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+>
+  <mat-dialog-content>
+    <div class="showData">
+      <p>Type:</p>
+      <p *ngIf="absence && !update">{{ absence.type }}</p>
+
+      <mat-form-field *ngIf="update">
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of types" [value]="type.value">
+            {{ type.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="showData">
+      <p>Summary:</p>
+      <p *ngIf="absence && !update">{{ absence.summary }}</p>
+
+      <mat-form-field *ngIf="update">
+        <input matInput type="text" formControlName="summary" id="summary" />
+      </mat-form-field>
+    </div>
+
+    <div class="showData">
+      <p>Start of absence:</p>
+      <p *ngIf="absence && !update">
+        {{ absence.begin | date: "yyyy - MM - dd" }}
+      </p>
+
+      <mat-form-field *ngIf="update">
+        <input
+          matInput
+          [matDatepicker]="pickerStart"
+          formControlName="start"
+          id="start"
+          readonly
+          required
+          (click)="pickerStart.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerStart"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="showData">
+      <p>End of absence:</p>
+      <p *ngIf="absence && !update">
+        {{ absence.end | date: "yyyy - MM - dd" }}
+      </p>
+
+      <mat-form-field *ngIf="update">
+        <input
+          matInput
+          [matDatepicker]="pickerEnd"
+          formControlName="end"
+          id="end"
+          readonly
+          required
+          (click)="pickerEnd.open()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerEnd"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="showData">
+      <p>Reporter:</p>
+      <p *ngIf="absence && !update">
+        {{ absence.reporter.firstName }} {{ absence.reporter.lastName }}
+      </p>
+
+      <mat-form-field *ngIf="update">
+        <mat-select formControlName="reporter">
+          <mat-option *ngFor="let reporter of users" [value]="reporter">
+            {{ reporter.firstName }} {{ reporter.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="showData">
+      <p>Assignee:</p>
+      <p *ngIf="absence && !update">
+        {{ absence.assignee.firstName }} {{ absence.assignee.lastName }}
+      </p>
+
+      <mat-form-field *ngIf="update">
+        <mat-select formControlName="assignee">
+          <mat-option *ngFor="let leader of leaders" [value]="leader">
+            {{ leader.firstName }} {{ leader.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <p *ngIf="error" class="error">{{ error }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button [disabled]="!createAbsenceForm.valid">
+      {{ message }}
+    </button>
+    <button mat-raised-button color="warn" (click)="onCancel()">
+      Cancel
+    </button>
+  </mat-dialog-actions>
+</form>

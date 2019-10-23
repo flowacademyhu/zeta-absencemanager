@@ -65,6 +65,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { AdminGuard } from "./guards/admin.guard";
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
+import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admi
     EmployeeAbsencesComponent,
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
-    AdminAbsenceCreateModalComponent
+    AdminAbsenceCreateModalComponent,
+    AdminAbsenceEditModalComponent
   ],
   imports: [
     BrowserModule,
@@ -151,7 +153,8 @@ import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admi
     //admin modals
     AdminUserEditModalComponent,
     AdminUserAddModalComponent,
-    AdminAbsenceCreateModalComponent
+    AdminAbsenceCreateModalComponent,
+    AdminAbsenceEditModalComponent
   ]
 })
 export class AppModule {}

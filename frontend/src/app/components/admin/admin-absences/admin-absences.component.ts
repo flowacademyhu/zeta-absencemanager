@@ -6,6 +6,7 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
+import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 
 @Component({
   selector: "app-admin-absences",
@@ -23,7 +24,8 @@ export class AdminAbsencesComponent implements OnInit {
     "status",
     "created_at",
     "reporter",
-    "assignee"
+    "assignee",
+    "edit"
   ];
   absencesList: Absence[];
 
@@ -67,5 +69,30 @@ export class AdminAbsencesComponent implements OnInit {
             this.absencesList = data;
           });
       });
+  }
+
+  editAbsence(id: number): void {
+    const dialogRef = this.dialog.open(AdminAbsenceEditModalComponent, {
+      data: {
+        absence: this.absencesList.filter(absence => absence.id === id)[0]
+      }
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(data2 => {
+        this.api
+          .adminAbsence()
+          .getAbsences()
+          .subscribe(data => {
+            this.absencesList = data;
+          });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
 }
