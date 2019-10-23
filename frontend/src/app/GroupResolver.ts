@@ -5,7 +5,8 @@ import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Group } from './models/Group.model';
-import { ApiCommunicationService } from './services/ApiCommunication.service';
+import { ApiCommunicationService } from './services/api-communication.service';
+
 
 
 
