@@ -1,40 +1,95 @@
-import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule} from '@angular/material/menu';
-import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AppRoutingModule } from "./app-routing.module";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatMenuModule } from "@angular/material/menu";
+import { NgModule, APP_INITIALIZER } from "@angular/core";
+import { MatPaginatorModule } from "@angular/material";
+import { HttpClientModule } from "@angular/common/http"
 
-import { HttpClientModule, HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
-import { MatToolbarModule, MatNativeDateModule, MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatGridListModule, MatInputModule, MatCardModule, MatTableModule, MatFormFieldModule } from '@angular/material/';
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler
+} from "@angular/common/http";
+import {
+  MatToolbarModule,
+  MatNativeDateModule,
+  MatIconModule,
+  MatSidenavModule,
+  MatListModule,
+  MatButtonModule,
+  MatGridListModule,
+  MatInputModule,
+  MatCardModule,
+  MatTableModule,
+  MatFormFieldModule,
+  MatDialogModule,
+  MatDatepickerModule,
+  MatDialogTitle,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatSelectModule,
+  
+} from "@angular/material/";
 
-
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './token.interceptor';
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { TokenInterceptor } from "./interceptors/token.interceptor";
 
 //Own Components
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { ContentComponent } from './components/content/content.component';
-import { AdminUserShowComponent } from './components/admin/user-index/admin-user-index/admin-user-show.component';
-import { FilterComponent } from './components/filter/filter.component';
-import { AbsencesIndexComponent } from './components/admin/absences-index/absences-index.component';
-import { LoginComponent } from './components/login/login.component';
+
+
+import { LoginComponent } from './components/common/login/login.component';
 import { SessionService } from './services/session.service';
+import { EmployeeProfileComponent } from './components/employee/employee-profile/employee-profile.component';
+import { ApiCommunicationService } from './services/api-communication.service';
+import { UserService } from './services/user.service';
+import { AppComponent } from "./app.component";
+import { HeaderComponent } from "./components/common/header/header.component";
+import { FooterComponent } from "./components/common/footer/footer.component";
+import { ContentComponent } from "./components/common/content/content.component";
+import { AdminUsersComponent } from "./components/admin/admin-users/admin-users.component";
+import { FilterComponent } from "./components/common/filter/filter.component";
+import { AdminAbsencesComponent } from "./components/admin/admin-absences/admin-absences.component";
+import { EmployeeAbsencesComponent } from "./components/employee/employee-absences/employee-absences.component";
+import { EmployeeAbsenceCreateModalComponent } from "./components/employee/modals/employee-absence-create-modal/employee-absence-create-modal.component";
+import { UserResolver } from "./resolvers/UserResolver";
+import { AdminUserEditModalComponent } from './components/admin/modals/admin-user-edit-modal/admin-user-edit-modal.component';
+import { EmployeeShowResolver } from 'src/app/resolvers/EmployeeShowResolver';
+import { AdminGroupsComponent } from './components/admin/admin-groups/admin-groups.component';
+import { AdminUserAddModalComponent } from './components/admin/modals/admin-user-add-modal/admin-user-add-modal.component';
+import { EmployeeAbsenceEditModalComponent } from './components/employee/modals/employee-absence-edit-modal/employee-absence-edit-modal.component';
+import { AdminAbsenceResolver } from './resolvers/AdminAbsenceResolver';
+import { GroupResolver } from './resolvers/GroupResolver';
+import { GetEmployeeAbsencesResolver } from './resolvers/GetEmployeeAbsencesResolver';
+import { AuthGuard } from './guards/auth.guard';
+import { userSessionStarterFactory } from './utils/UserSessionStarterFactory';
+import { AdminGuard } from './guards/admin.guard';
 
 @NgModule({
   declarations: [
     AppComponent,
+    //commons
     HeaderComponent,
     FooterComponent,
     ContentComponent,
-    AbsencesIndexComponent,
     LoginComponent,
-    AdminUserShowComponent,
-    FilterComponent
+    FilterComponent,
+    //admin
+    AdminAbsencesComponent,
+    AdminUsersComponent,
+    AdminGroupsComponent,
+    AdminUserAddModalComponent,
+    AdminUserEditModalComponent,
+    //employee
+    EmployeeProfileComponent,
+    EmployeeAbsencesComponent,
+    EmployeeAbsenceCreateModalComponent,
+    EmployeeAbsenceEditModalComponent
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -55,17 +110,49 @@ import { SessionService } from './services/session.service';
     MatNativeDateModule,
     MatInputModule,
     MatMenuModule,
-    MatFormFieldModule
-
+    MatFormFieldModule, 
+    MatFormFieldModule,
+    MatDialogModule,
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatSelectModule, 
+     CommonModule 
   ],
   providers: [
+    EmployeeShowResolver,
+    AdminAbsenceResolver,
+    GroupResolver,
+    GetEmployeeAbsencesResolver,
+    UserResolver,
     SessionService,
+    ApiCommunicationService,
+    UserService,
+    AuthGuard,
+    AdminGuard,
+    {
+      provide: APP_INITIALIZER, 
+      useFactory: userSessionStarterFactory,
+      deps: [SessionService],
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
-   ],
-  bootstrap: [AppComponent]
+    },
+    { provide: MatDialogTitle, useValue: {} },
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: [] }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    //employee modals
+    EmployeeAbsenceCreateModalComponent,
+    EmployeeAbsenceEditModalComponent,
+    //admin modals
+    AdminUserEditModalComponent, 
+    AdminUserAddModalComponent
+  ]
+  
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,48 @@
+<mat-grid-tile-header>
+  <mat-toolbar class="header">
+    <mat-toolbar-row>
+      <h1>
+        <img src="../../../assets/csiha-logo.png" height="50" />
+      </h1>
+      <span class="menu-spacer"></span>
+      <div>
+        <ul>
+
+          <li>
+            <a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a>
+          </li>
+
+          <li>
+            <a mat-button [routerLink]="'/absences'" *ngIf="isLoggedIn$ | async"> Absences </a>
+          </li>
+
+          <li>
+            <a mat-button [routerLink]="'/profile'" *ngIf="isLoggedIn$ | async">Profile</a>
+          </li>
+
+          <li>
+            <a mat-button *ngIf="isLoggedIn$ && this.user && this.user.role === 'ADMIN'" [matMenuTriggerFor]="menu"> Admin </a>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item [routerLink]="'admin/absences'">
+                Absences
+              </button>
+              <button mat-menu-item [routerLink]="'/admin/users'">
+                Employees
+              </button>
+              <button mat-menu-item [routerLink]="'/admin/groups'">Groups</button>
+            </mat-menu>
+          </li>
+        </ul>
+      </div>
+      <span class="fill-remaining-space"></span>
+      <div class="logout">
+        <ul>
+          <li>
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</mat-grid-tile-header>

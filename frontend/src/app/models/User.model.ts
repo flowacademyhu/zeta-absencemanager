@@ -1,28 +1,37 @@
 import { Group } from 'src/app/models/Group.model';
-import { Department } from 'src/app/models/Department.model';
 import { Absence } from './Absence.model';
+import { DataEntity } from './DataEntity.model';
 
-export class User {
+export class User extends DataEntity {
+    public firstName: string;
+    public lastName: string;
+    public email: string;
+    public dateOfBirth: any;
+    public dateOfEntry: any;
+    public dateOfEndTrial: any;
+    public isOnTrial: boolean;
+    public position: string;
+    public numberOfChildren: number;
+    public otherAbsenceEnt: string;
+    public group: Group;
+    public role: string;
+    public absences: Absence[];
+    
+    //TODO for now, added some optional variables to constructor
     constructor(
-        public id: number,
-        public firstName: string,
-        public lastName: string,
-        public password: string,
-        public email: string,
-        public dateOfBirth: Date,
-        public dateOfEntry: Date,
-        public dateOfEndTrial: Date,
-        public isOnTrial: boolean,
-        public position: string,
-        public numberOfChildren: number,
-        public otherAbsenceEnt: string,
-        public groups: Group[],
-        public departments: Department[],
-        public role: string,
-        public absences: Absence[],
-       
+        firstName?: string, lastName?: string, email?: string, dateOfBirth?: any, dateOfEntry?: any, position?: string, 
+        numberOfChildren?: number, group?: Group) {
         
-    ){}
+        super();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.dateOfEntry = dateOfEntry;
+        this.position = position;
+        this.numberOfChildren = numberOfChildren;
+        this.group = group;
+    }
 }
 
 
