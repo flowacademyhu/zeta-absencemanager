@@ -57,20 +57,6 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       newAbsence.end[0] = year;
       newAbsence.end[1] = month;
       newAbsence.end[2] = day;
-      /* newAbsence.begin = (newAbsence.begin as Date)
-        .toISOString()
-        .split("T")[0]
-        .split("-");
-      for (let i = 0; i < 3; i++) {
-        newAbsence.begin[i] = parseInt(newAbsence.begin[i]);
-      }
-      newAbsence.end = (newAbsence.end as Date)
-        .toISOString()
-        .split("T")[0]
-        .split("-");
-      for (let i = 0; i < 3; i++) {
-        newAbsence.end[i] = parseInt(newAbsence.end[i]);
-      } */
       console.log(newAbsence);
       this.api
         .absence()
