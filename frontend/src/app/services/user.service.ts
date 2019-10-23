@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiCommunicationService } from './ApiCommunication.service';
+import { ApiCommunicationService } from './api-communication.service';
 
 @Injectable()
 export class UserService {
@@ -10,4 +10,8 @@ export class UserService {
   getUsers(): Observable<any> {
     return this.api.user().getUsers();
   }
+  getUser(id: number): Observable<any> {
+    return this.api.user().getUser(id);
+  }
+
 }

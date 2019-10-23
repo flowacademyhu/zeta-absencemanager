@@ -1,5 +1,5 @@
 import { User } from 'src/app/models/User.model';
-import { DataEntity } from './DataEntity';
+import { DataEntity } from './DataEntity.model';
 
 export class Group extends DataEntity {
         public name: string;
