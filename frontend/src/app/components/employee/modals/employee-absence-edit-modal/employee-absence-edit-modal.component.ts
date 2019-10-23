@@ -17,12 +17,6 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
   private types;
   private error: string;
   private absence: Absence;
-  /* private absence: Absence = new Absence(
-    <AbsenceType>"ABSENCE",
-    "valami",
-    new Date(2019, 10, 13),
-    new Date(2019, 10, 17)
-  ); */
   private update: boolean = false;
   private message = "Modify";
   private _unsubscribe$ = new Subject<void>();
@@ -43,10 +37,14 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
           this.absence = data;
           this.absence.begin = new Date(
             data.begin[0],
-            data.begin[1],
+            data.begin[1] - 1,
             data.begin[2]
           );
-          this.absence.end = new Date(data.end[0], data.end[1], data.end[2]);
+          this.absence.end = new Date(
+            data.end[0],
+            data.end[1] - 1,
+            data.end[2]
+          );
           this.types = Absence.enumSelector(AbsenceType);
           this.createAbsenceForm = new FormGroup({
             type: new FormControl(this.absence.type),
@@ -70,6 +68,21 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
           (this.absence.summary = createAbsenceFormValue.summary),
           (this.absence.begin = createAbsenceFormValue.start),
           (this.absence.end = createAbsenceFormValue.end);
+        var month = this.absence.begin.getUTCMonth() + 1;
+        var day = this.absence.begin.getUTCDate() + 1;
+        var year = this.absence.begin.getUTCFullYear();
+        this.absence.begin = [];
+        this.absence.begin[0] = year;
+        this.absence.begin[1] = month;
+        this.absence.begin[2] = day;
+
+        var month = this.absence.end.getUTCMonth() + 1;
+        var day = this.absence.end.getUTCDate() + 1;
+        var year = this.absence.end.getUTCFullYear();
+        this.absence.end = [];
+        this.absence.end[0] = year;
+        this.absence.end[1] = month;
+        this.absence.end[2] = day;
         this.api
           .absence()
           .updateAbsence(this.absence.id, this.absence)
