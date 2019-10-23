@@ -4,23 +4,24 @@
 </div>
 <div class="grid-container">
 
-    <div class="grid1"><mat-list role="list">
+    <div class="grid1">
+      <mat-list role="list">
         <mat-list-item role="listitem" >Firstname:</mat-list-item>
         <mat-list-item role="listitem" >Lastame:</mat-list-item>
         <mat-list-item role="listitem" >E-mail:</mat-list-item>
+        <mat-list-item role="listitem">Date of birth:</mat-list-item>
+        <mat-list-item role="listitem">Date of entry:</mat-list-item>
+        <mat-list-item role="listitem">Trial expired:</mat-list-item>
+        <mat-list-item role="listitem">Position:</mat-list-item>
+        <mat-list-item role="listitem">Number of children:</mat-list-item>
+        <mat-list-item role="listitem">Other:</mat-list-item>
+      </mat-list>
+    </div>
 
-                        <mat-list-item role="listitem">Date of birth:</mat-list-item>
-                        <mat-list-item role="listitem">Date of entry:</mat-list-item>
-                        <mat-list-item role="listitem">Trial expired:</mat-list-item>
-                        <mat-list-item role="listitem">Position:</mat-list-item>
-                        <mat-list-item role="listitem">Number of children:</mat-list-item>
-                        <mat-list-item role="listitem">Other:</mat-list-item>
-      </mat-list></div>
-
-  <div class="grid2" *ngIf="user"> <mat-list role="list">
-    <form [formGroup]="editprofile" autocomplete="off">
-        <mat-list-item role="listitem"*ngIf="isedit">
-      <mat-form-field >
+<div class="grid2" *ngIf="user"> <mat-list role="list">
+  <form [formGroup]="editprofile" autocomplete="off">
+    <mat-list-item role="listitem"*ngIf="isedit">
+      <mat-form-field>
             <input class="input"
               matInput
               type="text"
@@ -28,9 +29,9 @@
               id="firstName"
             />
           </mat-form-field>
-        </mat-list-item>  
-          <mat-list-item role="listitem" *ngIf="!isedit">{{ user.firstName }}</mat-list-item>
-          <mat-list-item role="listitem" *ngIf="isedit">
+      </mat-list-item>  
+        <mat-list-item role="listitem" *ngIf="!isedit">{{ user.firstName }}</mat-list-item>
+        <mat-list-item role="listitem" *ngIf="isedit">
           <mat-form-field >
               <input class="input"
                 matInput
@@ -53,22 +54,24 @@
             </mat-list-item> 
       <mat-list-item role="listitem" *ngIf="!isedit">{{ user.email }} </mat-list-item>
     </form>
-      <mat-list-item role="listitem">{{ user.dateOfBirth[0]}}.{{user.dateOfBirth[1]}}.{{user.dateOfBirth[2]}}.</mat-list-item>
-      <mat-list-item role="listitem">{{ user.dateOfEntry[0]}}.{{user.dateOfEntry[1]}}.{{user.dateOfEntry[2]}}.</mat-list-item>
-      <mat-list-item role="listitem">{{ user.dateOfEndTrial[0]}}.{{user.dateOfEndTrial[1]}}.{{user.dateOfEndTrial[2]}}.</mat-list-item>
+      <mat-list-item role="listitem">{{ user.dateOfBirth[0]}}.{{user.dateOfBirth[1] }}.{{user.dateOfBirth[2] }}.</mat-list-item>
+      <mat-list-item role="listitem">{{ user.dateOfEntry[0]}}.{{user.dateOfEntry[1] }}.{{user.dateOfEntry[2] }}.</mat-list-item>
+      <mat-list-item role="listitem">{{ user.dateOfEndTrial[0]}}.{{user.dateOfEndTrial[1] }}.{{user.dateOfEndTrial[2] }}.</mat-list-item>
       <mat-list-item role="listitem">{{ user.position }}</mat-list-item>
       <mat-list-item role="listitem">{{ user.numberOfChildren }}</mat-list-item>
       <mat-list-item role="listitem">{{ user.otherAbsenceEnt }}</mat-list-item>
-  </mat-list></div>
+  </mat-list>
+</div>
 
-  <div class="grid3"> <mat-list role="list">
-                        
-    <mat-list-item role="listitem">Total:</mat-list-item>
-    <mat-list-item role="listitem">Available:</mat-list-item>
-    <mat-list-item role="listitem">Used:</mat-list-item>
-    <mat-list-item role="listitem">Total rate:</mat-list-item>
+  <div class="grid3"> 
+    <mat-list role="list">                   
+      <mat-list-item role="listitem">Total:</mat-list-item>
+      <mat-list-item role="listitem">Available:</mat-list-item>
+      <mat-list-item role="listitem">Used:</mat-list-item>
+      <mat-list-item role="listitem">Total rate:</mat-list-item>
     
-  </mat-list></div>
+  </mat-list>
+</div>
   <div class="grid4"> <mat-list role="list">
                         
     <mat-list-item role="listitem">{{ total }}</mat-list-item>
@@ -76,7 +79,9 @@
     <mat-list-item role="listitem">{{ used }}</mat-list-item>
     <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>
     
-  </mat-list></div>
+  </mat-list>
+</div>
+
   <div class="grid5"><mat-list role="list">
                         
     <mat-list-item role="listitem">Sick-leave</mat-list-item>
@@ -84,14 +89,16 @@
     <mat-list-item role="listitem">Available:</mat-list-item>
     <mat-list-item role="listitem">Used:</mat-list-item>
     <mat-list-item role="listitem">Total rate:</mat-list-item>
-  </mat-list></div>
-  <div class="grid6"><mat-list role="list">
-                        
+  </mat-list>
+</div>
+
+<div class="grid6">
+  <mat-list role="list">                    
     <mat-list-item role="listitem"> </mat-list-item>
     <mat-list-item role="listitem">{{ total }}</mat-list-item>
     <mat-list-item role="listitem">{{ Available }}</mat-list-item>
     <mat-list-item role="listitem">{{ used }}</mat-list-item>
-    <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>
-    
-  </mat-list></div>
+    <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>  
+  </mat-list>
+</div>
 </div>
