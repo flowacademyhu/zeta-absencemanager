@@ -1,23 +1,27 @@
 package hu.flowacademy.zetaabsencemanager;
 
-import hu.flowacademy.zetaabsencemanager.model.*;
+import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
+import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.Type;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import hu.flowacademy.zetaabsencemanager.service.GroupService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
@@ -80,14 +84,12 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.groupRepository.save(group4);
 
-
         Group group5 = Group.builder()
                 .employees(List.of())
                 .name("Group5")
                 .parentId(group2.getId())
                 .build();
         this.groupRepository.save(group5);
-
 
         Group group6 = Group.builder()
                 .employees(List.of())
@@ -109,7 +111,6 @@ public class DataLoader implements CommandLineRunner {
                 .parentId(group6.getId())
                 .build();
         this.groupRepository.save(group8);
-
 
         User admin = User.builder()
                 .email("admin@admin.com")
@@ -170,7 +171,6 @@ public class DataLoader implements CommandLineRunner {
                 .numberOfChildren(3)
                 .build();
         this.userRepository.save(user3);
-
 
         User user4 = User.builder()
                 .email("user4@user.com")
@@ -322,7 +322,6 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.userRepository.save(user13);
 
-
         User user14 = User.builder()
                 .email("user14@user.com")
                 .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
@@ -367,7 +366,6 @@ public class DataLoader implements CommandLineRunner {
                 .numberOfChildren(3)
                 .build();
         this.userRepository.save(user16);
-
 
         User user17 = User.builder()
                 .email("user17@user.com")
@@ -610,7 +608,6 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.userRepository.save(user32);
 
-
         Absence absence1 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
@@ -632,7 +629,6 @@ public class DataLoader implements CommandLineRunner {
                 .status(Status.OPEN)
                 .build();
         this.absenceRepository.save(absence2);
-
 
         Absence absence3 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
@@ -667,17 +663,17 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         this.absenceRepository.save(absence5);
 
-        List<User> users=userRepository.findByDeletedAtNull();
-        ListIterator<User> it=users.listIterator();
-        while (it.hasNext()){
+        List<User> users = userRepository.findByDeletedAtNull();
+        ListIterator<User> it = users.listIterator();
+        while (it.hasNext()) {
             User user = it.next();
-            List<User> leaders=new ArrayList<>();
-            if(user.getRole()==Roles.LEADER){
+            List<User> leaders = new ArrayList<>();
+            if (user.getRole() == Roles.LEADER) {
                 leaders.add(user);
-                List<User> actualLeader=new ArrayList<>();
+                List<User> actualLeader = new ArrayList<>();
                 actualLeader.add(user);
                 user.getGroup().setLeaders(actualLeader);
-                Group modified=user.getGroup();
+                Group modified = user.getGroup();
                 groupService.updateGroup(user.getGroup().getId(), modified);
             }
         }
