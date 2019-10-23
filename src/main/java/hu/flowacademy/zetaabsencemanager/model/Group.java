@@ -29,40 +29,38 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Group {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Long id;
 
-  @Column
-  private Long parentId;
+    @Column
+    private Long parentId;
 
-  @Column(unique = true)
-  @NotBlank(message = "Group name is required.")
-  private String name;
+    @Column(unique = true)
+    @NotBlank(message = "Group name is required.")
+    private String name;
 
-  @ManyToMany
-  @JoinTable(
-      name = "leader_user_group",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "group_id"))
-  @JsonSerialize(using = UserSerializer.class)
-  private List<User> leaders = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "leader_user_group",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @JsonSerialize(using = UserSerializer.class)
+    private List<User> leaders = new ArrayList<>();
 
 
-  @OneToMany(mappedBy = "group")
-  @JsonSerialize(using = UserSerializer.class)
-  private List<User> employees = new ArrayList<>();
+    @OneToMany(mappedBy = "group")
+    @JsonSerialize(using = UserSerializer.class)
+    private List<User> employees = new ArrayList<>();
 
-  @Column
-  private LocalDateTime createdAt;
+    @Column
+    private LocalDateTime createdAt;
 
-  @Column
-  private LocalDateTime updatedAt;
+    @Column
+    private LocalDateTime updatedAt;
 
-  @Column
-  private LocalDateTime deletedAt;
+    @Column
+    private LocalDateTime deletedAt;
 
 }
-
-

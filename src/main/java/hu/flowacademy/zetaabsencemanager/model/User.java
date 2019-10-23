@@ -36,126 +36,126 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 public class User implements UserDetails {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Long id;
 
-  @NotBlank(message = "Firstname is required.")
-  @Column
-  private String firstName;
+    @NotBlank(message = "Firstname is required.")
+    @Column
+    private String firstName;
 
-  @NotBlank(message = "Lastname is required.")
-  @Column
-  private String lastName;
+    @NotBlank(message = "Lastname is required.")
+    @Column
+    private String lastName;
 
-  @NotBlank(message = "Email is required.")
-  @Column(unique = true)
-  private String email;
+    @NotBlank(message = "Email is required.")
+    @Column(unique = true)
+    private String email;
 
-  @Column
-  private String password;
+    @Column
+    private String password;
 
-  @Column
-  @Past
-  @NotNull(message = "Date of birth is required.")
-  @JsonDeserialize(using = LocalDateDeserializer.class)
-  private LocalDate dateOfBirth;
+    @Column
+    @Past
+    @NotNull(message = "Date of birth is required.")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate dateOfBirth;
 
-  @Column
-  @NotNull(message = "Date of entry is required.")
-  @JsonDeserialize(using = LocalDateDeserializer.class)
-  private LocalDate dateOfEntry;
+    @Column
+    @NotNull(message = "Date of entry is required.")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate dateOfEntry;
 
-  @Column
-  @NotNull(message = "Date of trial end is required.")
-  @JsonDeserialize(using = LocalDateDeserializer.class)
-  private LocalDate dateOfEndTrial;
+    @Column
+    @NotNull(message = "Date of trial end is required.")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate dateOfEndTrial;
 
-  @ManyToOne
-  @JoinColumn(name = "group_id")
-  private Group group;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
-  @Column
-  @NotBlank(message = "Position is required.")
-  private String position;
+    @Column
+    @NotBlank(message = "Position is required.")
+    private String position;
 
-  @Column
-  private Roles role;
+    @Column
+    private Roles role;
 
-  @Column
-  @NotNull(message = "Number of children is required.")
-  private Integer numberOfChildren;
+    @Column
+    @NotNull(message = "Number of children is required.")
+    private Integer numberOfChildren;
 
-  @Column
-  private String otherAbsenceEntitlement;
+    @Column
+    private String otherAbsenceEntitlement;
 
-  @Column
-  private Integer extraAbsenceDays;
+    @Column
+    private Integer extraAbsenceDays;
 
-  @Column
-  private LocalDateTime extraAbsencesUpdatedAt;
+    @Column
+    private LocalDateTime extraAbsencesUpdatedAt;
 
-  @OneToMany
-  private List<Absence> absences;
+    @OneToMany
+    private List<Absence> absences;
 
-  @Column
-  private LocalDateTime createdAt;
+    @Column
+    private LocalDateTime createdAt;
 
-  @Column
-  private LocalDateTime updatedAt;
+    @Column
+    private LocalDateTime updatedAt;
 
-  @Column
-  private LocalDateTime deletedAt;
+    @Column
+    private LocalDateTime deletedAt;
 
-  @ManyToOne
-  private User updatedBy;
+    @ManyToOne
+    private User updatedBy;
 
-  @ManyToOne
-  private User deletedBy;
+    @ManyToOne
+    private User deletedBy;
 
-  @JsonIgnore
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(this.role.name()));
-  }
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
+    }
 
-  @Override
-  public String getUsername() {
-    return this.getEmail();
-  }
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
 
-  @Override
-  @JsonIgnore
-  public boolean isAccountNonExpired() {
-    return true;
-  }
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-  @Override
-  @JsonIgnore
-  public boolean isAccountNonLocked() {
-    return true;
-  }
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-  @Override
-  @JsonIgnore
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-  @Override
-  @JsonIgnore
-  public boolean isEnabled() {
-    return true;
-  }
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
+    }
 
-  @JsonIgnore
-  public String getPassword() {
-    return password;
-  }
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 
-  @JsonProperty
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
