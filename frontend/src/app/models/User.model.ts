@@ -1,6 +1,6 @@
 import { Group } from 'src/app/models/Group.model';
 import { Absence } from './Absence.model';
-import { DataEntity } from './DataEntity';
+import { DataEntity } from './DataEntity.model';
 
 export class User extends DataEntity {
     public firstName: string;
