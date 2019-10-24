@@ -5,14 +5,15 @@ import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -62,6 +63,7 @@ public class AbsenceService {
         modifyAbsence.setBegin(absence.getBegin());
         modifyAbsence.setEnd(absence.getEnd());
         modifyAbsence.setSummary(absence.getSummary());
+        modifyAbsence.setDuration(absence.getDuration());
         modifyAbsence.setReporter(absence.getReporter());
         modifyAbsence.setAssignee(absence.getAssignee());
         modifyAbsence.setStatus(absence.getStatus());

@@ -1,7 +1,13 @@
 mat-dialog-content {
   display: grid;
   font-size: 15px;
-  width: 50vh;
+  width: 80vh;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-row-gap: 15px;
+}
+
+mat-form-field {
+  margin-bottom: -18.75px;
 }
 
 h2 {
@@ -15,5 +21,6 @@ h2 {
 
 .showData {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 40% 40% 20%;
+  grid-column-gap: 20px;
 }
