@@ -63,6 +63,7 @@
           readonly
           required
           (click)="pickerBegin.open()"
+          (dateChange)="changeHandler($event)"
         />
         <mat-datepicker-toggle
           matSuffix
@@ -95,6 +96,7 @@
           readonly
           required
           (click)="pickerEnd.open()"
+          (dateChange)="changeHandler($event)"
         />
         <mat-datepicker-toggle
           matSuffix
@@ -107,6 +109,30 @@
         type="button"
         (click)="onEdit(isEndEdit)"
         [disabled]="isEndEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="showData">
+      <p>Duration:</p>
+      <p *ngIf="absence && !isDurationEdit.value">
+        {{ absence.duration }}
+      </p>
+
+      <mat-form-field *ngIf="isDurationEdit.value">
+        <input
+          matInput
+          type="number"
+          formControlName="duration"
+          id="duration"
+        />
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isDurationEdit)"
+        [disabled]="isDurationEdit.value"
       >
         <mat-icon>edit</mat-icon>
       </button>

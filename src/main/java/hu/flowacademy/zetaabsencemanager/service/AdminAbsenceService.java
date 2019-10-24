@@ -98,6 +98,7 @@ public class AdminAbsenceService {
             modifyAbsence.setType(absence.getType());
             modifyAbsence.setBegin(absence.getBegin());
             modifyAbsence.setSummary(absence.getSummary());
+            modifyAbsence.setDuration(absence.getDuration());
             modifyAbsence.setEnd(absence.getEnd());
             modifyAbsence.setReporter(absence.getReporter());
             modifyAbsence.setAssignee(absence.getAssignee());

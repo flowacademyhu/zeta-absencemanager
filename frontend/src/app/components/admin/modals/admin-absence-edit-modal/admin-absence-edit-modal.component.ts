@@ -6,6 +6,7 @@ import { ApiCommunicationService } from "src/app/services/api-communication.serv
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { takeUntil } from "rxjs/operators";
 import { User } from "src/app/models/User.model";
+import * as moment from "moment";
 
 @Component({
   selector: "app-admin-absence-edit-modal",
@@ -17,7 +18,6 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   private types;
   private error: string;
   private absence: Absence;
-  //private update: boolean = false;
   private message = "Edit";
   private _unsubscribe$ = new Subject<void>();
   private leaders: User[];
@@ -26,8 +26,11 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   private isSummaryEdit = { value: false };
   private isBeginEdit = { value: false };
   private isEndEdit = { value: false };
+  private isDurationEdit = { value: false };
   private isReporterEdit = { value: false };
   private isAssigneeEdit = { value: false };
+  private duration = 0;
+  private dates = [false, false];
 
   constructor(
     private api: ApiCommunicationService,
@@ -41,6 +44,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       summary: new FormControl(""),
       begin: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
+      duration: new FormControl(""),
       reporter: new FormControl("", Validators.required),
       assignee: new FormControl("", Validators.required)
     });
@@ -76,6 +80,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
                     summary: this.absence.summary,
                     begin: this.absence.begin,
                     end: this.absence.end,
+                    duration: this.absence.duration,
                     reporter: this.users.find(
                       e => e.id === this.absence.reporter.id
                     ),
@@ -99,7 +104,8 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       this.isBeginEdit.value ||
       this.isEndEdit.value ||
       this.isReporterEdit.value ||
-      this.isAssigneeEdit.value
+      this.isAssigneeEdit.value ||
+      this.isDurationEdit.value
     ) {
       this.isTypeEdit.value = false;
       this.isSummaryEdit.value = false;
@@ -107,6 +113,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       this.isEndEdit.value = false;
       this.isReporterEdit.value = false;
       this.isAssigneeEdit.value = false;
+      this.isDurationEdit.value = false;
 
       this.message = "Edit";
       if (this.createAbsenceForm.valid) {
@@ -124,6 +131,16 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
         this.absence.assignee = this.createAbsenceForm.controls[
           "assignee"
         ].value;
+        this.absence.duration = this.createAbsenceForm.controls[
+          "duration"
+        ].value;
+        /*         if (this.absence.duration === 0 || this.absence.duration == null) {
+          var begin = moment(this.absence.begin);
+          var end = moment(this.absence.end);
+          var duration =
+            Math.floor(moment.duration(end.diff(begin)).asDays()) + 1;
+          this.absence.duration = duration;
+        } */
         this.api
           .adminAbsence()
           .updateAbsence(this.absence.id, this.absence)
@@ -142,6 +159,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       this.isEndEdit.value = true;
       this.isReporterEdit.value = true;
       this.isAssigneeEdit.value = true;
+      this.isDurationEdit.value = true;
       this.message = "Save";
     }
   }
@@ -149,6 +167,27 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   onEdit(element) {
     element.value = true;
     this.message = "Save";
+  }
+
+  public countDuration(): number {
+    this.duration = 0;
+    var begin = moment(this.createAbsenceForm.controls["begin"].value);
+    var end = moment(this.createAbsenceForm.controls["end"].value);
+    this.duration = Math.floor(moment.duration(end.diff(begin)).asDays()) + 1;
+    this.createAbsenceForm.controls["duration"].setValue(this.duration);
+    return this.duration;
+  }
+
+  changeHandler(event): number {
+    if (event.targetElement.id === "begin") {
+      this.dates[0] = true;
+    } else {
+      this.dates[1] = true;
+    }
+    if (this.dates[0] === true && this.dates[1] === true) {
+      this.countDuration();
+    }
+    return this.duration;
   }
 
   public onCancel(): void {
