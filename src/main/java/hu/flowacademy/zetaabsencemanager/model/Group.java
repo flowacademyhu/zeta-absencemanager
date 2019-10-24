@@ -5,16 +5,7 @@ import hu.flowacademy.zetaabsencemanager.model.serializer.UserSerializer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,13 +32,9 @@ public class Group {
     @NotBlank(message = "Group name is required.")
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "leader_user_group",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    @JsonSerialize(using = UserSerializer.class)
-    private List<User> leaders = new ArrayList<>();
+    @OneToOne
+    //@NotBlank(message="Leader is required.")
+    private User leader;
 
     @OneToMany(mappedBy = "group")
     @JsonSerialize(using = UserSerializer.class)

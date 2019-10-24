@@ -10,12 +10,14 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import hu.flowacademy.zetaabsencemanager.service.GroupService;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
@@ -662,20 +664,5 @@ public class DataLoader implements CommandLineRunner {
                 .type(Type.ABSENCE)
                 .build();
         this.absenceRepository.save(absence5);
-
-        List<User> users = userRepository.findByDeletedAtNull();
-        ListIterator<User> it = users.listIterator();
-        while (it.hasNext()) {
-            User user = it.next();
-            List<User> leaders = new ArrayList<>();
-            if (user.getRole() == Roles.LEADER) {
-                leaders.add(user);
-                List<User> actualLeader = new ArrayList<>();
-                actualLeader.add(user);
-                user.getGroup().setLeaders(actualLeader);
-                Group modified = user.getGroup();
-                groupService.updateGroup(user.getGroup().getId(), modified);
-            }
-        }
     }
 }
