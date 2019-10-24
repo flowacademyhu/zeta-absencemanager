@@ -51,7 +51,7 @@ const routes: Routes = [
       },
       { 
         path: "users", 
-        component: AdminUsersComponent 
+        component: AdminUsersComponent
       },
       {
         path: "groups",

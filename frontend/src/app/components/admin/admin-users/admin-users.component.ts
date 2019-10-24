@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AdminUserAddModalComponent } from 'src/app/components/admin/modals/admin-user-add-modal/admin-user-add-modal.component';
 import { User } from 'src/app/models/User.model';
@@ -15,14 +15,14 @@ import { MatTableDataSource } from '@angular/material';
   templateUrl: './admin-users.component.html',  
   styleUrls: ['./admin-users.component.css']
 })
-export class AdminUsersComponent implements OnInit {
+export class AdminUsersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'dob', 'position', 'supervisor', 'doe', 'email', 'edit', 'delete'];
   dataSource; // --> filter
 
   editedUser: User;
   userData: User;
   usersList: User[];
-  private unsubscribe$ = new Subject<void>();
+  private _unsubscribe$ = new Subject<void>();
 
 
 
@@ -33,7 +33,7 @@ export class AdminUsersComponent implements OnInit {
       data: {user: this.userData}
     });
 
-    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
       if(result){
         this.userData = result;
         this.userData.isOnTrial = true;
@@ -55,8 +55,8 @@ export class AdminUsersComponent implements OnInit {
   }
   
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete(); 
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete(); 
   }
 
   private dateConverter() {
@@ -79,7 +79,7 @@ export class AdminUsersComponent implements OnInit {
       data: {user: this.usersList.filter(user => user.id === id)[0]}
     });
 
-    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
       this.editedUser = this.usersList.filter(user => user.id === id)[0];
       Object.assign(this.editedUser, result);
       this.editedUser.id = id;
