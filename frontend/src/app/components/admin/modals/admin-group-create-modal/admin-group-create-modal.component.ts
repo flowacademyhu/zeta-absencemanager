@@ -20,7 +20,6 @@ export class AdminGroupCreateModalComponent implements OnInit {
   public createGroupForm: FormGroup;
   private groupList: Group[];
   private userList: User[] = [];
-  private employeeList: User[] = [];
   private leaderList: User[] = [];
 
   constructor(
@@ -41,18 +40,9 @@ export class AdminGroupCreateModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dialogRef.updateSize("60%", "90%");
+    this.dialogRef.updateSize("45%", "90%");
     this.api.group().getGroups().subscribe(groups => {
       this.groupList = groups;
-    })
-
-    this.api.user().getUsers().subscribe(users => {
-      this.userList = users;
-      for (let i = 0; i < this.userList.length; i++) {
-        if (this.userList[i].group === null) {
-        this.employeeList.push(this.userList[i])
-        }
-      }
     })
   }
 

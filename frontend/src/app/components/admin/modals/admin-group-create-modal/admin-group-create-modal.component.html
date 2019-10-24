@@ -20,16 +20,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
-
-    <mat-form-field>
-        <mat-label>Employees</mat-label>
-        <mat-select formControlName="employees" multiple>
-          <mat-option *ngFor="let employee of employeeList; let i = index" [value]="employee">
-                {{ employee.firstName }} {{ employee.lastName }} {{ employee.id }} 
-          </mat-option> 
-        </mat-select>
-      </mat-form-field>
       
 </div>
 <div mat-dialog-actions style="justify-content: center;">
