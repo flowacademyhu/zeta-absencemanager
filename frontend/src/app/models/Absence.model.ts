@@ -23,6 +23,7 @@ export class Absence extends DataEntity {
   public summary: string;
   public begin: any;
   public end: any;
+  public duration: number;
   public reporter: User;
   public assignee: User;
   public status: Status;
@@ -32,6 +33,7 @@ export class Absence extends DataEntity {
     summary: string,
     begin: any,
     end: any,
+    duration: number,
     reporter?: User,
     assignee?: User
   ) {
@@ -46,6 +48,7 @@ export class Absence extends DataEntity {
     if (assignee) {
       this.assignee = assignee;
     }
+    this.duration = duration;
   }
 
   public static enumSelector(definition) {
