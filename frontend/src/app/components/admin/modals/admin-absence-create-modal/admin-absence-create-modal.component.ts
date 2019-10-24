@@ -8,6 +8,7 @@ import {
 } from "@angular/material/dialog";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { User } from "src/app/models/User.model";
+import * as moment from "moment";
 
 @Component({
   selector: "app-admin-absence-create-modal",
@@ -20,6 +21,8 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
   private error: string;
   private leaders: User[];
   private users: User[];
+  private duration = 0;
+  private dates = [false, false];
 
   constructor(
     private api: ApiCommunicationService,
@@ -47,8 +50,32 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
       begin: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
       reporter: new FormControl("", Validators.required),
-      assignee: new FormControl("", Validators.required)
+      assignee: new FormControl("", Validators.required),
+      duration: new FormControl(this.duration)
     });
+  }
+
+  public countDuration(): number {
+    this.duration = 0;
+    var begin = moment(this.createAbsenceForm.controls["begin"].value);
+    var end = moment(this.createAbsenceForm.controls["end"].value);
+    this.duration = Math.floor(moment.duration(end.diff(begin)).asDays()) + 1;
+    this.createAbsenceForm.controls["duration"].setValue(this.duration);
+    return this.duration;
+  }
+
+  changeHandler(event): number {
+    console.log(event);
+    if (event.targetElement.id === "begin") {
+      this.dates[0] = true;
+    } else {
+      this.dates[1] = true;
+    }
+    if (this.dates[0] === true && this.dates[1] === true) {
+      this.countDuration();
+    }
+    console.log(this.dates);
+    return this.duration;
   }
 
   public onSubmit(): void {
@@ -58,6 +85,7 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
         this.createAbsenceForm.controls["summary"].value,
         Absence.convertDate(this.createAbsenceForm.controls["begin"].value),
         Absence.convertDate(this.createAbsenceForm.controls["end"].value),
+        this.createAbsenceForm.controls["duration"].value,
         this.createAbsenceForm.controls["reporter"].value,
         this.createAbsenceForm.controls["assignee"].value
       );

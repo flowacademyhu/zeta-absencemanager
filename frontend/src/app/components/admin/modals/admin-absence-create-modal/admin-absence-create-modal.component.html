@@ -30,10 +30,11 @@
         [matDatepicker]="pickerBegin"
         placeholder="Choose the start of the absence"
         formControlName="begin"
-        id="stbeginart"
+        id="begin"
         readonly
         required
         (click)="pickerBegin.open()"
+        (dateChange)="changeHandler($event)"
       />
       <mat-datepicker-toggle
         matSuffix
@@ -52,12 +53,23 @@
         readonly
         required
         (click)="pickerEnd.open()"
+        (dateChange)="changeHandler($event)"
       />
       <mat-datepicker-toggle
         matSuffix
         [for]="pickerEnd"
       ></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        placeholder="Duration"
+        formControlName="duration"
+        id="duration"
+      />
     </mat-form-field>
 
     <mat-form-field>
