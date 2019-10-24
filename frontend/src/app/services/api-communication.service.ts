@@ -4,8 +4,8 @@ import { AbstractApiConnector } from '../models/connectors/AbstractApiConnector'
 import { HttpClient } from '@angular/common/http';
 import { AuthApiConnector } from '../models/connectors/AuthApiConnector';
 import { UserApiConnector } from '../models/connectors/UserApiConnector';
-import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
 import { AbsenceApiConnector } from "../models/connectors/AbsenceApiConnector";
+import { GroupApiConnector } from '../models/connectors/GroupApiConnector';
 import { AdminAbsenceApiConnector } from '../models/connectors/AdminAbsenceApiConnector';
 import { EmployeeApiConnector } from '../models/connectors/EmployeeApiConnector';
 
