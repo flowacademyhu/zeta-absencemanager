@@ -51,15 +51,15 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
     });
   }
 
-  public onSubmit(createAbsenceFormValue): void {
+  public onSubmit(): void {
     if (this.createAbsenceForm.valid) {
       let newAbsence = new Absence(
-        createAbsenceFormValue.type,
-        createAbsenceFormValue.summary,
-        Absence.convertDate(createAbsenceFormValue.begin),
-        Absence.convertDate(createAbsenceFormValue.end),
-        createAbsenceFormValue.reporter,
-        createAbsenceFormValue.assignee
+        this.createAbsenceForm.controls["type"].value,
+        this.createAbsenceForm.controls["summary"].value,
+        Absence.convertDate(this.createAbsenceForm.controls["begin"].value),
+        Absence.convertDate(this.createAbsenceForm.controls["end"].value),
+        this.createAbsenceForm.controls["reporter"].value,
+        this.createAbsenceForm.controls["assignee"].value
       );
       this.api
         .adminAbsence()

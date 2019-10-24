@@ -82,17 +82,25 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       );
   }
 
-  public onSubmit(createAbsenceFormValue): void {
+  public onSubmit(): void {
     if (this.update) {
       this.update = !this.update;
       this.message = "Edit";
       if (this.createAbsenceForm.valid) {
-        this.absence.type = createAbsenceFormValue.type;
-        this.absence.summary = createAbsenceFormValue.summary;
-        this.absence.begin = Absence.convertDate(createAbsenceFormValue.begin);
-        this.absence.end = Absence.convertDate(createAbsenceFormValue.end);
-        this.absence.reporter = createAbsenceFormValue.reporter;
-        this.absence.assignee = createAbsenceFormValue.assignee;
+        this.absence.type = this.createAbsenceForm.controls["type"].value;
+        this.absence.summary = this.createAbsenceForm.controls["summary"].value;
+        this.absence.begin = Absence.convertDate(
+          this.createAbsenceForm.controls["begin"].value
+        );
+        this.absence.end = Absence.convertDate(
+          this.createAbsenceForm.controls["end"].value
+        );
+        this.absence.reporter = this.createAbsenceForm.controls[
+          "reporter"
+        ].value;
+        this.absence.assignee = this.createAbsenceForm.controls[
+          "assignee"
+        ].value;
         this.api
           .adminAbsence()
           .updateAbsence(this.absence.id, this.absence)

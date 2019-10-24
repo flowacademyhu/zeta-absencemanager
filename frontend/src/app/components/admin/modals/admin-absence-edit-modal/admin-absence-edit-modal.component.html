@@ -2,9 +2,14 @@
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
-  (ngSubmit)="onSubmit(createAbsenceForm.value)"
+  (ngSubmit)="onSubmit()"
 >
   <mat-dialog-content>
+    <div class="showData">
+      <p>Id:</p>
+      <p *ngIf="absence">{{ absence.id }}</p>
+    </div>
+
     <div class="showData">
       <p>Type:</p>
       <p *ngIf="absence && !update">{{ absence.type }}</p>
@@ -103,6 +108,11 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+
+    <div class="showData">
+      <p>Status:</p>
+      <p *ngIf="absence">{{ absence.status }}</p>
     </div>
 
     <p *ngIf="error" class="error">{{ error }}</p>
