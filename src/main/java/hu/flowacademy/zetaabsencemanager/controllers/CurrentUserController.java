@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
+import hu.flowacademy.zetaabsencemanager.model.StringData;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.service.AuthenticationService;
 import hu.flowacademy.zetaabsencemanager.service.UserService;
@@ -40,5 +41,10 @@ public class CurrentUserController {
     @GetMapping("")
     public User getCurrent() {
         return authenticationService.getCurrentUser();
+    }
+
+    @PutMapping("/changepassw/{userId}")
+    public User changePassword(@PathVariable("userId") Long userId, @RequestBody StringData password) {
+        return userService.changePassword(userId, password.getDataA(), password.getDataB());
     }
 }

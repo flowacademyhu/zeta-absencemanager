@@ -45,6 +45,19 @@ public class UserService {
         return modifyUser;
     }
 
+    public User changePassword(@NotNull Long id, @NotNull String firstPassword, @NotNull String secondPassword) {
+        User modifyUser = findOneUser(id);
+        if (!firstPassword.equals(secondPassword)) {
+            throw new IllegalArgumentException("The submitted passwords are different.");
+        } else {
+            modifyUser.setPassword(firstPassword);
+            userRepository.save(modifyUser);
+            // modifyUser.setPassword(null);
+        }
+        System.out.println("A MEGVÁLTOZOTT USER: " + modifyUser);
+        return modifyUser;
+    }
+
     public void delete(@NotNull Long id) {
         User deleted = findOneUser(id);
         deleted.setDeletedAt(LocalDateTime.now());
