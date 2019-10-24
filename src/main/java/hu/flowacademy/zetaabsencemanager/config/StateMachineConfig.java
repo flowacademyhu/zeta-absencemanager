@@ -1,3 +1,4 @@
+/*
 package hu.flowacademy.zetaabsencemanager.config;
 
 import hu.flowacademy.zetaabsencemanager.model.Event;
@@ -47,3 +48,4 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<Status, Ev
         .source(Status.ADMINISTRATED).target(Status.DONE).event(Event.FINALIZE);
   }
 }
+*/
