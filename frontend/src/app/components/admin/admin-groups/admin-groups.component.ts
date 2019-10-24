@@ -23,7 +23,7 @@ export class AdminGroupsComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
 
   constructor(private api: ApiCommunicationService, private activatedRoute: ActivatedRoute, public dialog: MatDialog) {
-    this.activatedRoute.data.subscribe((data) => {
+    this.activatedRoute.data.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.dataSource = data.groupResolver;
       console.log(this.dataSource)
       this.dataSource.forEach(element => {
