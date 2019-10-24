@@ -49,7 +49,6 @@ public class Group {
     @JsonSerialize(using = UserSerializer.class)
     private List<User> leaders = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "group")
     @JsonSerialize(using = UserSerializer.class)
     private List<User> employees = new ArrayList<>();
