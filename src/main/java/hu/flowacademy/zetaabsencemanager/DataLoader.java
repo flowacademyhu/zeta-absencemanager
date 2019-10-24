@@ -15,15 +15,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 @Transactional
@@ -51,68 +53,6 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Group cLevel = Group.builder()
-                .employees(List.of())
-                .name("C-level")
-                .parentId(null)
-                .build();
-        this.groupRepository.save(cLevel);
-
-        Group group1 = Group.builder()
-                .employees(List.of())
-                .name("Group1")
-                .parentId(cLevel.getId())
-                .build();
-        this.groupRepository.save(group1);
-
-        Group group2 = Group.builder()
-                .employees(List.of())
-                .name("Group2")
-                .parentId(cLevel.getId())
-                .build();
-        this.groupRepository.save(group2);
-
-        Group group3 = Group.builder()
-                .employees(List.of())
-                .name("Group3")
-                .parentId(group1.getId())
-                .build();
-        this.groupRepository.save(group3);
-
-        Group group4 = Group.builder()
-                .employees(List.of())
-                .name("Group4")
-                .parentId(group1.getId())
-                .build();
-        this.groupRepository.save(group4);
-
-        Group group5 = Group.builder()
-                .employees(List.of())
-                .name("Group5")
-                .parentId(group2.getId())
-                .build();
-        this.groupRepository.save(group5);
-
-        Group group6 = Group.builder()
-                .employees(List.of())
-                .name("Group6")
-                .parentId(group2.getId())
-                .build();
-        this.groupRepository.save(group6);
-
-        Group group7 = Group.builder()
-                .employees(List.of())
-                .name("Group7")
-                .parentId(group6.getId())
-                .build();
-        this.groupRepository.save(group7);
-
-        Group group8 = Group.builder()
-                .employees(List.of())
-                .name("Group8")
-                .parentId(group6.getId())
-                .build();
-        this.groupRepository.save(group8);
 
         User admin = User.builder()
                 .email("admin@admin.com")
@@ -123,511 +63,173 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
                 .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
                 .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(cLevel)
                 .position("testposition")
                 .numberOfChildren(3)
                 .build();
         this.userRepository.save(admin);
 
-        User user1 = User.builder()
-                .email("user1@user.com")
-                .password(passwordEncoder.encode("user"))
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(cLevel)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user1);
+        List<User> users = new ArrayList<>();
+        users.add(admin);
+        List<String> firstNames =
+                Arrays.asList("Allan", "Anastasia", "Andy", "Arlene", "Beau", "Brianna", "Cara", "Carly", "Carolina", "Chelsea", "Concetta", "Danilo", "Daron", "Darren", "Debbie", "Devin", "Evan", "Frieda", "Gaylord", "Grover", "Irma", "Jon", "Kristopher", "Leonor", "Lorrie", "Meredith", "Mindy", "Newton", "Peggy", "Pete", "Roderick", "Son", "Tristan", "Timoty");
 
-        User user2 = User.builder()
-                .email("user2@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user1")
-                .lastName("user1")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(cLevel)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user2);
 
-        User user3 = User.builder()
-                .email("user3@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group7)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user3);
+        List<String> lastNames =
+                Arrays.asList("Morgan", "Parks", "Pearson", "Wright", "Dorsey", "Moran", "Gallagher", "Hurst", "Bush", "Whitney", "Harper", "Zimmerman", "Butler", "Zavala", "Becker", "Mcpherson", "Stevenson", "Hughes", "Carr", "Washington", "Williamson", "Rich", "Mcguire", "Flynn", "Wang", "Mckenzie", "Palmer", "Camacho", "Dickerson", "Brady", "Potts", "Keller", "Campbell", "Johnson");
 
-        User user4 = User.builder()
-                .email("user4@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group7)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user4);
+        for (int i = 0; i < 31; i++) {
+            User user = User.builder()
+                    .email("user" + (i + 1) + "@user.com")
+                    .firstName(firstNames.get(i))
+                    .lastName(lastNames.get(i))
+                    .role(Roles.EMPLOYEE)
+                    .dateOfBirth(LocalDate.of(1970, Month.APRIL, 1))
+                    .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
+                    .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+                    .password(passwordEncoder.encode("user"))
+                    .position("testposition")
+                    .numberOfChildren(3)
+                    .build();
+            this.userRepository.save(user);
+            users.add(user);
+        }
 
-        User user5 = User.builder()
-                .email("user5@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group7)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group1 = Group.builder()
+                .employees(List.of())
+                .name("Group1")
+                .leader(userRepository.getOne(2L))
                 .build();
-        this.userRepository.save(user5);
+        groupRepository.save(group1);
+        List<User> g1u = Arrays.asList(users.get(0), users.get(2), users.get(3));
+        groupRepository.findById(group1.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g1u);
+        for (User user : g1u) {
+            user.setGroup(group1);
+            userRepository.save(user);
+        }
 
-        User user6 = User.builder()
-                .email("user6@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group8)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user6);
 
-        User user7 = User.builder()
-                .email("user7@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group8)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group2 = Group.builder()
+                .employees(List.of())
+                .name("Group2")
+                .leader(userRepository.getOne(3L))
+                .parentId(group1.getId())
                 .build();
-        this.userRepository.save(user7);
+        groupRepository.save(group2);
+        List<User> g2u = Arrays.asList(users.get(4), users.get(5));
+        groupRepository.findById(group2.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g2u);
+        for (User user : g2u) {
+            user.setGroup(group2);
+            userRepository.save(user);
+        }
 
-        User user8 = User.builder()
-                .email("user8@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group8)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user8);
 
-        User user9 = User.builder()
-                .email("user9@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group6)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group3 = Group.builder()
+                .employees(List.of())
+                .name("Group3")
+                .leader(userRepository.getOne(4L))
+                .parentId(group1.getId())
                 .build();
-        this.userRepository.save(user9);
+        this.groupRepository.save(group3);
+        List<User> g3u = Arrays.asList(users.get(6), users.get(7));
+        this.groupRepository.findById(group3.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g3u);
+        for (User user : g3u) {
+            user.setGroup(group3);
+            userRepository.save(user);
+        }
 
-        User user10 = User.builder()
-                .email("user10@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group6)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group4 = Group.builder()
+                .employees(List.of())
+                .name("Group4")
+                .leader(userRepository.getOne(5L))
+                .parentId(group2.getId())
                 .build();
-        this.userRepository.save(user10);
+        this.groupRepository.save(group4);
+        List<User> g4u = Arrays.asList(users.get(8), users.get(9), users.get(10), users.get(11), users.get(12), users.get(13));
+        this.groupRepository.findById(group4.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g4u);
+        for (User user : g4u) {
+            user.setGroup(group4);
+            userRepository.save(user);
+        }
 
-        User user11 = User.builder()
-                .email("user11@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group6)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user11);
 
-        User user12 = User.builder()
-                .email("user12@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group6)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group5 = Group.builder()
+                .employees(List.of())
+                .name("Group5")
+                .leader(userRepository.getOne(6L))
+                .parentId(group2.getId())
                 .build();
-        this.userRepository.save(user12);
+        this.groupRepository.save(group5);
+        List<User> g5u = Arrays.asList(users.get(14), users.get(15), users.get(16), users.get(17), users.get(18), users.get(19));
+        this.groupRepository.findById(group5.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g5u);
+        for (User user : g5u) {
+            user.setGroup(group5);
+            userRepository.save(user);
+        }
 
-        User user13 = User.builder()
-                .email("user13@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group6)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user13);
 
-        User user14 = User.builder()
-                .email("user14@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group5)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group6 = Group.builder()
+                .employees(List.of())
+                .name("Group6")
+                .leader(userRepository.getOne(7L))
+                .parentId(group3.getId())
                 .build();
-        this.userRepository.save(user14);
+        this.groupRepository.save(group6);
+        List<User> g6u = Arrays.asList(users.get(20), users.get(21), users.get(22), users.get(23), users.get(24), users.get(25));
+        this.groupRepository.findById(group6.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g6u);
+       for (User user : g6u) {
+            user.setGroup(group6);
+            userRepository.save(user);
+        }
 
-        User user15 = User.builder()
-                .email("user15@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group5)
-                .position("testposition")
-                .numberOfChildren(3)
+        Group group7 = Group.builder()
+                .employees(List.of())
+                .name("Group7")
+                .leader(userRepository.getOne(8L))
+                .parentId(group3.getId())
                 .build();
-        this.userRepository.save(user15);
+        this.groupRepository.save(group7);
+        List<User> g7u = Arrays.asList(users.get(26), users.get(27), users.get(28), users.get(29), users.get(30), users.get(31));
+        this.groupRepository.findById(group7.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."))
+                .setEmployees(g7u);
+        for (User user : g7u) {
+            user.setGroup(group7);
+            userRepository.save(user);
+        }
 
-        User user16 = User.builder()
-                .email("user16@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group5)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user16);
-
-        User user17 = User.builder()
-                .email("user17@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group4)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user17);
-
-        User user18 = User.builder()
-                .email("user18@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group4)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user18);
-
-        User user19 = User.builder()
-                .email("user19@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group4)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user19);
-
-        User user20 = User.builder()
-                .email("user20@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group3)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user20);
-
-        User user21 = User.builder()
-                .email("user21@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group3)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user21);
-
-        User user22 = User.builder()
-                .email("user22@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group3)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user22);
-
-        User user23 = User.builder()
-                .email("user23@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group2)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user23);
-
-        User user24 = User.builder()
-                .email("user24@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group2)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user24);
-
-        User user25 = User.builder()
-                .email("user25@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group2)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user25);
-
-        User user26 = User.builder()
-                .email("user26@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group2)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user26);
-
-        User user27 = User.builder()
-                .email("user27@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group2)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user27);
-
-        User user28 = User.builder()
-                .email("user28@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.LEADER)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group1)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user28);
-
-        User user29 = User.builder()
-                .email("user29@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group1)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user29);
-
-        User user30 = User.builder()
-                .email("user30@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group1)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user30);
-
-        User user31 = User.builder()
-                .email("user31@user.com")
-                .password(passwordEncoder.encode("user")) // passwordEncoder.encode("admin")
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group1)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user31);
-
-        User user32;
-        user32 = User.builder()
-                .email("user32@user.com")
-                .password(passwordEncoder.encode("user"))
-                .firstName("user")
-                .lastName("user")
-                .role(Roles.EMPLOYEE)
-                .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
-                .group(group1)
-                .position("testposition")
-                .numberOfChildren(3)
-                .build();
-        this.userRepository.save(user32);
 
         Absence absence1 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
-                .reporter(user32)
+                .reporter(users.get(11))
                 .createdAt(LocalDateTime.now())
-                .assignee(user28)
+                .assignee(users.get(11).getGroup().getLeader())
                 .type(Type.ABSENCE)
                 .status(Status.OPEN)
+                .duration(2)
                 .build();
         this.absenceRepository.save(absence1);
 
         Absence absence2 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
-                .reporter(user16)
-                .assignee(user14)
+                .reporter(users.get(17))
+                .assignee(users.get(17).getGroup().getLeader())
                 .createdAt(LocalDateTime.now())
                 .type(Type.NON_WORKING)
+                .duration(2)
                 .status(Status.OPEN)
                 .build();
         this.absenceRepository.save(absence2);
@@ -635,10 +237,11 @@ public class DataLoader implements CommandLineRunner {
         Absence absence3 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
-                .reporter(user19)
-                .assignee(user17)
+                .reporter(users.get(21))
+                .assignee(users.get(21).getGroup().getLeader())
                 .createdAt(LocalDateTime.now())
                 .status(Status.OPEN)
+                .duration(2)
                 .type(Type.CHILD_SICK_PAY)
                 .build();
         this.absenceRepository.save(absence3);
@@ -646,10 +249,11 @@ public class DataLoader implements CommandLineRunner {
         Absence absence4 = Absence.builder()
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 25))
-                .reporter(user13)
-                .assignee(user9)
+                .reporter(users.get(27))
+                .assignee(users.get(27).getGroup().getLeader())
                 .createdAt(LocalDateTime.now())
                 .status(Status.OPEN)
+                .duration(2)
                 .type(Type.UNPAID_HOLIDAY)
                 .build();
         this.absenceRepository.save(absence4);
@@ -658,10 +262,11 @@ public class DataLoader implements CommandLineRunner {
                 .begin(LocalDate.of(2019, Month.OCTOBER, 24))
                 .end(LocalDate.of(2019, Month.OCTOBER, 31))
                 .reporter(admin)
-                .assignee(admin)
+                .assignee(admin.getGroup().getLeader())
                 .createdAt(LocalDateTime.now())
                 .status(Status.OPEN)
                 .type(Type.ABSENCE)
+                .duration(6)
                 .build();
         this.absenceRepository.save(absence5);
     }

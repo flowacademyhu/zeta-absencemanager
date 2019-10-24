@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +36,7 @@ public class Group {
     private String name;
 
     @OneToOne
-    //@NotBlank(message="Leader is required.")
+    @NotNull(message="Leader is required.")
     private User leader;
 
     @OneToMany(mappedBy = "group")
