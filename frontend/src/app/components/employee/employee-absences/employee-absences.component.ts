@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { EmployeeAbsenceCreateModalComponent } from "../modals/employee-absence-create-modal/employee-absence-create-modal.component";
 import { ActivatedRoute } from "@angular/router";
@@ -13,7 +13,7 @@ import { EmployeeAbsenceEditModalComponent } from "../modals/employee-absence-ed
   templateUrl: "./employee-absences.component.html",
   styleUrls: ["./employee-absences.component.css"]
 })
-export class EmployeeAbsencesComponent implements OnInit {
+export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     "id",
     "begin",
