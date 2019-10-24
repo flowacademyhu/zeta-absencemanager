@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(private router : Router, private sessionService : SessionService, private api: ApiCommunicationService) { 
     this.isLoggedIn$ = sessionService.isLoggedIn();
-    console.log(this.isLoggedIn$);
     sessionService.userData
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(user => this.user = user);
