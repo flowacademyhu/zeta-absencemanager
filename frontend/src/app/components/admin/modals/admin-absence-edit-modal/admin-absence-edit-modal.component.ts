@@ -17,11 +17,17 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   private types;
   private error: string;
   private absence: Absence;
-  private update: boolean = false;
+  //private update: boolean = false;
   private message = "Edit";
   private _unsubscribe$ = new Subject<void>();
   private leaders: User[];
   private users: User[];
+  private isTypeEdit = { value: false };
+  private isSummaryEdit = { value: false };
+  private isBeginEdit = { value: false };
+  private isEndEdit = { value: false };
+  private isReporterEdit = { value: false };
+  private isAssigneeEdit = { value: false };
 
   constructor(
     private api: ApiCommunicationService,
@@ -43,48 +49,65 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       .getLeaders()
       .subscribe(data => {
         this.leaders = data;
-      });
-    this.api
-      .user()
-      .getUsers()
-      .subscribe(data => {
-        this.users = data;
-      });
-    this.api
-      .adminAbsence()
-      .getAbsence(this.data.absence.id)
-      .subscribe(
-        data => {
-          this.absence = data;
-          this.absence.begin = new Date(
-            data.begin[0],
-            data.begin[1] - 1,
-            data.begin[2]
-          );
-          this.absence.end = new Date(
-            data.end[0],
-            data.end[1] - 1,
-            data.end[2]
-          );
-          this.types = Absence.enumSelector(AbsenceType);
-          this.createAbsenceForm.patchValue({
-            type: this.absence.type,
-            summary: this.absence.summary,
-            begin: this.absence.begin,
-            end: this.absence.end,
-            reporter: this.absence.reporter,
-            assignee: this.absence.assignee
+        this.api
+          .user()
+          .getUsers()
+          .subscribe(data => {
+            this.users = data;
+            this.api
+              .adminAbsence()
+              .getAbsence(this.data.absence.id)
+              .subscribe(
+                data => {
+                  this.absence = data;
+                  this.absence.begin = new Date(
+                    data.begin[0],
+                    data.begin[1] - 1,
+                    data.begin[2]
+                  );
+                  this.absence.end = new Date(
+                    data.end[0],
+                    data.end[1] - 1,
+                    data.end[2]
+                  );
+                  this.types = Absence.enumSelector(AbsenceType);
+                  this.createAbsenceForm.patchValue({
+                    type: this.absence.type,
+                    summary: this.absence.summary,
+                    begin: this.absence.begin,
+                    end: this.absence.end,
+                    reporter: this.users.find(
+                      e => e.id === this.absence.reporter.id
+                    ),
+                    assignee: this.leaders.find(
+                      e => e.id === this.absence.assignee.id
+                    )
+                  });
+                },
+                err => {
+                  this.error = err.error.message;
+                }
+              );
           });
-        },
-        err => {
-          this.error = err.error.message;
-        }
-      );
+      });
   }
 
   public onSubmit(): void {
-    if (this.update) {
-      this.update = !this.update;
+    if (
+      this.isTypeEdit.value ||
+      this.isSummaryEdit.value ||
+      this.isBeginEdit.value ||
+      this.isEndEdit.value ||
+      this.isReporterEdit.value ||
+      this.isAssigneeEdit.value
+    ) {
+      this.isTypeEdit.value = false;
+      this.isSummaryEdit.value = false;
+      this.isBeginEdit.value = false;
+      this.isEndEdit.value = false;
+      this.isReporterEdit.value = false;
+      this.isAssigneeEdit.value = false;
+
       this.message = "Edit";
       if (this.createAbsenceForm.valid) {
         this.absence.type = this.createAbsenceForm.controls["type"].value;
@@ -113,9 +136,19 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
           );
       }
     } else {
-      this.update = !this.update;
+      this.isTypeEdit.value = true;
+      this.isSummaryEdit.value = true;
+      this.isBeginEdit.value = true;
+      this.isEndEdit.value = true;
+      this.isReporterEdit.value = true;
+      this.isAssigneeEdit.value = true;
       this.message = "Save";
     }
+  }
+
+  onEdit(element) {
+    element.value = true;
+    this.message = "Save";
   }
 
   public onCancel(): void {

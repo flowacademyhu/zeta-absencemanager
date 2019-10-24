@@ -12,33 +12,49 @@
 
     <div class="showData">
       <p>Type:</p>
-      <p *ngIf="absence && !update">{{ absence.type }}</p>
+      <p *ngIf="absence && !isTypeEdit.value">{{ absence.type }}</p>
 
-      <mat-form-field *ngIf="update">
+      <mat-form-field *ngIf="isTypeEdit.value">
         <mat-select formControlName="type">
           <mat-option *ngFor="let type of types" [value]="type.value">
             {{ type.title }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isTypeEdit)"
+        [disabled]="isTypeEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>Summary:</p>
-      <p *ngIf="absence && !update">{{ absence.summary }}</p>
+      <p *ngIf="absence && !isSummaryEdit.value">{{ absence.summary }}</p>
 
-      <mat-form-field *ngIf="update">
+      <mat-form-field *ngIf="isSummaryEdit.value">
         <input matInput type="text" formControlName="summary" id="summary" />
       </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isSummaryEdit)"
+        [disabled]="isSummaryEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>Begin of absence:</p>
-      <p *ngIf="absence && !update">
+      <p *ngIf="absence && !isBeginEdit.value">
         {{ absence.begin | date: "yyyy - MM - dd" }}
       </p>
 
-      <mat-form-field *ngIf="update">
+      <mat-form-field *ngIf="isBeginEdit.value">
         <input
           matInput
           [matDatepicker]="pickerBegin"
@@ -54,15 +70,23 @@
         ></mat-datepicker-toggle>
         <mat-datepicker #pickerBegin></mat-datepicker>
       </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isBeginEdit)"
+        [disabled]="isBeginEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>End of absence:</p>
-      <p *ngIf="absence && !update">
+      <p *ngIf="absence && !isEndEdit.value">
         {{ absence.end | date: "yyyy - MM - dd" }}
       </p>
 
-      <mat-form-field *ngIf="update">
+      <mat-form-field *ngIf="isEndEdit.value">
         <input
           matInput
           [matDatepicker]="pickerEnd"
@@ -78,41 +102,81 @@
         ></mat-datepicker-toggle>
         <mat-datepicker #pickerEnd></mat-datepicker>
       </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isEndEdit)"
+        [disabled]="isEndEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>Reporter:</p>
-      <p *ngIf="absence && !update">
+      <p *ngIf="absence && !isReporterEdit.value">
         {{ absence.reporter.firstName }} {{ absence.reporter.lastName }}
       </p>
 
-      <mat-form-field *ngIf="update">
+      <mat-form-field *ngIf="isReporterEdit.value">
         <mat-select formControlName="reporter">
           <mat-option *ngFor="let reporter of users" [value]="reporter">
             {{ reporter.firstName }} {{ reporter.lastName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isReporterEdit)"
+        [disabled]="isReporterEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>Assignee:</p>
-      <p *ngIf="absence && !update">
+      <p *ngIf="absence && !isAssigneeEdit.value">
         {{ absence.assignee.firstName }} {{ absence.assignee.lastName }}
       </p>
 
-      <mat-form-field *ngIf="update">
+      <mat-form-field *ngIf="isAssigneeEdit.value">
         <mat-select formControlName="assignee">
           <mat-option *ngFor="let leader of leaders" [value]="leader">
             {{ leader.firstName }} {{ leader.lastName }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="onEdit(isAssigneeEdit)"
+        [disabled]="isAssigneeEdit.value"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>Status:</p>
       <p *ngIf="absence">{{ absence.status }}</p>
+    </div>
+
+    <div class="showData">
+      <p>Created at:</p>
+      <p *ngIf="absence">
+        {{ absence.createdAt[0] }} - {{ absence.createdAt[1] }} -
+        {{ absence.createdAt[2] }}
+      </p>
+    </div>
+
+    <div class="showData" *ngIf="absence && absence.deletedAt">
+      <p>Deleted at:</p>
+      <p>
+        {{ absence.deletedAt[0] }} - {{ absence.deletedAt[1] }} -
+        {{ absence.deletedAt[2] }}
+      </p>
     </div>
 
     <p *ngIf="error" class="error">{{ error }}</p>
