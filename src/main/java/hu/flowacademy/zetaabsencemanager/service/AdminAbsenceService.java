@@ -21,7 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import ru.sberned.statemachine.StateMachine;
+import ru.sberned.statemachine.state.StateChangedEvent;
 
 @Service
 @Transactional
@@ -41,9 +41,6 @@ public class AdminAbsenceService {
 
   @Autowired
   private ApplicationEventPublisher publisher;
-
-  @Autowired
-  private StateMachine<Absence, Status, Long> stateMachine;
 
 
   public Set<User> getEmployees(Group g, Set<User> employees) {
@@ -111,17 +108,8 @@ public class AdminAbsenceService {
       modifyAbsence.setEnd(absence.getEnd());
       modifyAbsence.setReporter(absence.getReporter());
       modifyAbsence.setAssignee(absence.getAssignee());
-      // modifyAbsence.setStatus(absence.getStatus());
-      var stateChange = stateMachine
-          .changeState(List.of(absence.getId()), absence.getState(), new Object())
-          .get(absence.getId()).isDone();
-      System.out.println(stateChange);
-      if (!stateChange) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid status change.");
-      }
-      /*publisher.publishEvent(new StateChangedEvent<>(
-          absence.getId(), absence.getState()));*/
-
+      publisher.publishEvent(new StateChangedEvent<>(
+          absence.getId(), absence.getState()));
       modifyAbsence.setUpdatedAt(LocalDateTime.now());
       modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
       absenceRepository.save(modifyAbsence);
