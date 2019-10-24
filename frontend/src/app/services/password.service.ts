@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ApiCommunicationService } from './api-communication.service';
+import { Observable, Subject } from 'rxjs';
 
 
 @Injectable({
@@ -7,11 +9,23 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PasswordService {
 
-  public Url = 'localhost:8080/user/changepassw';
+  private _unsubscribe$ = new Subject<void>();
 
-  constructor(private http: HttpClient) { }
+  public Url = 'localhost:8080/user/changepassw/';
 
-  sendPassword(firstPassword: string, secondPassword: string, id: number){
-    return this.http.put(this.Url + id, {firstPassword, secondPassword});
+  constructor(private api: ApiCommunicationService) { }
+
+  /* sendPassword(firstPassword: string, secondPassword: string, id: number){
+    console.log("first:" + firstPassword, "second: " + secondPassword);
+    console.log("Id: " + id);
+    return this.http.put(this.Url + id, {dataA: firstPassword, dataB: secondPassword});
+  } */
+
+  sendPassword(firstPassword: string, secondPassword: string, id: number): Observable<any> {
+    console.log("first:" + firstPassword, "second: " + secondPassword);
+    console.log("Id: " + id);   
+    return this.api.employee().changePassword(id, firstPassword, secondPassword);
   }
+
+
 }

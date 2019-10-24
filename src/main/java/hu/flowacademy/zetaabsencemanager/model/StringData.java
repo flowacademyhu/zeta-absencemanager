@@ -22,4 +22,9 @@ public class StringData {
         this.dataB = dataB;
     }
 
+    public StringData() {
+        this.dataA = null;
+        this.dataB = null;
+    }
+
 }

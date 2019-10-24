@@ -14,10 +14,6 @@ export class UserService {
     return this.api.user().getUser(id);
   }
 
-  sendPassword(firstPassword: string, sencondPassword: string){
-    return this
-  }
-
 }
 
 //formcontrol + metódus 

@@ -41,16 +41,7 @@ public class CurrentUserController {
     }
 
     @PutMapping("/changepassw/{userId}")
-    public void changePassword(@PathVariable("userId") Long userId, @RequestBody String password) {
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            StringData datas = mapper.readValue(password, StringData.class);
-            userService.changePassword(userId, datas.getDataA(), datas.getDataB());
-            datas = null;
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        }
+    public User changePassword(@PathVariable("userId") Long userId, @RequestBody StringData password) {
+        return userService.changePassword(userId, password.getDataA(), password.getDataB());
     }
 }
