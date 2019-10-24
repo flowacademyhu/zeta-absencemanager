@@ -116,11 +116,20 @@
 
     <div class="showData">
       <p>Duration:</p>
-      <p *ngIf="absence && !isDurationEdit.value">
+      <p
+        *ngIf="
+          absence &&
+          !isDurationEdit.value &&
+          !isEndEdit.value &&
+          !isBeginEdit.value
+        "
+      >
         {{ absence.duration }}
       </p>
 
-      <mat-form-field *ngIf="isDurationEdit.value">
+      <mat-form-field
+        *ngIf="isDurationEdit.value || isEndEdit.value || isBeginEdit.value"
+      >
         <input
           matInput
           type="number"

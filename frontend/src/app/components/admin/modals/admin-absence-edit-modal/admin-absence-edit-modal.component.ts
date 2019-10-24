@@ -179,14 +179,8 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   }
 
   changeHandler(event): number {
-    if (event.targetElement.id === "begin") {
-      this.dates[0] = true;
-    } else {
-      this.dates[1] = true;
-    }
-    if (this.dates[0] === true && this.dates[1] === true) {
-      this.countDuration();
-    }
+    this.countDuration();
+
     return this.duration;
   }
 

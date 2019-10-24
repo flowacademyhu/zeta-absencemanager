@@ -107,6 +107,8 @@ public class AdminUserService {
 
     public List<User> findAllLeader() {
         List<User> users = this.userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
+        List<User> admin = this.userRepository.findByRoleAndDeletedAtNull(Roles.ADMIN);
+        users.addAll(admin);
         for (User user : users) {
             user.setPassword(null);
         }
