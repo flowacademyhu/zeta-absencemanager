@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/models/User.model';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { ApiCommunicationService } from 'src/app/services/api-communication.serv
   templateUrl: './employee-profile.component.html',
   styleUrls: ['./employee-profile.component.css']
 })
-export class EmployeeProfileComponent implements OnInit {
+export class EmployeeProfileComponent implements OnInit, OnDestroy {
     private _unsubscribe$: Subject<boolean> = new Subject();
     public user: User;
 
@@ -22,6 +22,7 @@ export class EmployeeProfileComponent implements OnInit {
 
   ngOnInit() {
     this.api.employee().getCurrent()
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe((user: User) => this.user = user);
 }
 
