@@ -13,8 +13,8 @@ export enum Connector {
   USER = "User",
   ABSENCE = "Absence",
   GROUP = 'Group',
-  ADMIN_ABSENCE ="AdminAbsence"
-
+  ADMIN_ABSENCE ="AdminAbsence",
+  EMPLOYEE = 'Employee'
 }
 
 @Injectable()

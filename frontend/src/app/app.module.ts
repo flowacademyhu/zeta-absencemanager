@@ -56,6 +56,9 @@ import { EmployeeService } from "./services/employee.service";
 import { UserResolver } from "./UserResolver";
 import { UserAbsenceIndexComponent } from "./components/employee/emp-absence-index/user-absence-index.component";
 import { AbsenceShowEditComponent } from './components/employee/absence-show-edit/absence-show-edit.component';
+import { ChangePasswComponent } from './modals/change-passw/change-passw.component';
+import { EmployeeShowComponent } from './components/employee/employee-show/employee-show.component';
+
 
 @NgModule({
   declarations: [
@@ -73,7 +76,9 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     CreateUserComponent,
     AbsencesCreateComponent,
     UserAbsenceIndexComponent,
-    AbsenceShowEditComponent
+    AbsenceShowEditComponent,
+    ChangePasswComponent,
+    EmployeeShowComponent
   ],
   imports: [
     BrowserModule,
@@ -118,6 +123,6 @@ import { AbsenceShowEditComponent } from './components/employee/absence-show-edi
     { provide: MAT_DIALOG_DATA, useValue: [] }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateUserComponent, AbsencesCreateComponent]
+  entryComponents: [CreateUserComponent, AbsencesCreateComponent, ChangePasswComponent]
 })
 export class AppModule {}

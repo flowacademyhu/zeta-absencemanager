@@ -14,9 +14,11 @@ import { GroupIndexComponent } from "./components/admin/group-index/group-index.
 import { CreateUserComponent } from "./modals/create-user/create-user.component";
 import { GroupResolver } from "./resolvers/GroupResolver";
 import { AbsenceShowEditComponent } from "./components/employee/absence-show-edit/absence-show-edit.component";
+import { EmployeeShowComponent } from './components/employee/employee-show/employee-show.component';
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
+  { path: "profile", component: EmployeeShowComponent },
   { path: "login", component: LoginComponent },
   {
     path: "employee/absence-index",

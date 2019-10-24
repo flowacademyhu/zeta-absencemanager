@@ -66,10 +66,9 @@ export class SessionService {
     });
   }
 
-
   public getUserData(): User {
     return this._userData$.getValue();
-}
+  }
 
   public hasToken() : boolean {
     return !!localStorage.getItem('token');
