@@ -41,4 +41,5 @@ public class CurrentUserController {
     public User getCurrent() {
         return authenticationService.getCurrentUser();
     }
+
 }
