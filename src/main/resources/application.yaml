@@ -1,4 +1,7 @@
 spring:
+  jackson:
+    serialization:
+      fail-on-self-references: false
   datasource:
     url: jdbc:mysql://localhost:3306/absenceManager
     username: zeta
