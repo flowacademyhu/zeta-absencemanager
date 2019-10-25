@@ -12,9 +12,9 @@
 
     <div class="showData">
       <p>Type:</p>
-      <p *ngIf="absence && !isTypeEdit.value">{{ absence.type }}</p>
+      <p *ngIf="absence && !formEditState.isTypeEdited">{{ absence.type }}</p>
 
-      <mat-form-field *ngIf="isTypeEdit.value">
+      <mat-form-field *ngIf="formEditState.isTypeEdited">
         <mat-select formControlName="type">
           <mat-option *ngFor="let type of types" [value]="type.value">
             {{ type.title }}
@@ -24,8 +24,8 @@
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isTypeEdit)"
-        [disabled]="isTypeEdit.value"
+        (click)="formEditState.isTypeEdited = true"
+        [disabled]="formEditState.isTypeEdited"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -33,16 +33,18 @@
 
     <div class="showData">
       <p>Summary:</p>
-      <p *ngIf="absence && !isSummaryEdit.value">{{ absence.summary }}</p>
+      <p *ngIf="absence && !formEditState.isSummaryEdited">
+        {{ absence.summary }}
+      </p>
 
-      <mat-form-field *ngIf="isSummaryEdit.value">
+      <mat-form-field *ngIf="formEditState.isSummaryEdited">
         <input matInput type="text" formControlName="summary" id="summary" />
       </mat-form-field>
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isSummaryEdit)"
-        [disabled]="isSummaryEdit.value"
+        (click)="formEditState.isSummaryEdited = true"
+        [disabled]="formEditState.isSummaryEdited"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -50,11 +52,11 @@
 
     <div class="showData">
       <p>Begin of absence:</p>
-      <p *ngIf="absence && !isBeginEdit.value">
+      <p *ngIf="absence && !formEditState.isBeginEdited">
         {{ absence.begin | date: "yyyy - MM - dd" }}
       </p>
 
-      <mat-form-field *ngIf="isBeginEdit.value">
+      <mat-form-field *ngIf="formEditState.isBeginEdited">
         <input
           matInput
           [matDatepicker]="pickerBegin"
@@ -74,8 +76,8 @@
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isBeginEdit)"
-        [disabled]="isBeginEdit.value"
+        (click)="formEditState.isBeginEdited = true"
+        [disabled]="formEditState.isBeginEdited"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -83,11 +85,11 @@
 
     <div class="showData">
       <p>End of absence:</p>
-      <p *ngIf="absence && !isEndEdit.value">
+      <p *ngIf="absence && !formEditState.isEndEdited">
         {{ absence.end | date: "yyyy - MM - dd" }}
       </p>
 
-      <mat-form-field *ngIf="isEndEdit.value">
+      <mat-form-field *ngIf="formEditState.isEndEdited">
         <input
           matInput
           [matDatepicker]="pickerEnd"
@@ -107,8 +109,8 @@
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isEndEdit)"
-        [disabled]="isEndEdit.value"
+        (click)="formEditState.isEndEdited = true"
+        [disabled]="formEditState.isEndEdited"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -119,16 +121,20 @@
       <p
         *ngIf="
           absence &&
-          !isDurationEdit.value &&
-          !isEndEdit.value &&
-          !isBeginEdit.value
+          !formEditState.isDurationEdited &&
+          !formEditState.isEndEdited &&
+          !formEditState.isBeginEdited
         "
       >
         {{ absence.duration }}
       </p>
 
       <mat-form-field
-        *ngIf="isDurationEdit.value || isEndEdit.value || isBeginEdit.value"
+        *ngIf="
+          formEditState.isDurationEdited ||
+          formEditState.isEndEdited ||
+          formEditState.isBeginEdited
+        "
       >
         <input
           matInput
@@ -140,8 +146,12 @@
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isDurationEdit)"
-        [disabled]="isDurationEdit.value"
+        (click)="formEditState.isDurationEdited = true"
+        [disabled]="
+          formEditState.isDurationEdited ||
+          formEditState.isEndEdited ||
+          formEditState.isBeginEdited
+        "
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -149,11 +159,11 @@
 
     <div class="showData">
       <p>Reporter:</p>
-      <p *ngIf="absence && !isReporterEdit.value">
+      <p *ngIf="absence && !formEditState.isReporterEdited">
         {{ absence.reporter.firstName }} {{ absence.reporter.lastName }}
       </p>
 
-      <mat-form-field *ngIf="isReporterEdit.value">
+      <mat-form-field *ngIf="formEditState.isReporterEdited">
         <mat-select formControlName="reporter">
           <mat-option *ngFor="let reporter of users" [value]="reporter">
             {{ reporter.firstName }} {{ reporter.lastName }}
@@ -163,8 +173,8 @@
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isReporterEdit)"
-        [disabled]="isReporterEdit.value"
+        (click)="formEditState.isReporterEdited = true"
+        [disabled]="formEditState.isReporterEdited"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -172,11 +182,11 @@
 
     <div class="showData">
       <p>Assignee:</p>
-      <p *ngIf="absence && !isAssigneeEdit.value">
+      <p *ngIf="absence && !formEditState.isAssigneeEdited">
         {{ absence.assignee.firstName }} {{ absence.assignee.lastName }}
       </p>
 
-      <mat-form-field *ngIf="isAssigneeEdit.value">
+      <mat-form-field *ngIf="formEditState.isAssigneeEdited">
         <mat-select formControlName="assignee">
           <mat-option *ngFor="let leader of leaders" [value]="leader">
             {{ leader.firstName }} {{ leader.lastName }}
@@ -186,8 +196,8 @@
       <button
         mat-icon-button
         type="button"
-        (click)="onEdit(isAssigneeEdit)"
-        [disabled]="isAssigneeEdit.value"
+        (click)="formEditState.isAssigneeEdited = true"
+        [disabled]="formEditState.isAssigneeEdited"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -218,7 +228,7 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
-      {{ message }}
+      {{ isFormEdited() ? "Save" : "Edit" }}
     </button>
     <button mat-raised-button color="warn" (click)="onCancel()">
       Cancel
