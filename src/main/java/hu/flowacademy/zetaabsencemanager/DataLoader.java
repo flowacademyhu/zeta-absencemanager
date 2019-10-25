@@ -96,12 +96,28 @@ public class DataLoader implements CommandLineRunner {
             this.userRepository.save(user);
             users.add(user);
         }
+
+        User leader = User.builder()
+                .email("leader@leader.com")
+                .firstName("LEADER")
+                .lastName("JANI")
+                .role(Roles.LEADER)
+                .dateOfBirth(LocalDate.of(1970, Month.APRIL, 1))
+                .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
+                .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+                .password(passwordEncoder.encode("leader"))
+                .position("testposition")
+                .extraAbsenceDays(0)
+                .numberOfChildren(3)
+                .build();
+        this.userRepository.save(leader);
+        users.add(leader);
         
-        List<User> g1u = Arrays.asList(users.get(0), users.get(2), users.get(3));
+        List<User> g1u = Arrays.asList(users.get(0), users.get(2), users.get(3), users.get(1), users.get(32));
         Group group1 = Group.builder()
                 .employees(List.of())
                 .name("Group1")
-                .leader(userRepository.getOne(2L))
+                .leader(userRepository.getOne(31L))
                 .employees(g1u)
                 .build();
         groupRepository.save(group1);
@@ -115,7 +131,7 @@ public class DataLoader implements CommandLineRunner {
         Group group2 = Group.builder()
                 .employees(List.of())
                 .name("Group2")
-                .leader(userRepository.getOne(3L))
+                .leader(userRepository.getOne(32L))
                 .employees(g2u)
                 .parentId(group1.getId())
                 .build();
@@ -255,5 +271,30 @@ public class DataLoader implements CommandLineRunner {
                 .duration(6)
                 .build();
         this.absenceRepository.save(absence5);
+
+        Absence absence6 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 25))
+                .reporter(users.get(4))
+                .createdAt(LocalDateTime.now())
+                .assignee(users.get(4).getGroup().getLeader())
+                .type(Type.ABSENCE)
+                .status(Status.OPEN)
+                .duration(2)
+                .build();
+        this.absenceRepository.save(absence6);
+
+        Absence absence7 = Absence.builder()
+                .begin(LocalDate.of(2019, Month.OCTOBER, 24))
+                .end(LocalDate.of(2019, Month.OCTOBER, 25))
+                .reporter(users.get(5))
+                .createdAt(LocalDateTime.now())
+                .assignee(users.get(5).getGroup().getLeader())
+                .type(Type.ABSENCE)
+                .status(Status.OPEN)
+                .duration(2)
+                .build();
+        this.absenceRepository.save(absence7);
+
     }
 }

@@ -9,11 +9,10 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
+
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +43,7 @@ public class AdminAbsenceService {
   private ApplicationEventPublisher publisher;
 
 
-  public Set<User> getEmployees(Group g, Set<User> employees) {
-    employees.add(g.getLeader());
+  public ArrayList<User> getEmployees(Group g, ArrayList<User> employees) {
     employees.addAll(g.getEmployees());
     groupRepository.findAllByParentId(g.getId())
         .forEach(child -> getEmployees(child, employees));
@@ -56,9 +54,10 @@ public class AdminAbsenceService {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return this.absenceRepository.findAll();
     } else {
-      return getEmployees(this.authenticationService.getCurrentUser().getGroup(),
-          new HashSet<>()).stream().flatMap(user -> user.getAbsences().stream()).distinct()
-          .collect(Collectors.toList());
+      return this.absenceRepository.findAll();
+      /*return getEmployees(this.authenticationService.getCurrentUser().getGroup(),
+              new ArrayList<>()).stream().flatMap(user -> user.getAbsences().stream())
+          .collect(Collectors.toList());*/
     }
   }
 
@@ -67,7 +66,7 @@ public class AdminAbsenceService {
     Absence foundAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
-    Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
+    ArrayList<User> employees = getEmployees(current.getGroup(), new ArrayList<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         this.authenticationService.hasRole(Roles.LEADER) && employees
             .contains(foundAbsence.getReporter()))) {
@@ -84,7 +83,7 @@ public class AdminAbsenceService {
     absence.setCreatedBy(authenticationService.getCurrentUser());
     // TODO absence.setAssignee();
     absence.setStatus(Status.OPEN);
-    Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
+    ArrayList<User> employees = getEmployees(current.getGroup(), new ArrayList<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         this.authenticationService.hasRole(Roles.LEADER) && employees
             .contains(absence.getReporter()))) {
@@ -100,7 +99,7 @@ public class AdminAbsenceService {
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
     User current = authenticationService.getCurrentUser();
-    Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
+    ArrayList<User> employees = getEmployees(current.getGroup(), new ArrayList<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         this.authenticationService.hasRole(Roles.LEADER) && employees
             .contains(modifyAbsence.getReporter()))) {
