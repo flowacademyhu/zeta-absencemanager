@@ -62,6 +62,7 @@ public class AdminUserService {
                 .password(passwordEncoder.encode("user"))
                 .role(Roles.EMPLOYEE)
                 .numberOfChildren(user.getNumberOfChildren())
+                .extraAbsenceDays(0)
                 .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -85,10 +86,10 @@ public class AdminUserService {
         modifyUser.setPosition(user.getPosition());
         modifyUser.setNumberOfChildren(user.getNumberOfChildren());
         modifyUser.setOtherAbsenceEntitlement(user.getOtherAbsenceEntitlement());
-        if (!user.getExtraAbsenceDays().equals(modifyUser.getExtraAbsenceDays())) {
+        /*if (!user.getExtraAbsenceDays().equals(modifyUser.getExtraAbsenceDays())) {
             modifyUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
             modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
-        }
+        }*/
         modifyUser.setUpdatedAt(LocalDateTime.now());
         modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
         userRepository.save(modifyUser);
