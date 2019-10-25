@@ -55,6 +55,7 @@ export class AdminGroupCreateModalComponent implements OnInit {
     for (let i = 0; i < group.employees.length; i++) {
       if (group.employees[i].role == "EMPLOYEE") {
         this.leaderList.push(group.employees[i]);
+        console.log(group.employees[i]);
       }
     }
   }
