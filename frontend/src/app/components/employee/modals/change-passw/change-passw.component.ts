@@ -1,9 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
 import { SessionService } from 'src/app/services/session.service';
 import { User } from '../../../../models/User.model';
-import { PasswordService } from 'src/app/services/password.service';
+import { ApiCommunicationService } from 'src/app/services/api-communication.service';
 
 
 @Component({
@@ -19,11 +18,10 @@ export class ChangePasswComponent implements OnInit {
   public id : number;  
   
   constructor(
-    public http: HttpClient,
     public dialogRef: MatDialogRef<ChangePasswComponent>,
     @Inject(MAT_DIALOG_DATA)  public data: any,
-    public sessionService: SessionService,
-    public passwordService: PasswordService
+    public sessionService: SessionService,  
+    public api: ApiCommunicationService
   ) { }
   
   ngOnInit() {
@@ -32,7 +30,8 @@ export class ChangePasswComponent implements OnInit {
   }
   
   sendPassw() {
-   this.passwordService.sendPassword(this.firstPass, this.secondPass, this.id).subscribe(data => {
+   this.api.employee().sendPassword(this.firstPass, this.secondPass, this.id).subscribe(data => {
+     console.log(this.firstPass + " " + this.secondPass);
      this.dialogRef.close();
    })
   }

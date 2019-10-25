@@ -26,8 +26,4 @@ export class UserApiConnector extends AbstractApiConnector {
     public deleteUser(id: number): Observable<any> {
         return this.http.delete(this.apiRoute + "/" + id);
     }
-
-    sendPassword(firstPassword: string, secondPassword: string, id: number){
-        return this.http.put(this.apiRoute + "/" + id, {firstPassword, secondPassword});
-      }
 }
