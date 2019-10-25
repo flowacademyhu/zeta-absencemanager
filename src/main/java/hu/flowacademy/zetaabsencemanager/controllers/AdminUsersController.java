@@ -51,4 +51,5 @@ public class AdminUsersController {
   public List<User> getLeaders() {
     return userService.findAllLeader();
   }
+
 }

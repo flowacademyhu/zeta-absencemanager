@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import ru.sberned.statemachine.state.StateChangedEvent;
 
 @Service
 @Transactional
@@ -26,6 +28,9 @@ public class AbsenceService {
 
   @Autowired
   private AbsenceValidator absenceValidator;
+
+  @Autowired
+  private ApplicationEventPublisher publisher;
 
   public Absence findOne(@NotNull Long id) {
     Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
@@ -66,6 +71,8 @@ public class AbsenceService {
     modifyAbsence.setReporter(absence.getReporter());
     modifyAbsence.setAssignee(absence.getAssignee());
     modifyAbsence.setStatus(absence.getStatus());
+    publisher.publishEvent(new StateChangedEvent<>(
+        absence.getId(), absence.getState()));
     modifyAbsence.setUpdatedAt(LocalDateTime.now());
     modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
     absenceRepository.save(modifyAbsence);

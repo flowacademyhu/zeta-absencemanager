@@ -27,10 +27,8 @@ public class UserService {
   }
 
   public User findOneUser(Long id) {
-    User user = this.userRepository.findByIdAndDeletedAtNull(id)
+    return this.userRepository.findByIdAndDeletedAtNull(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-    user.setPassword(null);
-    return user;
   }
 
   public User updateUser(@NotNull Long id, @NotNull User user) {
@@ -41,7 +39,6 @@ public class UserService {
     modifyUser.setUpdatedAt(LocalDateTime.now());
     // modifyUser.setUpdatedBy(authenticationService.getCurrentUser()); not working cuz of dataloder calling it without currentuser TODO
     userRepository.save(modifyUser);
-    modifyUser.setPassword(null);
     return modifyUser;
   }
 

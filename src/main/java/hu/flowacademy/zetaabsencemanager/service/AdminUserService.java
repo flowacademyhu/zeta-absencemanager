@@ -36,16 +36,12 @@ public class AdminUserService {
 
   public List<User> findAllUser() {
     List<User> users = this.userRepository.findByDeletedAtNull();
-    for (User user : users) {
-      user.setPassword(null);
-    }
     return users;
   }
 
   public User findOneUser(@NotNull Long id) {
     User user = userRepository.findByIdAndDeletedAtNull(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
-    user.setPassword(null);
     return user;
   }
 
@@ -93,9 +89,9 @@ public class AdminUserService {
     modifyUser.setUpdatedAt(LocalDateTime.now());
     modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
     userRepository.save(modifyUser);
-    modifyUser.setPassword(null);
     return modifyUser;
   }
+
 
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
@@ -103,15 +99,5 @@ public class AdminUserService {
     mod.setDeletedAt(LocalDateTime.now());
     mod.setDeletedBy(authenticationService.getCurrentUser());
     updateUser(id, mod);
-  }
-
-  public List<User> findAllLeader() {
-    List<User> users = this.userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
-    List<User> admin = this.userRepository.findByRoleAndDeletedAtNull(Roles.ADMIN);
-    users.addAll(admin);
-    for (User user : users) {
-      user.setPassword(null);
-    }
-    return users;
   }
 }
