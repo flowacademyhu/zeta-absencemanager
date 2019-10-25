@@ -30,8 +30,7 @@ export class ChangePasswComponent implements OnInit {
   }
   
   sendPassw() {
-   this.api.employee().sendPassword(this.firstPass, this.secondPass, this.id).subscribe(data => {
-     console.log(this.firstPass + " " + this.secondPass);
+   this.api.employee().changePassword(this.id, this.firstPass, this.secondPass).subscribe(data => {
      this.dialogRef.close();
    })
   }

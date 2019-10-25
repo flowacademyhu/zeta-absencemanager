@@ -10,8 +10,9 @@ export class EmployeeApiConnector extends AbstractApiConnector {
         return this.http.get(this.apiRoute) as Observable<User>;
     }
 
-    sendPassword(firstPassword: string, secondPassword: string, id: number): Observable<User>{
-        return this.http.put("localhost:8080/user/changepassw/" + id, {firstPassword, secondPassword}) as Observable<User>; 
+    public changePassword(id: number, firstPassword: String, secondPassword: String): Observable<User> {
+        console.log("password: " + firstPassword);
+        return this.http.put(this.apiRoute + "/changepassw/" + id, {dataA: firstPassword, dataB: secondPassword}) as Observable<User>;
     }
 
 }

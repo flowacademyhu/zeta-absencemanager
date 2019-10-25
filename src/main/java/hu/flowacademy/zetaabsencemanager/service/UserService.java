@@ -6,7 +6,9 @@ import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,6 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class UserService {
+
+    @Autowired
+    @Lazy
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -42,6 +48,19 @@ public class UserService {
         // modifyUser.setUpdatedBy(authenticationService.getCurrentUser()); not working cuz of dataloder calling it without currentuser TODO
         userRepository.save(modifyUser);
         modifyUser.setPassword(null);
+        return modifyUser;
+    }
+
+    public User changePassword(@NotNull Long id, @NotNull String firstPassword, @NotNull String secondPassword) {
+        User modifyUser = findOneUser(id);
+        if (!firstPassword.equals(secondPassword)) {
+                throw new IllegalArgumentException("The submitted passwords are different.");
+        } else {
+            modifyUser.setPassword(passwordEncoder.encode(firstPassword));
+            userRepository.save(modifyUser);
+            System.out.println("ÚJ JELSZÓ: " + modifyUser.getPassword());
+            // modifyUser.setPassword(null);
+        }
         return modifyUser;
     }
 
