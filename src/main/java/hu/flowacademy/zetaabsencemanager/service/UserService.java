@@ -52,9 +52,9 @@ public class UserService {
         } else {
             modifyUser.setPassword(firstPassword);
             userRepository.save(modifyUser);
+            System.out.println("ÚJ JELSZÓ: " + modifyUser.getPassword());
             // modifyUser.setPassword(null);
         }
-        System.out.println("A MEGVÁLTOZOTT USER: " + modifyUser);
         return modifyUser;
     }
 
