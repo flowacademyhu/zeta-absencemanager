@@ -47,9 +47,9 @@ public class AdminUsersController {
     userService.delete(id);
   }
 
-  @GetMapping("/leaders")
+  /*@GetMapping("/leaders")
   public List<User> getLeaders() {
     return userService.findAllLeader();
-  }
+  }*/
 
 }
