@@ -13,11 +13,4 @@ export class UserService {
   getUser(id: number): Observable<any> {
     return this.api.user().getUser(id);
   }
-
-  sendPassword(firstPassword: string, sencondPassword: string){
-    return this
-  }
-
 }
-
-//formcontrol + metódus 

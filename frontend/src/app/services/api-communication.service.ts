@@ -52,8 +52,6 @@ export class ApiCommunicationService {
   }
 
 
-
-
   private registerConnector(id: Connector, connector: AbstractApiConnector) {
     if (this.connectors.has(id)) {
       console.error("Connector already registered.");

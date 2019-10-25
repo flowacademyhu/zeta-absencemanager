@@ -32,7 +32,9 @@ export class ChangePasswComponent implements OnInit {
   }
   
   sendPassw() {
-   return this.passwordService.sendPassword(this.firstPass, this.secondPass, this.id); 
+   this.passwordService.sendPassword(this.firstPass, this.secondPass, this.id).subscribe(data => {
+     this.dialogRef.close();
+   })
   }
   
   onCancel(): void {
