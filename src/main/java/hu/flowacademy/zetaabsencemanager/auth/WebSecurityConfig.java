@@ -13,33 +13,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+  @Autowired
+  private CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
+  @Autowired
+  public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
-    }
+    auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
+  }
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Override
+  @Bean
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/", "/swagger-ui.html", "/webjars/**", "/login", "/swagger-resources/**", "/v2/api-docs/**", "/oauth/**", "/tokens/**", "/register").permitAll()
-                .antMatchers("/admin/user**", "/admin/group**").hasAnyAuthority(Roles.ADMIN.name(), Roles.LEADER.name())
-                .antMatchers("/admin/absence/**").hasAnyAuthority(Roles.LEADER.name(), Roles.ADMIN.name())
-                .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().csrf().disable();
-    }
+  @Override
+  protected void configure(final HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests()
+        .antMatchers("/", "/swagger-ui.html", "/webjars/**", "/login", "/swagger-resources/**",
+            "/v2/api-docs/**", "/oauth/**", "/tokens/**", "/register").permitAll()
+        .antMatchers("/admin/user**", "/admin/group**")
+        .hasAnyAuthority(Roles.ADMIN.name(), Roles.LEADER.name())
+        .antMatchers("/admin/absence/**").hasAnyAuthority(Roles.LEADER.name(), Roles.ADMIN.name())
+        .anyRequest().authenticated()
+        .and().formLogin().permitAll()
+        .and().csrf().disable();
+  }
 }
