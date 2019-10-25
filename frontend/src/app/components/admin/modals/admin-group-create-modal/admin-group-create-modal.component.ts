@@ -7,16 +7,16 @@ import {
   FormControl
 } from "@angular/forms";
 import { User } from "src/app/models/User.model";
-import { Group } from 'src/app/models/Group.model';
-import { ApiCommunicationService } from 'src/app/services/api-communication.service';
+import { Group } from "src/app/models/Group.model";
+import { ApiCommunicationService } from "src/app/services/api-communication.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-admin-group-create-modal',
-  templateUrl: './admin-group-create-modal.component.html',
-  styleUrls: ['./admin-group-create-modal.component.css']
+  selector: "app-admin-group-create-modal",
+  templateUrl: "./admin-group-create-modal.component.html",
+  styleUrls: ["./admin-group-create-modal.component.css"]
 })
 export class AdminGroupCreateModalComponent implements OnInit {
-
   public createGroupForm: FormGroup;
   private groupList: Group[];
   private userList: User[] = [];
@@ -34,22 +34,27 @@ export class AdminGroupCreateModalComponent implements OnInit {
         Validators.maxLength(60)
       ]),
       parentId: new FormControl(null),
-      leaders: new FormControl(null),
+      leader: new FormControl(null, Validators.required),
       employees: new FormControl(null)
     });
   }
 
   ngOnInit() {
     this.dialogRef.updateSize("45%", "90%");
-    this.api.group().getGroups().subscribe(groups => {
-      this.groupList = groups;
-    })
+    this.api
+      .group()
+      .getGroups()
+      .subscribe(groups => {
+        this.groupList = groups;
+      });
   }
 
   addLeadersToList(group) {
-    this.leaderList.splice(0, this.leaderList.length);
+    this.leaderList = [];
     for (let i = 0; i < group.employees.length; i++) {
-      this.leaderList.push(group.employees[i]);
+      if (group.employees[i].role == "EMPLOYEE") {
+        this.leaderList.push(group.employees[i]);
+      }
     }
   }
 

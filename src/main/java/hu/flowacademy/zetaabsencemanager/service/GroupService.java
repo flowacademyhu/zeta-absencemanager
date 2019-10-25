@@ -32,13 +32,9 @@ public class GroupService {
   }
 
   public Group create(@NotNull Group group) {
-    if (group.getLeader().getGroup().getId() == group.getParentId()) {
+
       group.getLeader().setRole(Roles.LEADER);
       return groupRepository.save(group);
-    } else {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "This user cannot be the leader of this group.");
-    }
   }
 
   public Group updateGroup(@NotNull Long id, @NotNull Group group) {
