@@ -1,14 +1,11 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.flowacademy.zetaabsencemanager.model.StringData;
+import hu.flowacademy.zetaabsencemanager.model.PasswordChangeDTO;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.service.AuthenticationService;
 import hu.flowacademy.zetaabsencemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -41,7 +38,7 @@ public class CurrentUserController {
     }
 
     @PutMapping("/changepassw/{userId}")
-    public User changePassword(@PathVariable("userId") Long userId, @RequestBody StringData password) {
-        return userService.changePassword(userId, password.getDataA(), password.getDataB());
+    public User changePassword(@PathVariable("userId") Long userId, @RequestBody PasswordChangeDTO password) {
+        return userService.changePassword(userId, password.getFirstPassword(), password.getSecondPassword());
     }
 }
