@@ -1,16 +1,16 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
 public enum Roles {
-    ADMIN("ADMIN"),
-    LEADER("LEADER"),
-    EMPLOYEE("EMPLOYEE"),
-    INACTIVE("INACTIVE");
+  ADMIN("ADMIN"),
+  LEADER("LEADER"),
+  EMPLOYEE("EMPLOYEE"),
+  INACTIVE("INACTIVE");
 
-    private String role;
+  private String role;
 
-    Roles(String role){
-        this.role=role;
-    }
+  Roles(String role) {
+    this.role = role;
+  }
 
 }
 

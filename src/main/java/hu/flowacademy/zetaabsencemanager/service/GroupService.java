@@ -2,7 +2,6 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -34,14 +32,13 @@ public class GroupService {
   }
 
   public Group create(@NotNull Group group) {
-    if (!CollectionUtils.isEmpty(group.getLeaders())) {
-      for (User u : group.getLeaders()) {
-        u.setRole(Roles.LEADER);
-        userService.updateUser(u.getId(), u);
-      }
+    if (group.getLeader().getGroup().getId() == group.getParentId()) {
+      group.getLeader().setRole(Roles.LEADER);
+      return groupRepository.save(group);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "This user cannot be the leader of this group.");
     }
-    group.setCreatedAt(LocalDateTime.now());
-    return groupRepository.save(group);
   }
 
   public Group updateGroup(@NotNull Long id, @NotNull Group group) {
@@ -49,15 +46,12 @@ public class GroupService {
     modifyGroup.setName(group.getName());
     modifyGroup.setParentId(group.getParentId());
     modifyGroup.setEmployees(group.getEmployees());
-    modifyGroup.setLeaders(group.getLeaders());
+    if (group.getLeader().getGroup().getId() == modifyGroup.getParentId()
+        && group.getLeader().getRole() == Roles.EMPLOYEE) {
+      modifyGroup.setLeader(group.getLeader());
+    }
     modifyGroup.setUpdatedAt(LocalDateTime.now());
     groupRepository.save(modifyGroup);
-    if (!CollectionUtils.isEmpty(group.getLeaders())) {
-      for (User u : group.getLeaders()) {
-        u.setRole(Roles.LEADER);
-        userService.updateUser(u.getId(), u);
-      }
-    }
     return modifyGroup;
   }
 

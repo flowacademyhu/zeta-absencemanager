@@ -16,31 +16,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class CurrentUserController {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+  @Autowired
+  private AuthenticationService authenticationService;
 
-    @GetMapping("/{userId}")
-    public User getOne(@PathVariable("userId") Long userId) {
-        return userService.findOneUser(userId);
+  @GetMapping("/{userId}")
+  public User getOne(@PathVariable("userId") Long userId) {
+    return userService.findOneUser(userId);
+  }
+
+  @PutMapping("/{userId}")
+  public User update(@PathVariable("userId") Long userId, @RequestBody User user) {
+    return userService.updateUser(userId, user);
+  }
+
+  @DeleteMapping("/{userId}")
+  public User delete(@PathVariable("userId") Long userId) {
+      System.out.println("USER ID-JA: " + userId);
+      return userService.delete(userId);
     }
 
-    @PutMapping("/{userId}")
-    public User update(@PathVariable("userId") Long userId, @RequestBody User user) {
-        return userService.updateUser(userId, user);
-    }
-
-    @DeleteMapping("/{userId}")
-    public User delete(@PathVariable("userId") Long userId) {
-        System.out.println("USER ID-JA: " + userId);
-        return userService.delete();
-    }
-
-    @GetMapping("")
-    public User getCurrent() {
-        return authenticationService.getCurrentUser();
-    }
+  @GetMapping("")
+  public User getCurrent() {
+    return authenticationService.getCurrentUser();
+  }
 
 }

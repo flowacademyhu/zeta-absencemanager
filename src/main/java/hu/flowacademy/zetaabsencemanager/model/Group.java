@@ -10,12 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,37 +28,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Group {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column
+  private Long id;
 
-    @Column
-    private Long parentId;
+  @Column
+  private Long parentId;
 
-    @Column(unique = true)
-    @NotBlank(message = "Group name is required.")
-    private String name;
+  @Column(unique = true)
+  @NotBlank(message = "Group name is required.")
+  private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "leader_user_group",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    @JsonSerialize(using = UserSerializer.class)
-    private List<User> leaders = new ArrayList<>();
+  @OneToOne
+  @NotNull(message = "Leader is required.")
+  private User leader;
 
-    @OneToMany(mappedBy = "group")
-    @JsonSerialize(using = UserSerializer.class)
-    private List<User> employees = new ArrayList<>();
+  @OneToMany(mappedBy = "group")
+  @JsonSerialize(using = UserSerializer.class)
+  private List<User> employees = new ArrayList<>();
 
-    @Column
-    private LocalDateTime createdAt;
+  @Column
+  private LocalDateTime createdAt;
 
-    @Column
-    private LocalDateTime updatedAt;
+  @Column
+  private LocalDateTime updatedAt;
 
-    @Column
-    private LocalDateTime deletedAt;
+  @Column
+  private LocalDateTime deletedAt;
 
 }
