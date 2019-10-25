@@ -66,6 +66,8 @@ import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { AdminGuard } from "./guards/admin.guard";
 import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
 import { ChangePasswComponent } from './components/employee/modals/change-passw/change-passw.component';
+import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
+import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 
 @NgModule({
   declarations: [
@@ -88,7 +90,9 @@ import { ChangePasswComponent } from './components/employee/modals/change-passw/
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
     EmployeeAbsenceCreateModalComponent,
-    EmployeeAbsenceEditModalComponent
+    EmployeeAbsenceEditModalComponent,
+    AdminAbsenceCreateModalComponent,
+    AdminAbsenceEditModalComponent
   ],
   imports: [
     BrowserModule,
@@ -151,10 +155,12 @@ import { ChangePasswComponent } from './components/employee/modals/change-passw/
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
     //admin modals
-    AdminUserEditModalComponent, 
+    AdminUserEditModalComponent,
     AdminUserAddModalComponent,
     AdminGroupCreateModalComponent,
-    ChangePasswComponent
+    ChangePasswComponent,
+    AdminAbsenceEditModalComponent,
+    AdminGroupCreateModalComponent
   ]
 })
 export class AppModule {}

@@ -10,7 +10,6 @@ import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -106,6 +105,8 @@ public class AdminAbsenceService {
             .contains(modifyAbsence.getReporter()))) {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
+      modifyAbsence.setSummary(absence.getSummary());
+      modifyAbsence.setDuration(absence.getDuration());
       modifyAbsence.setEnd(absence.getEnd());
       modifyAbsence.setReporter(absence.getReporter());
       modifyAbsence.setAssignee(absence.getAssignee());

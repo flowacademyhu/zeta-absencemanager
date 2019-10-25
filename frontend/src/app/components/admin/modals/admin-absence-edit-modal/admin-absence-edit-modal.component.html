@@ -159,16 +159,48 @@
 
     <div class="showData">
       <p>Reporter:</p>
-      <p *ngIf="absence">
+      <p *ngIf="absence && !formEditState.isReporterEdited">
         {{ absence.reporter.firstName }} {{ absence.reporter.lastName }}
       </p>
+
+      <mat-form-field *ngIf="formEditState.isReporterEdited">
+        <mat-select formControlName="reporter">
+          <mat-option *ngFor="let reporter of users" [value]="reporter">
+            {{ reporter.firstName }} {{ reporter.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isReporterEdited = true"
+        [disabled]="formEditState.isReporterEdited"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">
       <p>Assignee:</p>
-      <p *ngIf="absence && absence.assignee">
+      <p *ngIf="absence && !formEditState.isAssigneeEdited">
         {{ absence.assignee.firstName }} {{ absence.assignee.lastName }}
       </p>
+
+      <mat-form-field *ngIf="formEditState.isAssigneeEdited">
+        <mat-select formControlName="assignee">
+          <mat-option *ngFor="let leader of leaders" [value]="leader">
+            {{ leader.firstName }} {{ leader.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isAssigneeEdited = true"
+        [disabled]="formEditState.isAssigneeEdited"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
 
     <div class="showData">

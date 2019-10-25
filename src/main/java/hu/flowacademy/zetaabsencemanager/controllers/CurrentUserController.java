@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class CurrentUserController {
 
+
     @Autowired
     private UserService userService;
 
@@ -41,4 +42,5 @@ public class CurrentUserController {
     public User changePassword(@PathVariable("userId") Long userId, @RequestBody PasswordChangeDTO password) {
         return userService.changePassword(userId, password.getFirstPassword(), password.getSecondPassword());
     }
+
 }
