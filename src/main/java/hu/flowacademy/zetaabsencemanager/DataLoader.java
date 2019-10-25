@@ -96,7 +96,7 @@ public class DataLoader implements CommandLineRunner {
             this.userRepository.save(user);
             users.add(user);
         }
-
+        
         List<User> g1u = Arrays.asList(users.get(0), users.get(2), users.get(3));
         Group group1 = Group.builder()
                 .employees(List.of())
