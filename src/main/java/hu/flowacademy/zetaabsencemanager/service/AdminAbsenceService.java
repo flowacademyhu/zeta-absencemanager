@@ -40,7 +40,7 @@ public class AdminAbsenceService {
 
 
   public Set<User> getEmployees(Group g, Set<User> employees) {
-    employees.addAll((Collection<? extends User>) g.getLeader());
+    employees.add(g.getLeader());
     employees.addAll(g.getEmployees());
     groupRepository.findAllByParentId(g.getId())
             .forEach(child -> getEmployees(child, employees));
