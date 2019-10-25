@@ -62,9 +62,13 @@ export class SessionService {
     return this._userData$;
   }
 
+  public getUserDataWithObservable(): Observable<User> {
+    return this._userData$;
+  }
+
   public getUserData(): User {
     return this._userData$.getValue();
-}
+  }
 
   public hasToken() : boolean {
     return !!localStorage.getItem('token');
@@ -77,7 +81,7 @@ export class SessionService {
   public isLoggedInValue(): boolean {
     return this._isLoggedIn$.getValue();
   }
-
+  
   public startSessionOnApplicationBootstrap(): Promise<void> {
     return new Promise<void>(resolve => {
       this.api.employee().getCurrent().subscribe(user => {

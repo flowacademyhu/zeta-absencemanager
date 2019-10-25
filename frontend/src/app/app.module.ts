@@ -64,9 +64,10 @@ import { GetEmployeeAbsencesResolver } from "./resolvers/GetEmployeeAbsencesReso
 import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { AdminGuard } from "./guards/admin.guard";
+import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
+import { ChangePasswComponent } from './components/employee/modals/change-passw/change-passw.component';
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
-import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-
     AdminUserAddModalComponent,
     AdminUserEditModalComponent,
     AdminGroupCreateModalComponent,
+    ChangePasswComponent,
     //employee
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
@@ -155,7 +157,8 @@ import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-
     //admin modals
     AdminUserEditModalComponent,
     AdminUserAddModalComponent,
-    AdminAbsenceCreateModalComponent,
+    AdminGroupCreateModalComponent,
+    ChangePasswComponent,
     AdminAbsenceEditModalComponent,
     AdminGroupCreateModalComponent
   ]

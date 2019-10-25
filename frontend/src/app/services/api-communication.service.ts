@@ -16,7 +16,6 @@ export enum Connector {
   GROUP = 'Group',
   ADMIN_ABSENCE ="AdminAbsence",
   EMPLOYEE = 'Employee'
-
 }
 
 @Injectable()
@@ -51,8 +50,6 @@ export class ApiCommunicationService {
       Connector.EMPLOYEE, new EmployeeApiConnector(http, this.apiBaseUrl)
     )
   }
-
-
 
 
   private registerConnector(id: Connector, connector: AbstractApiConnector) {
