@@ -16,29 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class CurrentUserController {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+  @Autowired
+  private AuthenticationService authenticationService;
 
-    @GetMapping("/{userId}")
-    public User getOne(@PathVariable("userId") Long userId) {
-        return userService.findOneUser(userId);
-    }
+  @GetMapping("/{userId}")
+  public User getOne(@PathVariable("userId") Long userId) {
+    return userService.findOneUser(userId);
+  }
 
-    @PutMapping("/{userId}")
-    public User update(@PathVariable("userId") Long userId, @RequestBody User user) {
-        return userService.updateUser(userId, user);
-    }
+  @PutMapping("/{userId}")
+  public User update(@PathVariable("userId") Long userId, @RequestBody User user) {
+    return userService.updateUser(userId, user);
+  }
 
-    @DeleteMapping("/{userId}")
-    public void delete(@PathVariable("userId") Long userId) {
-        userService.delete(userId);
-    }
+  @DeleteMapping("/{userId}")
+  public void delete(@PathVariable("userId") Long userId) {
+    userService.delete(userId);
+  }
 
-    @GetMapping("")
-    public User getCurrent() {
-        return authenticationService.getCurrentUser();
-    }
+  @GetMapping("")
+  public User getCurrent() {
+    return authenticationService.getCurrentUser();
+  }
 }

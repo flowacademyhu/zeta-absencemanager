@@ -10,7 +10,8 @@ public class AbsenceValidator {
 
   public void validateAbsenceSave(Absence absence) {
     if (absence.getBegin().isAfter(absence.getEnd())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Begin date can't be after end date.");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "Begin date can't be after end date.");
     }
   }
 }
