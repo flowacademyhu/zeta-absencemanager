@@ -133,7 +133,7 @@ public class DataLoader implements CommandLineRunner {
     Group group2 = Group.builder()
         .employees(List.of())
         .name("Group2")
-        .leader(userRepository.getOne(32L))
+        .leader(leader)
         .employees(g2u)
         .parentId(group1.getId())
         .build();
