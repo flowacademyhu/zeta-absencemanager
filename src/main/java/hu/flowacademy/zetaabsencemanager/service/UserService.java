@@ -15,41 +15,41 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+  @Autowired
+  private AuthenticationService authenticationService;
 
-    public User findByEmail(String email) {
-        return this.userRepository.findByEmailAndDeletedAtNull(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-    }
+  public User findByEmail(String email) {
+    return this.userRepository.findByEmailAndDeletedAtNull(email)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+  }
 
-    public User findOneUser(Long id) {
-        User user = this.userRepository.findByIdAndDeletedAtNull(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-        user.setPassword(null);
-        return user;
-    }
+  public User findOneUser(Long id) {
+    User user = this.userRepository.findByIdAndDeletedAtNull(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+    user.setPassword(null);
+    return user;
+  }
 
-    public User updateUser(@NotNull Long id, @NotNull User user) {
-        User modifyUser = findOneUser(id);
-        modifyUser.setLastName(user.getLastName());
-        modifyUser.setFirstName(user.getFirstName());
-        modifyUser.setEmail(user.getEmail());
-        modifyUser.setUpdatedAt(LocalDateTime.now());
-        // modifyUser.setUpdatedBy(authenticationService.getCurrentUser()); not working cuz of dataloder calling it without currentuser TODO
-        userRepository.save(modifyUser);
-        modifyUser.setPassword(null);
-        return modifyUser;
-    }
+  public User updateUser(@NotNull Long id, @NotNull User user) {
+    User modifyUser = findOneUser(id);
+    modifyUser.setLastName(user.getLastName());
+    modifyUser.setFirstName(user.getFirstName());
+    modifyUser.setEmail(user.getEmail());
+    modifyUser.setUpdatedAt(LocalDateTime.now());
+    // modifyUser.setUpdatedBy(authenticationService.getCurrentUser()); not working cuz of dataloder calling it without currentuser TODO
+    userRepository.save(modifyUser);
+    modifyUser.setPassword(null);
+    return modifyUser;
+  }
 
-    public void delete(@NotNull Long id) {
-        User deleted = findOneUser(id);
-        deleted.setDeletedAt(LocalDateTime.now());
-        deleted.setRole(Roles.INACTIVE);
-        deleted.setDeletedBy(authenticationService.getCurrentUser());
-        updateUser(id, deleted);
-    }
+  public void delete(@NotNull Long id) {
+    User deleted = findOneUser(id);
+    deleted.setDeletedAt(LocalDateTime.now());
+    deleted.setRole(Roles.INACTIVE);
+    deleted.setDeletedBy(authenticationService.getCurrentUser());
+    updateUser(id, deleted);
+  }
 }
