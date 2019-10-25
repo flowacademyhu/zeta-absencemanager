@@ -17,10 +17,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import ru.sberned.statemachine.state.StateChangedEvent;
 
 @Service
 @Transactional
@@ -38,12 +40,15 @@ public class AdminAbsenceService {
   @Autowired
   private GroupRepository groupRepository;
 
+  @Autowired
+  private ApplicationEventPublisher publisher;
+
 
   public Set<User> getEmployees(Group g, Set<User> employees) {
     employees.add(g.getLeader());
     employees.addAll(g.getEmployees());
     groupRepository.findAllByParentId(g.getId())
-            .forEach(child -> getEmployees(child, employees));
+        .forEach(child -> getEmployees(child, employees));
     return employees;
   }
 
@@ -52,20 +57,20 @@ public class AdminAbsenceService {
       return this.absenceRepository.findAll();
     } else {
       return getEmployees(this.authenticationService.getCurrentUser().getGroup(),
-              new HashSet<>()).stream().flatMap(user -> user.getAbsences().stream()).distinct()
-              .collect(Collectors.toList());
+          new HashSet<>()).stream().flatMap(user -> user.getAbsences().stream()).distinct()
+          .collect(Collectors.toList());
     }
   }
 
   public Absence findOne(@NotNull Long id) {
     User current = authenticationService.getCurrentUser();
     Absence foundAbsence = absenceRepository.findById(id).orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "The submitted arguments are invalid."));
+        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "The submitted arguments are invalid."));
     Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
-            this.authenticationService.hasRole(Roles.LEADER) && employees
-                    .contains(foundAbsence.getReporter()))) {
+        this.authenticationService.hasRole(Roles.LEADER) && employees
+            .contains(foundAbsence.getReporter()))) {
       return foundAbsence;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -81,8 +86,8 @@ public class AdminAbsenceService {
     absence.setStatus(Status.OPEN);
     Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
-            this.authenticationService.hasRole(Roles.LEADER) && employees
-                    .contains(absence.getReporter()))) {
+        this.authenticationService.hasRole(Roles.LEADER) && employees
+            .contains(absence.getReporter()))) {
       return absenceRepository.save(absence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -92,19 +97,20 @@ public class AdminAbsenceService {
   public Absence update(@NotNull Long id, @NotNull Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
     Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "The submitted arguments are invalid."));
+        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "The submitted arguments are invalid."));
     User current = authenticationService.getCurrentUser();
     Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
-            this.authenticationService.hasRole(Roles.LEADER) && employees
-                    .contains(modifyAbsence.getReporter()))) {
+        this.authenticationService.hasRole(Roles.LEADER) && employees
+            .contains(modifyAbsence.getReporter()))) {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setEnd(absence.getEnd());
       modifyAbsence.setReporter(absence.getReporter());
       modifyAbsence.setAssignee(absence.getAssignee());
-      modifyAbsence.setStatus(absence.getStatus());
+      publisher.publishEvent(new StateChangedEvent<>(
+          absence.getId(), absence.getState()));
       modifyAbsence.setUpdatedAt(LocalDateTime.now());
       modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
       absenceRepository.save(modifyAbsence);
