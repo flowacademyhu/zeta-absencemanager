@@ -70,7 +70,6 @@ public class AdminUserService {
     return newUser;
   }
 
-
   public User updateUser(@NotNull Long id, @NotNull User user) {
     User modifyUser = findOneUser(id);
     modifyUser.setLastName(user.getLastName());

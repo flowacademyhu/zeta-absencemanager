@@ -17,8 +17,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
         .antMatchers("/", "/login", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**",
             "/v2/api-docs/**", "/oauth/**", "/tokens/**", "/register").permitAll()
         .antMatchers("/admin/user**", "/admin/group**").hasAuthority(Roles.ADMIN.name())
-        .antMatchers("/admin/absence/**").hasAnyAuthority(Roles.LEADER.name(), Roles.ADMIN
-        .name())
+        .antMatchers("/admin/absence/**").hasAnyAuthority(Roles.LEADER.name(), Roles.ADMIN.name())
         .anyRequest().authenticated();
 
 
