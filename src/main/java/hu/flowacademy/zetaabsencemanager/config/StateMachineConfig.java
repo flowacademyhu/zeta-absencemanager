@@ -4,8 +4,7 @@ import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import java.util.EnumSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +20,9 @@ import ru.sberned.statemachine.state.ItemWithStateProvider;
 import ru.sberned.statemachine.state.StateChanger;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 @Configuration
 public class StateMachineConfig {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineConfig.class);
 
   @Autowired
   private LockProvider lockProvider;
@@ -34,34 +32,34 @@ public class StateMachineConfig {
     StateRepository<Absence, Status, Long> repository = StateRepositoryBuilder.<Absence, Status, Long>configure()
         .setAvailableStates(EnumSet.allOf(Status.class))
         .setUnhandledMessageProcessor((item, state, type, ex) -> {
-          LOGGER.error("Got unhandled item with id {}, issue is {}", item, type);
+          log.error("Got unhandled item with id {}, issue is {}", item, type);
         })
         .setAnyBefore((BeforeAnyTransition<Absence, Status>) (item, state) -> {
-          LOGGER.info("Started working on item with id {}", item.getId());
+          log.info("Started working on item with id {}", item.getId());
           return true;
         })
         .defineTransitions()
         .from(Status.OPEN)
         .to(Status.UNDER_REVIEW)
         .after(
-            (AfterTransition<Absence>) item -> LOGGER.info("Moved from OPEN to UNDER_REVIEW"))
+            (AfterTransition<Absence>) item -> log.info("Moved from OPEN to UNDER_REVIEW"))
         .and()
         .from(Status.UNDER_REVIEW)
         .to(Status.APPROVED)
         .after(
-            (AfterTransition<Absence>) item -> LOGGER.info("Moved from UNDER_REVIEW to APPROVED"))
+            (AfterTransition<Absence>) item -> log.info("Moved from UNDER_REVIEW to APPROVED"))
         .and()
         .from(Status.APPROVED)
         .to(Status.ADMINISTRATED)
-        .after(item -> LOGGER.info("Moved from APPROVED to ADMINISTRATED"))
+        .after(item -> log.info("Moved from APPROVED to ADMINISTRATED"))
         .and()
         .from(Status.ADMINISTRATED)
         .to(Status.DONE)
-        .after(item -> LOGGER.info("Moved from ADMINISTRATED to DONE"))
+        .after(item -> log.info("Moved from ADMINISTRATED to DONE"))
         .and()
         .from(Status.OPEN, Status.UNDER_REVIEW, Status.APPROVED, Status.ADMINISTRATED)
         .to(Status.REJECTED)
-        .after((AfterTransition<Absence>) item -> LOGGER.info("Rejected."))
+        .after((AfterTransition<Absence>) item -> log.info("Rejected."))
         .build();
 
     StateMachine<Absence, Status, Long> stateMachine = new StateMachine<>(stateProvider(),
