@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Absence, AbsenceType } from "src/app/models/Absence.model";
+import { Absence, AbsenceType, Status } from "src/app/models/Absence.model";
 import { Subject } from "rxjs";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
@@ -148,5 +148,12 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
+  }
+
+  public onSend(): void {
+    this.absence.status = Status.UNDER_REVIEW;
+    var ab = {id: this.absence.id,begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
+      duration: this.absence.duration, reporter: this.absence.reporter, status: "UNDER_REVIEW"};
+    this.api.absence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
   }
 }

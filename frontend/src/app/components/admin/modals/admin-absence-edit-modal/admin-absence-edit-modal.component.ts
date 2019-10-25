@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Absence, AbsenceType } from "src/app/models/Absence.model";
+import { Absence, AbsenceType, Status } from "src/app/models/Absence.model";
 import { Subject, Observable, forkJoin } from "rxjs";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { takeUntil } from "rxjs/operators";
 import { User } from "src/app/models/User.model";
 import * as moment from "moment";
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: "app-admin-absence-edit-modal",
@@ -17,6 +18,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   private createAbsenceForm: FormGroup;
   private types;
   private error: string;
+  private userRole;
   private absence: Absence;
   private _unsubscribe$ = new Subject<void>();
   private leaders: User[];
@@ -35,11 +37,13 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiCommunicationService,
+    private session: SessionService,
     private dialogRef: MatDialogRef<AdminAbsenceEditModalComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   ngOnInit() {
+    this.currentUser();
     this.createAbsenceForm = new FormGroup({
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
@@ -167,5 +171,31 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
+  }
+
+  public currentUser() {
+    var user = this.session.getUserData();
+    this.userRole = user.role;
+  }
+
+  public onApprove() {
+    this.absence.status = Status.APPROVED;
+    var ab = {id: this.absence.id,begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
+      duration: this.absence.duration, reporter: this.absence.reporter, status: "APPROVED"};
+    this.api.absence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
+  }
+
+  public onReject() {
+    this.absence.status = Status.APPROVED;
+    var ab = {id: this.absence.id,begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
+      duration: this.absence.duration, reporter: this.absence.reporter, status: "REJECTED"};
+    this.api.adminAbsence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
+  }
+
+  public onAdministrate() {
+    this.absence.status = Status.ADMINISTRATED;
+    var ab = {id: this.absence.id,begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
+      duration: this.absence.duration, reporter: this.absence.reporter, status: "ADMINISTRATED"};
+    this.api.adminAbsence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
   }
 }

@@ -6,11 +6,11 @@
 
 <mat-table
   [dataSource]="absencesList"
-  class="table-responsive mat-elevation-z8"
+  class="table-responsive mat-elevation-z8" 
 >
-  <ng-container matColumnDef="id">
+  <ng-container matColumnDef="id" >
     <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
+    <mat-cell *matCellDef="let absence" > {{ absence.id }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="begin">
