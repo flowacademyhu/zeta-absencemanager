@@ -22,7 +22,8 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     "type",
     "summary",
     "status",
-    "edit"
+    "edit",
+    "delete"
   ];
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];

@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   
 export class AdminAbsencesComponent implements OnInit {
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
-  displayedColumns: string[] = ['id', 'begin', 'end', 'days', 'type', 'status', 'created_at', 'reporter', 'assignee'];
+  displayedColumns: string[] = ['id', 'begin', 'end', 'days', 'type', 'status', 'created_at', 'reporter', 'assignee', 'delete'];
   absencesList: Absence[];
 
   constructor(public api: ApiCommunicationService, private route: ActivatedRoute) { }

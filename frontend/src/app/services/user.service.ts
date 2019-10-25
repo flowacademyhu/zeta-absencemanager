@@ -14,4 +14,9 @@ export class UserService {
     return this.api.user().getUser(id);
   }
 
+  deleteUser(id: number): Observable<any> {
+    console.log("ID: " + id);
+    return this.api.employee().deleteUser(id);
+  }
+
 }

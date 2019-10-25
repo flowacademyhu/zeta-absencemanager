@@ -10,4 +10,8 @@ export class EmployeeApiConnector extends AbstractApiConnector {
         return this.http.get(this.apiRoute) as Observable<User>;
     }
 
+    public deleteUser(id: number): Observable<any> {
+        return this.http.delete(this.apiRoute + "/" + id);
+    }
+
 }

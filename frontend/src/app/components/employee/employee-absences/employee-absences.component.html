@@ -52,6 +52,15 @@
     </mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="delete">
+    <mat-header-cell mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+    <mat-cell  mat-cell *matCellDef="let absence">
+      <button mat-icon-button [disabled]='absence.status !== "OPEN"'>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-cell>
+  </ng-container>
+
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

@@ -45,11 +45,13 @@ public class UserService {
         return modifyUser;
     }
 
-    public void delete(@NotNull Long id) {
-        User deleted = findOneUser(id);
+    public User delete() {
+        User deleted = authenticationService.getCurrentUser();
         deleted.setDeletedAt(LocalDateTime.now());
         deleted.setRole(Roles.INACTIVE);
         deleted.setDeletedBy(authenticationService.getCurrentUser());
-        updateUser(id, deleted);
+        updateUser(deleted.getId(), deleted);
+        System.out.println("új role: " + deleted.getRole());
+        return deleted;
     }
 }

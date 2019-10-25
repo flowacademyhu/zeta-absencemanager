@@ -20,6 +20,10 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute, private api: ApiCommunicationService) { }
 
+  deleteProfile() {
+    this.userService.deleteUser(this.user.id)
+  }
+
   ngOnInit() {
     this.api.employee().getCurrent()
       .pipe(takeUntil(this._unsubscribe$))
