@@ -9,73 +9,80 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import ru.sberned.statemachine.state.StateChangedEvent;
 
 @Service
 @Transactional
 public class AbsenceService {
 
-    @Autowired
-    private AbsenceRepository absenceRepository;
+  @Autowired
+  private AbsenceRepository absenceRepository;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+  @Autowired
+  private AuthenticationService authenticationService;
 
-    @Autowired
-    private AbsenceValidator absenceValidator;
+  @Autowired
+  private AbsenceValidator absenceValidator;
 
-    public Absence findOne(@NotNull Long id) {
-        Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
-        if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
-        }
-        return absence;
+  @Autowired
+  private ApplicationEventPublisher publisher;
+
+  public Absence findOne(@NotNull Long id) {
+    Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
+    if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
     }
+    return absence;
+  }
 
-    public List<Absence> findAll() {
-        User current = authenticationService.getCurrentUser();
-        return absenceRepository.findByReporterAndDeletedAtNull(current);
-    }
+  public List<Absence> findAll() {
+    User current = authenticationService.getCurrentUser();
+    return absenceRepository.findByReporterAndDeletedAtNull(current);
+  }
 
-    public Absence create(@NotNull Absence absence) {
-        this.absenceValidator.validateAbsenceSave(absence);
-        absence.setReporter(authenticationService.getCurrentUser());
-        absence.setAssignee(authenticationService.getCurrentUser().getGroup().getLeader());
-        absence.setCreatedAt(LocalDateTime.now());
-        absence.setCreatedBy(authenticationService.getCurrentUser());
-        absence.setStatus(Status.OPEN);
-        return absenceRepository.save(absence);
-    }
+  public Absence create(@NotNull Absence absence) {
+    this.absenceValidator.validateAbsenceSave(absence);
+    absence.setReporter(authenticationService.getCurrentUser());
+    absence.setAssignee(authenticationService.getCurrentUser().getGroup().getLeader());
+    absence.setCreatedAt(LocalDateTime.now());
+    absence.setCreatedBy(authenticationService.getCurrentUser());
+    absence.setStatus(Status.OPEN);
+    return absenceRepository.save(absence);
+  }
 
-    public Absence update(@NotNull Long id, @NotNull Absence absence) {
-        Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "The submitted arguments are invalid."));
-        if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    "You can only modify your absences");
-        }
-        modifyAbsence.setType(absence.getType());
-        modifyAbsence.setBegin(absence.getBegin());
-        modifyAbsence.setEnd(absence.getEnd());
-        modifyAbsence.setSummary(absence.getSummary());
-        modifyAbsence.setReporter(absence.getReporter());
-        modifyAbsence.setAssignee(absence.getAssignee());
-        modifyAbsence.setStatus(absence.getStatus());
-        modifyAbsence.setUpdatedAt(LocalDateTime.now());
-        modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
-        absenceRepository.save(modifyAbsence);
-        return modifyAbsence;
+  public Absence update(@NotNull Long id, @NotNull Absence absence) {
+    Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "The submitted arguments are invalid."));
+    if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          "You can only modify your absences");
     }
+    modifyAbsence.setType(absence.getType());
+    modifyAbsence.setBegin(absence.getBegin());
+    modifyAbsence.setEnd(absence.getEnd());
+    modifyAbsence.setSummary(absence.getSummary());
+    modifyAbsence.setReporter(absence.getReporter());
+    modifyAbsence.setAssignee(absence.getAssignee());
+    modifyAbsence.setStatus(absence.getStatus());
+    publisher.publishEvent(new StateChangedEvent<>(
+        absence.getId(), absence.getState()));
+    modifyAbsence.setUpdatedAt(LocalDateTime.now());
+    modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
+    absenceRepository.save(modifyAbsence);
+    return modifyAbsence;
+  }
 
-    public void delete(@NotNull Long id) {
-        Absence deleted = findOne(id);
-        deleted.setDeletedAt(LocalDateTime.now());
-        deleted.setDeletedBy(authenticationService.getCurrentUser());
-        update(id, deleted);
-    }
+  public void delete(@NotNull Long id) {
+    Absence deleted = findOne(id);
+    deleted.setDeletedAt(LocalDateTime.now());
+    deleted.setDeletedBy(authenticationService.getCurrentUser());
+    update(id, deleted);
+  }
 }

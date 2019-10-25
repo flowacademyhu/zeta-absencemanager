@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class UserService {
 
+
     @Autowired
     @Lazy
     private BCryptPasswordEncoder passwordEncoder;
@@ -54,7 +55,7 @@ public class UserService {
     public User changePassword(@NotNull Long id, @NotNull String firstPassword, @NotNull String secondPassword) {
         User modifyUser = findOneUser(id);
         if (!firstPassword.equals(secondPassword)) {
-                throw new IllegalArgumentException("The submitted passwords are different.");
+            throw new IllegalArgumentException("The submitted passwords are different.");
         } else {
             modifyUser.setPassword(passwordEncoder.encode(firstPassword));
             userRepository.save(modifyUser);
@@ -71,4 +72,5 @@ public class UserService {
         deleted.setDeletedBy(authenticationService.getCurrentUser());
         updateUser(id, deleted);
     }
+
 }
