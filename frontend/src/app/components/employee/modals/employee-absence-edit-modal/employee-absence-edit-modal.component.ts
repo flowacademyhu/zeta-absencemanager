@@ -18,15 +18,16 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
   private types;
   private error: string;
   private absence: Absence;
-  private message = "Edit";
   private _unsubscribe$ = new Subject<void>();
   private leaders: User[];
   private users: User[];
-  private isTypeEdit = { value: false };
-  private isSummaryEdit = { value: false };
-  private isBeginEdit = { value: false };
-  private isEndEdit = { value: false };
-  private isDurationEdit = { value: false };
+  private formEditState = {
+    isTypeEdited: false,
+    isSummaryEdited: false,
+    isBeginEdited: false,
+    isEndEdited: false,
+    isDurationEdited: false
+  };
   private duration = 0;
   private dates = [false, false];
 
@@ -76,34 +77,10 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (
-      this.isTypeEdit.value ||
-      this.isSummaryEdit.value ||
-      this.isBeginEdit.value ||
-      this.isEndEdit.value ||
-      this.isDurationEdit.value
-    ) {
-      this.isTypeEdit.value = false;
-      this.isSummaryEdit.value = false;
-      this.isBeginEdit.value = false;
-      this.isEndEdit.value = false;
-      this.isDurationEdit.value = false;
-
-      this.message = "Edit";
+    if (this.isFormEdited()) {
+      this.setFormEdited(false);
       if (this.createAbsenceForm.valid) {
-        this.absence.type = this.createAbsenceForm.controls["type"].value;
-        this.absence.summary = this.createAbsenceForm.controls["summary"].value;
-        this.absence.begin = Absence.convertDate(
-          this.createAbsenceForm.controls["begin"].value
-        );
-        this.absence.end = Absence.convertDate(
-          this.createAbsenceForm.controls["end"].value
-        );
-        this.absence.duration = this.createAbsenceForm.controls[
-          "duration"
-        ].value;
-        console.log(this.absence);
-
+        this.getFormData();
         this.api
           .absence()
           .updateAbsence(this.absence.id, this.absence)
@@ -116,18 +93,38 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
           );
       }
     } else {
-      this.isTypeEdit.value = true;
-      this.isSummaryEdit.value = true;
-      this.isBeginEdit.value = true;
-      this.isEndEdit.value = true;
-      this.isDurationEdit.value = true;
-      this.message = "Save";
+      this.setFormEdited(true);
     }
   }
 
-  onEdit(element) {
-    element.value = true;
-    this.message = "Save";
+  public isFormEdited(): boolean {
+    return (
+      this.formEditState.isTypeEdited ||
+      this.formEditState.isSummaryEdited ||
+      this.formEditState.isBeginEdited ||
+      this.formEditState.isEndEdited ||
+      this.formEditState.isDurationEdited
+    );
+  }
+
+  public setFormEdited(value: boolean) {
+    this.formEditState.isTypeEdited = value;
+    this.formEditState.isSummaryEdited = value;
+    this.formEditState.isBeginEdited = value;
+    this.formEditState.isEndEdited = value;
+    this.formEditState.isDurationEdited = value;
+  }
+
+  public getFormData() {
+    this.absence.type = this.createAbsenceForm.controls["type"].value;
+    this.absence.summary = this.createAbsenceForm.controls["summary"].value;
+    this.absence.begin = Absence.convertDate(
+      this.createAbsenceForm.controls["begin"].value
+    );
+    this.absence.end = Absence.convertDate(
+      this.createAbsenceForm.controls["end"].value
+    );
+    this.absence.duration = this.createAbsenceForm.controls["duration"].value;
   }
 
   public countDuration(): number {
