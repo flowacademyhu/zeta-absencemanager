@@ -67,6 +67,7 @@ public class AbsenceService {
     modifyAbsence.setType(absence.getType());
     modifyAbsence.setBegin(absence.getBegin());
     modifyAbsence.setEnd(absence.getEnd());
+    modifyAbsence.setDuration(absence.getDuration());
     modifyAbsence.setSummary(absence.getSummary());
     modifyAbsence.setReporter(absence.getReporter());
     modifyAbsence.setAssignee(absence.getAssignee());

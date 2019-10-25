@@ -70,7 +70,6 @@ public class AdminUserService {
     return newUser;
   }
 
-
   public User updateUser(@NotNull Long id, @NotNull User user) {
     User modifyUser = findOneUser(id);
     modifyUser.setLastName(user.getLastName());
@@ -100,5 +99,9 @@ public class AdminUserService {
     mod.setDeletedAt(LocalDateTime.now());
     mod.setDeletedBy(authenticationService.getCurrentUser());
     updateUser(id, mod);
+  }
+
+  public List<User> findAllLeader() {
+    return userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
   }
 }
