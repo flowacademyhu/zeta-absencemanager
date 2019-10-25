@@ -19,8 +19,6 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
         .antMatchers("/admin/user**", "/admin/group**").hasAuthority(Roles.ADMIN.name())
         .antMatchers("/admin/absence/**").hasAnyAuthority(Roles.LEADER.name(), Roles.ADMIN.name())
         .anyRequest().authenticated();
-
-
   }
 
 }

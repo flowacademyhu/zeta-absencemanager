@@ -1,34 +1,50 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Absence, AbsenceType } from "src/app/models/Absence.model";
+import { Subject } from "rxjs";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { FormGroup, FormControl } from "@angular/forms";
-import { AbsenceType, Absence } from "src/app/models/Absence.model";
-import { ActivatedRoute, Params } from "@angular/router";
-import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { User } from "src/app/models/User.model";
+import * as moment from "moment";
 
 @Component({
   selector: "app-employee-absence-edit-modal",
   templateUrl: "./employee-absence-edit-modal.component.html",
   styleUrls: ["./employee-absence-edit-modal.component.css"]
 })
-export class EmployeeAbsenceEditModalComponent implements OnInit {
-  private createAbsenceForm: FormGroup = new FormGroup({});
+export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
+  private createAbsenceForm: FormGroup;
   private types;
   private error: string;
   private absence: Absence;
-  private update: boolean = false;
-  private message = "Modify";
   private _unsubscribe$ = new Subject<void>();
+  private leaders: User[];
+  private users: User[];
+  private formEditState = {
+    isTypeEdited: false,
+    isSummaryEdited: false,
+    isBeginEdited: false,
+    isEndEdited: false,
+    isDurationEdited: false
+  };
+  private duration = 0;
+  private dates = [false, false];
 
   constructor(
-    private route: ActivatedRoute,
     private api: ApiCommunicationService,
     private dialogRef: MatDialogRef<EmployeeAbsenceEditModalComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   ngOnInit() {
+    this.createAbsenceForm = new FormGroup({
+      type: new FormControl("", Validators.required),
+      summary: new FormControl(""),
+      begin: new FormControl("", Validators.required),
+      end: new FormControl("", Validators.required),
+      duration: new FormControl("")
+    });
     this.api
       .absence()
       .getAbsence(this.data.absence.id)
@@ -46,11 +62,12 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
             data.end[2]
           );
           this.types = Absence.enumSelector(AbsenceType);
-          this.createAbsenceForm = new FormGroup({
-            type: new FormControl(this.absence.type),
-            summary: new FormControl(this.absence.summary),
-            start: new FormControl(this.absence.begin),
-            end: new FormControl(this.absence.end)
+          this.createAbsenceForm.patchValue({
+            type: this.absence.type,
+            summary: this.absence.summary,
+            begin: this.absence.begin,
+            end: this.absence.end,
+            duration: this.absence.duration
           });
         },
         err => {
@@ -59,30 +76,11 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
       );
   }
 
-  public OnSubmit(createAbsenceFormValue): void {
-    if (this.update) {
-      this.update = !this.update;
-      this.message = "Modify";
+  public onSubmit(): void {
+    if (this.isFormEdited()) {
+      this.setFormEdited(false);
       if (this.createAbsenceForm.valid) {
-        (this.absence.type = createAbsenceFormValue.type),
-          (this.absence.summary = createAbsenceFormValue.summary),
-          (this.absence.begin = createAbsenceFormValue.start),
-          (this.absence.end = createAbsenceFormValue.end);
-        var month = this.absence.begin.getUTCMonth() + 1;
-        var day = this.absence.begin.getUTCDate() + 1;
-        var year = this.absence.begin.getUTCFullYear();
-        this.absence.begin = [];
-        this.absence.begin[0] = year;
-        this.absence.begin[1] = month;
-        this.absence.begin[2] = day;
-
-        var month = this.absence.end.getUTCMonth() + 1;
-        var day = this.absence.end.getUTCDate() + 1;
-        var year = this.absence.end.getUTCFullYear();
-        this.absence.end = [];
-        this.absence.end[0] = year;
-        this.absence.end[1] = month;
-        this.absence.end[2] = day;
+        this.getFormData();
         this.api
           .absence()
           .updateAbsence(this.absence.id, this.absence)
@@ -95,9 +93,52 @@ export class EmployeeAbsenceEditModalComponent implements OnInit {
           );
       }
     } else {
-      this.update = !this.update;
-      this.message = "Save";
+      this.setFormEdited(true);
     }
+  }
+
+  public isFormEdited(): boolean {
+    return (
+      this.formEditState.isTypeEdited ||
+      this.formEditState.isSummaryEdited ||
+      this.formEditState.isBeginEdited ||
+      this.formEditState.isEndEdited ||
+      this.formEditState.isDurationEdited
+    );
+  }
+
+  public setFormEdited(value: boolean) {
+    this.formEditState.isTypeEdited = value;
+    this.formEditState.isSummaryEdited = value;
+    this.formEditState.isBeginEdited = value;
+    this.formEditState.isEndEdited = value;
+    this.formEditState.isDurationEdited = value;
+  }
+
+  public getFormData() {
+    this.absence.type = this.createAbsenceForm.controls["type"].value;
+    this.absence.summary = this.createAbsenceForm.controls["summary"].value;
+    this.absence.begin = Absence.convertDate(
+      this.createAbsenceForm.controls["begin"].value
+    );
+    this.absence.end = Absence.convertDate(
+      this.createAbsenceForm.controls["end"].value
+    );
+    this.absence.duration = this.createAbsenceForm.controls["duration"].value;
+  }
+
+  public countDuration(): number {
+    this.duration = 0;
+    var begin = moment(this.createAbsenceForm.controls["begin"].value);
+    var end = moment(this.createAbsenceForm.controls["end"].value);
+    this.duration = Math.floor(moment.duration(end.diff(begin)).asDays()) + 1;
+    this.createAbsenceForm.controls["duration"].setValue(this.duration);
+    return this.duration;
+  }
+
+  changeHandler(event): number {
+    this.countDuration();
+    return this.duration;
   }
 
   public onCancel(): void {
