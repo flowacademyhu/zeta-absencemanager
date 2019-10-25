@@ -10,6 +10,7 @@ import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class AdminAbsenceService {
 
 
   public Set<User> getEmployees(Group g, Set<User> employees) {
-    employees.addAll(g.getLeaders());
+    employees.add(g.getLeader());
     employees.addAll(g.getEmployees());
     groupRepository.findAllByParentId(g.getId())
         .forEach(child -> getEmployees(child, employees));
