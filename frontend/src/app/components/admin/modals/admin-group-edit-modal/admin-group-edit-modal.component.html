@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>EDIT GROUP</h2>
+ <mat-dialog-content [formGroup]="editGroupDataForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="name"
+        formControlName="name"
+        id="name"
+      /> 
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Leaders</mat-label>
+        <mat-select formControlName="leaders">
+          <mat-option *ngFor="let leader of userList" [value]="leader">
+            {{ leader.id }} {{ leader.firstName }} {{ leader.lastName }} 
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Employees</mat-label>
+      <mat-select formControlName="employees" multiple>
+        <mat-option *ngFor="let employee of userList" [value]="employee">
+          {{ employee.id }} {{ employee.firstName }} {{ employee.lastName }} 
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
+
+  <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+</mat-dialog-actions>

@@ -8,6 +8,7 @@ import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AdminGroupCreateModalComponent } from 'src/app/components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
 import { User } from 'src/app/models/User.model';
+import { AdminGroupEditModalComponent } from '../modals/admin-group-edit-modal/admin-group-edit-modal.component';
 
 @Component({
   selector: 'app-admin-groups',
@@ -15,16 +16,16 @@ import { User } from 'src/app/models/User.model';
   styleUrls: ['./admin-groups.component.css']
 })
 export class AdminGroupsComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees'];
+  displayedColumns: string[] = ['name', 'parent', 'leaders', 'employees', 'edit'];
   dataSource: any;
   error: string;
   private _unsubscribe$ = new Subject<void>();
   groupData: Group;
+  editedGroup: Group;
 
   constructor(private api: ApiCommunicationService, private activatedRoute: ActivatedRoute, public dialog: MatDialog) {
     this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe((data) => {
       this.dataSource = data.groupResolver;
-      console.log(this.dataSource)
       this.dataSource.forEach(element => {
         if (element.parentId) {
           this.dataSource.forEach(group => {
@@ -59,5 +60,19 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       })
     });
     
+  }
+
+  editGroup(id: number): void {
+    const dialogRef = this.dialog.open(AdminGroupEditModalComponent, {
+      data: {group: this.dataSource.filter(group => group.id === id)[0]}
+    });
+    
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
+      Object.assign(this.editedGroup, result);
+      this.editedGroup.id = id;
+      console.log(this.editedGroup);      
+      this.api.group().updateGroup(this.editedGroup.id, this.editedGroup).subscribe(u => console.log("updated:" + u));
+    });
   }
 }

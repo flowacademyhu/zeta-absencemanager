@@ -74,7 +74,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  editUser(id: number): void{
+  editUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
       data: {user: this.usersList.filter(user => user.id === id)[0]}
     });

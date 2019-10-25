@@ -6,7 +6,7 @@
     {{ error }}
 </mat-error>
 
-<mat-table [dataSource]="dataSource" class="table-responsive mat-elevation-z8">
+<mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
@@ -33,6 +33,17 @@
             <button mat-flat-button [routerLink]="'/admin/users'">Employees</button> <!-- path with filter TODO -->
         </mat-cell>
     </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let group">
+          <button mat-icon-button (click)="editGroup(group.id)"> 
+          <mat-icon>edit</mat-icon>
+        </button> 
+        </mat-cell>
+      </ng-container> 
+
+    
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

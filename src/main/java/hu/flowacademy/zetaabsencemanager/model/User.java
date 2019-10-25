@@ -74,7 +74,7 @@ public class User implements UserDetails {
     private LocalDate dateOfEndTrial;
 
     @ManyToOne
-    @JsonIgnore
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @Column
