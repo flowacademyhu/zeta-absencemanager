@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
 import { ApiCommunicationService } from 'src/app/services/api-communication.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangePasswComponent } from 'src/app/components/employee/modals/change-passw/change-passw.component';
 
 
 @Component({
@@ -18,7 +20,11 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
     private _unsubscribe$: Subject<boolean> = new Subject();
     public user: User;
 
-  constructor(private userService: UserService,  private formbuild: FormBuilder, private route: ActivatedRoute, private api: ApiCommunicationService) { }
+  constructor(private userService: UserService,  
+              private formbuild: FormBuilder, 
+              private route: ActivatedRoute, 
+              private api: ApiCommunicationService,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     this.api.employee().getCurrent()
@@ -29,6 +35,10 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
+  }
+
+  changePassw(){
+    this.dialog.open(ChangePasswComponent)
   }
 
 }
