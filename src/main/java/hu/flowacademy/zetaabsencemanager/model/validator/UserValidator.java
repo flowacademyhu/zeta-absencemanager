@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserValidator {
 
-    public void validateUserUpdate(User oldUser, User newUser) {
-        //
-    }
+  public void validateUserUpdate(User oldUser, User newUser) {
+    //
+  }
 }

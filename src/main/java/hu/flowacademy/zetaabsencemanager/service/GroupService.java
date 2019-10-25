@@ -2,7 +2,6 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -34,6 +32,7 @@ public class GroupService {
   }
 
   public Group create(@NotNull Group group) {
+
       group.getLeader().setRole(Roles.LEADER);
       return groupRepository.save(group);
   }
@@ -43,7 +42,8 @@ public class GroupService {
     modifyGroup.setName(group.getName());
     modifyGroup.setParentId(group.getParentId());
     modifyGroup.setEmployees(group.getEmployees());
-    if(group.getLeader().getGroup().getId()==modifyGroup.getParentId() && group.getLeader().getRole()==Roles.EMPLOYEE){
+    if (group.getLeader().getGroup().getId() == modifyGroup.getParentId()
+        && group.getLeader().getRole() == Roles.EMPLOYEE) {
       modifyGroup.setLeader(group.getLeader());
     }
     modifyGroup.setUpdatedAt(LocalDateTime.now());

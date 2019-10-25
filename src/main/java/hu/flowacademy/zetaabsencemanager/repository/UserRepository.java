@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.repository;
 
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByIdAndDeletedAtNull(Long id);
 
   List<User> findByDeletedAtNull();
+
+  List<User> findByRoleAndDeletedAtNull(Roles role);
 }

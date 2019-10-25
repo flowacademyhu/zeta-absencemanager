@@ -19,35 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/group")
 public class AdminGroupController {
 
-    @Autowired
-    private GroupService groupService;
+  @Autowired
+  private GroupService groupService;
 
-    @GetMapping("/{id}")
-    public Group getOne(@PathVariable("id") Long id) {
-        return groupService.findOne(id);
+  @GetMapping("/{id}")
+  public Group getOne(@PathVariable("id") Long id) {
+    return groupService.findOne(id);
 
-    }
+  }
 
-    @GetMapping("")
-    public List<Group> getAll() {
-        return groupService.findAllGroup();
+  @GetMapping("")
+  public List<Group> getAll() {
+    return groupService.findAllGroup();
 
-    }
+  }
 
-    @PostMapping("")
-    public Group createGroup(@RequestBody Group group) {
-        return groupService.create(group);
+  @PostMapping("")
+  public Group createGroup(@RequestBody Group group) {
+    return groupService.create(group);
 
-    }
+  }
 
-    @PutMapping("/{id}")
-    public Group update(@PathVariable("id") Long id, @RequestBody Group group) {
-        return groupService.updateGroup(id, group);
-    }
+  @PutMapping("/{id}")
+  public Group update(@PathVariable("id") Long id, @RequestBody Group group) {
+    return groupService.updateGroup(id, group);
+  }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        groupService.delete(id);
-    }
+  @DeleteMapping("/{id}")
+  public void delete(@PathVariable("id") Long id) {
+    groupService.delete(id);
+  }
 
 }

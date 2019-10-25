@@ -1,29 +1,32 @@
-import { AbstractApiConnector } from './AbstractApiConnector';
-import { Observable } from 'rxjs';
-import { User } from '../User.model';
+import { AbstractApiConnector } from "./AbstractApiConnector";
+import { Observable } from "rxjs";
+import { User } from "../User.model";
 
 export class UserApiConnector extends AbstractApiConnector {
+  protected apiRoute: string = this.apiBaseUrl + "admin/user";
 
-    protected apiRoute: string = this.apiBaseUrl + 'admin/user';
+  public getUser(id: number): Observable<any> {
+    return this.http.get(this.apiRoute + "/" + id);
+  }
 
-    public getUser(id: number): Observable<any> {
-        return this.http.get(this.apiRoute + "/" + id);
-    }
+  public getUsers(): Observable<any> {
+    return this.http.get(this.apiRoute);
+  }
 
-    public getUsers(): Observable<any> {
-        return this.http.get(this.apiRoute);
-    }
+  public getLeaders(): Observable<any> {
+    return this.http.get(this.apiRoute + "/leaders");
+  }
 
-    public createUser(user: User): Observable<any> {
-        return this.http.post(this.apiRoute, user);
-    }
+  public createUser(user: User): Observable<any> {
+    return this.http.post(this.apiRoute, user);
+  }
 
-    public updateUser(id: number, user: User): Observable<any> {
-        return this.http.put(this.apiRoute + "/" + id, user, {});
-    }
+  public updateUser(id: number, user: User): Observable<any> {
+    return this.http.put(this.apiRoute + "/" + id, user, {});
+  }
 
-    //TODO backend delete method is void yet
-    public deleteUser(id: number): Observable<any> {
-        return this.http.delete(this.apiRoute + "/" + id);
-    }
+  //TODO backend delete method is void yet
+  public deleteUser(id: number): Observable<any> {
+    return this.http.delete(this.apiRoute + "/" + id);
+  }
 }
