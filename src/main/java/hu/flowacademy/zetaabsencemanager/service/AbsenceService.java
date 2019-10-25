@@ -45,6 +45,7 @@ public class AbsenceService {
     public Absence create(@NotNull Absence absence) {
         this.absenceValidator.validateAbsenceSave(absence);
         absence.setReporter(authenticationService.getCurrentUser());
+        absence.setAssignee(authenticationService.getCurrentUser().getGroup().getLeader());
         absence.setCreatedAt(LocalDateTime.now());
         absence.setCreatedBy(authenticationService.getCurrentUser());
         absence.setStatus(Status.OPEN);
