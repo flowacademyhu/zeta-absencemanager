@@ -12,7 +12,7 @@ import { User } from 'src/app/models/User.model';
 export class AdminGroupEditModalComponent implements OnInit {
   public editGroupDataForm: FormGroup;
   private userList: User[];
-  private employees: User[] = [];
+  private employees: any;
 
 
   constructor(
@@ -21,23 +21,21 @@ export class AdminGroupEditModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public fb: FormBuilder
   ) {
+    this.findEmployees();
     this.editGroupDataForm = new FormGroup({
       name: new FormControl(data.group.name, Validators.required),
       parentId: new FormControl(data.group.parentId, Validators.required),
       leaders: new FormControl(null, Validators.required),
-      employees: new FormControl(null, Validators.required)
+      employees: new FormControl(this.employees, Validators.required)
       });
-
     }
 
   ngOnInit() {
     this.api.user().getUsers().subscribe(users => {
       this.userList = users;
-      console.log(this.userList);
       this.editGroupDataForm.patchValue( {
-        leaders: this.findLeader(),
-        employees: this.findEmployees(),
-      });
+        leaders: this.findLeader()
+            });
     });
     this.dialogRef.updateSize("25%", "90%");
   }
@@ -46,14 +44,12 @@ export class AdminGroupEditModalComponent implements OnInit {
     return this.userList.find(leader => leader.id === this.data.group.leaders[0].id);
   }
 
-  private findEmployees(){
-    this.userList.filter(employee => {
-      if(employee.group && (employee.group.id === this.data.group.id)) {
-        this.employees.push(employee);
-      }
+  private findEmployees() {
+    this.api.group().getGroup(this.data.group.id).subscribe(result => {
+      this.employees = result.employees;
+      console.log(this.employees);
+      return this.employees.find();
     });
-    console.log(this.employees);
-  return this.employees
   }
 
 }
