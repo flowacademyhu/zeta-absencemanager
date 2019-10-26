@@ -60,10 +60,10 @@ public class AbsenceService {
     Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
-  /* TODO if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
+    if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           "You can only modify your absences");
-    }*/
+    }
     modifyAbsence.setType(absence.getType());
     modifyAbsence.setBegin(absence.getBegin());
     modifyAbsence.setEnd(absence.getEnd());

@@ -52,10 +52,8 @@ public class AdminAbsenceService {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return this.absenceRepository.findAll();
     } else {
-      return this.absenceRepository.findAll();
-      /*return getEmployees(this.authenticationService.getCurrentUser().getGroup(),
-              new ArrayList<>()).stream().flatMap(user -> user.getAbsences().stream())
-          .collect(Collectors.toList());*/
+      return this.absenceRepository
+          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser());
     }
   }
 
@@ -79,7 +77,7 @@ public class AdminAbsenceService {
     User current = authenticationService.getCurrentUser();
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
-    // TODO absence.setAssignee();
+    absence.setAssignee(absence.getAssignee());
     absence.setStatus(Status.OPEN);
     ArrayList<User> employees = getEmployees(current.getGroup(), new ArrayList<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
