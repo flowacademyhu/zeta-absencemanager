@@ -9,7 +9,7 @@
       <mat-label>Típus</mat-label>
       <mat-select formControlName="type" required>
         <mat-option *ngFor="let type of types" [value]="type.value">
-          {{ type.title }}
+          {{ type.value | type }}
         </mat-option>
       </mat-select>
     </mat-form-field>

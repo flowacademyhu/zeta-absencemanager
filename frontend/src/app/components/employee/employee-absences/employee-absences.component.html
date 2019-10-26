@@ -30,7 +30,7 @@
 
   <ng-container matColumnDef="type">
     <mat-header-cell *matHeaderCellDef> Típus </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.type }} </mat-cell>
+    <mat-cell *matCellDef="let absence"> {{ absence.type | type }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="status">

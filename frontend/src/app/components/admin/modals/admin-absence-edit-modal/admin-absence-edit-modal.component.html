@@ -12,12 +12,14 @@
 
     <div class="showData">
       <p>Típus:</p>
-      <p *ngIf="absence && !formEditState.isTypeEdited">{{ absence.type }}</p>
+      <p *ngIf="absence && !formEditState.isTypeEdited">
+        {{ absence.type | type }}
+      </p>
 
       <mat-form-field *ngIf="formEditState.isTypeEdited">
         <mat-select formControlName="type">
           <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.title }}
+            {{ type.value | type }}
           </mat-option>
         </mat-select>
       </mat-form-field>

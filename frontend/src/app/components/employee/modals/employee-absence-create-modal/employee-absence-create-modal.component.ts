@@ -54,7 +54,6 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       this.dates[0] = true;
     } else {
       this.dates[1] = true;
-      console.log(this.dates);
     }
     if (this.dates[0] === true && this.dates[1] === true) {
       this.countDuration();
@@ -95,7 +94,6 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       newAbsence.end[0] = year;
       newAbsence.end[1] = month;
       newAbsence.end[2] = day;
-      console.log(newAbsence);
       this.api
         .absence()
         .createAbsence(newAbsence)
