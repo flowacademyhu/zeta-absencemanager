@@ -35,7 +35,9 @@
 
   <ng-container matColumnDef="status">
     <mat-header-cell *matHeaderCellDef> Státusz </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.status }} </mat-cell>
+    <mat-cell *matCellDef="let absence">
+      {{ absence.status | status }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="summary">

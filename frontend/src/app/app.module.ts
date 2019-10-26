@@ -36,6 +36,7 @@ import {
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./interceptors/token.interceptor";
 import { AbsenceTypePipe } from "./pipes/absence-type-pipe";
+import { AbsenceStatusPipe } from "./pipes/absence-status-pipe";
 
 //Own Components
 
@@ -95,7 +96,8 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     AdminAbsenceCreateModalComponent,
     AdminAbsenceEditModalComponent,
     //pipe
-    AbsenceTypePipe
+    AbsenceTypePipe,
+    AbsenceStatusPipe
   ],
   imports: [
     BrowserModule,

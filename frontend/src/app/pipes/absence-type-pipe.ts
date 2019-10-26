@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { AbsenceType } from "../models/Absence.model";
 
 @Pipe({ name: "type" })
 export class AbsenceTypePipe implements PipeTransform {

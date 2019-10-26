@@ -207,7 +207,7 @@
 
     <div class="showData">
       <p>Státusz:</p>
-      <p *ngIf="absence">{{ absence.status }}</p>
+      <p *ngIf="absence">{{ absence.status | status }}</p>
     </div>
 
     <div class="showData">
