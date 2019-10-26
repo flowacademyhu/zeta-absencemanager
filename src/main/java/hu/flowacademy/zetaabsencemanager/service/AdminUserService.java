@@ -100,4 +100,8 @@ public class AdminUserService {
     mod.setDeletedBy(authenticationService.getCurrentUser());
     updateUser(id, mod);
   }
+
+  public List<User> findAllLeader() {
+    return userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
+  }
 }

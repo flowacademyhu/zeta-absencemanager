@@ -1,50 +1,50 @@
 <div class="actionButton">
   <button mat-flat-button color="warn" (click)="openDialog()">
-    NEW ABSENCE
+    Szabadság hozzáadása
   </button>
 </div>
 <mat-table [dataSource]="absences" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Azonosító </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="begin">
-    <mat-header-cell *matHeaderCellDef> Begin </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Kezdő dátum </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.begin | date: "yyyy - MM - dd" }}
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="end">
-    <mat-header-cell *matHeaderCellDef> End </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Befejező dátum </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.end | date: "yyyy - MM - dd" }}
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="days">
-    <mat-header-cell *matHeaderCellDef> Days </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Hossz </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.duration }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="type">
-    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Típus </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.type }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Státusz </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.status }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="summary">
-    <mat-header-cell *matHeaderCellDef> Summary </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Megnevezés </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.summary }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="edit">
-    <mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Részletek </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <button mat-icon-button (click)="editAbsence(element.id)">
         <mat-icon>pageview</mat-icon>
@@ -53,14 +53,13 @@
   </ng-container>
 
   <ng-container matColumnDef="delete">
-    <th mat-header-cell *matHeaderCellDef> </th>
-    <td mat-cell *matCellDef>
-      <button mat-icon-button> 
-      <mat-icon>delete</mat-icon>
-    </button> 
-    </td>
-  </ng-container> 
-
+    <mat-header-cell *matHeaderCellDef> Törlés </mat-header-cell>
+    <mat-cell *matCellDef>
+      <button mat-icon-button>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>

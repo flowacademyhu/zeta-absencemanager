@@ -64,8 +64,8 @@ import { GetEmployeeAbsencesResolver } from "./resolvers/GetEmployeeAbsencesReso
 import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { AdminGuard } from "./guards/admin.guard";
-import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
-import { ChangePasswComponent } from './components/employee/modals/change-passw/change-passw.component';
+import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
+import { ChangePasswComponent } from "./components/employee/modals/change-passw/change-passw.component";
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 
@@ -160,7 +160,8 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     AdminGroupCreateModalComponent,
     ChangePasswComponent,
     AdminAbsenceEditModalComponent,
-    AdminGroupCreateModalComponent
+    AdminGroupCreateModalComponent,
+    AdminAbsenceCreateModalComponent
   ]
 })
 export class AppModule {}

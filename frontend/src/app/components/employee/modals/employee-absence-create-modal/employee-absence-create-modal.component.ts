@@ -18,7 +18,7 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
   private createAbsenceForm: FormGroup;
   private types;
   private error: string;
-  private duration = 0;
+  private duration;
   private dates = [false, false];
 
   constructor(
@@ -34,7 +34,7 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       summary: new FormControl(""),
       start: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
-      duration: new FormControl(this.duration)
+      duration: new FormControl(this.duration, Validators.required)
     });
   }
 

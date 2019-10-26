@@ -1,4 +1,4 @@
-<h2 mat-dialog-title align="center">Create new absence</h2>
+<h2 mat-dialog-title align="center">Szabadság létrehozása</h2>
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
@@ -6,19 +6,19 @@
 >
   <mat-dialog-content>
     <mat-form-field>
-      <mat-label>Type</mat-label>
+      <mat-label>Típus</mat-label>
       <mat-select formControlName="type">
         <mat-option *ngFor="let type of types" [value]="type.value">
           {{ type.title }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    
+
     <mat-form-field>
       <input
         matInput
         type="text"
-        placeholder="Summary"
+        placeholder="Megnevezés"
         formControlName="summary"
         id="summary"
       />
@@ -28,7 +28,7 @@
       <input
         matInput
         [matDatepicker]="pickerStart"
-        placeholder="Choose the start of the absence"
+        placeholder="Kezdő dátum"
         formControlName="start"
         id="start"
         readonly
@@ -47,7 +47,7 @@
       <input
         matInput
         [matDatepicker]="pickerEnd"
-        placeholder="Choose the end of the absence"
+        placeholder="Befejező dátum"
         formControlName="end"
         id="end"
         readonly
@@ -67,8 +67,9 @@
   <mat-form-field>
     <input
       matInput
+      required
       type="number"
-      placeholder="Duration"
+      placeholder="Hossz"
       formControlName="duration"
       id="duration"
     />
@@ -76,10 +77,10 @@
 
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
-      Create
+      Mentés
     </button>
     <button mat-raised-button color="warn" (click)="onCancel()">
-      Cancel
+      Mégsem
     </button>
   </mat-dialog-actions>
 </form>
