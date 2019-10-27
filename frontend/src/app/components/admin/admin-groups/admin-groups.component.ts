@@ -33,6 +33,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
       data => {
         this.dataSource = data.groupResolver;
+        console.log(this.dataSource);
         this.transformData();
       },
       error => {

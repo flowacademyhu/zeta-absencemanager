@@ -70,7 +70,7 @@ public class AdminUserService {
     return newUser;
   }
 
-  public User updateUser(@NotNull Long id, @NotNull User user) {
+  public User updateUser(@NotNull Long id, @NotNull User user, boolean isDeleted) {
     User modifyUser = findOneUser(id);
     modifyUser.setLastName(user.getLastName());
     modifyUser.setFirstName(user.getFirstName());
@@ -86,9 +86,17 @@ public class AdminUserService {
       modifyUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
       modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
     }
-    modifyUser.setUpdatedAt(LocalDateTime.now());
-    modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
-    userRepository.save(modifyUser);
+    if (!isDeleted) {
+      modifyUser.setUpdatedAt(LocalDateTime.now());
+      modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
+      userRepository.save(modifyUser);
+    }
+    if (isDeleted) {
+      System.out.println("Absence modified 2");
+      modifyUser.setDeletedAt(LocalDateTime.now());
+      modifyUser.setDeletedBy(authenticationService.getCurrentUser());
+      userRepository.save(modifyUser);
+    }
     return modifyUser;
   }
 
@@ -96,9 +104,8 @@ public class AdminUserService {
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
     mod.setRole(Roles.INACTIVE);
-    mod.setDeletedAt(LocalDateTime.now());
-    mod.setDeletedBy(authenticationService.getCurrentUser());
-    updateUser(id, mod);
+    boolean isDeleted = true;
+    updateUser(id, mod, isDeleted);
   }
 
   public List<User> findAllLeader() {

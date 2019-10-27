@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Alkamlazott törlése</h1>
+<div
+  mat-dialog-content
+  [formGroup]="deleteUserForm"
+  style="text-align: center;"
+>
+  <div>
+    <mat-form-field>
+      <input matInput required formControlName="name" placeholder="Név" />
+    </mat-form-field>
+  </div>
+  <mat-form-field>
+    Biztos, hogy törölni szeretné {{ firstName }} {{ lastName }} alkalmazottat?
+  </mat-form-field>
+
+
+  <div mat-dialog-actions style="justify-content: center;">
+    <button
+      mat-button
+      (click)="dialogRef.close()"
+      style="border: 2px solid white;"
+    >
+      Mégsem
+    </button>
+    <button
+      mat-button
+      [mat-dialog-close]="deleteUserForm.value"
+      cdkFocusInitial
+      style="border: 2px solid white;"
+    >
+      Igen
+    </button>
+  </div>
+

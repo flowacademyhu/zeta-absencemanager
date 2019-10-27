@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditModalComponent } from '../modals/admin-user-edit-modal/admin-user-edit-modal.component';
 import { MatTableDataSource } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { AdminUserDeleteModalComponent } from '../modals/admin-user-delete-modal/admin-user-delete-modal.component';
 
 
 
@@ -17,35 +19,30 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'dob', 'position', 'supervisor', 'doe', 'email', 'edit', 'delete'];
-  dataSource; // --> filter
+  dataSource: any; // --> filter
 
   editedUser: User;
   userData: User;
   usersList: User[];
+  error: string;
   private _unsubscribe$ = new Subject<void>();
 
-
-
-  constructor(private api: ApiCommunicationService, public dialog: MatDialog) {}
-
-  createUser(): void {
-    const dialogRef = this.dialog.open(AdminUserAddModalComponent, {
-      data: {user: this.userData}
-    });
-
-    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      if(result){
-        this.userData = result;
-        this.userData.isOnTrial = true;
-        this.userData.role = "EMPLOYEE";
-        this.dateConverter();
-        console.log(this.userData);      
-        this.api.user().createUser(this.userData).subscribe(u => console.log("created:" + u));
-        this.api.user().getUsers().subscribe(users => {this.usersList = users, this.dataSource = new MatTableDataSource(this.usersList)});
+  constructor(
+    private api: ApiCommunicationService,
+    private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    ) {
+    /* this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
+      data => {
+        this.dataSource = data.userResolver;
+        console.log(this.dataSource);
+      },
+      error => {
+        this.error = error;
       }
-    });
-    
+    ); */
   }
+
 
   ngOnInit() {
     this.api.user().getUsers().subscribe(users => {
@@ -53,39 +50,105 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource(this.usersList);
     })
   }
-  
+
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete(); 
   }
 
+  createUser(): void {
+    const dialogRef = this.dialog.open(AdminUserAddModalComponent, {});
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe((result: User) => {
+        console.log(result);
+          this.api
+            .user()
+            .createUser(result)
+            .subscribe(u => {
+              this.api
+                .user()
+                .getUsers()
+                .subscribe(data => {
+                  this.dataSource = data;
+                });
+            });
+          });
+  }
+
   private dateConverter() {
-    this.userData.dateOfEndTrial = (this.userData.dateOfEndTrial as Date).toISOString().split("T")[0].split("-");
-    this.userData.dateOfBirth = (this.userData.dateOfBirth as Date).toISOString().split("T")[0].split("-");
-    this.userData.dateOfEntry = (this.userData.dateOfEntry as Date).toISOString().split("T")[0].split("-"); 
+    this.dataSource.dateOfEndTrial = (this.dataSource.dateOfEndTrial as Date).toISOString().split("T")[0].split("-");
+    this.dataSource.dateOfBirth = (this.dataSource.dateOfBirth as Date).toISOString().split("T")[0].split("-");
+    this.dataSource.dateOfEntry = (this.dataSource.dateOfEntry as Date).toISOString().split("T")[0].split("-"); 
     for (let i = 0; i < 3; i++) {
-      this.userData.dateOfEntry[i] = parseInt(this.userData.dateOfEntry[i]);
+      this.dataSource.dateOfEntry[i] = parseInt(this.dataSource.dateOfEntry[i]);
     }
     for (let i = 0; i < 3; i++) {
-      this.userData.dateOfBirth[i] = parseInt(this.userData.dateOfBirth[i]);
+      this.dataSource.dateOfBirth[i] = parseInt(this.dataSource.dateOfBirth[i]);
     }
     for (let i = 0; i < 3; i++) {
-      this.userData.dateOfEndTrial[i] = parseInt(this.userData.dateOfEndTrial[i]);
+      this.dataSource.dateOfEndTrial[i] = parseInt(this.dataSource.dateOfEndTrial[i]);
     }
   }
 
   editUser(id: number): void{
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
-      data: {user: this.usersList.filter(user => user.id === id)[0]}
+      data: {user: this.dataSource.filter(user => user.id === id)[0]}
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      this.editedUser = this.usersList.filter(user => user.id === id)[0];
+      this.editedUser = this.dataSource.filter(user => user.id === id)[0];
       Object.assign(this.editedUser, result);
       this.editedUser.id = id;
       console.log(this.editedUser);      
       this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(u => console.log("updated:" + u));
     });
   }
+
+  /* deleteUser(id: number): void {
+    console.log("ID - component: " + id);
+    const dialogRef = this.dialog.open(AdminUserDeleteModalComponent, {
+      data: {user: this.dataSource.filter(user => user.id === id)[0]}
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      this.editedUser = this.dataSource.filter(user => user.id === id)[0];
+      Object.assign(this.editedUser, result);
+      this.editedUser.id = id;
+      console.log(this.editedUser);      
+      this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(u => console.log("updated:" + u));
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(id => {
+        console.log(id);
+          this.api
+            .user()
+            .deleteUser(id)
+            .subscribe(u => {
+              this.api
+                .user()
+                .getUsers()
+                .subscribe(data => {
+                  this.dataSource = data;
+                });
+            });
+          }); */
+
+    /* this.api
+    .user()
+    .deleteUser(id)
+    .subscribe(u => {
+      this.api
+        .user()
+        .getUsers()
+        .subscribe(data => {
+          this.dataSource = data;
+        });
+    }); 
+  } */
   
 }

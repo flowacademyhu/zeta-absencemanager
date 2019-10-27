@@ -70,6 +70,7 @@ import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-
 import { ChangePasswComponent } from "./components/employee/modals/change-passw/change-passw.component";
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
+import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     AdminGroupsComponent,
     AdminUserAddModalComponent,
     AdminUserEditModalComponent,
+    AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
     ChangePasswComponent,
     //employee
@@ -166,7 +168,8 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     ChangePasswComponent,
     AdminAbsenceEditModalComponent,
     AdminGroupCreateModalComponent,
-    AdminAbsenceCreateModalComponent
+    AdminAbsenceCreateModalComponent,
+    AdminUserDeleteModalComponent
   ]
 })
 export class AppModule {}
