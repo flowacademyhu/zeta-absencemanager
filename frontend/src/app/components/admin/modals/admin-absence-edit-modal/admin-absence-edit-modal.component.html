@@ -233,9 +233,12 @@
     <button mat-raised-button color="warn" (click)="onCancel()">
       Cancel
     </button>
-  <button type="button" mat-raised-button (click)="onApprove()" *ngIf="this.userRole && this.userRole === 'LEADER' && this.absence && this.absence.status === 'UNDER_REVIEW' ">Approve</button>
-  <button type="button" mat-raised-button (click)="onReject()" *ngIf="this.userRole && (this.userRole === 'LEADER' || this.userRole === 'ADMIN') && this.absence && this.absence.status === 'UNDER_REVIEW' ">Reject</button>
-  <button type="button" mat-raised-button (click)="onAdministrate()" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status === 'APPROVED' ">Administrate</button>
+  <button type="button" mat-raised-button (click)="onAction('APPROVED')" *ngIf="this.userRole && this.userRole === 'LEADER' && this.absence && this.absence.status === 'UNDER_REVIEW' ">Approve</button>
+  <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="this.userRole && this.userRole === 'LEADER' && this.absence && this.absence.status === 'UNDER_REVIEW' ">Reject</button>
+  <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status !== 'DONE'">Reject</button>
+  <button type="button" mat-raised-button (click)="onAction('ADMINISTRATED')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status === 'APPROVED' ">Administrate</button>
+  <button type="button" mat-raised-button (click)="onAction('DONE')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status === 'ADMINISTRATED' ">Done</button>
+
 
   </mat-dialog-actions>
 </form>   

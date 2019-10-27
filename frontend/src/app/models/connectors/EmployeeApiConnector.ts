@@ -12,7 +12,7 @@ export class EmployeeApiConnector extends AbstractApiConnector {
 
     public changePassword(id: number, firstPassword: String, secondPassword: String): Observable<User> {
         console.log("password: " + firstPassword);
-        return this.http.put(this.apiRoute + "/changepassw/" + id, {dataA: firstPassword, dataB: secondPassword}) as Observable<User>;
+        return this.http.put(this.apiRoute + "/changepassw/" + id, { firstPassword, secondPassword }) as Observable<User>;
     }
 
 }

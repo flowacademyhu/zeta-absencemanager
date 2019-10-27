@@ -178,30 +178,12 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
     this.userRole = user.role;
   }
 
-  public onApprove() {
-    this.absence.status = Status.APPROVED;
-    var ab = {
+  public onAction(action: Status) {
+    this.absence.status = action;
+    var modifiedAbsence = {
       id: this.absence.id, begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
-      duration: this.absence.duration, reporter: this.absence.reporter, status: "APPROVED"
+      duration: this.absence.duration, reporter: this.absence.reporter, status: action
     };
-    this.api.adminAbsence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
-  }
-
-  public onReject() {
-    this.absence.status = Status.APPROVED;
-    var ab = {
-      id: this.absence.id, begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
-      duration: this.absence.duration, reporter: this.absence.reporter, status: "REJECTED"
-    };
-    this.api.adminAbsence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
-  }
-
-  public onAdministrate() {
-    this.absence.status = Status.ADMINISTRATED;
-    var ab = {
-      id: this.absence.id, begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
-      duration: this.absence.duration, reporter: this.absence.reporter, status: "ADMINISTRATED"
-    };
-    this.api.adminAbsence().updateAbsence(this.absence.id, ab).subscribe(result => console.log(result));
+    this.api.adminAbsence().updateAbsence(this.absence.id, modifiedAbsence).subscribe(result => console.log(result));
   }
 }

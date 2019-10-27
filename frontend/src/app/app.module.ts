@@ -160,7 +160,8 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     AdminGroupCreateModalComponent,
     ChangePasswComponent,
     AdminAbsenceEditModalComponent,
-    AdminGroupCreateModalComponent
+    AdminGroupCreateModalComponent,
+    AdminAbsenceCreateModalComponent
   ]
 })
 export class AppModule {}
