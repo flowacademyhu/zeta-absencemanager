@@ -212,6 +212,7 @@ public class DataLoader implements CommandLineRunner {
         .type(Type.ABSENCE)
         .status(Status.OPEN)
         .duration(2)
+        .administrationID(1l)
         .build();
     this.absenceRepository.save(absence1);
 
@@ -224,6 +225,7 @@ public class DataLoader implements CommandLineRunner {
         .type(Type.NON_WORKING)
         .duration(2)
         .status(Status.OPEN)
+        .administrationID(2l)
         .build();
     this.absenceRepository.save(absence2);
 
@@ -236,6 +238,7 @@ public class DataLoader implements CommandLineRunner {
         .status(Status.OPEN)
         .duration(2)
         .type(Type.CHILD_SICK_PAY)
+        .administrationID(3l)
         .build();
     this.absenceRepository.save(absence3);
 
@@ -248,6 +251,7 @@ public class DataLoader implements CommandLineRunner {
         .status(Status.OPEN)
         .duration(2)
         .type(Type.UNPAID_HOLIDAY)
+        .administrationID(4l)
         .build();
     this.absenceRepository.save(absence4);
 
@@ -260,6 +264,7 @@ public class DataLoader implements CommandLineRunner {
         .status(Status.OPEN)
         .type(Type.ABSENCE)
         .duration(6)
+        .administrationID(5l)
         .build();
     this.absenceRepository.save(absence5);
   }
