@@ -4,10 +4,7 @@
   </button>
 </div>
 
-<mat-table
-  [dataSource]="absencesList"
-  class="table-responsive mat-elevation-z8"
->
+<mat-table [dataSource]="absencesList" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
@@ -18,15 +15,13 @@
     <mat-cell *matCellDef="let absence">
       {{ absence.begin[0] }}.{{ absence.begin[1] }}.{{
         absence.begin[2]
-      }}.</mat-cell
-    >
+      }}.</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="end">
     <mat-header-cell *matHeaderCellDef> End </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      {{ absence.end[0] }}.{{ absence.end[1] }}.{{ absence.end[2] }}.</mat-cell
-    >
+      {{ absence.end[0] }}.{{ absence.end[1] }}.{{ absence.end[2] }}.</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="days">
@@ -56,18 +51,14 @@
   <ng-container matColumnDef="reporter">
     <mat-header-cell *matHeaderCellDef> Reporter </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      <span *ngIf="absence.reporter"
-        >{{ absence.reporter.firstName }} {{ absence.reporter.lastName }}</span
-      >
+      <span *ngIf="absence.reporter">{{ absence.reporter.firstName }} {{ absence.reporter.lastName }}</span>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="assignee">
     <mat-header-cell *matHeaderCellDef> Assignee </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      <span *ngIf="absence.assignee"
-        >{{ absence.assignee.firstName }} {{ absence.assignee.lastName }}</span
-      >
+      <span *ngIf="absence.assignee">{{ absence.assignee.firstName }} {{ absence.assignee.lastName }}</span>
     </mat-cell>
   </ng-container>
 
@@ -83,3 +74,5 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
+
+<mat-paginator [length]="totalPages" [pageSize]="pageSize" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>

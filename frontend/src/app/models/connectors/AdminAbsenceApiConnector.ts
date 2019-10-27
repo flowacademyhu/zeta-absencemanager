@@ -1,6 +1,7 @@
 import { AbstractApiConnector } from "./AbstractApiConnector";
 import { Observable } from "rxjs";
 import { Absence } from "../Absence.model";
+import { HttpParams } from '@angular/common/http';
 
 export class AdminAbsenceApiConnector extends AbstractApiConnector {
   protected apiRoute: string = this.apiBaseUrl + "admin/absence/";
@@ -24,5 +25,15 @@ export class AdminAbsenceApiConnector extends AbstractApiConnector {
   //TODO backend delete method does not exist yet
   public deleteAbsence(id: number): Observable<any> {
     return this.http.delete(this.apiRoute + id);
+  }
+
+  public getAbsencesPage(size: number, page: number, totalPages: number): Observable<any> {
+    console.log('Size ' + size + 'pageNumber ' + page + 'totalPages ' + totalPages);
+    return this.http.get(this.apiRoute + 'page', {
+      params: new HttpParams()
+        .set('size', size.toString())
+        .set('page', page.toString())
+        .set('totalPages', totalPages.toString())
+    });
   }
 }

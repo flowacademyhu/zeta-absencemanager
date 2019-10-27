@@ -1,19 +1,20 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { Absence } from "src/app/models/Absence.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, tap } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
+import { MatPaginator } from '@angular/material';
 
 @Component({
   selector: "app-admin-absences",
   templateUrl: "./admin-absences.component.html",
   styleUrls: ["./admin-absences.component.css"]
 })
-export class AdminAbsencesComponent implements OnInit {
+export class AdminAbsencesComponent implements OnInit, AfterViewInit {
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   displayedColumns: string[] = [
     "id",
@@ -28,12 +29,17 @@ export class AdminAbsencesComponent implements OnInit {
     "edit"
   ];
   absencesList: Absence[];
+  pageNumber = 1;
+  pageSize = 3;
+  totalPages = 2;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     public api: ApiCommunicationService,
     private route: ActivatedRoute,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.data
@@ -42,6 +48,19 @@ export class AdminAbsencesComponent implements OnInit {
         this.absencesList = absences.adminAbsenceList;
         console.log(this.absencesList);
       });
+  }
+
+  ngAfterViewInit() {
+    this.paginator.page
+      .pipe(tap(() => this.loadPage()))
+      .subscribe();
+  }
+
+  loadPage() {
+    this.api.adminAbsence().getAbsencesPage(this.paginator.pageSize, this.paginator.pageIndex, this.paginator.length).subscribe(data => {
+      console.log(data);
+      this.absencesList = data.content;
+    })
   }
 
   openDialog() {
