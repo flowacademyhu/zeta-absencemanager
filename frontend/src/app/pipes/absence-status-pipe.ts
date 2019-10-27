@@ -3,19 +3,19 @@ import { Status } from "../models/Absence.model";
 
 @Pipe({ name: "status" })
 export class AbsenceStatusPipe implements PipeTransform {
-  transform(status: String): string {
+  transform(status: Status): string {
     switch (status) {
-      case Status[Status.OPEN]:
+      case Status.OPEN:
         return "Nyitott";
-      case Status[Status.UNDER_REVIEW]:
+      case Status.UNDER_REVIEW:
         return "Jóváhagyásra vár";
-      case Status[Status.APPROVED]:
+      case Status.APPROVED:
         return "Jóváhagyott";
-      case Status[Status.ADMINISTRATED]:
+      case Status.ADMINISTRATED:
         return "Kiírt";
-      case Status[Status.DONE]:
+      case Status.DONE:
         return "Lezárult";
-      case Status[Status.REJECT]:
+      case Status.REJECT:
         return "Törölt";
     }
   }

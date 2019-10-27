@@ -3,15 +3,15 @@ import { AbsenceType } from "../models/Absence.model";
 
 @Pipe({ name: "type" })
 export class AbsenceTypePipe implements PipeTransform {
-  transform(type: String): string {
+  transform(type: AbsenceType): string {
     switch (type) {
-      case AbsenceType[AbsenceType.ABSENCE]:
+      case AbsenceType.ABSENCE:
         return "Szabadság";
-      case AbsenceType[AbsenceType.NON_WORKING]:
+      case AbsenceType.NON_WORKING:
         return "Keresőképtelenség";
-      case AbsenceType[AbsenceType.CHILD_SICK_PAY]:
+      case AbsenceType.CHILD_SICK_PAY:
         return "Gyermek táppénz";
-      case AbsenceType[AbsenceType.UNPAID_HOLIDAY]:
+      case AbsenceType.UNPAID_HOLIDAY:
         return "Fizetés nélküli szabadság";
     }
   }
