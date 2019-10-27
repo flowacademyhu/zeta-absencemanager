@@ -44,7 +44,6 @@ export class AdminAbsencesComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((absences: any) => {
         this.absencesList = absences.adminAbsenceList;
-        console.log(this.absencesList);
       });
   }
 

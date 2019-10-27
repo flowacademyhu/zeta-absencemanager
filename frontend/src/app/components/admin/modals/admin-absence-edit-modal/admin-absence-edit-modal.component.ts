@@ -32,8 +32,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
     isReporterEdited: false,
     isAssigneeEdited: false
   };
-  private duration = 0;
-  private dates = [false, false];
+  private duration;
 
   constructor(
     private api: ApiCommunicationService,
@@ -49,7 +48,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
       summary: new FormControl(""),
       begin: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
-      duration: new FormControl(""),
+      duration: new FormControl("", Validators.required),
       reporter: new FormControl("", Validators.required),
       assignee: new FormControl("", Validators.required)
     });

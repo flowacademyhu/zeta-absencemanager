@@ -22,7 +22,8 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     "type",
     "summary",
     "status",
-    "edit"
+    "edit",
+    "delete"
   ];
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];
@@ -50,7 +51,10 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
 
     dialogConfig.data = {};
 
-    const dialogRef = this.dialog.open(EmployeeAbsenceCreateModalComponent, dialogConfig);
+    const dialogRef = this.dialog.open(
+      EmployeeAbsenceCreateModalComponent,
+      dialogConfig
+    );
 
     dialogRef
       .afterClosed()

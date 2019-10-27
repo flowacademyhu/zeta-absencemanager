@@ -7,29 +7,48 @@
       <span class="menu-spacer"></span>
       <div>
         <ul>
-
           <li>
-            <a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)">Login</a>
+            <a mat-button [routerLink]="'/login'" *ngIf="!(isLoggedIn$ | async)"
+              >Bejelentkezés</a
+            >
           </li>
 
           <li>
-            <a mat-button [routerLink]="'/absences'" *ngIf="isLoggedIn$ | async"> Absences </a>
+            <a
+              mat-button
+              [routerLink]="'/absences'"
+              *ngIf="isLoggedIn$ | async"
+            >
+              Szabadságaim
+            </a>
           </li>
 
           <li>
-            <a mat-button [routerLink]="'/profile'" *ngIf="isLoggedIn$ | async">Profile</a>
+            <a mat-button [routerLink]="'/profile'" *ngIf="isLoggedIn$ | async"
+              >Adataim</a
+            >
           </li>
 
           <li>
-            <a mat-button *ngIf="((isLoggedIn$ | async) && this.user && (this.user.role === 'ADMIN' || this.user.role === 'LEADER'))" [matMenuTriggerFor]="menu"> Admin </a>
+            <a
+              mat-button
+      
+              *ngIf="((isLoggedIn$ | async) && this.user && (this.user.role === 'ADMIN' || this.user.role === 'LEADER'))" 
+              
+              [matMenuTriggerFor]="menu"
+            >
+              Admin
+            </a>
             <mat-menu #menu="matMenu">
               <button mat-menu-item [routerLink]="'admin/absences'">
-                Absences
+                Szabadságok
               </button>
               <button mat-menu-item [routerLink]="'/admin/users'">
-                Employees
+                Alkalmazottak
               </button>
-              <button mat-menu-item [routerLink]="'/admin/groups'" *ngIf="this.user && this.user.role === 'ADMIN' ">Groups</button>
+              <button mat-menu-item [routerLink]="'/admin/groups'" *ngIf="this.user && this.user.role === 'ADMIN' ">
+                Csoportok
+              </button>
             </mat-menu>
           </li>
         </ul>
@@ -38,7 +57,8 @@
       <div class="logout">
         <ul>
           <li>
-            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout
+            <a mat-button (click)="logout()" *ngIf="isLoggedIn$ | async"
+              >Kilépés
             </a>
           </li>
         </ul>
