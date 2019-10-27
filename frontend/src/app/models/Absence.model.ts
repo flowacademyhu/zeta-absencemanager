@@ -3,19 +3,19 @@ import { DataEntity } from "./DataEntity.model";
 
 //TODO enum names imported from backend, we should consider the names as well
 export enum AbsenceType {
-  ABSENCE = "Absence",
-  NON_WORKING = "Non Working",
-  CHILD_SICK_PAY = "Child Sick Pay",
-  UNPAID_HOLIDAY = "Unpaid Holiday"
+  ABSENCE,
+  NON_WORKING,
+  CHILD_SICK_PAY,
+  UNPAID_HOLIDAY
 }
 
 export enum Status {
-  OPEN = "Open",
-  UNDER_REVIEW = "Under Review",
-  APPROVED = "Approved",
-  ADMINISTRATED = "Administrated",
-  DONE = "Done",
-  REJECT = "Reject"
+  OPEN,
+  UNDER_REVIEW,
+  APPROVED,
+  ADMINISTRATED,
+  DONE,
+  REJECT
 }
 
 export class Absence extends DataEntity {
@@ -52,10 +52,8 @@ export class Absence extends DataEntity {
   }
 
   public static enumSelector(definition) {
-    return Object.keys(definition).map(key => ({
-      value: key,
-      title: definition[key]
-    }));
+    var types = Object.keys(definition);
+    return types.slice(types.length / 2);
   }
 
   public static convertDate(date: Date): number[] {

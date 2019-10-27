@@ -18,8 +18,8 @@
 
       <mat-form-field *ngIf="formEditState.isTypeEdited">
         <mat-select formControlName="type">
-          <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.value | type }}
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{ type | type }}
           </mat-option>
         </mat-select>
       </mat-form-field>
