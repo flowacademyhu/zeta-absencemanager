@@ -5,6 +5,8 @@ import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,5 +40,10 @@ public class AdminAbsencesController {
   @PutMapping("/{id}")
   public Absence update(@PathVariable("id") Long id, @RequestBody Absence absence) {
     return absenceService.update(id, absence);
+  }
+
+  @GetMapping("/page")
+  public Page<Absence> loadAbsencePage(Pageable pageable) {
+    return absenceService.findAllPage(pageable);
   }
 }
