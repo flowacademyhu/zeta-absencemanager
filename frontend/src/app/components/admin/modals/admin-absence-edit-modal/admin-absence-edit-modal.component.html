@@ -233,10 +233,10 @@
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
       {{ isFormEdited() ? "Mentés" : "Szerkesztés" }}
     </button>
-    <button type="button" mat-raised-button (click)="onAction('APPROVED')" *ngIf="this.userRole && this.userRole === 'LEADER' && this.absence && this.absence.status === 'UNDER_REVIEW' ">Jóváhagyás</button>
-    <button type="button" mat-raised-button (click)="onAction('ADMINISTRATED')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status === 'APPROVED' ">Adminisztrálás</button>
-    <button type="button" mat-raised-button (click)="onAction('DONE')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status === 'ADMINISTRATED' ">Lezárás</button>  
-    <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="this.userRole && this.userRole === 'LEADER' && this.absence && this.absence.status === 'UNDER_REVIEW' ">Elutasítás</button>
+    <button type="button" mat-raised-button (click)="onAction('APPROVED')" *ngIf="showButton('LEADER', 'UNDER_REVIEW')">Jóváhagyás</button>
+    <button type="button" mat-raised-button (click)="onAction('ADMINISTRATED')" *ngIf="showButton('ADMIN', 'APPROVED')">Adminisztrálás</button>
+    <button type="button" mat-raised-button (click)="onAction('DONE')" *ngIf="showButton('ADMIN', 'ADMINISTRATED')">Lezárás</button>  
+    <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="showButton('LEADER', 'UNDER_REVIEW')">Elutasítás</button>
     <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status !== 'DONE'">Elutasítás</button>
     <button mat-raised-button color="warn" (click)="onCancel()">
       Mégsem

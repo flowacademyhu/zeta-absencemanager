@@ -185,4 +185,9 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
     };
     this.api.adminAbsence().updateAbsence(this.absence.id, modifiedAbsence).subscribe(result => console.log(result));
   }
+
+  public showButton(role: string, status: string): boolean {
+    return this.userRole && this.userRole === role && this.absence && this.absence.status === status;
+  }
+
 }
