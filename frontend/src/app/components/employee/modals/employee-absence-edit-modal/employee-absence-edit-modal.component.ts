@@ -28,8 +28,7 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
     isEndEdited: false,
     isDurationEdited: false
   };
-  private duration = 0;
-  private dates = [false, false];
+  private duration;
 
   constructor(
     private api: ApiCommunicationService,
@@ -43,7 +42,7 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
       summary: new FormControl(""),
       begin: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
-      duration: new FormControl("")
+      duration: new FormControl("", Validators.required)
     });
     this.api
       .absence()
@@ -136,9 +135,8 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
     return this.duration;
   }
 
-  changeHandler(event): number {
+  changeHandler(event) {
     this.countDuration();
-    return this.duration;
   }
 
   public onCancel(): void {

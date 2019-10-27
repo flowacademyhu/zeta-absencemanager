@@ -18,7 +18,7 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
   private createAbsenceForm: FormGroup;
   private types;
   private error: string;
-  private duration = 0;
+  private duration;
   private dates = [false, false];
 
   constructor(
@@ -34,7 +34,7 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       summary: new FormControl(""),
       start: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
-      duration: new FormControl(this.duration)
+      duration: new FormControl(this.duration, Validators.required)
     });
   }
 
@@ -54,7 +54,6 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       this.dates[0] = true;
     } else {
       this.dates[1] = true;
-      console.log(this.dates);
     }
     if (this.dates[0] === true && this.dates[1] === true) {
       this.countDuration();
@@ -95,7 +94,6 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       newAbsence.end[0] = year;
       newAbsence.end[1] = month;
       newAbsence.end[2] = day;
-      console.log(newAbsence);
       this.api
         .absence()
         .createAbsence(newAbsence)

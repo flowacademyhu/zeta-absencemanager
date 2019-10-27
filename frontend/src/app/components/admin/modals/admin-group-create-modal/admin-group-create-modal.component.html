@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>CREATE GROUP</h1>
+<h1 mat-dialog-title>Csoport létrehozása</h1>
 <div
   mat-dialog-content
   [formGroup]="createGroupForm"
@@ -6,11 +6,11 @@
 >
   <div>
     <mat-form-field>
-      <input matInput required formControlName="name" placeholder="Name" />
+      <input matInput required formControlName="name" placeholder="Név" />
     </mat-form-field>
   </div>
   <mat-form-field>
-    <mat-label>Parent Group</mat-label>
+    <mat-label>Osztály</mat-label>
     <mat-select formControlName="parentId">
       <mat-option
         *ngFor="let group of groupList"
@@ -23,7 +23,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Leaders</mat-label>
+    <mat-label>Vezető</mat-label>
     <mat-select required formControlName="leader">
       <mat-option
         *ngFor="let leader of leaderList; let i = index"
@@ -40,7 +40,7 @@
     (click)="dialogRef.close()"
     style="border: 2px solid white;"
   >
-    Cancel
+    Mégsem
   </button>
   <button
     mat-button
@@ -49,6 +49,6 @@
     cdkFocusInitial
     style="border: 2px solid white;"
   >
-    Save
+    Mentés
   </button>
 </div>

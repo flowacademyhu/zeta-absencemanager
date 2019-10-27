@@ -21,7 +21,7 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
   private error: string;
   private leaders: User[];
   private users: User[];
-  private duration = 0;
+  private duration;
   private dates = [false, false];
 
   constructor(
@@ -51,12 +51,11 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
       end: new FormControl("", Validators.required),
       reporter: new FormControl("", Validators.required),
       assignee: new FormControl("", Validators.required),
-      duration: new FormControl(this.duration)
+      duration: new FormControl(this.duration, Validators.required)
     });
   }
 
   public countDuration(): number {
-    this.duration = 0;
     var begin = moment(this.createAbsenceForm.controls["begin"].value);
     var end = moment(this.createAbsenceForm.controls["end"].value);
     this.duration = Math.floor(moment.duration(end.diff(begin)).asDays()) + 1;
