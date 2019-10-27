@@ -99,6 +99,22 @@ public class DataLoader implements CommandLineRunner {
       users.add(user);
     }
 
+    User leader = User.builder()
+        .email("leader@leader.com")
+        .firstName("LEADER")
+        .lastName("JANI")
+        .role(Roles.LEADER)
+        .dateOfBirth(LocalDate.of(1970, Month.APRIL, 1))
+        .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
+        .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+        .password(passwordEncoder.encode("leader"))
+        .position("testposition")
+        .extraAbsenceDays(0)
+        .numberOfChildren(3)
+        .build();
+    this.userRepository.save(leader);
+    users.add(leader);
+
     List<User> g1u = Arrays.asList(users.get(0), users.get(2), users.get(3));
     Group group1 = Group.builder()
         .employees(List.of())
