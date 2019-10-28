@@ -5,6 +5,7 @@ import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
@@ -87,10 +88,24 @@ public class AdminAbsenceService {
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         this.authenticationService.hasRole(Roles.LEADER) && employees
             .contains(absence.getReporter()))) {
+      User user=absence.getReporter();
+      if(absence.getType()== Type.ABSENCE){
+        user.setUsedAbsenceDays(user.getTotalAbsenceDays()+absence.getDuration());
+      } else if(absence.getType()==Type.NON_WORKING){
+        if((user.getUsedSickLeaveDays()+absence.getDuration())>15){
+          user.setUsedAbsenceDays(15);
+          user.setUsedSickPay(user.getUsedSickLeaveDays()+absence.getDuration()-15);
+        } else {
+          user.setUsedSickLeaveDays(user.getUsedSickLeaveDays()+absence.getDuration());
+        }
+      } else if(absence.getType()==Type.CHILD_SICK_PAY){
+        user.setChildSickPay(user.getChildSickPay()+absence.getDuration());
+      }
       return absenceRepository.save(absence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
     }
+
   }
 
   public Absence update(@NotNull Long id, @NotNull Absence absence) {
@@ -107,6 +122,21 @@ public class AdminAbsenceService {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
+      if(modifyAbsence.getDuration()!=absence.getDuration()){
+        User user=absence.getReporter();
+        if(absence.getType()== Type.ABSENCE){
+          user.setUsedAbsenceDays(user.getUsedAbsenceDays()-modifyAbsence.getDuration()+absence.getDuration());
+        } else if(absence.getType()==Type.NON_WORKING){
+          if((user.getUsedSickLeaveDays()-modifyAbsence.getDuration()+absence.getDuration())>15){
+            user.setUsedAbsenceDays(15);
+            user.setUsedSickPay(user.getUsedSickLeaveDays()-modifyAbsence.getDuration()+absence.getDuration()-15);
+          } else {
+            user.setUsedSickLeaveDays(absence.getDuration()-modifyAbsence.getDuration());
+          }
+        } else if(absence.getType()==Type.CHILD_SICK_PAY){
+          user.setChildSickPay(user.getChildSickPay()+absence.getDuration()-modifyAbsence.getDuration());
+        }
+      }
       modifyAbsence.setDuration(absence.getDuration());
       modifyAbsence.setEnd(absence.getEnd());
       modifyAbsence.setReporter(absence.getReporter());

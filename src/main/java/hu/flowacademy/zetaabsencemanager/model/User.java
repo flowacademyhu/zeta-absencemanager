@@ -104,6 +104,12 @@ public class User implements UserDetails {
   private Integer usedSickLeaveDays;
 
   @Column
+  private Integer usedSickPay;
+
+  @Column
+  private Integer childSickPay;
+
+  @Column
   private Integer extraAbsenceDays;
 
   @Column

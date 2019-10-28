@@ -73,8 +73,8 @@ public class DataLoader implements CommandLineRunner {
         .lastName(lastNames.get(0))
         .role(Roles.ADMIN)
         .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-        .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-        .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+        .dateOfEntry(LocalDate.of(2019, Month.FEBRUARY, 12))
+        .dateOfEndTrial(LocalDate.of(2019, Month.MAY, 12))
         .extraAbsenceDays(0)
         .position("testposition")
         .numberOfChildren(3)
@@ -102,12 +102,10 @@ public class DataLoader implements CommandLineRunner {
           .extraAbsenceDays(0)
           .numberOfChildren((int) Math.floor(Math.random()*5))
           .build();
-      System.out.println(user.getNumberOfChildren());
       user.setTotalAbsenceDays(absenceService.availableAbsence(user));
       user.setTotalSickLeaveDays(absenceService.availableSickLeave(user));
       user.setUsedAbsenceDays(0);
       user.setUsedSickLeaveDays(0);
-      System.out.println(user.getTotalAbsenceDays());
       this.userRepository.save(user);
       users.add(user);
     }

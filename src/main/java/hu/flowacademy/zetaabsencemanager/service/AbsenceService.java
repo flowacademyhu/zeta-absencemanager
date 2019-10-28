@@ -2,6 +2,7 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
@@ -54,6 +55,19 @@ public class AbsenceService {
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
     absence.setStatus(Status.OPEN);
+    User user=authenticationService.getCurrentUser();
+    if(absence.getType()== Type.ABSENCE){
+      user.setUsedAbsenceDays(user.getTotalAbsenceDays()+absence.getDuration());
+    } else if(absence.getType()==Type.NON_WORKING){
+      if((user.getUsedSickLeaveDays()+absence.getDuration())>15){
+        user.setUsedAbsenceDays(15);
+        user.setUsedSickPay(user.getUsedSickLeaveDays()+absence.getDuration()-15);
+      } else {
+        user.setUsedSickLeaveDays(user.getUsedSickLeaveDays()+absence.getDuration());
+      }
+    } else if(absence.getType()==Type.CHILD_SICK_PAY){
+      user.setChildSickPay(user.getChildSickPay()+absence.getDuration());
+    }
     return absenceRepository.save(absence);
   }
 
@@ -64,6 +78,19 @@ public class AbsenceService {
     if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           "You can only modify your absences");
+    }
+    User user=absence.getReporter();
+    if(absence.getType()== Type.ABSENCE){
+      user.setUsedAbsenceDays(user.getTotalAbsenceDays()+absence.getDuration());
+    } else if(absence.getType()==Type.NON_WORKING){
+      if((user.getUsedSickLeaveDays()+absence.getDuration())>15){
+        user.setUsedAbsenceDays(15);
+        user.setUsedSickPay(user.getUsedSickLeaveDays()+absence.getDuration()-15);
+      } else {
+        user.setUsedSickLeaveDays(user.getUsedSickLeaveDays()+absence.getDuration());
+      }
+    } else if(absence.getType()==Type.CHILD_SICK_PAY){
+      user.setChildSickPay(user.getChildSickPay()+absence.getDuration());
     }
     modifyAbsence.setType(absence.getType());
     modifyAbsence.setBegin(absence.getBegin());
@@ -95,9 +122,9 @@ public class AbsenceService {
     double multiplier;
     int age = LocalDate.now().getYear() - user.getDateOfBirth().getYear();
     if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
-      int restDays = 365 - user.getDateOfEntry().getDayOfYear();
-      multiplier = restDays / 365;
-      System.out.println("Multiplier:" +multiplier);
+      Integer restDays = 365 - user.getDateOfEntry().getDayOfYear();
+      multiplier = restDays / 365.0;
+      System.out.println(multiplier);
     } else {
       multiplier = 1;
     }
@@ -108,13 +135,14 @@ public class AbsenceService {
     }
     switch (user.getNumberOfChildren()) {
       case 0:
-        allAbsence = allAbsence+0;
+        allAbsence = allAbsence;
         break;
       case 1:
         allAbsence = allAbsence + 2;
         break;
       case 2:
         allAbsence = allAbsence + 4;
+        break;
       default:
         allAbsence = allAbsence + 7;
     }
@@ -124,14 +152,14 @@ public class AbsenceService {
 
   public int availableSickLeave(@NotNull User user) {
     int allSickLeave = 15;
-    int multiplier;
+    double multiplier;
     if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       int restDays = 365 - user.getDateOfEntry().getDayOfYear();
-      multiplier = restDays / 365;
+      multiplier = restDays / 365.0;
     } else {
       multiplier = 1;
     }
-    int calculatedAbsence = (int) Math.round(allSickLeave * multiplier);
-    return calculatedAbsence;
+    int calculatedSickLeave = (int) Math.round(allSickLeave * multiplier);
+    return calculatedSickLeave;
   }
 }
