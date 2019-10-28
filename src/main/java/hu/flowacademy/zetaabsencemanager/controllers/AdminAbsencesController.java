@@ -9,7 +9,6 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import java.time.LocalDate;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,8 +38,21 @@ public class AdminAbsencesController {
   }
 
   @GetMapping("")
-  public AbsenceDTO getAll(Pageable pageable) {
-    return adminAbsenceService.findAllAbsence(pageable);
+  public AbsenceDTO getAll(Pageable pageable,
+      @RequestParam(required = false) Long administrationID,
+      @RequestParam(required = false) Type type,
+      @RequestParam(required = false) Status status,
+      @RequestParam(required = false) User reporter,
+      @RequestParam(required = false) User assignee,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+      @RequestParam(required = false) Integer dayStart,
+      @RequestParam(required = false) Integer dayEnd
+  ) {
+    Specification<Absence> spec = adminAbsenceService
+        .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, end,
+            dayStart, dayEnd);
+    return adminAbsenceService.findAllAbsence(spec, pageable);
   }
 
   @PostMapping("")
@@ -53,22 +65,4 @@ public class AdminAbsencesController {
     return adminAbsenceService.update(id, absence);
   }
 
-  @GetMapping("/filter")
-  public List<Absence> getFilteredAbsences(
-      @RequestParam(required = false) Long administrationID,
-      @RequestParam(required = false) Type type,
-      @RequestParam(required = false) Status status,
-      @RequestParam(required = false) User reporter,
-      @RequestParam(required = false) User assignee,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
-      @RequestParam(required = false) Integer dayStart,
-      @RequestParam(required = false) Integer dayEnd) {
-    Specification<Absence> spec = adminAbsenceService
-        .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, end,
-            dayStart, dayEnd);
-
-    return absenceRepository
-        .findAll(spec);
-  }
 }

@@ -48,9 +48,9 @@ public class AdminAbsenceService {
   @Autowired
   private FilterService filterService;
 
-  public AbsenceDTO findAllAbsence(Pageable pageable) {
+  public AbsenceDTO findAllAbsence(Specification<Absence> spec, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      Page<Absence> absencePage = this.absenceRepository.findAll(pageable);
+      Page<Absence> absencePage = this.absenceRepository.findAll(spec, pageable);
       return AbsenceDTO.builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()
@@ -62,7 +62,8 @@ public class AdminAbsenceService {
           .build();
     } else {
       Page<Absence> absencePage = this.absenceRepository
-          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser(), pageable);
+          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser(), spec,
+              pageable);
       return AbsenceDTO.builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()

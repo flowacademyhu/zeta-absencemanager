@@ -35,6 +35,9 @@ public class AbsenceService {
   @Autowired
   private ApplicationEventPublisher publisher;
 
+  @Autowired
+  private FilterService filterService;
+
   public Absence findOne(@NotNull Long id) {
     Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
@@ -46,7 +49,8 @@ public class AbsenceService {
 
   public AbsenceDTO findAll(Pageable pageable) {
     User current = authenticationService.getCurrentUser();
-    Page<Absence> absencePage = absenceRepository.findByReporterAndDeletedAtNull(current, pageable);
+    Page<Absence> absencePage = absenceRepository
+        .findByReporterAndDeletedAtNull(current, pageable);
     return AbsenceDTO.builder()
         .embedded(absencePage.getContent())
         .metadata(AbsenceMetadata.builder()
@@ -97,4 +101,6 @@ public class AbsenceService {
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
   }
+
+
 }
