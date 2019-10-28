@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -133,13 +134,14 @@ public class AdminAbsenceService {
   }
 
   public AbsenceDTO findAllPage(Pageable pageable) {
-    Page<Absence> absencePage = this.absenceRepository.findAll(pageable);
+    Pageable newPageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
+    Page<Absence> absencePage = this.absenceRepository.findAll(newPageable);
     return AbsenceDTO.builder()
         .embedded(absencePage.getContent())
         .metadata(Metadata.builder()
             .totalElements(absencePage.getTotalElements())
             .totalPages(absencePage.getTotalPages())
-            .pageNumber(absencePage.getNumber())
+            .pageNumber(absencePage.getNumber() + 1)
             .pageSize(absencePage.getSize())
             .build())
         .build();
