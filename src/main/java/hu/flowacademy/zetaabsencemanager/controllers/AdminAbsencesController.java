@@ -2,11 +2,12 @@ package hu.flowacademy.zetaabsencemanager.controllers;
 
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
-import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
+import hu.flowacademy.zetaabsencemanager.service.AuthenticationService;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class AdminAbsencesController {
   private AdminAbsenceService adminAbsenceService;
 
   @Autowired
-  private AbsenceRepository absenceRepository;
+  private AuthenticationService authenticationService;
 
   @GetMapping("/{id}")
   public Absence getOne(@PathVariable("id") Long id) {
@@ -49,9 +50,16 @@ public class AdminAbsencesController {
       @RequestParam(required = false) Integer dayStart,
       @RequestParam(required = false) Integer dayEnd
   ) {
-    Specification<Absence> spec = adminAbsenceService
-        .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
-            dayStart, dayEnd);
+    Specification<Absence> spec;
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      spec = adminAbsenceService
+          .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
+              dayStart, dayEnd);
+    } else {
+      spec = adminAbsenceService
+          .getFilteredAbsencesLeader(administrationID, type, status, reporter, start, finish,
+              dayStart, dayEnd);
+    }
     return adminAbsenceService.findAllAbsence(spec, pageable);
   }
 

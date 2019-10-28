@@ -62,8 +62,7 @@ public class AdminAbsenceService {
           .build();
     } else {
       Page<Absence> absencePage = this.absenceRepository
-          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser(), spec,
-              pageable);
+          .findAll(spec, pageable);
       return AbsenceDTO.builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()
@@ -148,6 +147,23 @@ public class AdminAbsenceService {
         .and(filterService.filterByBeginFinish(finish))
         .and(filterService.filterByDaysStart(dayStart))
         .and(filterService.filterByDaysEnd(dayEnd));
+    return spec;
+  }
+
+  public Specification<Absence> getFilteredAbsencesLeader(Long administrationID, Type type,
+      Status status, User reporter, LocalDate start, LocalDate finish,
+      Integer dayStart, Integer dayEnd) {
+    Specification<Absence> spec = Specifications
+        .where(filterService.filterByAdministrationID(administrationID))
+        .and(filterService.filterByType(type))
+        .and(filterService.filterByStatus(status))
+        .and(filterService.filterByReporter(reporter))
+        .and(filterService.filterByAssignee(this.authenticationService.getCurrentUser()))
+        .and(filterService.filterByBeginStart(start))
+        .and(filterService.filterByBeginFinish(finish))
+        .and(filterService.filterByDaysStart(dayStart))
+        .and(filterService.filterByDaysEnd(dayEnd))
+        .and(filterService.filterByDeletedAt());
     return spec;
   }
 

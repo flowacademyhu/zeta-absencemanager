@@ -2,17 +2,20 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
-import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,10 +50,11 @@ public class AbsenceService {
     return absence;
   }
 
-  public AbsenceDTO findAll(Pageable pageable) {
-    User current = authenticationService.getCurrentUser();
-    Page<Absence> absencePage = absenceRepository
-        .findByReporterAndDeletedAtNull(current, pageable);
+  public AbsenceDTO findAll(Specification<Absence> spec, Pageable pageable) {
+    //User current = authenticationService.getCurrentUser();
+    Page<Absence> absencePage = this.absenceRepository
+        .findAll(spec, pageable);
+
     return AbsenceDTO.builder()
         .embedded(absencePage.getContent())
         .metadata(AbsenceMetadata.builder()
@@ -102,5 +106,19 @@ public class AbsenceService {
     update(id, deleted);
   }
 
-
+  public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
+      Status status, LocalDate start, LocalDate finish,
+      Integer dayStart, Integer dayEnd) {
+    Specification<Absence> spec = Specifications
+        .where(filterService.filterByAdministrationID(administrationID))
+        .and(filterService.filterByType(type))
+        .and(filterService.filterByStatus(status))
+        .and(filterService.filterByBeginStart(start))
+        .and(filterService.filterByBeginFinish(finish))
+        .and(filterService.filterByDaysStart(dayStart))
+        .and(filterService.filterByDaysEnd(dayEnd))
+        .and(filterService.filterByReporter(authenticationService.getCurrentUser()))
+        .and(filterService.filterByDeletedAt());
+    return spec;
+  }
 }

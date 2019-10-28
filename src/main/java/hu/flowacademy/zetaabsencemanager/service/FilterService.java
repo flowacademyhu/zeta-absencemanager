@@ -91,4 +91,8 @@ public class FilterService {
       return cb.equal(root.get("administrationID"), administrationID);
     };
   }
+
+  public Specification<Absence> filterByDeletedAt() {
+    return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+  }
 }
