@@ -9,15 +9,6 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByAdministrationID;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByAssignee;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByBeginEnd;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByBeginStart;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByDaysEnd;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByDaysStart;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByReporter;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByStatus;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByType;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import java.time.LocalDate;
@@ -53,6 +44,9 @@ public class AdminAbsenceService {
 
   @Autowired
   private ApplicationEventPublisher publisher;
+
+  @Autowired
+  private FilterService filterService;
 
   public AbsenceDTO findAllAbsence(Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
@@ -144,15 +138,15 @@ public class AdminAbsenceService {
       Status status, User reporter, User assignee, LocalDate start, LocalDate end,
       Integer dayStart, Integer dayEnd) {
     Specification<Absence> spec = Specifications
-        .where(new FilterByAdministrationID(administrationID))
-        .and(new FilterByType(type))
-        .and(new FilterByStatus(status))
-        .and(new FilterByReporter(reporter))
-        .and(new FilterByAssignee(assignee))
-        .and(new FilterByBeginStart(start))
-        .and(new FilterByBeginEnd(end))
-        .and(new FilterByDaysStart(dayStart))
-        .and(new FilterByDaysEnd(dayEnd));
+        .where(filterService.filterByAdministrationID(administrationID))
+        .and(filterService.filterByType(type))
+        .and(filterService.filterByStatus(status))
+        .and(filterService.filterByReporter(reporter))
+        .and(filterService.filterByAssignee(assignee))
+        .and(filterService.filterByBeginStart(start))
+        .and(filterService.filterByBeginEnd(end))
+        .and(filterService.filterByDaysStart(dayStart))
+        .and(filterService.filterByDaysEnd(dayEnd));
     return spec;
   }
 
