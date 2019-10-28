@@ -18,9 +18,13 @@ export class UserApiConnector extends AbstractApiConnector {
   }
 
   public createUser(user: User): Observable<any> {
-    return this.http.post(this.apiRoute, user) as Observable<User[]>;
+    return this.http.post(this.apiRoute, user, {}) as Observable<User[]>;
   }
 
+  public createUserGroupId(user: User, id: number): Observable<any> {
+    return this.http.post(this.apiRoute + "/" + id, user, {}) as Observable<User[]>;
+  }
+  
   public updateUser(id: number, user: User): Observable<any> {
     return this.http.put(this.apiRoute + "/" + id, user, {});
   }

@@ -56,7 +56,31 @@ public class AdminUserService {
   }
 
   public User saveUser(@NotNull User user) {
-    System.out.println(user.getFirstName());
+    User newUser = User.builder()
+            .firstName(user.getFirstName())
+            .lastName(user.getLastName())
+            .dateOfBirth(user.getDateOfBirth())
+            .dateOfEntry(user.getDateOfEntry())
+            .dateOfEndTrial(user.getDateOfEndTrial())
+            .email(user.getEmail())
+            .group(user.getGroup())
+            .position(user.getPosition())
+            .password(passwordEncoder.encode("user"))
+            .role(Roles.EMPLOYEE)
+            .numberOfChildren(user.getNumberOfChildren())
+            .extraAbsenceDays(0)
+            .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
+            .createdAt(LocalDateTime.now())
+            .build();
+    if (user.getExtraAbsenceDays() != null) {
+      newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
+      newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+    }
+    userRepository.save(newUser);
+    return newUser;
+  }
+
+  public User saveUserGroupId(Long id, @NotNull User user) {
     User newUser = User.builder()
         .firstName(user.getFirstName())
         .lastName(user.getLastName())
@@ -64,7 +88,7 @@ public class AdminUserService {
         .dateOfEntry(user.getDateOfEntry())
         .dateOfEndTrial(user.getDateOfEndTrial())
         .email(user.getEmail())
-        .group(user.getGroup())
+        .group(groupService.findOne(id))
         .position(user.getPosition())
         .password(passwordEncoder.encode("user"))
         .role(Roles.EMPLOYEE)
@@ -116,6 +140,7 @@ public class AdminUserService {
     for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
       if (modifyGroup.getEmployees().get(i).getId().equals(id)) {
         modifyGroup.getEmployees().remove(i);
+        modifyGroup.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(modifyGroup);
       }
     }
@@ -123,12 +148,15 @@ public class AdminUserService {
       if (groupList.get(i).getLeader().getId().equals(id)) {
         modifyLeadedGroup = groupList.get(i);
         modifyLeadedGroup.setLeader(null);
+        modifyLeadedGroup.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(modifyLeadedGroup);
       }
     }
     List <Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(mod);
     for (Absence a : needToBeModifiedAbsences) {
       a.setStatus(Status.REJECTED);
+      a.setUpdatedBy(authenticationService.getCurrentUser());
+      a.setUpdatedAt(LocalDateTime.now());
       absenceRepository.save(a);
     }
     userRepository.save(mod);

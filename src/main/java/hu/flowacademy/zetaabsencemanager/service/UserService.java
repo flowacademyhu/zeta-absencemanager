@@ -90,6 +90,7 @@ public class UserService {
         for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
             if (modifyGroup.getEmployees().get(i).getId().equals(id)) {
                 modifyGroup.getEmployees().remove(i);
+                modifyGroup.setUpdatedAt(LocalDateTime.now());
                 groupRepository.save(modifyGroup);
             }
         }
@@ -97,6 +98,7 @@ public class UserService {
             if (groupList.get(i).getLeader().getId().equals(id)) {
                 modifyLeadedGroup = groupList.get(i);
                 modifyLeadedGroup.setLeader(null);
+                modifyLeadedGroup.setUpdatedAt(LocalDateTime.now());
                 groupRepository.save(modifyLeadedGroup);
             }
         }
@@ -104,6 +106,8 @@ public class UserService {
         for (Absence a : needToBeModifiedAbsences) {
             a.setStatus(Status.REJECTED);
             a.setReporter(null);
+            a.setUpdatedAt(LocalDateTime.now());
+            a.setUpdatedBy(authenticationService.getCurrentUser());
             absenceRepository.save(a);
         }
 

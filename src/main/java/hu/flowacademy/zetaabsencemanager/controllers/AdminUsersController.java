@@ -36,6 +36,12 @@ public class AdminUsersController {
     return adminUserService.saveUser(user);
   }
 
+  @PostMapping("/{id}")
+  public User createUserGroupId(@PathVariable("id") Long id, @RequestBody User user) {
+    return adminUserService.saveUserGroupId(id, user);
+  }
+
+
   @PutMapping("/{id}")
   public User update(@PathVariable("id") Long id, @RequestBody User user) {
     return adminUserService.updateUser(id, user);

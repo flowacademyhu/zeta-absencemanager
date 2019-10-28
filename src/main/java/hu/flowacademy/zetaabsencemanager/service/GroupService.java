@@ -9,6 +9,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import jdk.jshell.execution.LoaderDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,18 +29,23 @@ public class GroupService {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private AuthenticationService authenticationService;
+
   public Group findOne(@NotNull Long id) {
     return groupRepository.findByIdAndDeletedAtIsNull(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
   }
 
   public List<Group> findAllGroup() {
-    return groupRepository.findAll();
-  } // Átírni findAllByDeletedAtIsNull() -ra!!!
+    return groupRepository.findAllByDeletedAtIsNull();
+  }
 
   public Group create(@NotNull Group group) {
       if (group.getLeader() != null) {
-        group.getLeader().setRole(Roles.LEADER);
+        User modifyUser = userService.findOneUser(group.getLeader().getId());
+        modifyUser.setRole(Roles.LEADER);
+        userRepository.save(modifyUser);
       }
       return groupRepository.save(group);
   }
@@ -66,20 +72,27 @@ public class GroupService {
     for (Group g : needToBeModifiedGroups) {
       g.setParentId(null);
       g.setLeader(null);
+      g.setUpdatedAt(LocalDateTime.now());
       groupRepository.save(g);
     }
     List<User> needToBeModifiedEmployees = userRepository.findAllByGroupAndDeletedAtNull(group);
     for (User u : needToBeModifiedEmployees) {
       u.setGroup(null);
-      if (u.getRole().equals(Roles.EMPLOYEE)) {
-        u.setRole(Roles.ADMIN);
+      if (u.getRole().equals(Roles.LEADER)) {
+        u.setRole(Roles.EMPLOYEE);
         // userRepository.save(u);
       }
+      u.setUpdatedAt(LocalDateTime.now());
+      u.setUpdatedBy(authenticationService.getCurrentUser());
       userRepository.save(u);
     }
-    User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
-    needToBeModifiedLeader.setRole(Roles.ADMIN);
-    userRepository.save(needToBeModifiedLeader);
+    if (group.getLeader() != null) {
+      User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
+      needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
+      needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
+      needToBeModifiedLeader.setUpdatedBy(authenticationService.getCurrentUser());
+      userRepository.save(needToBeModifiedLeader);
+    }
     group.setEmployees(null);
     group.setLeader(null);
     group.setDeletedAt(LocalDateTime.now());
