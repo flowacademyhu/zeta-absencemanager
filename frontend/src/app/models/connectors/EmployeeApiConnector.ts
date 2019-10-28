@@ -15,4 +15,8 @@ export class EmployeeApiConnector extends AbstractApiConnector {
         return this.http.put(this.apiRoute + "/changepassw/" + id, {dataA: firstPassword, dataB: secondPassword}) as Observable<User>;
     }
 
+    public deleteProfile(id: number): Observable<User> {
+        return this.http.delete(this.apiRoute + "/" + id) as Observable<User>;
+    }
+
 }

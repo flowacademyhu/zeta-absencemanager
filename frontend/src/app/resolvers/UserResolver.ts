@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
 import { Resolve } from '@angular/router';
-
 import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { User } from '../models/User.model';
@@ -10,6 +8,7 @@ import { ApiCommunicationService } from '../services/api-communication.service';
 
 
 @Injectable()
+
 export class UserResolver implements Resolve<User[]>{
 
     constructor(private api: ApiCommunicationService){}

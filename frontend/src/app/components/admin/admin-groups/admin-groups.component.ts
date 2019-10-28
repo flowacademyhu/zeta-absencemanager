@@ -4,14 +4,9 @@ import { ActivatedRoute } from "@angular/router";
 import { Group } from "src/app/models/Group.model";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { MatTableDataSource, MatFormFieldControl } from "@angular/material";
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AdminGroupCreateModalComponent } from "src/app/components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
-import { User } from "src/app/models/User.model";
+import { AdminGroupDeleteModalComponent } from '../modals/admin-group-delete-modal/admin-group-delete-modal.component';
 
 @Component({
   selector: "app-admin-groups",
@@ -19,11 +14,12 @@ import { User } from "src/app/models/User.model";
   styleUrls: ["./admin-groups.component.css"]
 })
 export class AdminGroupsComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ["name", "parent", "leaders", "employees"];
+  displayedColumns: string[] = ["name", "parent", "leaders", "employees", "delete"];
   dataSource: any;
   error: string;
   private _unsubscribe$ = new Subject<void>();
   groupData: Group;
+  groupsList: Group[];
 
   constructor(
     private api: ApiCommunicationService,
@@ -33,6 +29,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
       data => {
         this.dataSource = data.groupResolver;
+        console.log(this.dataSource);
         this.transformData();
       },
       error => {
@@ -53,7 +50,11 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.api.group().getGroups().subscribe(users => {
+      this.groupsList = users;
+    })
+  }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -82,4 +83,31 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
           });
       });
   }
+
+  deleteGroup(id: number): void {
+    console.log("ID - component: " + id);
+    const dialogRef = this.dialog.open(AdminGroupDeleteModalComponent, {
+      data: {group: this.groupsList.filter(group => group.id === id)[0]}
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(result => {
+        if(result === true) {
+          this.api
+            .group()
+            .deleteGroup(id)
+            .subscribe(u => {
+              this.api
+                .group()
+                .getGroups()
+                .subscribe(data => {
+                  this.dataSource = data;
+                  this.transformData();
+                });
+            });
+      }});
+  } 
+
 }

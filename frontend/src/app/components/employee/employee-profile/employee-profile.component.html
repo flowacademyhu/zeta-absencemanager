@@ -2,6 +2,9 @@
   <button mat-flat-button color="warn" (click)="changePassw()">
     Jelszó megváltoztatása
   </button>
+  <button mat-flat-button color="warn" (click)="deleteProfile()">
+    Profil törlése
+  </button>
 </div>
 <div class="grid-container">
   <div class="grid1">
@@ -22,7 +25,7 @@
   <div class="grid2" *ngIf="user">
     <mat-list role="list">
       <mat-list-item role="listitem"
-        >{{ user.firstName }} {{ user.lastName }}</mat-list-item
+        >{{ user.lastName }} {{ user.firstName }}</mat-list-item
       >
       <mat-list-item role="listitem"
         >{{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
