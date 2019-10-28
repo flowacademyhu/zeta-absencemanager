@@ -9,6 +9,7 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -17,8 +18,8 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,7 +131,14 @@ public class AdminAbsenceService {
     update(id, deleted);
   }
 
-  public Slice<Absence> findAllPage(Pageable pageable) {
-    return this.absenceRepository.findAll(pageable);
+  public AbsenceDTO findAllPage(Pageable pageable) {
+    Page<Absence> absencePage = this.absenceRepository.findAll(pageable);
+    return AbsenceDTO.builder()
+        .embedded(absencePage.getContent())
+        .totalElements(absencePage.getTotalElements())
+        .totalPages(absencePage.getTotalPages())
+        .pageNumber(absencePage.getNumber())
+        .pageSize(absencePage.getSize())
+        .build();
   }
 }

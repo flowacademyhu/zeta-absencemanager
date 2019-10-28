@@ -47,29 +47,34 @@ export class AdminAbsencesComponent implements OnInit, AfterViewInit {
             this.absencesList = absences.adminAbsenceList;
             console.log(this.absencesList);
           }); */
-    this.api.adminAbsence().getAbsencesPage(3, 0).subscribe(data => this.absencesList = data.content);
+    this.api.adminAbsence().getAbsencesPage(3, 0).subscribe(data => {
+      this.dataSource = new MatTableDataSource<Absence>(data);
+      this.dataSource.paginator = this.paginator;
+      // this.absencesList = data.content
+    });
   }
 
   ngAfterViewInit() {
     this.api.adminAbsence().getAbsencesPage(this.paginator.pageSize, this.paginator.pageIndex).subscribe(data => {
 
-      this.dataSource = new MatTableDataSource<Absence>(data.content);
-      this.dataSource.paginator = this.paginator;
+      this.paginator.length = data.totalElements;
+      this.paginator.pageSize = data.size;
+      this.paginator.pageIndex = data.number;
     })
   }
 
-  loadPage() {
-    this.api.adminAbsence().getAbsencesPage(this.paginator.pageSize, this.paginator.pageIndex).subscribe(data => {
-      console.log(data);
-      this.absencesList = data.content;
-      this.dataSource = new MatTableDataSource<Absence>(data.content);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.paginator.length = data.totalElements;
-      this.length = data.totalElements;
-      console.log(data.totalElements + "<- TotalElements");
-      // this.paginator.length = data.totalPages;
-    })
-  }
+  /*   loadPage() {
+      this.api.adminAbsence().getAbsencesPage(this.paginator.pageSize, this.paginator.pageIndex).subscribe(data => {
+        console.log(data);
+        this.absencesList = data.content;
+        this.dataSource = new MatTableDataSource<Absence>(data.content);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.paginator.length = data.totalElements;
+        this.length = data.totalElements;
+        console.log(data.totalElements + "<- TotalElements");
+        // this.paginator.length = data.totalPages;
+      })
+    } */
 
   /*   handlePage(event) {
       this.api.adminAbsence().getAbsencesPage(event.pageSize, event.pageIndex).subscribe(data => {
