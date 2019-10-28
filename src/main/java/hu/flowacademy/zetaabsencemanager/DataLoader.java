@@ -46,7 +46,7 @@ public class DataLoader implements CommandLineRunner {
     this.groupRepository = groupRepository;
     this.userRepository = userRepository;
     this.groupService = groupService;
-    this.absenceService=absenceService;
+    this.absenceService = absenceService;
   }
 
   @Override
@@ -102,7 +102,7 @@ public class DataLoader implements CommandLineRunner {
           .password(passwordEncoder.encode("user"))
           .position("testposition")
           .extraAbsenceDays(0)
-          .numberOfChildren((int) Math.floor(Math.random()*5))
+          .numberOfChildren((int) Math.floor(Math.random() * 5))
           .build();
       user.setTotalAbsenceDays(absenceService.availableAbsence(user));
       user.setTotalSickLeaveDays(absenceService.availableSickLeave(user));
