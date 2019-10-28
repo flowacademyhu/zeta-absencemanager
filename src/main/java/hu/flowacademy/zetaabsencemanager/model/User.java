@@ -92,6 +92,12 @@ public class User implements UserDetails {
   private String otherAbsenceEntitlement;
 
   @Column
+  private Integer availableAbsenceDays;
+
+  @Column
+  private Integer availableSickLeave;
+
+  @Column
   private Integer extraAbsenceDays;
 
   @Column
