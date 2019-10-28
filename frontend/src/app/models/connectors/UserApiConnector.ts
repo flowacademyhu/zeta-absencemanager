@@ -10,7 +10,7 @@ export class UserApiConnector extends AbstractApiConnector {
   }
 
   public getUsers(): Observable<any> {
-    return this.http.get(this.apiRoute);
+    return this.http.get(this.apiRoute) as Observable<User[]>;
   }
 
   public getLeaders(): Observable<any> {
@@ -27,6 +27,6 @@ export class UserApiConnector extends AbstractApiConnector {
 
   //TODO backend delete method is void yet
   public deleteUser(id: number): Observable<any> {
-    return this.http.delete(this.apiRoute + "/" + id);
+    return this.http.delete(this.apiRoute + "/" + id) as Observable<any>;
   }
 }

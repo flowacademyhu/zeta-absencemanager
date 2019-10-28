@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Csoport törlése</h1>
+<div>
+      <mat-dialog-content>
+        Biztos, hogy törölni szeretné a(z) {{ data.group.name }} nevű csoportot?
+      </mat-dialog-content>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button
+      mat-button
+      mat-dialog-close
+      style="border: 2px solid white;"
+    >
+      Mégsem
+    </button>
+    <button
+      mat-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      style="border: 2px solid white;"
+    >
+      Igen
+    </button>
+</div>

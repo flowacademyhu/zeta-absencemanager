@@ -96,9 +96,9 @@ public class AdminUserService {
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
     mod.setRole(Roles.INACTIVE);
-    mod.setDeletedAt(LocalDateTime.now());
     mod.setDeletedBy(authenticationService.getCurrentUser());
-    updateUser(id, mod);
+    mod.setDeletedAt(LocalDateTime.now());
+    userRepository.save(mod);
   }
 
   public List<User> findAllLeader() {

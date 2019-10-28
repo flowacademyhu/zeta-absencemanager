@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Alkamlazott törlése</h1>
+<div>
+      <mat-dialog-content>
+        Biztos, hogy törölni szeretné {{ data.user.lastName }} {{ data.user.firstName }} alkalmazottat?
+      </mat-dialog-content>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button
+      mat-button
+      mat-dialog-close
+      style="border: 2px solid white;"
+    >
+      Mégsem
+    </button>
+    <button
+      mat-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      style="border: 2px solid white;"
+    >
+      Igen
+    </button>
+</div>
+

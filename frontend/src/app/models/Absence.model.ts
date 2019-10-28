@@ -27,6 +27,7 @@ export class Absence extends DataEntity {
   public reporter: User;
   public assignee: User;
   public status: Status;
+  public administrationID: number;
 
   constructor(
     type: AbsenceType,
@@ -35,7 +36,8 @@ export class Absence extends DataEntity {
     end: any,
     duration: number,
     reporter?: User,
-    assignee?: User
+    assignee?: User,
+    administrationID?: number
   ) {
     super();
     this.type = type;
@@ -49,6 +51,9 @@ export class Absence extends DataEntity {
       this.assignee = assignee;
     }
     this.duration = duration;
+    if (administrationID) {
+      this.administrationID = administrationID;
+    }
   }
 
   public static enumSelector(definition) {

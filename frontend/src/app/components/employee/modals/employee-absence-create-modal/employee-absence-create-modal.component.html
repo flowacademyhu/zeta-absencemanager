@@ -7,7 +7,7 @@
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Típus</mat-label>
-      <mat-select formControlName="type">
+      <mat-select formControlName="type" required>
         <mat-option *ngFor="let type of types" [value]="type">
           {{ type | type }}
         </mat-option>
@@ -61,19 +61,19 @@
       ></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
     </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        required
+        type="number"
+        placeholder="Napok száma"
+        formControlName="duration"
+        id="duration"
+      />
+    </mat-form-field>
     <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>
-
-  <mat-form-field>
-    <input
-      matInput
-      required
-      type="number"
-      placeholder="Napok száma"
-      formControlName="duration"
-      id="duration"
-    />
-  </mat-form-field>
 
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">

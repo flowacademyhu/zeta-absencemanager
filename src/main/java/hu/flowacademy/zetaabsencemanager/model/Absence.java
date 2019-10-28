@@ -31,6 +31,9 @@ public class Absence implements HasStateAndId<Long, Status> {
   private Long id;
 
   @Column
+  private Long administrationID;
+
+  @Column
   @NotNull(message = "Type must be set.")
   private Type type;
 
