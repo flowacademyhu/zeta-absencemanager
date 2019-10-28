@@ -32,9 +32,9 @@
           <li>
             <a
               mat-button
-              *ngIf="
-                (isLoggedIn$ | async) && this.user && this.user.role === 'ADMIN'
-              "
+      
+              *ngIf="((isLoggedIn$ | async) && this.user && (this.user.role === 'ADMIN' || this.user.role === 'LEADER'))" 
+              
               [matMenuTriggerFor]="menu"
             >
               Admin
@@ -46,7 +46,7 @@
               <button mat-menu-item [routerLink]="'/admin/users'">
                 Alkalmazottak
               </button>
-              <button mat-menu-item [routerLink]="'/admin/groups'">
+              <button mat-menu-item [routerLink]="'/admin/groups'" *ngIf="this.user && this.user.role === 'ADMIN' ">
                 Csoportok
               </button>
             </mat-menu>
