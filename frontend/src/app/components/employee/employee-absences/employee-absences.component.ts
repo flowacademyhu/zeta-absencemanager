@@ -37,7 +37,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     this.route.data
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((data: any) => {
-        this.absences = data.absences;
+        this.absences = data.absences.embedded;
       });
   }
 
@@ -63,7 +63,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
           .absence()
           .getAbsences()
           .subscribe(data => {
-            this.absences = data;
+            this.absences = data.embedded;
           });
       });
   }
@@ -81,7 +81,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
           .absence()
           .getAbsences()
           .subscribe(data => {
-            this.absences = data;
+            this.absences = data.embedded;
           });
       });
   }

@@ -30,7 +30,9 @@ import {
   MatDialogTitle,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatSelectModule
+  MatSelectModule,
+  MatSortModule,
+  MatProgressSpinnerModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -132,6 +134,8 @@ import { EmployeeProfileDeleteModalComponent } from './components/employee/modal
     MatPaginatorModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
     CommonModule
   ],
   providers: [
