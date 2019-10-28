@@ -57,7 +57,7 @@
       <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
     </mat-list>
   </div>
-  <div class="grid4">
+  <div class="grid4" *ngIf="this.user">
     <mat-list role="list">
       <mat-list-item role="listitem">{{ user.totalAbsenceDays }}</mat-list-item>
       <mat-list-item role="listitem">{{
@@ -80,7 +80,7 @@
       <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
     </mat-list>
   </div>
-  <div class="grid6">
+  <div class="grid6" *ngIf="this.user">
     <mat-list role="list">
       <mat-list-item role="listitem"> </mat-list-item>
       <mat-list-item role="listitem">{{
