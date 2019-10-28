@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AdminUserAddModalComponent } from 'src/app/components/admin/modals/admin-user-add-modal/admin-user-add-modal.component';
 import { User } from 'src/app/models/User.model';
 import { ApiCommunicationService } from 'src/app/services/api-communication.service';
@@ -7,7 +7,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditModalComponent } from '../modals/admin-user-edit-modal/admin-user-edit-modal.component';
 import { MatTableDataSource } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
 import { AdminUserDeleteModalComponent } from '../modals/admin-user-delete-modal/admin-user-delete-modal.component';
 
 
@@ -29,19 +28,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiCommunicationService,
-    private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    ) {
-    /* this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
-      data => {
-        this.dataSource = data.userResolver;
-        console.log(this.dataSource);
-      },
-      error => {
-        this.error = error;
-      }
-    ); */
-  }
+    ) { }
 
 
   ngOnInit() {

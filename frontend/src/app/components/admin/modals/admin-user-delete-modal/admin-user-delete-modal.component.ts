@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { User } from 'src/app/models/User.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ApiCommunicationService } from 'src/app/services/api-communication.service';
 
 @Component({
   selector: 'app-admin-user-delete-modal',

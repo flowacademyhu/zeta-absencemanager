@@ -1,17 +1,11 @@
-import { Component, OnInit, OnDestroy, SystemJsNgModuleLoader } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute } from "@angular/router";
 import { Group } from "src/app/models/Group.model";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { MatTableDataSource, MatFormFieldControl } from "@angular/material";
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AdminGroupCreateModalComponent } from "src/app/components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
-import { User } from "src/app/models/User.model";
 import { AdminGroupDeleteModalComponent } from '../modals/admin-group-delete-modal/admin-group-delete-modal.component';
 
 @Component({
