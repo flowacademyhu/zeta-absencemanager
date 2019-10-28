@@ -67,12 +67,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { ChangePasswModalComponent } from "./components/employee/modals/change-passw-modal/change-passw-modal.component";
 import { AdminGuard } from "./guards/admin.guard";
-<<<<<<< HEAD
-import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
-=======
 import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
-import { ChangePasswComponent } from "./components/employee/modals/change-passw/change-passw.component";
->>>>>>> development
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
@@ -96,14 +91,10 @@ import { EmployeeProfileDeleteModalComponent } from './components/employee/modal
     AdminUserEditModalComponent,
     AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
-<<<<<<< HEAD
     ChangePasswModalComponent,
-=======
     AdminGroupDeleteModalComponent,
     AdminAbsenceCreateModalComponent,
     AdminAbsenceEditModalComponent,
-    ChangePasswComponent,
->>>>>>> development
     //employee
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
