@@ -83,6 +83,8 @@ public class DataLoader implements CommandLineRunner {
     admin.setTotalSickLeaveDays(absenceService.availableSickLeave(admin));
     admin.setUsedAbsenceDays(0);
     admin.setUsedSickLeaveDays(0);
+    admin.setChildSickPay(0);
+    admin.setUsedSickPay(0);
     this.userRepository.save(admin);
 
     List<User> users = new ArrayList<>();
@@ -106,6 +108,8 @@ public class DataLoader implements CommandLineRunner {
       user.setTotalSickLeaveDays(absenceService.availableSickLeave(user));
       user.setUsedAbsenceDays(0);
       user.setUsedSickLeaveDays(0);
+      user.setChildSickPay(0);
+      user.setUsedSickPay(0);
       this.userRepository.save(user);
       users.add(user);
     }

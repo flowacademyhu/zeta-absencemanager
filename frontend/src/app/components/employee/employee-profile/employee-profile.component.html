@@ -76,7 +76,11 @@
       <mat-list-item role="listitem"><h4>Betegszabadság</h4></mat-list-item>
       <mat-list-item role="listitem">Összes betegszabadság:</mat-list-item>
       <mat-list-item role="listitem">Kivehető:</mat-list-item>
-      <mat-list-item role="listitem">Kivett:</mat-list-item>
+      <mat-list-item role="listitem">Kivett betegszabadság:</mat-list-item>
+      <mat-list-item role="listitem">Kivett táppénz:</mat-list-item>
+      <mat-list-item role="listitem"
+        >Kivett gyermek betegszabadság:</mat-list-item
+      >
       <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
     </mat-list>
   </div>
@@ -92,6 +96,8 @@
       <mat-list-item role="listitem">{{
         user.usedSickLeaveDays
       }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.usedSickPay }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.childSickPay }}</mat-list-item>
       <mat-list-item role="listitem"
         >{{
           (user.usedSickLeaveDays / user.totalSickLeaveDays) * 100
