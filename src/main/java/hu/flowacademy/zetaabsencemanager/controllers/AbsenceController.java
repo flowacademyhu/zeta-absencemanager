@@ -2,8 +2,9 @@ package hu.flowacademy.zetaabsencemanager.controllers;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.service.AbsenceService;
-import java.util.List;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +26,8 @@ public class AbsenceController {
   }
 
   @GetMapping("")
-  public List<Absence> getAll() {
-    return absenceService.findAll();
+  public AbsenceDTO getAll(Pageable pageable) {
+    return absenceService.findAll(pageable);
   }
 
   @PostMapping("")
