@@ -71,7 +71,6 @@ public class AbsenceService {
     modifyAbsence.setSummary(absence.getSummary());
     modifyAbsence.setReporter(absence.getReporter());
     modifyAbsence.setAssignee(absence.getAssignee());
-    modifyAbsence.setStatus(absence.getStatus());
     publisher.publishEvent(new StateChangedEvent<>(
         absence.getId(), absence.getState()));
     modifyAbsence.setUpdatedAt(LocalDateTime.now());

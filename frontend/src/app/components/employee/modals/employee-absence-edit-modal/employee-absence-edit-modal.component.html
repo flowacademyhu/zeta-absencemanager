@@ -196,12 +196,17 @@
 
     <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>
+
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
       {{ isFormEdited() ? "Mentés" : "Szerkesztés" }}
     </button>
+    <button type="button" mat-raised-button (click)="onAction('UNDER_REVIEW')" *ngIf="this.absence && this.absence.status === 'OPEN'">Elküldés</button>
+    <button type="button" mat-raised-button (click)="onAction('DONE')" *ngIf="this.absence && this.absence.status === 'ADMINISTRATED'">Lezárás</button>  
     <button mat-raised-button color="warn" (click)="onCancel()">
       Mégsem
     </button>
+
+
   </mat-dialog-actions>
 </form>

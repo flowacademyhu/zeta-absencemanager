@@ -21,10 +21,7 @@ import hu.flowacademy.zetaabsencemanager.service.filter.FilterByStatus;
 import hu.flowacademy.zetaabsencemanager.service.filter.FilterByType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -55,22 +52,12 @@ public class AdminAbsenceService {
   @Autowired
   private ApplicationEventPublisher publisher;
 
-
-  public Set<User> getEmployees(Group g, Set<User> employees) {
-    employees.add(g.getLeader());
-    employees.addAll(g.getEmployees());
-    groupRepository.findAllByParentId(g.getId())
-        .forEach(child -> getEmployees(child, employees));
-    return employees;
-  }
-
   public List<Absence> findAllAbsence() {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return this.absenceRepository.findAll();
     } else {
-      return getEmployees(this.authenticationService.getCurrentUser().getGroup(),
-          new HashSet<>()).stream().flatMap(user -> user.getAbsences().stream()).distinct()
-          .collect(Collectors.toList());
+      return this.absenceRepository
+          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser());
     }
   }
 
@@ -79,10 +66,8 @@ public class AdminAbsenceService {
     Absence foundAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
-    Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
-        this.authenticationService.hasRole(Roles.LEADER) && employees
-            .contains(foundAbsence.getReporter()))) {
+        foundAbsence.getAssignee().equals(current))) {
       return foundAbsence;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -91,15 +76,11 @@ public class AdminAbsenceService {
 
   public Absence create(Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
-    User current = authenticationService.getCurrentUser();
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
-    // TODO absence.setAssignee();
+    absence.setAssignee(absence.getAssignee());
     absence.setStatus(Status.OPEN);
-    Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
-    if (this.authenticationService.hasRole(Roles.ADMIN) || (
-        this.authenticationService.hasRole(Roles.LEADER) && employees
-            .contains(absence.getReporter()))) {
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return absenceRepository.save(absence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -112,11 +93,8 @@ public class AdminAbsenceService {
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
     User current = authenticationService.getCurrentUser();
-    Set<User> employees = getEmployees(current.getGroup(), new HashSet<>());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
-        this.authenticationService.hasRole(Roles.LEADER) && employees
-            .contains(modifyAbsence.getReporter()))) {
-      modifyAbsence.setAdministrationID(absence.getAdministrationID());
+        modifyAbsence.getAssignee().equals(current))) {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
