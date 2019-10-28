@@ -92,20 +92,23 @@ public class AbsenceService {
     int calculatedAbsence = 0;
     int allAbsence = 20;
     int[] borders = {25, 28, 31, 33, 35, 37, 39, 41, 43, 45};
-    double multiplier = 1;
+    double multiplier;
     int age = LocalDate.now().getYear() - user.getDateOfBirth().getYear();
     if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       int restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365;
+      System.out.println("Multiplier:" +multiplier);
+    } else {
+      multiplier = 1;
     }
     for (int i = 0; i < borders.length; i++) {
       if (age >= borders[i]) {
-        allAbsence = +1;
+        allAbsence = allAbsence+1;
       }
     }
     switch (user.getNumberOfChildren()) {
       case 0:
-        allAbsence = allAbsence;
+        allAbsence = allAbsence+0;
         break;
       case 1:
         allAbsence = allAbsence + 2;
@@ -119,14 +122,16 @@ public class AbsenceService {
     return calculatedAbsence;
   }
 
-  public int availableSickLeave(@NotNull User user){
-    int allSickLeave=15;
-    int multiplier=1;
+  public int availableSickLeave(@NotNull User user) {
+    int allSickLeave = 15;
+    int multiplier;
     if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       int restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365;
+    } else {
+      multiplier = 1;
     }
-    int  calculatedAbsence = (int) Math.round(allSickLeave * multiplier);
+    int calculatedAbsence = (int) Math.round(allSickLeave * multiplier);
     return calculatedAbsence;
   }
 }

@@ -71,8 +71,8 @@ public class AdminUserService {
     }
     int availableAbsenceDays=absenceService.availableAbsence(newUser);
     int sickLeaveDays=absenceService.availableSickLeave(newUser);
-    newUser.setAvailableAbsenceDays(availableAbsenceDays);
-    newUser.setAvailableSickLeave(sickLeaveDays);
+    newUser.setTotalAbsenceDays(availableAbsenceDays);
+    newUser.setTotalSickLeaveDays(sickLeaveDays);
     userRepository.save(newUser);
     return newUser;
   }
@@ -97,8 +97,8 @@ public class AdminUserService {
     modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
     int availableAbsenceDays=absenceService.availableAbsence(modifyUser);
     int sickLeaveDays=absenceService.availableSickLeave(modifyUser);
-    modifyUser.setAvailableAbsenceDays(availableAbsenceDays);
-    modifyUser.setAvailableSickLeave(sickLeaveDays);
+    modifyUser.setTotalAbsenceDays(availableAbsenceDays);
+    modifyUser.setTotalSickLeaveDays(sickLeaveDays);
     userRepository.save(modifyUser);
     return modifyUser;
   }

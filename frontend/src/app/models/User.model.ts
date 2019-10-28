@@ -15,6 +15,10 @@ export class User extends DataEntity {
   public otherAbsenceEnt: string;
   public group: Group;
   public role: string;
+  public totalAbsenceDays: number;
+  public totalSickLeaveDays: number;
+  public usedAbsenceDays: number;
+  public usedSickLeaveDays: number;
   public absences: Absence[];
 
   //TODO for now, added some optional variables to constructor
@@ -26,7 +30,11 @@ export class User extends DataEntity {
     dateOfEntry?: any,
     position?: string,
     numberOfChildren?: number,
-    group?: Group
+    group?: Group,
+    totalAbsenceDays?: number,
+    totalSickLeaveDays?: number,
+    usedAbsenceDays?: number,
+    usedSickLeaveDays?: number
   ) {
     super();
     this.firstName = firstName;
@@ -37,5 +45,9 @@ export class User extends DataEntity {
     this.position = position;
     this.numberOfChildren = numberOfChildren;
     this.group = group;
+    this.totalAbsenceDays = totalAbsenceDays;
+    this.usedAbsenceDays = usedAbsenceDays;
+    this.totalSickLeaveDays = totalSickLeaveDays;
+    this.usedSickLeaveDays = usedSickLeaveDays;
   }
 }
