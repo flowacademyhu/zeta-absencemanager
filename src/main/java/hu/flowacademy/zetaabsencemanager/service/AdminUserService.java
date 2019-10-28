@@ -89,7 +89,6 @@ public class AdminUserService {
     modifyUser.setUpdatedAt(LocalDateTime.now());
     modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
     userRepository.save(modifyUser);
-    userRepository.save(modifyUser);
     return modifyUser;
   }
 

@@ -4,17 +4,14 @@ import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { User } from '../models/User.model';
 import { ApiCommunicationService } from '../services/api-communication.service';
-import { HttpClient } from '@angular/common/http';
 
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 
 export class UserResolver implements Resolve<User[]>{
 
-    constructor(private http: HttpClient, private api: ApiCommunicationService){}
+    constructor(private api: ApiCommunicationService){}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): User[] | Observable<User[]> | Promise<User[]> {
         return this.api.user().getUsers();

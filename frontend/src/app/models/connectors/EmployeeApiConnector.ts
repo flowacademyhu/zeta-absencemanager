@@ -16,7 +16,6 @@ export class EmployeeApiConnector extends AbstractApiConnector {
     }
 
     public deleteProfile(id: number): Observable<User> {
-        console.log(this.apiRoute + "/" + id);
         return this.http.delete(this.apiRoute + "/" + id) as Observable<User>;
     }
 
