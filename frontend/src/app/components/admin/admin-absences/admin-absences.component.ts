@@ -7,6 +7,8 @@ import { takeUntil } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
+import { User } from 'src/app/models/User.model';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: "app-admin-absences",
@@ -28,11 +30,13 @@ export class AdminAbsencesComponent implements OnInit {
     "edit"
   ];
   absencesList: Absence[];
+  user: any;
 
   constructor(
     public api: ApiCommunicationService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private session: SessionService
   ) {}
 
   ngOnInit() {
@@ -93,5 +97,9 @@ export class AdminAbsencesComponent implements OnInit {
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
+  }
+
+  public currentUser() {
+    this.user = this.session.getUserData();
   }
 }
