@@ -5,10 +5,14 @@ import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByAdministrationID;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByStatus;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByType;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +21,8 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,6 +133,15 @@ public class AdminAbsenceService {
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
+  }
+
+  public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
+      Status status) {
+    Specification<Absence> spec = Specifications
+        .where(new FilterByAdministrationID(administrationID))
+        .and(new FilterByType(type))
+        .and(new FilterByStatus(status));
+    return spec;
   }
 
 }

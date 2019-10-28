@@ -2,15 +2,13 @@ package hu.flowacademy.zetaabsencemanager.controllers;
 
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByAdministrationID;
-import hu.flowacademy.zetaabsencemanager.service.filter.FilterByType;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,10 +51,12 @@ public class AdminAbsencesController {
   @GetMapping("/filter")
   public List<Absence> getFilteringAbsences(
       @RequestParam(required = false) Long administrationID,
-      @RequestParam(required = false) Type type) {
-    Specification<Absence> spec = Specifications
-        .where(new FilterByAdministrationID(administrationID))
-        .and(new FilterByType(type));
-    return absenceRepository.findAll(spec);
+      @RequestParam(required = false) Type type,
+      @RequestParam(required = false) Status status) {
+    Specification<Absence> spec = absenceService
+        .getFilteredAbsences(administrationID, type, status);
+
+    return absenceRepository
+        .findAll(spec);
   }
 }
