@@ -6,7 +6,9 @@
 <mat-table [dataSource]="absences" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef> Azonosító </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
+    <mat-cell *matCellDef="let absence">
+      {{ absence.administrationID }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="begin">
@@ -50,15 +52,6 @@
     <mat-cell *matCellDef="let element">
       <button mat-icon-button (click)="editAbsence(element.id)">
         <mat-icon>pageview</mat-icon>
-      </button>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="delete">
-    <mat-header-cell *matHeaderCellDef> Törlés </mat-header-cell>
-    <mat-cell *matCellDef>
-      <button mat-icon-button>
-        <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

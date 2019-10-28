@@ -70,6 +70,9 @@ import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-
 import { ChangePasswComponent } from "./components/employee/modals/change-passw/change-passw.component";
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
+import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
+import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-group-delete-modal/admin-group-delete-modal.component';
+import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -86,18 +89,21 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     AdminGroupsComponent,
     AdminUserAddModalComponent,
     AdminUserEditModalComponent,
+    AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
+    AdminGroupDeleteModalComponent,
+    AdminAbsenceCreateModalComponent,
+    AdminAbsenceEditModalComponent,
     ChangePasswComponent,
     //employee
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
-    AdminAbsenceCreateModalComponent,
-    AdminAbsenceEditModalComponent,
+    EmployeeProfileDeleteModalComponent,
     //pipe
     AbsenceTypePipe,
-    AbsenceStatusPipe
+    AbsenceStatusPipe,
   ],
   imports: [
     BrowserModule,
@@ -166,7 +172,10 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
     ChangePasswComponent,
     AdminAbsenceEditModalComponent,
     AdminGroupCreateModalComponent,
-    AdminAbsenceCreateModalComponent
+    AdminAbsenceCreateModalComponent,
+    AdminUserDeleteModalComponent,
+    AdminGroupDeleteModalComponent,
+    EmployeeProfileDeleteModalComponent
   ]
 })
 export class AppModule {}

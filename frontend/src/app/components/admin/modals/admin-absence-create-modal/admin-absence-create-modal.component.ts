@@ -45,6 +45,7 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
       });
     this.types = Absence.enumSelector(AbsenceType);
     this.createAbsenceForm = new FormGroup({
+      administrationID: new FormControl(""),
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
       begin: new FormControl("", Validators.required),
@@ -64,7 +65,6 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
   }
 
   changeHandler(event): number {
-    console.log(event);
     if (event.targetElement.id === "begin") {
       this.dates[0] = true;
     } else {
@@ -73,7 +73,6 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
     if (this.dates[0] === true && this.dates[1] === true) {
       this.countDuration();
     }
-    console.log(this.dates);
     return this.duration;
   }
 
@@ -86,7 +85,8 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
         Absence.convertDate(this.createAbsenceForm.controls["end"].value),
         this.createAbsenceForm.controls["duration"].value,
         this.createAbsenceForm.controls["reporter"].value,
-        this.createAbsenceForm.controls["assignee"].value
+        this.createAbsenceForm.controls["assignee"].value,
+        this.createAbsenceForm.controls["administrationID"].value
       );
       this.api
         .adminAbsence()
