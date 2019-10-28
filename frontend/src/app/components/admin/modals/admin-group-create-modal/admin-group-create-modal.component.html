@@ -10,7 +10,7 @@
     </mat-form-field>
   </div>
   <mat-form-field>
-    <mat-label>Osztály</mat-label>
+    <mat-label>Felettes Csoport</mat-label>
     <mat-select formControlName="parentId">
       <mat-option
         *ngFor="let group of groupList"
@@ -24,7 +24,7 @@
 
   <mat-form-field>
     <mat-label>Vezető</mat-label>
-    <mat-select required formControlName="leader">
+    <mat-select formControlName="leader">
       <mat-option
         *ngFor="let leader of leaderList; let i = index"
         [value]="leader"

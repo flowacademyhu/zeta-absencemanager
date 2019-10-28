@@ -41,7 +41,7 @@ public class Group {
   private String name;
 
   @OneToOne
-  @NotNull(message = "Leader is required.")
+  // @NotNull(message = "Leader is required.")
   private User leader;
 
   @OneToMany(mappedBy = "group")

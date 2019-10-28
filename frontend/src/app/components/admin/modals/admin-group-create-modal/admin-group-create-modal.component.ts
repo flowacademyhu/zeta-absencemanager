@@ -34,7 +34,7 @@ export class AdminGroupCreateModalComponent implements OnInit {
         Validators.maxLength(60)
       ]),
       parentId: new FormControl(null),
-      leader: new FormControl(null, Validators.required),
+      leader: new FormControl(null),
       employees: new FormControl(null)
     });
   }

@@ -1,7 +1,8 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.*;
+import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
+import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,10 +22,19 @@ public class AdminUserService {
   private UserRepository userRepository;
 
   @Autowired
+  private GroupRepository groupRepository;
+
+  @Autowired
+  private AbsenceRepository absenceRepository;
+
+  @Autowired
   private AuthenticationService authenticationService;
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private GroupService groupService;
 
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
@@ -46,6 +56,7 @@ public class AdminUserService {
   }
 
   public User saveUser(@NotNull User user) {
+    System.out.println(user.getFirstName());
     User newUser = User.builder()
         .firstName(user.getFirstName())
         .lastName(user.getLastName())
@@ -95,11 +106,34 @@ public class AdminUserService {
 
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
+    Group modifyGroup = groupService.findOne(mod.getGroup().getId());
+    Group modifyLeadedGroup;
+    List<Group> groupList = groupService.findAllGroup();
     mod.setRole(Roles.INACTIVE);
     mod.setDeletedBy(authenticationService.getCurrentUser());
+    mod.setGroup(null);
     mod.setDeletedAt(LocalDateTime.now());
+    for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
+      if (modifyGroup.getEmployees().get(i).getId().equals(id)) {
+        modifyGroup.getEmployees().remove(i);
+        groupRepository.save(modifyGroup);
+      }
+    }
+    for (int i = 0; i < groupList.size(); i++) {
+      if (groupList.get(i).getLeader().getId().equals(id)) {
+        modifyLeadedGroup = groupList.get(i);
+        modifyLeadedGroup.setLeader(null);
+        groupRepository.save(modifyLeadedGroup);
+      }
+    }
+    List <Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(mod);
+    for (Absence a : needToBeModifiedAbsences) {
+      a.setStatus(Status.REJECTED);
+      absenceRepository.save(a);
+    }
     userRepository.save(mod);
   }
+
 
   public List<User> findAllLeader() {
     return userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);

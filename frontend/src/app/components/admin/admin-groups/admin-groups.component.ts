@@ -51,8 +51,8 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.api.group().getGroups().subscribe(users => {
-      this.groupsList = users;
+    this.api.group().getGroups().subscribe(groups => {
+      this.groupsList = groups;
     })
   }
 

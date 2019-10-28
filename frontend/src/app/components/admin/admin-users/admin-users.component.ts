@@ -36,6 +36,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.api.user().getUsers().subscribe(users => {
       this.usersList = users;
       this.dataSource = new MatTableDataSource(this.usersList);
+      console.log(this.usersList);
     })
   }
 
