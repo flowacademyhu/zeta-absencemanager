@@ -5,6 +5,7 @@ import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -85,5 +86,47 @@ public class AbsenceService {
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
+  }
+
+  public int availableAbsence(@NotNull User user) {
+    int calculatedAbsence = 0;
+    int allAbsence = 20;
+    int[] borders = {25, 28, 31, 33, 35, 37, 39, 41, 43, 45};
+    double multiplier = 1;
+    int age = LocalDate.now().getYear() - user.getDateOfBirth().getYear();
+    if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
+      int restDays = 365 - user.getDateOfEntry().getDayOfYear();
+      multiplier = restDays / 365;
+    }
+    for (int i = 0; i < borders.length; i++) {
+      if (age >= borders[i]) {
+        allAbsence = +1;
+      }
+    }
+    switch (user.getNumberOfChildren()) {
+      case 0:
+        allAbsence = allAbsence;
+        break;
+      case 1:
+        allAbsence = allAbsence + 2;
+        break;
+      case 2:
+        allAbsence = allAbsence + 4;
+      default:
+        allAbsence = allAbsence + 7;
+    }
+    calculatedAbsence = (int) Math.round(allAbsence * multiplier);
+    return calculatedAbsence;
+  }
+
+  public int availableSickLeave(@NotNull User user){
+    int allSickLeave=15;
+    int multiplier=1;
+    if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
+      int restDays = 365 - user.getDateOfEntry().getDayOfYear();
+      multiplier = restDays / 365;
+    }
+    int  calculatedAbsence = (int) Math.round(allSickLeave * multiplier);
+    return calculatedAbsence;
   }
 }
