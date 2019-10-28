@@ -7,9 +7,11 @@ import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,29 +28,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminAbsencesController {
 
   @Autowired
-  private AdminAbsenceService absenceService;
+  private AdminAbsenceService adminAbsenceService;
 
   @Autowired
   private AbsenceRepository absenceRepository;
 
   @GetMapping("/{id}")
   public Absence getOne(@PathVariable("id") Long id) {
-    return absenceService.findOne(id);
+    return adminAbsenceService.findOne(id);
   }
 
   @GetMapping("")
-  public List<Absence> getAll() {
-    return absenceService.findAllAbsence();
+  public AbsenceDTO getAll(Pageable pageable) {
+    return adminAbsenceService.findAllAbsence(pageable);
   }
 
   @PostMapping("")
   public Absence createAbsence(@RequestBody Absence absence) {
-    return absenceService.create(absence);
+    return adminAbsenceService.create(absence);
   }
 
   @PutMapping("/{id}")
   public Absence update(@PathVariable("id") Long id, @RequestBody Absence absence) {
-    return absenceService.update(id, absence);
+    return adminAbsenceService.update(id, absence);
   }
 
   @GetMapping("/filter")
@@ -62,7 +64,7 @@ public class AdminAbsencesController {
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
       @RequestParam(required = false) Integer dayStart,
       @RequestParam(required = false) Integer dayEnd) {
-    Specification<Absence> spec = absenceService
+    Specification<Absence> spec = adminAbsenceService
         .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, end,
             dayStart, dayEnd);
 
