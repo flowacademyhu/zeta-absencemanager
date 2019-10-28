@@ -120,7 +120,7 @@ public class DataLoader implements CommandLineRunner {
     Group group1 = Group.builder()
         .employees(List.of())
         .name("Group1")
-        .leader(userRepository.getOne(leader.getId()))
+        .leader(leader)
         .employees(g1u)
         .build();
     groupRepository.save(group1);
