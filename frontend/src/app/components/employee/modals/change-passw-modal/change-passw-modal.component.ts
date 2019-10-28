@@ -12,8 +12,8 @@ import { ApiCommunicationService } from 'src/app/services/api-communication.serv
 })
 export class ChangePasswModalComponent implements OnInit {
   
-  public firstPassword: any = "firstPassword";
-  public secondPassword: any = "secondPassword";
+  public firstPassword: string;
+  public secondPassword: string;
   public userObject: User;
   public id : number;  
   public passwordToCompare : string;
@@ -32,15 +32,12 @@ export class ChangePasswModalComponent implements OnInit {
    this.id = this.userObject.id;
   }   
 
-  
   sendPassw() {
-
-   this.api.employee().changePassw(this.firstPassword, this.secondPassword, this.oldPassword).subscribe(data => {
+    this.api.employee().changePassw(this.firstPassword, this.secondPassword, this.oldPassword).subscribe(data => {
     this.dialogRef.close();
-  }, error => {
+    }, error => {
     this.error = true;
-  })  
-
+    })  
   }
   
   onCancel(): void {
@@ -48,10 +45,7 @@ export class ChangePasswModalComponent implements OnInit {
   }
 
   checkPasswords(): boolean {
-    if (this.firstPassword === this. secondPassword)
-    return true
-    else
-    return false
+    return this.firstPassword === this.secondPassword;
   }
 
 } 

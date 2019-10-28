@@ -70,6 +70,4 @@ public class UserService {
         deleted.setDeletedAt(LocalDateTime.now());
         userRepository.save(deleted);
     }
-
-
 }

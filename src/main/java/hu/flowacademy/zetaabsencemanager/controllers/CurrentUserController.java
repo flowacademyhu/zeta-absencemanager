@@ -38,11 +38,6 @@ public class CurrentUserController {
         return authenticationService.getCurrentUser();
     }
 
-    /*@PutMapping("/changepassw/{userId}")
-    public User changePassword(@PathVariable("userId") Long userId, @RequestBody PasswordChangeDTO password) {
-        return userService.changePassword(userId, password.getFirstPassword(), password.getSecondPassword(), password.getOldPassword());
-    }*/
-
     @PostMapping("/changepassw")
     public User changePassword(@RequestBody PasswordChangeDTO passwords){
         return userService.changePassword(passwords.getFirstPassword(), passwords.getSecondPassword(), passwords.getOldPassword());
