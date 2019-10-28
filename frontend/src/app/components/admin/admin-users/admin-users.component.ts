@@ -95,36 +95,30 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   editUser(id: number): void{
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
-      data: {user: this.dataSource.filter(user => user.id === id)[0]}
+      data: {user: this.usersList.filter(user => user.id === id)[0]}
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      this.editedUser = this.dataSource.filter(user => user.id === id)[0];
+      this.editedUser = this.usersList.filter(user => user.id === id)[0];
       Object.assign(this.editedUser, result);
       this.editedUser.id = id;
       console.log(this.editedUser);      
       this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(u => console.log("updated:" + u));
     });
   }
+  
 
-  /* deleteUser(id: number): void {
+  deleteUser(id: number): void {
     console.log("ID - component: " + id);
     const dialogRef = this.dialog.open(AdminUserDeleteModalComponent, {
-      data: {user: this.dataSource.filter(user => user.id === id)[0]}
+      data: {user: this.usersList.filter(user => user.id === id)[0]}
     });
 
-    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      this.editedUser = this.dataSource.filter(user => user.id === id)[0];
-      Object.assign(this.editedUser, result);
-      this.editedUser.id = id;
-      console.log(this.editedUser);      
-      this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(u => console.log("updated:" + u));
-    });
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(id => {
-        console.log(id);
+      .subscribe(result => {
+        if(result === true) {
           this.api
             .user()
             .deleteUser(id)
@@ -136,19 +130,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
                   this.dataSource = data;
                 });
             });
-          }); */
-
-    /* this.api
-    .user()
-    .deleteUser(id)
-    .subscribe(u => {
-      this.api
-        .user()
-        .getUsers()
-        .subscribe(data => {
-          this.dataSource = data;
-        });
-    }); 
-  } */
+      }});
+  } 
   
 }

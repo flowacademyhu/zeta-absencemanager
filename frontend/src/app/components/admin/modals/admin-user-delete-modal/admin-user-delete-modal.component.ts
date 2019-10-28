@@ -11,40 +11,12 @@ import { ApiCommunicationService } from 'src/app/services/api-communication.serv
 })
 export class AdminUserDeleteModalComponent implements OnInit {
   public deleteUserForm: FormGroup;
-  private userList: User[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AdminUserDeleteModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User,
     public fb: FormBuilder,
-    private api: ApiCommunicationService
-  ) {
-    this.deleteUserForm = new FormGroup({
-      name: new FormControl("", [
-        Validators.required,
-        Validators.maxLength(60)
-      ]),
-      parentId: new FormControl(null),
-      leader: new FormControl(null, Validators.required),
-      employees: new FormControl(null)
-    });
-  }
+  ) { }
 
-  ngOnInit() {
-  }
-
-
-  /* groupSelector(definition) {
-    return Object.keys(definition).map(key => ({
-      value: key,
-      title: definition[key]
-    }));
-  }
-
-  userSelector(definition) {
-    return Object.keys(definition).map(key => ({
-      value: key,
-      title: definition[key]
-    }));
-  } */
+  ngOnInit() {  }
 }

@@ -71,6 +71,8 @@ import { ChangePasswComponent } from "./components/employee/modals/change-passw/
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
+import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-group-delete-modal/admin-group-delete-modal.component';
+import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -89,17 +91,19 @@ import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-u
     AdminUserEditModalComponent,
     AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
+    AdminGroupDeleteModalComponent,
+    AdminAbsenceCreateModalComponent,
+    AdminAbsenceEditModalComponent,
     ChangePasswComponent,
     //employee
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
-    AdminAbsenceCreateModalComponent,
-    AdminAbsenceEditModalComponent,
+    EmployeeProfileDeleteModalComponent,
     //pipe
     AbsenceTypePipe,
-    AbsenceStatusPipe
+    AbsenceStatusPipe,
   ],
   imports: [
     BrowserModule,
@@ -169,7 +173,9 @@ import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-u
     AdminAbsenceEditModalComponent,
     AdminGroupCreateModalComponent,
     AdminAbsenceCreateModalComponent,
-    AdminUserDeleteModalComponent
+    AdminUserDeleteModalComponent,
+    AdminGroupDeleteModalComponent,
+    EmployeeProfileDeleteModalComponent
   ]
 })
 export class AppModule {}

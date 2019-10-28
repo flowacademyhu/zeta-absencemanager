@@ -38,8 +38,7 @@ public class AdminUsersController {
 
   @PutMapping("/{id}")
   public User update(@PathVariable("id") Long id, @RequestBody User user) {
-    boolean isDeleted = false;
-    return adminUserService.updateUser(id, user, isDeleted);
+    return adminUserService.updateUser(id, user);
 
   }
 

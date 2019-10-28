@@ -15,6 +15,8 @@ import { UserService } from "src/app/services/user.service";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ChangePasswComponent } from "src/app/components/employee/modals/change-passw/change-passw.component";
+import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: "app-employee-profile",
@@ -30,6 +32,7 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
     private formbuild: FormBuilder,
     private route: ActivatedRoute,
     private api: ApiCommunicationService,
+    private sessionService: SessionService,
     public dialog: MatDialog
   ) {}
 
@@ -49,4 +52,22 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   changePassw() {
     this.dialog.open(ChangePasswComponent);
   }
+
+  deleteProfile(): void {
+    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(result => {
+        if(result === true) {
+          this.api
+            .employee()
+            .deleteProfile(this.user.id)
+            .subscribe(()=>{});
+            this.sessionService.logout();
+            }
+          }
+      );
+  } 
 }
