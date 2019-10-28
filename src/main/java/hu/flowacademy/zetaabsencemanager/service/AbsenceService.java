@@ -48,6 +48,38 @@ public class AbsenceService {
     return absenceRepository.findByReporterAndDeletedAtNull(current);
   }
 
+  public void increaseUsedDays(Absence absence) {
+    User user = absence.getReporter();
+    if (absence.getType() == Type.ABSENCE) {
+      user.setUsedAbsenceDays(user.getTotalAbsenceDays() + absence.getDuration());
+    } else if (absence.getType() == Type.NON_WORKING) {
+      if ((user.getUsedSickLeaveDays() + absence.getDuration()) > 15) {
+        user.setUsedAbsenceDays(15);
+        user.setUsedSickPay(user.getUsedSickLeaveDays() + absence.getDuration() - 15);
+      } else {
+        user.setUsedSickLeaveDays(user.getUsedSickLeaveDays() + absence.getDuration());
+      }
+    } else if (absence.getType() == Type.CHILD_SICK_PAY) {
+      user.setChildSickPay(user.getChildSickPay() + absence.getDuration());
+    }
+  }
+
+  public void reduceUsedDays(Absence absence) {
+    User user = absence.getReporter();
+    if (absence.getType() == Type.ABSENCE) {
+      user.setUsedAbsenceDays(user.getTotalAbsenceDays() - absence.getDuration());
+    } else if (absence.getType() == Type.NON_WORKING) {
+      if ((user.getUsedSickPay() < absence.getDuration())) {
+        Integer duration = absence.getDuration() - user.getUsedSickPay();
+        user.setUsedSickLeaveDays(15 - duration);
+      } else {
+        user.setUsedSickLeaveDays(user.getUsedSickLeaveDays() - absence.getDuration());
+      }
+    } else if (absence.getType() == Type.CHILD_SICK_PAY) {
+      user.setChildSickPay(user.getChildSickPay() - absence.getDuration());
+    }
+  }
+
   public Absence create(@NotNull Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
     absence.setReporter(authenticationService.getCurrentUser());
@@ -55,19 +87,7 @@ public class AbsenceService {
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
     absence.setStatus(Status.OPEN);
-    User user=authenticationService.getCurrentUser();
-    if(absence.getType()== Type.ABSENCE){
-      user.setUsedAbsenceDays(user.getTotalAbsenceDays()+absence.getDuration());
-    } else if(absence.getType()==Type.NON_WORKING){
-      if((user.getUsedSickLeaveDays()+absence.getDuration())>15){
-        user.setUsedAbsenceDays(15);
-        user.setUsedSickPay(user.getUsedSickLeaveDays()+absence.getDuration()-15);
-      } else {
-        user.setUsedSickLeaveDays(user.getUsedSickLeaveDays()+absence.getDuration());
-      }
-    } else if(absence.getType()==Type.CHILD_SICK_PAY){
-      user.setChildSickPay(user.getChildSickPay()+absence.getDuration());
-    }
+    increaseUsedDays(absence);
     return absenceRepository.save(absence);
   }
 
@@ -79,18 +99,10 @@ public class AbsenceService {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           "You can only modify your absences");
     }
-    User user=absence.getReporter();
-    if(absence.getType()== Type.ABSENCE){
-      user.setUsedAbsenceDays(user.getTotalAbsenceDays()+absence.getDuration());
-    } else if(absence.getType()==Type.NON_WORKING){
-      if((user.getUsedSickLeaveDays()+absence.getDuration())>15){
-        user.setUsedAbsenceDays(15);
-        user.setUsedSickPay(user.getUsedSickLeaveDays()+absence.getDuration()-15);
-      } else {
-        user.setUsedSickLeaveDays(user.getUsedSickLeaveDays()+absence.getDuration());
-      }
-    } else if(absence.getType()==Type.CHILD_SICK_PAY){
-      user.setChildSickPay(user.getChildSickPay()+absence.getDuration());
+    if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
+        .equals(modifyAbsence.getType())) {
+      increaseUsedDays(absence);
+      reduceUsedDays(modifyAbsence);
     }
     modifyAbsence.setType(absence.getType());
     modifyAbsence.setBegin(absence.getBegin());
@@ -110,6 +122,7 @@ public class AbsenceService {
 
   public void delete(@NotNull Long id) {
     Absence deleted = findOne(id);
+    reduceUsedDays(deleted);
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
@@ -130,12 +143,11 @@ public class AbsenceService {
     }
     for (int i = 0; i < borders.length; i++) {
       if (age >= borders[i]) {
-        allAbsence = allAbsence+1;
+        allAbsence = allAbsence + 1;
       }
     }
     switch (user.getNumberOfChildren()) {
       case 0:
-        allAbsence = allAbsence;
         break;
       case 1:
         allAbsence = allAbsence + 2;
@@ -146,8 +158,7 @@ public class AbsenceService {
       default:
         allAbsence = allAbsence + 7;
     }
-    calculatedAbsence = (int) Math.round(allAbsence * multiplier);
-    return calculatedAbsence;
+    return (int) Math.round(allAbsence * multiplier);
   }
 
   public int availableSickLeave(@NotNull User user) {
@@ -159,7 +170,6 @@ public class AbsenceService {
     } else {
       multiplier = 1;
     }
-    int calculatedSickLeave = (int) Math.round(allSickLeave * multiplier);
-    return calculatedSickLeave;
+    return (int) Math.round(allSickLeave * multiplier);
   }
 }

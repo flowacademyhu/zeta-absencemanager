@@ -32,6 +32,9 @@ public class AdminAbsenceService {
   private AbsenceRepository absenceRepository;
 
   @Autowired
+  private AbsenceService absenceService;
+
+  @Autowired
   private AuthenticationService authenticationService;
 
   @Autowired
@@ -88,19 +91,7 @@ public class AdminAbsenceService {
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         this.authenticationService.hasRole(Roles.LEADER) && employees
             .contains(absence.getReporter()))) {
-      User user=absence.getReporter();
-      if(absence.getType()== Type.ABSENCE){
-        user.setUsedAbsenceDays(user.getTotalAbsenceDays()+absence.getDuration());
-      } else if(absence.getType()==Type.NON_WORKING){
-        if((user.getUsedSickLeaveDays()+absence.getDuration())>15){
-          user.setUsedAbsenceDays(15);
-          user.setUsedSickPay(user.getUsedSickLeaveDays()+absence.getDuration()-15);
-        } else {
-          user.setUsedSickLeaveDays(user.getUsedSickLeaveDays()+absence.getDuration());
-        }
-      } else if(absence.getType()==Type.CHILD_SICK_PAY){
-        user.setChildSickPay(user.getChildSickPay()+absence.getDuration());
-      }
+      absenceService.increaseUsedDays(absence);
       return absenceRepository.save(absence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -123,19 +114,8 @@ public class AdminAbsenceService {
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
       if(modifyAbsence.getDuration()!=absence.getDuration()){
-        User user=absence.getReporter();
-        if(absence.getType()== Type.ABSENCE){
-          user.setUsedAbsenceDays(user.getUsedAbsenceDays()-modifyAbsence.getDuration()+absence.getDuration());
-        } else if(absence.getType()==Type.NON_WORKING){
-          if((user.getUsedSickLeaveDays()-modifyAbsence.getDuration()+absence.getDuration())>15){
-            user.setUsedAbsenceDays(15);
-            user.setUsedSickPay(user.getUsedSickLeaveDays()-modifyAbsence.getDuration()+absence.getDuration()-15);
-          } else {
-            user.setUsedSickLeaveDays(absence.getDuration()-modifyAbsence.getDuration());
-          }
-        } else if(absence.getType()==Type.CHILD_SICK_PAY){
-          user.setChildSickPay(user.getChildSickPay()+absence.getDuration()-modifyAbsence.getDuration());
-        }
+       absenceService.increaseUsedDays(absence);
+       absenceService.reduceUsedDays(modifyAbsence);
       }
       modifyAbsence.setDuration(absence.getDuration());
       modifyAbsence.setEnd(absence.getEnd());
@@ -154,6 +134,7 @@ public class AdminAbsenceService {
 
   public void delete(@NotNull Long id) {
     Absence deleted = findOne(id);
+    absenceService.reduceUsedDays(deleted);
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
