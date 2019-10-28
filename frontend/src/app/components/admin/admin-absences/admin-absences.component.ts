@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from "@angular/core";
 import { Absence } from "src/app/models/Absence.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute } from "@angular/router";
@@ -7,7 +7,7 @@ import { takeUntil, tap } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: "app-admin-absences",
@@ -29,11 +29,9 @@ export class AdminAbsencesComponent implements OnInit, AfterViewInit {
     "edit"
   ];
   absencesList: Absence[];
-  pageNumber = 1;
-  pageSize = 3;
-  totalPages = 2;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  dataSource: MatTableDataSource<Absence>;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   constructor(
     public api: ApiCommunicationService,
@@ -57,11 +55,21 @@ export class AdminAbsencesComponent implements OnInit, AfterViewInit {
   }
 
   loadPage() {
-    this.api.adminAbsence().getAbsencesPage(this.paginator.pageSize, this.paginator.pageIndex, this.paginator.length).subscribe(data => {
+    this.api.adminAbsence().getAbsencesPage(this.paginator.pageSize, this.paginator.pageIndex).subscribe(data => {
       console.log(data);
       this.absencesList = data.content;
+      this.dataSource = new MatTableDataSource<Absence>(this.absencesList);
+      this.dataSource.paginator = this.paginator;
+      // this.paginator.length = data.totalPages;
     })
   }
+
+  /*   handlePage(event) {
+      this.api.adminAbsence().getAbsencesPage(event.pageSize, event.pageIndex).subscribe(data => {
+        console.log(data);
+        this.absencesList = data.content;
+      })
+    } */
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();

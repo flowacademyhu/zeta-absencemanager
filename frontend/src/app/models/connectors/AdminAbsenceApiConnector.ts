@@ -27,13 +27,12 @@ export class AdminAbsenceApiConnector extends AbstractApiConnector {
     return this.http.delete(this.apiRoute + id);
   }
 
-  public getAbsencesPage(size: number, page: number, totalPages: number): Observable<any> {
-    console.log('Size ' + size + 'pageNumber ' + page + 'totalPages ' + totalPages);
+  public getAbsencesPage(size: number, page: number): Observable<any> {
+    console.log('Size ' + size + 'pageNumber ' + page);
     return this.http.get(this.apiRoute + 'page', {
       params: new HttpParams()
         .set('size', size.toString())
         .set('page', page.toString())
-        .set('totalPages', totalPages.toString())
     });
   }
 }
