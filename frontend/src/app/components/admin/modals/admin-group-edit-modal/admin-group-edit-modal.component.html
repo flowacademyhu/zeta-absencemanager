@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>EDIT GROUP</h2>
+<h2 mat-dialog-title>Csoport Szerkesztése</h2>
  <mat-dialog-content [formGroup]="editGroupDataForm">
     <mat-form-field>
       <input
@@ -11,22 +11,21 @@
     </mat-form-field>
     <br>
     <mat-form-field>
-        <mat-label>Leaders</mat-label>
-        <mat-select formControlName="leaders">
-          <mat-option *ngFor="let leader of userList" [value]="leader">
-            {{ leader.id }} {{ leader.firstName }} {{ leader.lastName }} 
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Employees</mat-label>
-      <mat-select formControlName="employees" multiple>
-        <mat-option *ngFor="let employee of userList" [value]="employee">
-          {{ employee.id }} {{ employee.firstName }} {{ employee.lastName }} 
+      <mat-label>Felettes Csoport</mat-label>
+      <mat-select formControlName="parent">
+        <mat-option *ngFor="let group of groupList" [value]="group.id">
+          {{ group.id }} {{ group.name }} 
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field>
+        <mat-label>Vezető</mat-label>
+        <mat-select formControlName="leader">
+          <mat-option *ngFor="let user of userList" [value]="user.id">
+            {{ user.id }} {{ user.lastName }} {{ user.firstName }} 
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
 </mat-dialog-content>
 

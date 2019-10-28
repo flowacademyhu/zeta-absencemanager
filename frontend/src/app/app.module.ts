@@ -35,6 +35,8 @@ import {
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./interceptors/token.interceptor";
+import { AbsenceTypePipe } from "./pipes/absence-type-pipe";
+import { AbsenceStatusPipe } from "./pipes/absence-status-pipe";
 
 //Own Components
 
@@ -64,8 +66,14 @@ import { GetEmployeeAbsencesResolver } from "./resolvers/GetEmployeeAbsencesReso
 import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { AdminGuard } from "./guards/admin.guard";
-import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
 import { AdminGroupEditModalComponent } from './components/admin/modals/admin-group-edit-modal/admin-group-edit-modal.component';
+import { ChangePasswComponent } from "./components/employee/modals/change-passw/change-passw.component";
+import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
+import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
+import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
+import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-group-delete-modal/admin-group-delete-modal.component';
+import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
+import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
 
 @NgModule({
   declarations: [
@@ -82,13 +90,22 @@ import { AdminGroupEditModalComponent } from './components/admin/modals/admin-gr
     AdminGroupsComponent,
     AdminUserAddModalComponent,
     AdminUserEditModalComponent,
+    AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
     AdminGroupEditModalComponent,
+    AdminGroupDeleteModalComponent,
+    AdminAbsenceCreateModalComponent,
+    AdminAbsenceEditModalComponent,
+    ChangePasswComponent,
     //employee
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
+    EmployeeProfileDeleteModalComponent,
+    //pipe
+    AbsenceTypePipe,
+    AbsenceStatusPipe,
   ],
   imports: [
     BrowserModule,
@@ -151,10 +168,16 @@ import { AdminGroupEditModalComponent } from './components/admin/modals/admin-gr
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
     //admin modals
-    AdminUserEditModalComponent, 
+    AdminUserEditModalComponent,
     AdminUserAddModalComponent,
+    AdminGroupEditModalComponent,
+    ChangePasswComponent,
+    AdminAbsenceEditModalComponent,
     AdminGroupCreateModalComponent,
-    AdminGroupEditModalComponent
+    AdminAbsenceCreateModalComponent,
+    AdminUserDeleteModalComponent,
+    AdminGroupDeleteModalComponent,
+    EmployeeProfileDeleteModalComponent
   ]
 })
 export class AppModule {}

@@ -17,7 +17,8 @@ export class AdminAbsenceApiConnector extends AbstractApiConnector {
     return this.http.post(this.apiRoute, absence);
   }
 
-  public updateAbsence(id: number, absence: Absence): Observable<any> {
+  //TODO any type to ABSENCE
+  public updateAbsence(id: number, absence: any): Observable<any> {
     return this.http.put(this.apiRoute + id, absence, {});
   }
 

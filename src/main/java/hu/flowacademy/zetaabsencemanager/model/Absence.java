@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.sberned.statemachine.state.HasStateAndId;
 
 @Builder
 @Data
@@ -22,12 +23,15 @@ import lombok.NoArgsConstructor;
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
-public class Absence {
+public class Absence implements HasStateAndId<Long, Status> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column
   private Long id;
+
+  @Column
+  private Long administrationID;
 
   @Column
   @NotNull(message = "Type must be set.")
@@ -76,4 +80,8 @@ public class Absence {
   private LocalDateTime deletedAt;
 
 
+  @Override
+  public Status getState() {
+    return status;
+  }
 }

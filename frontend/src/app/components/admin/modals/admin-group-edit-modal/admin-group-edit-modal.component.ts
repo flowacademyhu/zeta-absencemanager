@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ApiCommunicationService } from 'src/app/services/api-communication.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { User } from 'src/app/models/User.model';
+import { Group } from 'src/app/models/Group.model';
 
 @Component({
   selector: 'app-admin-group-edit-modal',
@@ -11,8 +12,9 @@ import { User } from 'src/app/models/User.model';
 })
 export class AdminGroupEditModalComponent implements OnInit {
   public editGroupDataForm: FormGroup;
+  private leader: User;
   private userList: User[];
-  private employees: any;
+  private groupList: Group[];
 
 
   constructor(
@@ -21,35 +23,17 @@ export class AdminGroupEditModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public fb: FormBuilder
   ) {
-    this.findEmployees();
     this.editGroupDataForm = new FormGroup({
       name: new FormControl(data.group.name, Validators.required),
-      parentId: new FormControl(data.group.parentId, Validators.required),
-      leaders: new FormControl(null, Validators.required),
-      employees: new FormControl(this.employees, Validators.required)
+      parent: new FormControl(data.group.parentId, Validators.required),
+      leader: new FormControl(this.data.group.leader.id, Validators.required)
       });
     }
 
   ngOnInit() {
-    this.api.user().getUsers().subscribe(users => {
-      this.userList = users;
-      this.editGroupDataForm.patchValue( {
-        leaders: this.findLeader()
-            });
-    });
+    this.api.user().getUsers().subscribe(users => this.userList = users);
+    this.api.group().getGroups().subscribe(groups => this.groupList = groups);
     this.dialogRef.updateSize("25%", "90%");
-  }
-
-  private findLeader(){
-    return this.userList.find(leader => leader.id === this.data.group.leaders[0].id);
-  }
-
-  private findEmployees() {
-    this.api.group().getGroup(this.data.group.id).subscribe(result => {
-      this.employees = result.employees;
-      console.log(this.employees);
-      return this.employees.find();
-    });
   }
 
 }

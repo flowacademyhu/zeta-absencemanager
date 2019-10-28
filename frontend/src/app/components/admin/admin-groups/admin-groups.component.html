@@ -1,37 +1,46 @@
 <div class="actionButton">
-    <button mat-flat-button color="warn" (click)="createGroup()">Create Group</button>
+  <button mat-flat-button color="warn" (click)="createGroup()">
+    Csoport hozzáadása
+  </button>
 </div>
 
 <mat-error *ngIf="error">
-    {{ error }}
+  {{ error }}
 </mat-error>
 
-<mat-table [dataSource]="dataSource">
+<mat-table [dataSource]="dataSource" class="table-responsive mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Név </mat-header-cell>
+    <mat-cell *matCellDef="let group"> {{ group.name }} </mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let group"> {{ group.name }} </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="parent">
+    <mat-header-cell *matHeaderCellDef> Felettes Csoport </mat-header-cell>
+    <mat-cell *matCellDef="let group"> {{ group.parent }} </mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="parent">
-        <mat-header-cell *matHeaderCellDef> Parent </mat-header-cell>
-        <mat-cell *matCellDef="let group"> {{ group.parent }} </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="leaders">
+    <mat-header-cell *matHeaderCellDef> Vezető </mat-header-cell>
+    <mat-cell *matCellDef="let group">
+        {{ group.leader.lastName }} {{ group.leader.firstName }}
+    </mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="leaders">
-        <mat-header-cell *matHeaderCellDef> Leaders </mat-header-cell>
-        <mat-cell *matCellDef="let group">
-            <div *ngFor="let leader of group.leaders; let i = index">
-                {{ leader.firstName }} {{ leader.lastName }} <span *ngIf="i !== group.leaders.length-1">,&nbsp;</span>
-            </div>
-        </mat-cell>
-    </ng-container>
+  <ng-container matColumnDef="employees">
+    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+    <mat-cell *matCellDef="let group">
+      <button mat-flat-button [routerLink]="'/admin/users'">Beosztottak</button>
+      <!-- path with filter TODO -->
+    </mat-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="employees">
-        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-        <mat-cell *matCellDef="let group">
-            <button mat-flat-button [routerLink]="'/admin/users'">Employees</button> <!-- path with filter TODO -->
-        </mat-cell>
+  <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef> Törlés </mat-header-cell>
+      <mat-cell *matCellDef="let group">
+        <button mat-icon-button (click)="deleteGroup(group.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="edit">
@@ -42,9 +51,6 @@
         </button> 
         </mat-cell>
       </ng-container> 
-
-    
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>

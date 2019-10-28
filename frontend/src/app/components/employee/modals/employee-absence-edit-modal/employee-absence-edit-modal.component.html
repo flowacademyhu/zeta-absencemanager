@@ -1,91 +1,212 @@
-<h2 mat-dialog-title align="center">Show absence</h2>
+<h2 mat-dialog-title align="center">Szabadság adatai</h2>
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
-  (ngSubmit)="OnSubmit(createAbsenceForm.value)"
+  (ngSubmit)="onSubmit()"
 >
   <mat-dialog-content>
     <div class="showData">
-      <p *ngIf="!update">Type:</p>
-      <p *ngIf="absence && !update">{{ absence.type }}</p>
+      <p>Azonosító:</p>
+      <p *ngIf="absence">{{ absence.administrationID }}</p>
     </div>
 
-    <mat-form-field *ngIf="update">
-      <mat-label>Type</mat-label>
-      <mat-select formControlName="type">
-        <mat-option *ngFor="let type of types" [value]="type.value">
-          {{ type.title }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
     <div class="showData">
-      <p *ngIf="!update">Summary:</p>
-      <p *ngIf="absence && !update">{{ absence.summary }}</p>
+      <p>Típus:</p>
+      <p *ngIf="absence && !formEditState.isTypeEdited">
+        {{ absence.type | type }}
+      </p>
+
+      <mat-form-field *ngIf="formEditState.isTypeEdited">
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{ type | type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isTypeEdited = true"
+        [disabled]="formEditState.isTypeEdited"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
-    <mat-form-field *ngIf="update">
-      <input
-        matInput
-        type="text"
-        placeholder="Summary"
-        formControlName="summary"
-        id="summary"
-      />
-    </mat-form-field>
 
     <div class="showData">
-      <p *ngIf="!update">Start of absence:</p>
-      <p *ngIf="absence && !update">
+      <p>Megnevezés:</p>
+      <p *ngIf="absence && !formEditState.isSummaryEdited">
+        {{ absence.summary }}
+      </p>
+
+      <mat-form-field *ngIf="formEditState.isSummaryEdited">
+        <input matInput type="text" formControlName="summary" id="summary" />
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isSummaryEdited = true"
+        [disabled]="formEditState.isSummaryEdited"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="showData">
+      <p>Kezdő dátum:</p>
+      <p *ngIf="absence && !formEditState.isBeginEdited">
         {{ absence.begin | date: "yyyy - MM - dd" }}
       </p>
+
+      <mat-form-field *ngIf="formEditState.isBeginEdited">
+        <input
+          matInput
+          [matDatepicker]="pickerBegin"
+          formControlName="begin"
+          id="begin"
+          readonly
+          required
+          (click)="pickerBegin.open()"
+          (dateChange)="changeHandler($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerBegin"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerBegin></mat-datepicker>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isBeginEdited = true"
+        [disabled]="formEditState.isBeginEdited"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
-    <mat-form-field *ngIf="update">
-      <input
-        matInput
-        [matDatepicker]="pickerStart"
-        placeholder="Choose the start of the absence"
-        formControlName="start"
-        id="start"
-        readonly
-        (click)="pickerStart.open()"
-      />
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="pickerStart"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #pickerStart></mat-datepicker>
-    </mat-form-field>
 
     <div class="showData">
-      <p *ngIf="!update">End of absence:</p>
-      <p *ngIf="absence && !update">
+      <p>Befejező dátum:</p>
+      <p *ngIf="absence && !formEditState.isEndEdited">
         {{ absence.end | date: "yyyy - MM - dd" }}
       </p>
+
+      <mat-form-field *ngIf="formEditState.isEndEdited">
+        <input
+          matInput
+          [matDatepicker]="pickerEnd"
+          formControlName="end"
+          id="end"
+          readonly
+          required
+          (click)="pickerEnd.open()"
+          (dateChange)="changeHandler($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="pickerEnd"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd></mat-datepicker>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isEndEdited = true"
+        [disabled]="formEditState.isEndEdited"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
-    <mat-form-field *ngIf="update">
-      <input
-        matInput
-        [matDatepicker]="pickerEnd"
-        placeholder="Choose the end of the absence"
-        formControlName="end"
-        id="end"
-        readonly
-        (click)="pickerEnd.open()"
-      />
-      <mat-datepicker-toggle
-        matSuffix
-        [for]="pickerEnd"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #pickerEnd></mat-datepicker>
-    </mat-form-field>
+
+    <div class="showData">
+      <p>Napok száma:</p>
+      <p
+        *ngIf="
+          absence &&
+          !formEditState.isDurationEdited &&
+          !formEditState.isEndEdited &&
+          !formEditState.isBeginEdited
+        "
+      >
+        {{ absence.duration }}
+      </p>
+
+      <mat-form-field
+        *ngIf="
+          formEditState.isDurationEdited ||
+          formEditState.isEndEdited ||
+          formEditState.isBeginEdited
+        "
+      >
+        <input
+          matInput
+          type="number"
+          formControlName="duration"
+          id="duration"
+        />
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="formEditState.isDurationEdited = true"
+        [disabled]="
+          formEditState.isDurationEdited ||
+          formEditState.isEndEdited ||
+          formEditState.isBeginEdited
+        "
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="showData">
+      <p>Jogosult:</p>
+      <p *ngIf="absence">
+        {{ absence.reporter.firstName }} {{ absence.reporter.lastName }}
+      </p>
+    </div>
+
+    <div class="showData">
+      <p>Felettes:</p>
+      <p *ngIf="absence && absence.assignee">
+        {{ absence.assignee.firstName }} {{ absence.assignee.lastName }}
+      </p>
+    </div>
+
+    <div class="showData">
+      <p>Státusz:</p>
+      <p *ngIf="absence">{{ absence.status | status }}</p>
+    </div>
+
+    <div class="showData">
+      <p>Létrehozás dátuma:</p>
+      <p *ngIf="absence">
+        {{ absence.createdAt[0] }} - {{ absence.createdAt[1] }} -
+        {{ absence.createdAt[2] }}
+      </p>
+    </div>
+
+    <div class="showData" *ngIf="absence && absence.deletedAt">
+      <p>Törlés dátuma:</p>
+      <p>
+        {{ absence.deletedAt[0] }} - {{ absence.deletedAt[1] }} -
+        {{ absence.deletedAt[2] }}
+      </p>
+    </div>
+
     <p *ngIf="error" class="error">{{ error }}</p>
   </mat-dialog-content>
+
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
-      {{ message }}
+      {{ isFormEdited() ? "Mentés" : "Szerkesztés" }}
     </button>
+    <button type="button" mat-raised-button (click)="onAction('UNDER_REVIEW')" *ngIf="this.absence && this.absence.status === 'OPEN'">Elküldés</button>
+    <button type="button" mat-raised-button (click)="onAction('DONE')" *ngIf="this.absence && this.absence.status === 'ADMINISTRATED'">Lezárás</button>  
     <button mat-raised-button color="warn" (click)="onCancel()">
-      Cancel
+      Mégsem
     </button>
+
+
   </mat-dialog-actions>
 </form>

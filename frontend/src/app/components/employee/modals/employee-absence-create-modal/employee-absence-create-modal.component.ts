@@ -18,7 +18,7 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
   private createAbsenceForm: FormGroup;
   private types;
   private error: string;
-  private duration = 0;
+  private duration;
   private dates = [false, false];
 
   constructor(
@@ -34,7 +34,7 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       summary: new FormControl(""),
       start: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
-      duration: new FormControl(this.duration)
+      duration: new FormControl(this.duration, Validators.required)
     });
   }
 
@@ -54,7 +54,6 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
       this.dates[0] = true;
     } else {
       this.dates[1] = true;
-      console.log(this.dates);
     }
     if (this.dates[0] === true && this.dates[1] === true) {
       this.countDuration();
@@ -80,22 +79,9 @@ export class EmployeeAbsenceCreateModalComponent implements OnInit {
         newAbsence.duration = duration;
       }
 
-      var month = newAbsence.begin.getUTCMonth() + 1;
-      var day = newAbsence.begin.getUTCDate() + 1;
-      var year = newAbsence.begin.getUTCFullYear();
-      newAbsence.begin = [];
-      newAbsence.begin[0] = year;
-      newAbsence.begin[1] = month;
-      newAbsence.begin[2] = day;
+      newAbsence.begin = Absence.convertDate(newAbsence.begin);
+      newAbsence.end = Absence.convertDate(newAbsence.end);
 
-      var month = newAbsence.end.getUTCMonth() + 1;
-      var day = newAbsence.end.getUTCDate() + 1;
-      var year = newAbsence.end.getUTCFullYear();
-      newAbsence.end = [];
-      newAbsence.end[0] = year;
-      newAbsence.end[1] = month;
-      newAbsence.end[2] = day;
-      console.log(newAbsence);
       this.api
         .absence()
         .createAbsence(newAbsence)

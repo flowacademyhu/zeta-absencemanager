@@ -13,5 +13,4 @@ export class UserService {
   getUser(id: number): Observable<any> {
     return this.api.user().getUser(id);
   }
-
 }

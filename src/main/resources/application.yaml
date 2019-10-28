@@ -1,4 +1,7 @@
 spring:
+  jackson:
+    serialization:
+      fail-on-self-references: false
   datasource:
     url: jdbc:mysql://localhost:3306/absenceManager
     username: zeta
@@ -11,3 +14,17 @@ spring:
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
       use-new-id-generator-mappings: false
       ddl-auto: create
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: zetaabsencemanager@gmail.com
+    password: zeta2019
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
