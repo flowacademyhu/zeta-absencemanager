@@ -15,17 +15,14 @@
   </ng-container>
 
   <ng-container matColumnDef="parent">
-    <mat-header-cell *matHeaderCellDef> Osztály </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> Felettes Csoport </mat-header-cell>
     <mat-cell *matCellDef="let group"> {{ group.parent }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="leaders">
     <mat-header-cell *matHeaderCellDef> Vezető </mat-header-cell>
     <mat-cell *matCellDef="let group">
-      <div *ngFor="let leader of group.leaders; let i = index">
-        {{ leader.firstName }} {{ leader.lastName }}
-        <span *ngIf="i !== group.leaders.length - 1">,&nbsp;</span>
-      </div>
+        {{ group.leader.lastName }} {{ group.leader.firstName }}
     </mat-cell>
   </ng-container>
 
