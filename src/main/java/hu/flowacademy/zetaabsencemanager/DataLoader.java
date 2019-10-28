@@ -221,8 +221,8 @@ public class DataLoader implements CommandLineRunner {
     }
 
     Absence absence1 = Absence.builder()
-        .begin(LocalDate.of(2019, Month.JANUARY, 24))
-        .end(LocalDate.of(2019, Month.JANUARY, 28))
+        .begin(LocalDate.of(2019, Month.SEPTEMBER, 24))
+        .end(LocalDate.of(2019, Month.OCTOBER, 10))
         .reporter(users.get(11))
         .createdAt(LocalDateTime.now())
         .assignee(users.get(11).getGroup().getLeader())
@@ -234,8 +234,8 @@ public class DataLoader implements CommandLineRunner {
     this.absenceRepository.save(absence1);
 
     Absence absence2 = Absence.builder()
-        .begin(LocalDate.of(2019, Month.FEBRUARY, 24))
-        .end(LocalDate.of(2019, Month.MARCH, 10))
+        .begin(LocalDate.of(2019, Month.OCTOBER, 15))
+        .end(LocalDate.of(2019, Month.OCTOBER, 18))
         .reporter(users.get(17))
         .assignee(users.get(17).getGroup().getLeader())
         .createdAt(LocalDateTime.now())
@@ -247,8 +247,8 @@ public class DataLoader implements CommandLineRunner {
     this.absenceRepository.save(absence2);
 
     Absence absence3 = Absence.builder()
-        .begin(LocalDate.of(2019, Month.MARCH, 24))
-        .end(LocalDate.of(2019, Month.MARCH, 25))
+        .begin(LocalDate.of(2019, Month.OCTOBER, 30))
+        .end(LocalDate.of(2019, Month.NOVEMBER, 4))
         .reporter(users.get(21))
         .assignee(users.get(21).getGroup().getLeader())
         .createdAt(LocalDateTime.now())
@@ -260,8 +260,8 @@ public class DataLoader implements CommandLineRunner {
     this.absenceRepository.save(absence3);
 
     Absence absence4 = Absence.builder()
-        .begin(LocalDate.of(2019, Month.APRIL, 24))
-        .end(LocalDate.of(2019, Month.MAY, 10))
+        .begin(LocalDate.of(2019, Month.SEPTEMBER, 24))
+        .end(LocalDate.of(2019, Month.NOVEMBER, 10))
         .reporter(users.get(27))
         .assignee(users.get(27).getGroup().getLeader())
         .createdAt(LocalDateTime.now())
@@ -273,8 +273,8 @@ public class DataLoader implements CommandLineRunner {
     this.absenceRepository.save(absence4);
 
     Absence absence5 = Absence.builder()
-        .begin(LocalDate.of(2019, Month.MAY, 24))
-        .end(LocalDate.of(2019, Month.MAY, 30))
+        .begin(LocalDate.of(2019, Month.NOVEMBER, 5))
+        .end(LocalDate.of(2019, Month.NOVEMBER, 10))
         .reporter(admin)
         .assignee(admin.getGroup().getLeader())
         .createdAt(LocalDateTime.now())
@@ -286,8 +286,8 @@ public class DataLoader implements CommandLineRunner {
     this.absenceRepository.save(absence5);
 
     Absence absence6 = Absence.builder()
-        .begin(LocalDate.of(2019, Month.OCTOBER, 24))
-        .end(LocalDate.of(2019, Month.OCTOBER, 25))
+        .begin(LocalDate.of(2019, Month.JUNE, 24))
+        .end(LocalDate.of(2019, Month.JUNE, 28))
         .reporter(users.get(4))
         .createdAt(LocalDateTime.now())
         .assignee(users.get(4).getGroup().getLeader())

@@ -136,7 +136,7 @@ public class AdminAbsenceService {
   }
 
   public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
-      Status status, User reporter, User assignee, LocalDate start, LocalDate end,
+      Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
     Specification<Absence> spec = Specifications
         .where(filterService.filterByAdministrationID(administrationID))
@@ -145,7 +145,7 @@ public class AdminAbsenceService {
         .and(filterService.filterByReporter(reporter))
         .and(filterService.filterByAssignee(assignee))
         .and(filterService.filterByBeginStart(start))
-        .and(filterService.filterByBeginEnd(end))
+        .and(filterService.filterByBeginFinish(finish))
         .and(filterService.filterByDaysStart(dayStart))
         .and(filterService.filterByDaysEnd(dayEnd));
     return spec;

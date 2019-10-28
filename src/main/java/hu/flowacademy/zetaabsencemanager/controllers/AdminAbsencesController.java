@@ -45,12 +45,12 @@ public class AdminAbsencesController {
       @RequestParam(required = false) User reporter,
       @RequestParam(required = false) User assignee,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finish,
       @RequestParam(required = false) Integer dayStart,
       @RequestParam(required = false) Integer dayEnd
   ) {
     Specification<Absence> spec = adminAbsenceService
-        .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, end,
+        .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
             dayStart, dayEnd);
     return adminAbsenceService.findAllAbsence(spec, pageable);
   }

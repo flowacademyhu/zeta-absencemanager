@@ -61,16 +61,16 @@ public class FilterService {
       if (start == null) {
         return cb.isTrue(cb.literal(true));
       }
-      return cb.greaterThanOrEqualTo(root.get("begin"), start);
+      return cb.greaterThanOrEqualTo(root.get("end"), start);
     };
   }
 
-  public Specification<Absence> filterByBeginEnd(LocalDate end) {
+  public Specification<Absence> filterByBeginFinish(LocalDate finish) {
     return (root, query, cb) -> {
-      if (end == null) {
+      if (finish == null) {
         return cb.isTrue(cb.literal(true));
       }
-      return cb.lessThanOrEqualTo(root.get("begin"), end);
+      return cb.lessThanOrEqualTo(root.get("begin"), finish);
     };
   }
 
