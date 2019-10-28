@@ -10,6 +10,7 @@ import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
+import hu.flowacademy.zetaabsencemanager.utils.Metadata;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -135,10 +136,12 @@ public class AdminAbsenceService {
     Page<Absence> absencePage = this.absenceRepository.findAll(pageable);
     return AbsenceDTO.builder()
         .embedded(absencePage.getContent())
-        .totalElements(absencePage.getTotalElements())
-        .totalPages(absencePage.getTotalPages())
-        .pageNumber(absencePage.getNumber())
-        .pageSize(absencePage.getSize())
+        .metadata(Metadata.builder()
+            .totalElements(absencePage.getTotalElements())
+            .totalPages(absencePage.getTotalPages())
+            .pageNumber(absencePage.getNumber())
+            .pageSize(absencePage.getSize())
+            .build())
         .build();
   }
 }

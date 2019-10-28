@@ -9,9 +9,6 @@ import lombok.Data;
 @Builder
 public class AbsenceDTO {
 
-  private Long totalElements;
-  private Integer totalPages;
-  private Integer pageNumber;
-  private Integer pageSize;
+  private Metadata metadata;
   private List<Absence> embedded;
 }
