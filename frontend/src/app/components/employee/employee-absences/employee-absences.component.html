@@ -6,7 +6,9 @@
 <mat-table [dataSource]="absences" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef> Azonosító </mat-header-cell>
-    <mat-cell *matCellDef="let absence"> {{ absence.id }} </mat-cell>
+    <mat-cell *matCellDef="let absence">
+      {{ absence.administrationID }}
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="begin">

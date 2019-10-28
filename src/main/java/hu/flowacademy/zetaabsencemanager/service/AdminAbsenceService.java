@@ -103,6 +103,7 @@ public class AdminAbsenceService {
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         this.authenticationService.hasRole(Roles.LEADER) && employees
             .contains(modifyAbsence.getReporter()))) {
+      modifyAbsence.setAdministrationID(absence.getAdministrationID());
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());

@@ -6,6 +6,16 @@
 >
   <mat-dialog-content>
     <mat-form-field>
+      <input
+        matInput
+        type="number"
+        placeholder="Azonosító"
+        formControlName="administrationID"
+        id="administrationID"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Típus</mat-label>
       <mat-select formControlName="type" required>
         <mat-option *ngFor="let type of types" [value]="type">

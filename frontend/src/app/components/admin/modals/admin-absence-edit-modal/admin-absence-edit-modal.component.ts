@@ -22,6 +22,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   private leaders: User[];
   private users: User[];
   private formEditState = {
+    isAdministrationIDEdited: false,
     isTypeEdited: false,
     isSummaryEdited: false,
     isBeginEdited: false,
@@ -40,6 +41,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createAbsenceForm = new FormGroup({
+      administrationID: new FormControl(""),
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
       begin: new FormControl("", Validators.required),
@@ -66,6 +68,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
         );
         this.types = Absence.enumSelector(AbsenceType);
         this.createAbsenceForm.patchValue({
+          administrationID: this.absence.administrationID,
           type: this.absence.type,
           summary: this.absence.summary,
           begin: this.absence.begin,
@@ -125,6 +128,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
 
   public isFormEdited(): boolean {
     return (
+      this.formEditState.isAdministrationIDEdited ||
       this.formEditState.isTypeEdited ||
       this.formEditState.isSummaryEdited ||
       this.formEditState.isBeginEdited ||
@@ -136,6 +140,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   }
 
   public setFormEdited(value: boolean) {
+    this.formEditState.isAdministrationIDEdited = value;
     this.formEditState.isTypeEdited = value;
     this.formEditState.isSummaryEdited = value;
     this.formEditState.isBeginEdited = value;
@@ -146,6 +151,9 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   }
 
   public getFormData() {
+    this.absence.administrationID = this.createAbsenceForm.controls[
+      "administrationID"
+    ].value;
     this.absence.type = this.createAbsenceForm.controls["type"].value;
     this.absence.summary = this.createAbsenceForm.controls["summary"].value;
     this.absence.begin = Absence.convertDate(

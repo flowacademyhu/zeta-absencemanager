@@ -99,6 +99,22 @@ public class DataLoader implements CommandLineRunner {
       users.add(user);
     }
 
+    User leader = User.builder()
+        .email("leader@leader.com")
+        .firstName("LEADER")
+        .lastName("JANI")
+        .role(Roles.LEADER)
+        .dateOfBirth(LocalDate.of(1970, Month.APRIL, 1))
+        .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
+        .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+        .password(passwordEncoder.encode("leader"))
+        .position("testposition")
+        .extraAbsenceDays(0)
+        .numberOfChildren(3)
+        .build();
+    this.userRepository.save(leader);
+    users.add(leader);
+
     List<User> g1u = Arrays.asList(users.get(0), users.get(2), users.get(3));
     Group group1 = Group.builder()
         .employees(List.of())
@@ -212,6 +228,7 @@ public class DataLoader implements CommandLineRunner {
         .type(Type.ABSENCE)
         .status(Status.OPEN)
         .duration(2)
+        .administrationID(1l)
         .build();
     this.absenceRepository.save(absence1);
 
@@ -224,6 +241,7 @@ public class DataLoader implements CommandLineRunner {
         .type(Type.NON_WORKING)
         .duration(2)
         .status(Status.OPEN)
+        .administrationID(2l)
         .build();
     this.absenceRepository.save(absence2);
 
@@ -236,6 +254,7 @@ public class DataLoader implements CommandLineRunner {
         .status(Status.OPEN)
         .duration(2)
         .type(Type.CHILD_SICK_PAY)
+        .administrationID(3l)
         .build();
     this.absenceRepository.save(absence3);
 
@@ -248,6 +267,7 @@ public class DataLoader implements CommandLineRunner {
         .status(Status.OPEN)
         .duration(2)
         .type(Type.UNPAID_HOLIDAY)
+        .administrationID(4l)
         .build();
     this.absenceRepository.save(absence4);
 
@@ -260,6 +280,7 @@ public class DataLoader implements CommandLineRunner {
         .status(Status.OPEN)
         .type(Type.ABSENCE)
         .duration(6)
+        .administrationID(5l)
         .build();
     this.absenceRepository.save(absence5);
   }
