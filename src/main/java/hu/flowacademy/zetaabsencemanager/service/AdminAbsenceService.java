@@ -2,18 +2,20 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
-import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +41,30 @@ public class AdminAbsenceService {
   @Autowired
   private ApplicationEventPublisher publisher;
 
-  public List<Absence> findAllAbsence() {
+  public AbsenceDTO findAllAbsence(Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      return this.absenceRepository.findAll();
+      Page<Absence> absencePage = this.absenceRepository.findAll(pageable);
+      return AbsenceDTO.builder()
+          .embedded(absencePage.getContent())
+          .metadata(AbsenceMetadata.builder()
+              .totalElements(absencePage.getTotalElements())
+              .totalPages(absencePage.getTotalPages())
+              .pageNumber(absencePage.getNumber())
+              .pageSize(absencePage.getSize())
+              .build())
+          .build();
     } else {
-      return this.absenceRepository
-          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser());
+      Page<Absence> absencePage = this.absenceRepository
+          .findByAssigneeAndDeletedAtNull(this.authenticationService.getCurrentUser(), pageable);
+      return AbsenceDTO.builder()
+          .embedded(absencePage.getContent())
+          .metadata(AbsenceMetadata.builder()
+              .totalElements(absencePage.getTotalElements())
+              .totalPages(absencePage.getTotalPages())
+              .pageNumber(absencePage.getNumber())
+              .pageSize(absencePage.getSize())
+              .build())
+          .build();
     }
   }
 
