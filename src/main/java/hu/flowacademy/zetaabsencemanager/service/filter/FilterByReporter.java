@@ -1,0 +1,28 @@
+package hu.flowacademy.zetaabsencemanager.service.filter;
+
+import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.User;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import org.springframework.data.jpa.domain.Specification;
+
+public class FilterByReporter implements Specification<Absence> {
+
+  private User reporter;
+
+  public FilterByReporter(User reporter) {
+    this.reporter = reporter;
+  }
+
+  @Override
+  public Predicate toPredicate(Root<Absence> root, CriteriaQuery<?> criteriaQuery,
+      CriteriaBuilder criteriaBuilder) {
+    if (reporter == null) {
+      return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+    }
+    return criteriaBuilder.equal(root.get("reporter"), this.reporter);
+  }
+
+}

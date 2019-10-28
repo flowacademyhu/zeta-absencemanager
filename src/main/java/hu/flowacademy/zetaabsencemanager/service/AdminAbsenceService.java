@@ -11,8 +11,15 @@ import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.service.filter.FilterByAdministrationID;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByAssignee;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByBeginEnd;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByBeginStart;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByDaysEnd;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByDaysStart;
+import hu.flowacademy.zetaabsencemanager.service.filter.FilterByReporter;
 import hu.flowacademy.zetaabsencemanager.service.filter.FilterByStatus;
 import hu.flowacademy.zetaabsencemanager.service.filter.FilterByType;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -136,11 +143,18 @@ public class AdminAbsenceService {
   }
 
   public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
-      Status status) {
+      Status status, User reporter, User assignee, LocalDate start, LocalDate end,
+      Integer dayStart, Integer dayEnd) {
     Specification<Absence> spec = Specifications
         .where(new FilterByAdministrationID(administrationID))
         .and(new FilterByType(type))
-        .and(new FilterByStatus(status));
+        .and(new FilterByStatus(status))
+        .and(new FilterByReporter(reporter))
+        .and(new FilterByAssignee(assignee))
+        .and(new FilterByBeginStart(start))
+        .and(new FilterByBeginEnd(end))
+        .and(new FilterByDaysStart(dayStart))
+        .and(new FilterByDaysEnd(dayEnd));
     return spec;
   }
 

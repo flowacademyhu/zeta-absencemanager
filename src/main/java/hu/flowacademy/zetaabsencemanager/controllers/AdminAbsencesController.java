@@ -4,11 +4,14 @@ package hu.flowacademy.zetaabsencemanager.controllers;
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,12 +52,19 @@ public class AdminAbsencesController {
   }
 
   @GetMapping("/filter")
-  public List<Absence> getFilteringAbsences(
+  public List<Absence> getFilteredAbsences(
       @RequestParam(required = false) Long administrationID,
       @RequestParam(required = false) Type type,
-      @RequestParam(required = false) Status status) {
+      @RequestParam(required = false) Status status,
+      @RequestParam(required = false) User reporter,
+      @RequestParam(required = false) User assignee,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
+      @RequestParam(required = false) Integer dayStart,
+      @RequestParam(required = false) Integer dayEnd) {
     Specification<Absence> spec = absenceService
-        .getFilteredAbsences(administrationID, type, status);
+        .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, end,
+            dayStart, dayEnd);
 
     return absenceRepository
         .findAll(spec);
