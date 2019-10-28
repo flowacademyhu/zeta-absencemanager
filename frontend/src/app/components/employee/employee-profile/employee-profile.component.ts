@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
 import { ApiCommunicationService } from 'src/app/services/api-communication.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ChangePasswComponent } from 'src/app/components/employee/modals/change-passw/change-passw.component';
+import { ChangePasswModalComponent } from 'src/app/components/employee/modals/change-passw-modal/change-passw-modal.component';
 
 
 @Component({
@@ -38,10 +38,10 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   }
 
   changePassw(){
-    this.dialog.open(ChangePasswComponent)
+    this.dialog.open(ChangePasswModalComponent)
   }
 
-}
+}  
 
   
 
