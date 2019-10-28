@@ -21,7 +21,7 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
   private error: string;
   private leaders: User[];
   private users: User[];
-  private duration = 0;
+  private duration;
   private dates = [false, false];
 
   constructor(
@@ -45,18 +45,18 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
       });
     this.types = Absence.enumSelector(AbsenceType);
     this.createAbsenceForm = new FormGroup({
+      administrationID: new FormControl(""),
       type: new FormControl("", Validators.required),
       summary: new FormControl(""),
       begin: new FormControl("", Validators.required),
       end: new FormControl("", Validators.required),
       reporter: new FormControl("", Validators.required),
       assignee: new FormControl("", Validators.required),
-      duration: new FormControl(this.duration)
+      duration: new FormControl(this.duration, Validators.required)
     });
   }
 
   public countDuration(): number {
-    this.duration = 0;
     var begin = moment(this.createAbsenceForm.controls["begin"].value);
     var end = moment(this.createAbsenceForm.controls["end"].value);
     this.duration = Math.floor(moment.duration(end.diff(begin)).asDays()) + 1;
@@ -65,7 +65,6 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
   }
 
   changeHandler(event): number {
-    console.log(event);
     if (event.targetElement.id === "begin") {
       this.dates[0] = true;
     } else {
@@ -74,7 +73,6 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
     if (this.dates[0] === true && this.dates[1] === true) {
       this.countDuration();
     }
-    console.log(this.dates);
     return this.duration;
   }
 
@@ -87,7 +85,8 @@ export class AdminAbsenceCreateModalComponent implements OnInit {
         Absence.convertDate(this.createAbsenceForm.controls["end"].value),
         this.createAbsenceForm.controls["duration"].value,
         this.createAbsenceForm.controls["reporter"].value,
-        this.createAbsenceForm.controls["assignee"].value
+        this.createAbsenceForm.controls["assignee"].value,
+        this.createAbsenceForm.controls["administrationID"].value
       );
       this.api
         .adminAbsence()

@@ -18,38 +18,38 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminUsersController {
 
   @Autowired
-  private AdminUserService userService;
+  private AdminUserService adminUserService;
 
   @GetMapping("/{id}")
   public User getOne(@PathVariable("id") Long id) {
-    return userService.findOneUser(id);
+    return adminUserService.findOneUser(id);
 
   }
 
   @GetMapping("")
   public List<User> getAll() {
-    return userService.findAllUser();
+    return adminUserService.findAllUser();
   }
 
   @PostMapping("")
   public User createUser(@RequestBody User user) {
-    return userService.saveUser(user);
+    return adminUserService.saveUser(user);
   }
 
   @PutMapping("/{id}")
   public User update(@PathVariable("id") Long id, @RequestBody User user) {
-    return userService.updateUser(id, user);
+    return adminUserService.updateUser(id, user);
 
   }
 
   @DeleteMapping("/{id}")
   public void delete(@PathVariable("id") Long id) {
-    userService.delete(id);
+    adminUserService.delete(id);
   }
 
-/*  @GetMapping("/leaders")
+  @GetMapping("/leaders")
   public List<User> getLeaders() {
-    return userService.findAllLeader();
-  }*/
+    return adminUserService.findAllLeader();
+  }
 
 }

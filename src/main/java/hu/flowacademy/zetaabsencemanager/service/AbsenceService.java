@@ -5,11 +5,14 @@ import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +44,18 @@ public class AbsenceService {
     return absence;
   }
 
-  public List<Absence> findAll() {
+  public AbsenceDTO findAll(Pageable pageable) {
     User current = authenticationService.getCurrentUser();
-    return absenceRepository.findByReporterAndDeletedAtNull(current);
+    Page<Absence> absencePage = absenceRepository.findByReporterAndDeletedAtNull(current, pageable);
+    return AbsenceDTO.builder()
+        .embedded(absencePage.getContent())
+        .metadata(AbsenceMetadata.builder()
+            .totalElements(absencePage.getTotalElements())
+            .totalPages(absencePage.getTotalPages())
+            .pageNumber(absencePage.getNumber())
+            .pageSize(absencePage.getSize())
+            .build())
+        .build();
   }
 
   public Absence create(@NotNull Absence absence) {
@@ -71,7 +83,6 @@ public class AbsenceService {
     modifyAbsence.setSummary(absence.getSummary());
     modifyAbsence.setReporter(absence.getReporter());
     modifyAbsence.setAssignee(absence.getAssignee());
-    modifyAbsence.setStatus(absence.getStatus());
     publisher.publishEvent(new StateChangedEvent<>(
         absence.getId(), absence.getState()));
     modifyAbsence.setUpdatedAt(LocalDateTime.now());

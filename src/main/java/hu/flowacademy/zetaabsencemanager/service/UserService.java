@@ -65,10 +65,10 @@ public class UserService {
 
     public void delete(@NotNull Long id) {
         User deleted = findOneUser(id);
-        deleted.setDeletedAt(LocalDateTime.now());
         deleted.setRole(Roles.INACTIVE);
         deleted.setDeletedBy(authenticationService.getCurrentUser());
-        updateUser(id, deleted);
+        deleted.setDeletedAt(LocalDateTime.now());
+        userRepository.save(deleted);
     }
 
 

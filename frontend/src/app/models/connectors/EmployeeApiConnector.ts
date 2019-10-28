@@ -10,12 +10,12 @@ export class EmployeeApiConnector extends AbstractApiConnector {
         return this.http.get(this.apiRoute) as Observable<User>;
     }
 
-    /* public changePassword(id: number, firstPassword: String, secondPassword: String): Observable<User> {
-        return this.http.put(this.apiRoute + "/changepassw/" + id, {firstPassword, secondPassword}) as Observable<User>;
-    } */
-
     public changePassw(firstPassword: string, secondPassword: string, oldPassword: string): Observable<User> {
         return this.http.post(this.apiRoute + "/changepassw", {firstPassword: firstPassword, secondPassword: secondPassword, oldPassword: oldPassword}, {responseType: 'json'}) as Observable<User>;
+    }
+
+    public deleteProfile(id: number): Observable<User> {
+        return this.http.delete(this.apiRoute + "/" + id) as Observable<User>;
     }
 
 }

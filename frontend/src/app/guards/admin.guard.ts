@@ -10,7 +10,9 @@ export class AdminGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
         const isAdmin = this.session.getUserData().role === 'ADMIN';
-        if(!isAdmin) {
+        //TODO leader can access admin-group path yet
+        const isLeader = this.session.getUserData().role === 'LEADER';
+        if(!isAdmin && !isLeader) {
             this.router.navigate(["absences"]);
         } else {
             return true;

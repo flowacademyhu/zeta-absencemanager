@@ -1,4 +1,4 @@
-<h2 mat-dialog-title align="center">Create new absence</h2>
+<h2 mat-dialog-title align="center">Szabadság létrehozása</h2>
 <form
   [formGroup]="createAbsenceForm"
   autocomplete="off"
@@ -6,10 +6,20 @@
 >
   <mat-dialog-content>
     <mat-form-field>
-      <mat-label>Type</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Azonosító"
+        formControlName="administrationID"
+        id="administrationID"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Típus</mat-label>
       <mat-select formControlName="type" required>
-        <mat-option *ngFor="let type of types" [value]="type.value">
-          {{ type.title }}
+        <mat-option *ngFor="let type of types" [value]="type">
+          {{ type | type }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -18,7 +28,7 @@
       <input
         matInput
         type="text"
-        placeholder="Summary"
+        placeholder="Megnevezés"
         formControlName="summary"
         id="summary"
       />
@@ -28,7 +38,7 @@
       <input
         matInput
         [matDatepicker]="pickerBegin"
-        placeholder="Choose the start of the absence"
+        placeholder="Kezdő dátum"
         formControlName="begin"
         id="begin"
         readonly
@@ -47,7 +57,7 @@
       <input
         matInput
         [matDatepicker]="pickerEnd"
-        placeholder="Choose the end of the absence"
+        placeholder="Befejező dátum"
         formControlName="end"
         id="end"
         readonly
@@ -65,15 +75,16 @@
     <mat-form-field>
       <input
         matInput
+        required
         type="number"
-        placeholder="Duration"
+        placeholder="Napok száma"
         formControlName="duration"
         id="duration"
       />
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Reporter</mat-label>
+      <mat-label>Jogosult</mat-label>
       <mat-select formControlName="reporter" required>
         <mat-option *ngFor="let reporter of users" [value]="reporter">
           {{ reporter.firstName }} {{ reporter.lastName }}
@@ -82,7 +93,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Assignee</mat-label>
+      <mat-label>Felettes</mat-label>
       <mat-select formControlName="assignee" required>
         <mat-option *ngFor="let leader of leaders" [value]="leader">
           {{ leader.firstName }} {{ leader.lastName }}
@@ -94,10 +105,10 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-raised-button [disabled]="!createAbsenceForm.valid">
-      Create
+      Létrehozás
     </button>
     <button mat-raised-button color="warn" (click)="onCancel()">
-      Cancel
+      Mégsem
     </button>
   </mat-dialog-actions>
 </form>
