@@ -110,7 +110,9 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
       this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
       if(result) {
-        result.leader = <DataEntity>{id: 10};
+        console.log(result);
+        result.leader = <Object>{id: 10, group: {id: 2}, role: "EMPLOYEE"};
+        
 
       Object.assign(this.editedGroup, result);
       console.log(this.editedGroup);

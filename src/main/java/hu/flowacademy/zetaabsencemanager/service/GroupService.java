@@ -54,7 +54,7 @@ public class GroupService {
     modifyGroup.setName(group.getName());
     modifyGroup.setParentId(group.getParentId());
     modifyGroup.setEmployees(group.getEmployees());
-    if (group.getLeader().getGroup().getId() == modifyGroup.getParentId()
+    if (group.getLeader().getGroup().getId().equals(modifyGroup.getParentId())
         && group.getLeader().getRole() == Roles.EMPLOYEE) {
       modifyGroup.setLeader(group.getLeader());
     }

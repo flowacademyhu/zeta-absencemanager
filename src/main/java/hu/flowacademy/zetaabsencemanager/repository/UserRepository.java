@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   List<User> findAllByGroupAndDeletedAtNull(Group group);
 
   List<User> findByRoleAndDeletedAtNull(Roles role);
+
+  List<User> findByGroupAndDeletedAtNull(Group group);
 }

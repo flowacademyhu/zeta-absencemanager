@@ -14,7 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-admin-users',
-  templateUrl: './admin-users.component.html',  
+  templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.css']
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
@@ -33,21 +33,24 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
-    ) { }
+  ) { }
 
 
   ngOnInit() {
     this.route.data
-    .pipe(takeUntil(this._unsubscribe$))
-    .subscribe(data => {
-      this.usersList = data.userList;
-      this.dataSource = new MatTableDataSource(this.usersList);
-    })
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(data => {
+        this.usersList = data.userList;
+        this.dataSource = new MatTableDataSource(this.usersList);
+      })
+    this.api.employee().getCurrent().subscribe(currentUser => {
+      this.userData = currentUser;
+    });
   }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
-    this._unsubscribe$.complete(); 
+    this._unsubscribe$.complete();
   }
 
   createUser(): void {
@@ -58,18 +61,16 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: User) => {
         console.log(result);
-          this.api
-            .user()
-            .createUser(result)
-            .subscribe(() => this.router.navigateByUrl(this.router.url));
-          });
+        this.api
+          .user()
+          .createUser(result)
+          .subscribe(() => this.router.navigateByUrl(this.router.url));
+      });
   }
-
-
 
   editUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
-      data: {user: this.usersList.filter(user => user.id === id)[0]}
+      data: { user: this.usersList.filter(user => user.id === id)[0] }
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
@@ -79,23 +80,24 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(() => this.router.navigateByUrl(this.router.url));
     });
   }
-  
+
 
   deleteUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserDeleteModalComponent, {
-      data: {user: this.usersList.filter(user => user.id === id)[0]}
+      data: { user: this.usersList.filter(user => user.id === id)[0] }
     });
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(result => {
-        if(result === true) {
+        if (result === true) {
           this.api
             .user()
             .deleteUser(id)
             .subscribe(() => this.router.navigateByUrl(this.router.url));
-      }});
-  } 
-  
+        }
+      });
+  }
+
 }
