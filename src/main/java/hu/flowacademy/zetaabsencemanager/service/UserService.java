@@ -36,7 +36,6 @@ public class UserService {
     public User findOneUser(Long id) {
         User user = this.userRepository.findByIdAndDeletedAtNull(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-        user.setPassword(null);
         return user;
     }
 
@@ -52,15 +51,14 @@ public class UserService {
         return modifyUser;
     }
 
-    public User changePassword(@NotNull Long id, @NotNull String firstPassword, @NotNull String secondPassword) {
-        User modifyUser = findOneUser(id);
-        if (!firstPassword.equals(secondPassword)) {
-            throw new IllegalArgumentException("The submitted passwords are different.");
-        } else {
+    public User changePassword(@NotNull String firstPassword, @NotNull String secondPassword, @NotNull String oldPassword){
+        User modifyUser = authenticationService.getCurrentUser();
+        String currentPassword = modifyUser.getPassword();
+        if ((passwordEncoder.matches(oldPassword, currentPassword)) && (firstPassword.equals(secondPassword))){
             modifyUser.setPassword(passwordEncoder.encode(firstPassword));
             userRepository.save(modifyUser);
-            System.out.println("ÚJ JELSZÓ: " + modifyUser.getPassword());
-            // modifyUser.setPassword(null);
+        } else {
+            throw new IllegalArgumentException("The submitted passwords are different.");
         }
         return modifyUser;
     }
@@ -72,5 +70,4 @@ public class UserService {
         deleted.setDeletedAt(LocalDateTime.now());
         userRepository.save(deleted);
     }
-
 }
