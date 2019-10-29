@@ -8,7 +8,6 @@ import { ApiCommunicationService } from '../services/api-communication.service';
 
 
 @Injectable()
-
 export class UserResolver implements Resolve<User[]>{
 
     constructor(private api: ApiCommunicationService){}
@@ -16,14 +15,5 @@ export class UserResolver implements Resolve<User[]>{
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): User[] | Observable<User[]> | Promise<User[]> {
         return this.api.user().getUsers();
     }
-    
-        
-   /*  resolve(){
-        return this.resolverTryService.getData();
-    } */
-
-    //resolve(route: import("@angular/router").ActivatedRouteSnapshot, state: import("@angular/router").RouterStateSnapshot) {
-    //    throw new Error("Method not implemented.");"allowJs": true
-    //}
 
 }

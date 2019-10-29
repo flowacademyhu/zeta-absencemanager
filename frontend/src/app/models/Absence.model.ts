@@ -15,7 +15,7 @@ export enum Status {
   APPROVED = "APPROVED",
   ADMINISTRATED = "ADMINISTRATED",
   DONE = "DONE",
-  REJECT = "REJECT"
+  REJECTED = "REJECTED"
 }
 
 export class Absence extends DataEntity {

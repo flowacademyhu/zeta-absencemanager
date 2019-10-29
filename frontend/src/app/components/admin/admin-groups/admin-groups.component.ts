@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Group } from "src/app/models/Group.model";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminGroupCreateModalComponent } from "src/app/components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
 import { AdminGroupDeleteModalComponent } from '../modals/admin-group-delete-modal/admin-group-delete-modal.component';
+import { DataEntity } from 'src/app/models/DataEntity.model';
 
 @Component({
   selector: "app-admin-groups",
@@ -24,11 +25,13 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   constructor(
     private api: ApiCommunicationService,
     private activatedRoute: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public router: Router
   ) {
     this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
       data => {
         this.dataSource = data.groupResolver;
+        this.groupsList = data.groupResolver;
         console.log(this.dataSource);
         this.transformData();
       },
@@ -51,9 +54,6 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.api.group().getGroups().subscribe(users => {
-      this.groupsList = users;
-    })
   }
 
   ngOnDestroy(): void {
@@ -62,25 +62,21 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   }
 
   createGroup(): void {
-    const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {});
+    const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {
+      data: { group: this.groupsList
+      }
+    });
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: Group) => {
         console.log(result);
+        result.leader = <DataEntity>{id: result.leaderId};
         this.api
           .group()
           .createGroup(result)
-          .subscribe(u => {
-            this.api
-              .group()
-              .getGroups()
-              .subscribe(data => {
-                this.dataSource = data;
-                this.transformData();
-              });
-          });
+          .subscribe(() => this.router.navigateByUrl(this.router.url));
       });
   }
 
@@ -98,15 +94,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
           this.api
             .group()
             .deleteGroup(id)
-            .subscribe(u => {
-              this.api
-                .group()
-                .getGroups()
-                .subscribe(data => {
-                  this.dataSource = data;
-                  this.transformData();
-                });
-            });
+            .subscribe(() => this.router.navigateByUrl(this.router.url));
       }});
   } 
 

@@ -33,6 +33,7 @@ const routes: Routes = [
     path: "absences",
     component: EmployeeAbsencesComponent,
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: "always",        
     resolve: {
       absences: GetEmployeeAbsencesResolver
     }
@@ -41,22 +42,27 @@ const routes: Routes = [
   {
     path: "admin",
     canActivate: [AuthGuard, AdminGuard],
-    runGuardsAndResolvers: "always",
     children: [
       {
         path: "absences",
         component: AdminAbsencesComponent,
+        runGuardsAndResolvers: "always",        
         resolve: {
           adminAbsenceList: AdminAbsenceResolver
         }
       },
       {
         path: "users",
-        component: AdminUsersComponent
+        component: AdminUsersComponent,
+        runGuardsAndResolvers: "always",        
+        resolve: {
+          userList : UserResolver
+        }
       },
       {
         path: "groups",
         component: AdminGroupsComponent,
+        runGuardsAndResolvers: "always",
         resolve: {
           groupResolver: GroupResolver
         }
@@ -66,7 +72,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    onSameUrlNavigation: "reload"
+  })],
   exports: [RouterModule],
   providers: [
     GroupResolver,

@@ -18,13 +18,12 @@ import { RouterLink } from "@angular/router";
 })
 export class AdminGroupCreateModalComponent implements OnInit {
   public createGroupForm: FormGroup;
-  private groupList: Group[];
-  private userList: User[] = [];
-  private leaderList: User[] = [];
+  private employeeListByGroupIsNull: User[] = [];
+  private employeeList: User[] =  [];
 
   constructor(
     public dialogRef: MatDialogRef<AdminGroupCreateModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User,
+    @Inject(MAT_DIALOG_DATA) public data: Group[],
     public fb: FormBuilder,
     private api: ApiCommunicationService
   ) {
@@ -34,28 +33,38 @@ export class AdminGroupCreateModalComponent implements OnInit {
         Validators.maxLength(60)
       ]),
       parentId: new FormControl(null),
-      leader: new FormControl(null, Validators.required),
-      employees: new FormControl(null)
+      leaderId: new FormControl(null, [
+        Validators.required
+      ])
     });
   }
 
   ngOnInit() {
     this.dialogRef.updateSize("45%", "90%");
-    this.api
-      .group()
-      .getGroups()
-      .subscribe(groups => {
-        this.groupList = groups;
+      this.api
+      .user()
+      .getEmployees()
+      .subscribe(e => {
+        this.employeeListByGroupIsNull = e;
+        for (let i = 0; i < this.employeeListByGroupIsNull.length; i++) {
+          this.employeeList.push(this.employeeListByGroupIsNull[i])
+        }
       });
   }
 
-  addLeadersToList(group) {
-    this.leaderList = [];
-    for (let i = 0; i < group.employees.length; i++) {
-      if (group.employees[i].role == "EMPLOYEE") {
-        this.leaderList.push(group.employees[i]);
-      }
+  addEmployeesToList(id: number) {
+    if (id > 0) {
+    this.api
+      .user()
+      .getEmployeesByGroup(id)
+      .subscribe(e => {
+        this.employeeList = e;
+      });
     }
+    if (id === 0) {
+      this.employeeList = this.employeeListByGroupIsNull;
+    }
+
   }
 
   groupSelector(definition) {
@@ -70,5 +79,9 @@ export class AdminGroupCreateModalComponent implements OnInit {
       value: key,
       title: definition[key]
     }));
+  }
+
+  public onCancel(): void {
+    this.dialogRef.close();
   }
 }
