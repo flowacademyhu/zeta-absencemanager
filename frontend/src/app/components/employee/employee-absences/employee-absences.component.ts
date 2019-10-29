@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Absence } from "src/app/models/Absence.model";
-import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { EmployeeAbsenceEditModalComponent } from "../modals/employee-absence-edit-modal/employee-absence-edit-modal.component";
 import { MatPaginator, PageEvent } from '@angular/material';
 
@@ -35,9 +34,8 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private router: Router,
-    private api: ApiCommunicationService
-  ) {}
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.route.data
