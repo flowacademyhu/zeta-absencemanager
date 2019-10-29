@@ -61,8 +61,8 @@ const routes: Routes = [
       },
       {
         path: "groups",
-        runGuardsAndResolvers: "always",
         component: AdminGroupsComponent,
+        runGuardsAndResolvers: "always",
         resolve: {
           groupResolver: GroupResolver
         }

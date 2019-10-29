@@ -15,7 +15,7 @@ export class AbsenceStatusPipe implements PipeTransform {
         return "Kiírt";
       case Status.DONE:
         return "Lezárult";
-      case Status.REJECT:
+      case Status.REJECTED:
         return "Törölt";
     }
   }
