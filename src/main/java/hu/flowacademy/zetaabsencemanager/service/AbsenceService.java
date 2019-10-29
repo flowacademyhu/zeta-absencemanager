@@ -10,12 +10,14 @@ import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -182,5 +184,17 @@ public class AbsenceService {
       multiplier = 1;
     }
     return (int) Math.round(allSickLeave * multiplier);
+  }
+
+  @Scheduled(cron = "0 0 0 1 1 *")
+  public void yearly(){
+
+    AdminUserService adminUserService = null;
+    List<User> users=adminUserService.findAllUser();
+    for(int i=0;i<users.size();i++){
+      users.get(i).setTotalAbsenceDays(availableAbsence(users.get(i)));
+      users.get(i).setTotalSickLeaveDays(availableSickLeave(users.get(i)));
+
+    }
   }
 }
