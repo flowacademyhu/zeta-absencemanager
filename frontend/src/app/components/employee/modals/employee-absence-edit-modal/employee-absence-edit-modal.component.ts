@@ -46,7 +46,7 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
     });
     this.api
       .absence()
-      .getAbsence(this.data.absence.id)
+      .getAbsence(this.data.absence.id)  
       .subscribe(
         data => {
           this.absence = data;

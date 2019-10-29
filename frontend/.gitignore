@@ -44,3 +44,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+typescript.tsdk: node_modules/typescript/lib

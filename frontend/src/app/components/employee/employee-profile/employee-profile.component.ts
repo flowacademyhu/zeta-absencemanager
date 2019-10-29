@@ -14,10 +14,12 @@ import { takeUntil } from "rxjs/operators";
 import { UserService } from "src/app/services/user.service";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialog } from "@angular/material/dialog";
-import { ChangePasswComponent } from "src/app/components/employee/modals/change-passw/change-passw.component";
+import { ChangePasswModalComponent } from "../../employee/modals/change-passw-modal/change-passw-modal.component";
 import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { SessionService } from 'src/app/services/session.service';
 import { EmployeeAbsenceEditModalComponent } from '../modals/employee-absence-edit-modal/employee-absence-edit-modal.component';
+import { EmployeeProfileEditModalComponent } from '../modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
+import { Absence } from 'src/app/models/Absence.model';
 
 @Component({
   selector: "app-employee-profile",
@@ -50,8 +52,8 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
-  changePassw() {
-    const dialogRef = this.dialog.open(ChangePasswComponent);
+  changePassw(){
+   const dialogRef = this.dialog.open(ChangePasswModalComponent)
   }
 
   deleteProfile(): void {
@@ -72,7 +74,16 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
       );
   }
   
-  editProfile() {
-    const dialogRef = this.dialog.open(EmployeeAbsenceEditModalComponent);
+  openEditProfile() {
+    const dialogRef = this.dialog.open(EmployeeProfileEditModalComponent, {
+      data: {user: this.user}
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      if(result){
+      result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
+      }
+      Object.assign(this.user, result);      
+      this.api.user().updateSelfUser(this.user.id, this.user).subscribe(u => console.log("updated:" + u));
+    });
   }
 }
