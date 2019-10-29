@@ -11,10 +11,4 @@ public interface AbsenceRepository extends JpaRepository<Absence, Long>,
     JpaSpecificationExecutor<Absence> {
 
   Optional<Absence> findByIdAndDeletedAtNull(Long id);
-
-  //Page<Absence> findByReporterAndDeletedAtNull(User user, Specification<Absence> spec,
-  //   Pageable pageable);
-
-  //Page<Absence> findByAssigneeAndDeletedAtNull(User user, Specification<Absence> spec,
-  //    Pageable pageable);
 }

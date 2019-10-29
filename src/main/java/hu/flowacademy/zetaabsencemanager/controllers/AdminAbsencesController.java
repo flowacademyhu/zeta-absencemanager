@@ -12,7 +12,6 @@ import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,17 +49,18 @@ public class AdminAbsencesController {
       @RequestParam(required = false) Integer dayStart,
       @RequestParam(required = false) Integer dayEnd
   ) {
-    Specification<Absence> spec;
+
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      spec = adminAbsenceService
-          .getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
-              dayStart, dayEnd);
+      return adminAbsenceService
+          .findAllAbsence(administrationID, type, status, reporter, assignee, start, finish,
+              dayStart, dayEnd, pageable);
     } else {
-      spec = adminAbsenceService
-          .getFilteredAbsencesLeader(administrationID, type, status, reporter, start, finish,
-              dayStart, dayEnd);
+      return adminAbsenceService
+          .findAllAbsence(administrationID, type, status, reporter, assignee, start, finish,
+              dayStart, dayEnd, pageable);
+
     }
-    return adminAbsenceService.findAllAbsence(spec, pageable);
+
   }
 
   @PostMapping("")

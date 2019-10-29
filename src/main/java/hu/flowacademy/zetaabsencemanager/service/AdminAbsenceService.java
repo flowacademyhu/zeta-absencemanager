@@ -19,7 +19,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +47,13 @@ public class AdminAbsenceService {
   @Autowired
   private FilterService filterService;
 
-  public AbsenceDTO findAllAbsence(Specification<Absence> spec, Pageable pageable) {
+  public AbsenceDTO findAllAbsence(Long administrationID, Type type,
+      Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
+      Integer dayStart, Integer dayEnd, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      Page<Absence> absencePage = this.absenceRepository.findAll(spec, pageable);
+      Page<Absence> absencePage = this.absenceRepository.findAll(
+          getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
+              dayStart, dayEnd), pageable);
       return AbsenceDTO.builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()
@@ -62,7 +65,9 @@ public class AdminAbsenceService {
           .build();
     } else {
       Page<Absence> absencePage = this.absenceRepository
-          .findAll(spec, pageable);
+          .findAll(
+              getFilteredAbsencesLeader(administrationID, type, status, reporter, start, finish,
+                  dayStart, dayEnd), pageable);
       return AbsenceDTO.builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()
@@ -76,12 +81,11 @@ public class AdminAbsenceService {
   }
 
   public Absence findOne(@NotNull Long id) {
-    User current = authenticationService.getCurrentUser();
     Absence foundAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
-        foundAbsence.getAssignee().equals(current))) {
+        foundAbsence.getAssignee().equals(authenticationService.getCurrentUser()))) {
       return foundAbsence;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -120,8 +124,7 @@ public class AdminAbsenceService {
           absence.getId(), absence.getState()));
       modifyAbsence.setUpdatedAt(LocalDateTime.now());
       modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
-      absenceRepository.save(modifyAbsence);
-      return modifyAbsence;
+      return absenceRepository.save(modifyAbsence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
     }
@@ -137,7 +140,7 @@ public class AdminAbsenceService {
   public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
       Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
-    Specification<Absence> spec = Specifications
+    return Specification
         .where(filterService.filterByAdministrationID(administrationID))
         .and(filterService.filterByType(type))
         .and(filterService.filterByStatus(status))
@@ -147,24 +150,14 @@ public class AdminAbsenceService {
         .and(filterService.filterByBeginFinish(finish))
         .and(filterService.filterByDaysStart(dayStart))
         .and(filterService.filterByDaysEnd(dayEnd));
-    return spec;
   }
 
   public Specification<Absence> getFilteredAbsencesLeader(Long administrationID, Type type,
       Status status, User reporter, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
-    Specification<Absence> spec = Specifications
-        .where(filterService.filterByAdministrationID(administrationID))
-        .and(filterService.filterByType(type))
-        .and(filterService.filterByStatus(status))
-        .and(filterService.filterByReporter(reporter))
-        .and(filterService.filterByAssignee(this.authenticationService.getCurrentUser()))
-        .and(filterService.filterByBeginStart(start))
-        .and(filterService.filterByBeginFinish(finish))
-        .and(filterService.filterByDaysStart(dayStart))
-        .and(filterService.filterByDaysEnd(dayEnd))
-        .and(filterService.filterByDeletedAt());
-    return spec;
+    return getFilteredAbsences(administrationID, type, status, reporter,
+        authenticationService.getCurrentUser(), start, finish,
+        dayStart, dayEnd).and(filterService.filterByDeletedAt());
   }
 
 }

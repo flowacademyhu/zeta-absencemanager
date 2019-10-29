@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,10 +49,13 @@ public class AbsenceService {
     return absence;
   }
 
-  public AbsenceDTO findAll(Specification<Absence> spec, Pageable pageable) {
-    //User current = authenticationService.getCurrentUser();
+  public AbsenceDTO findAll(Long administrationID, Type type,
+      Status status, LocalDate start, LocalDate finish,
+      Integer dayStart, Integer dayEnd, Pageable pageable) {
     Page<Absence> absencePage = this.absenceRepository
-        .findAll(spec, pageable);
+        .findAll(
+            getFilteredAbsences(administrationID, type, status, start, finish, dayStart, dayEnd),
+            pageable);
 
     return AbsenceDTO.builder()
         .embedded(absencePage.getContent())
@@ -106,10 +108,10 @@ public class AbsenceService {
     update(id, deleted);
   }
 
-  public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
+  private Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
       Status status, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
-    Specification<Absence> spec = Specifications
+    return Specification
         .where(filterService.filterByAdministrationID(administrationID))
         .and(filterService.filterByType(type))
         .and(filterService.filterByStatus(status))
@@ -119,6 +121,5 @@ public class AbsenceService {
         .and(filterService.filterByDaysEnd(dayEnd))
         .and(filterService.filterByReporter(authenticationService.getCurrentUser()))
         .and(filterService.filterByDeletedAt());
-    return spec;
   }
 }
