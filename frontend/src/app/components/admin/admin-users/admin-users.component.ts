@@ -29,6 +29,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiCommunicationService,
+    private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
