@@ -33,6 +33,7 @@ const routes: Routes = [
     path: "absences",
     component: EmployeeAbsencesComponent,
     canActivate: [AuthGuard],
+    runGuardsAndResolvers: "always",        
     resolve: {
       absences: GetEmployeeAbsencesResolver
     }
