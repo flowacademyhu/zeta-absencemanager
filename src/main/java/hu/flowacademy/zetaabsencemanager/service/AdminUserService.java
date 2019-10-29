@@ -1,7 +1,10 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
+import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,84 +35,122 @@ public class AdminUserService {
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
 
+  @Autowired
+  private GroupRepository groupRepository;
+
+  @Autowired
+  private UserValidator userValidator;
+
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
   }
 
   public List<User> findAllUser() {
-    List<User> users = this.userRepository.findByDeletedAtNull();
-    return users;
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      return this.userRepository.findByDeletedAtNull();
+    } else {
+      Group group = this.groupRepository
+          .findByLeaderAndDeletedAtNull(this.authenticationService.getCurrentUser())
+          .orElseThrow(
+              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                  "Group not found, you are not leader of any group."));
+      return this.userRepository.findByGroupAndDeletedAtNull(group);
+    }
   }
 
   public User findOneUser(@NotNull Long id) {
-    User user = userRepository.findByIdAndDeletedAtNull(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
-    return user;
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      return userRepository.findByIdAndDeletedAtNull(id)
+          .orElseThrow(
+              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+    } else {
+      User user = userRepository.findByIdAndDeletedAtNull(id).orElseThrow(
+          () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+      if (this.userValidator.IsInLeadersGroup(this.authenticationService.getCurrentUser(), user)) {
+        return user;
+      } else {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not in your group.");
+      }
+    }
   }
 
   public User saveUser(@NotNull User user) {
-    User newUser = User.builder()
-        .firstName(user.getFirstName())
-        .lastName(user.getLastName())
-        .dateOfBirth(user.getDateOfBirth())
-        .dateOfEntry(user.getDateOfEntry())
-        .dateOfEndTrial(user.getDateOfEndTrial())
-        .email(user.getEmail())
-        .group(user.getGroup())
-        .position(user.getPosition())
-        .password(passwordEncoder.encode("user"))
-        .role(Roles.EMPLOYEE)
-        .numberOfChildren(user.getNumberOfChildren())
-        .extraAbsenceDays(0)
-        .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
-        .createdAt(LocalDateTime.now())
-        .build();
-    if (user.getExtraAbsenceDays() != null) {
-      newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
-      newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      User newUser = User.builder()
+          .firstName(user.getFirstName())
+          .lastName(user.getLastName())
+          .dateOfBirth(user.getDateOfBirth())
+          .dateOfEntry(user.getDateOfEntry())
+          .dateOfEndTrial(user.getDateOfEndTrial())
+          .email(user.getEmail())
+          .group(user.getGroup())
+          .position(user.getPosition())
+          .password(passwordEncoder.encode("user"))
+          .role(Roles.EMPLOYEE)
+          .numberOfChildren(user.getNumberOfChildren())
+          .extraAbsenceDays(0)
+          .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
+          .createdAt(LocalDateTime.now())
+          .build();
+      if (user.getExtraAbsenceDays() != null) {
+        newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
+        newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+      }
+      int availableAbsenceDays = absenceService.availableAbsence(newUser);
+      int sickLeaveDays = absenceService.availableSickLeave(newUser);
+      newUser.setTotalAbsenceDays(availableAbsenceDays);
+      newUser.setTotalSickLeaveDays(sickLeaveDays);
+      userRepository.save(newUser);
+      return newUser;
+    } else {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admin can create user.");
     }
-    int availableAbsenceDays = absenceService.availableAbsence(newUser);
-    int sickLeaveDays = absenceService.availableSickLeave(newUser);
-    newUser.setTotalAbsenceDays(availableAbsenceDays);
-    newUser.setTotalSickLeaveDays(sickLeaveDays);
-    userRepository.save(newUser);
-    return newUser;
   }
 
   public User updateUser(@NotNull Long id, @NotNull User user) {
-    User modifyUser = findOneUser(id);
-    modifyUser.setLastName(user.getLastName());
-    modifyUser.setFirstName(user.getFirstName());
-    modifyUser.setDateOfBirth(user.getDateOfBirth());
-    modifyUser.setEmail(user.getEmail());
-    modifyUser.setDateOfEntry(user.getDateOfEntry());
-    modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
-    modifyUser.setGroup(user.getGroup());
-    modifyUser.setPosition(user.getPosition());
-    modifyUser.setNumberOfChildren(user.getNumberOfChildren());
-    modifyUser.setOtherAbsenceEntitlement(user.getOtherAbsenceEntitlement());
-    if (!(user.getExtraAbsenceDays().equals(modifyUser.getExtraAbsenceDays()))) {
-      modifyUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
-      modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      User modifyUser = findOneUser(id);
+      modifyUser.setLastName(user.getLastName());
+      modifyUser.setFirstName(user.getFirstName());
+      modifyUser.setDateOfBirth(user.getDateOfBirth());
+      modifyUser.setEmail(user.getEmail());
+      modifyUser.setDateOfEntry(user.getDateOfEntry());
+      modifyUser.setDateOfEndTrial(user.getDateOfEndTrial());
+      modifyUser.setGroup(user.getGroup());
+      modifyUser.setPosition(user.getPosition());
+      modifyUser.setNumberOfChildren(user.getNumberOfChildren());
+      modifyUser.setOtherAbsenceEntitlement(user.getOtherAbsenceEntitlement());
+      if (!(user.getExtraAbsenceDays().equals(modifyUser.getExtraAbsenceDays()))) {
+        modifyUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
+        modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
+      }
+      modifyUser.setUpdatedAt(LocalDateTime.now());
+      modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
+      int availableAbsenceDays = absenceService.availableAbsence(modifyUser);
+      int sickLeaveDays = absenceService.availableSickLeave(modifyUser);
+      modifyUser.setTotalAbsenceDays(availableAbsenceDays);
+      modifyUser.setTotalSickLeaveDays(sickLeaveDays);
+      userRepository.save(modifyUser);
+      return modifyUser;
+    } else {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          "You can only modify your profile.");
     }
-    modifyUser.setUpdatedAt(LocalDateTime.now());
-    modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
-    int availableAbsenceDays = absenceService.availableAbsence(modifyUser);
-    int sickLeaveDays = absenceService.availableSickLeave(modifyUser);
-    modifyUser.setTotalAbsenceDays(availableAbsenceDays);
-    modifyUser.setTotalSickLeaveDays(sickLeaveDays);
-    userRepository.save(modifyUser);
-    return modifyUser;
   }
 
 
   public void delete(@NotNull Long id) {
-    User mod = findOneUser(id);
-    mod.setRole(Roles.INACTIVE);
-    mod.setDeletedBy(authenticationService.getCurrentUser());
-    mod.setDeletedAt(LocalDateTime.now());
-    userRepository.save(mod);
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      User mod = findOneUser(id);
+      mod.setRole(Roles.INACTIVE);
+      mod.setDeletedBy(authenticationService.getCurrentUser());
+      mod.setDeletedAt(LocalDateTime.now());
+      userRepository.save(mod);
+    } else {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          "You can only delete your profile.");
+    }
   }
 
   public List<User> findAllLeader() {

@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.repository;
 
 import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
   List<Group> findAllByDeletedAtIsNull();
 
   List<Group> findAllByParentId(Long id);
+
+  Optional<Group> findByLeaderAndDeletedAtNull(User leader);
 }
