@@ -17,9 +17,6 @@ public class UserValidator {
   public boolean IsInLeadersGroup(User leader, User user) {
     Group leadersGroup = this.groupRepository.findByLeaderAndDeletedAtNull(leader)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found."));
-    if (leadersGroup.getEmployees().contains(user)) {
-      return true;
-    }
-    return false;
+    return leadersGroup.getEmployees().contains(user);
   }
 }
