@@ -52,7 +52,11 @@ const routes: Routes = [
       },
       {
         path: "users",
-        component: AdminUsersComponent
+        component: AdminUsersComponent,
+        runGuardsAndResolvers: "always",        
+        resolve: {
+          userList : UserResolver
+        }
       },
       {
         path: "groups",

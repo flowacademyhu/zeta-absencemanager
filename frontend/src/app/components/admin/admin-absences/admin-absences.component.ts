@@ -49,7 +49,6 @@ export class AdminAbsencesComponent implements OnInit {
     this.route.data
     .pipe(takeUntil(this._unsubscribe$))
     .subscribe(data => {
-      console.log(data);
       this.absencesList = data.adminAbsenceList.embedded;
       this.pageSize = data.adminAbsenceList.metadata.pageSize;
       this.pageIndex = data.adminAbsenceList.metadata.pageIndex;

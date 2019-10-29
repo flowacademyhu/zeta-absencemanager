@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditModalComponent } from '../modals/admin-user-edit-modal/admin-user-edit-modal.component';
 import { MatTableDataSource } from '@angular/material';
 import { AdminUserDeleteModalComponent } from '../modals/admin-user-delete-modal/admin-user-delete-modal.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 
@@ -30,13 +30,16 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   constructor(
     private api: ApiCommunicationService,
     public dialog: MatDialog,
+    private route: ActivatedRoute,
     private router: Router
     ) { }
 
 
   ngOnInit() {
-    this.api.user().getUsers().subscribe(users => {
-      this.usersList = users;
+    this.route.data
+    .pipe(takeUntil(this._unsubscribe$))
+    .subscribe(data => {
+      this.usersList = data.userList;
       this.dataSource = new MatTableDataSource(this.usersList);
     })
   }
