@@ -1,24 +1,54 @@
-<h1 mat-dialog-title align="center" >CHANGE PASSWORD</h1>
+<h1 mat-dialog-title align="center">Jelszó megváltoztatása</h1>
 <div mat-dialog-content style="text-align: center;">
-    <div><mat-form-field>
-        <input matInput type="password" [(ngModel)]="oldPassword" placeholder="current password" required> 
-    </mat-form-field></div>
-    <div><mat-form-field>
-        <input matInput type="password" [(ngModel)]="firstPassword" placeholder="new password" required> 
-    </mat-form-field></div>
-    <div><mat-form-field>
-        <input matInput type="password" [(ngModel)]="secondPassword" placeholder="new password again" required> 
-    </mat-form-field></div>
-<div>    
-<p *ngIf="checkPasswords()">
-    helyes
-</p>  
-<p *ngIf="error ">
-    A régi jelszó nem egyezik!
-</p>
-</div> 
-<div mat-dialog-actions style="justify-content: center;">
-    <button mat-button (click)="onCancel()" style="border: 2px solid white;">Cancel</button>
-    <button mat-button (click)="sendPassw()" [disabled]="!checkPasswords()" style="border: 2px solid white;">Save</button>
+  <div>
+    <mat-form-field>
+      <input
+        matInput
+        type="password"
+        [(ngModel)]="oldPassword"
+        placeholder="jelenlegi jelszó"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input
+        matInput
+        type="password"
+        [(ngModel)]="firstPassword"
+        placeholder="új jelszó"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input
+        matInput
+        type="password"
+        [(ngModel)]="secondPassword"
+        placeholder="új jelszó mégegyszer"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-error *ngIf="error">
+      A régi jelszó nem egyezik!
+    </mat-error>
+  </div>
+  <div mat-dialog-actions style="justify-content: center;">
+    <button mat-button (click)="onCancel()" style="border: 2px solid white;">
+      Mégsem
+    </button>
+    <button
+      mat-button
+      (click)="sendPassw()"
+      [disabled]="!checkPasswords()"
+      style="border: 2px solid white;"
+    >
+      Mentés
+    </button>
+  </div>
 </div>
-  
