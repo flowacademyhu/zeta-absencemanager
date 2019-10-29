@@ -24,10 +24,10 @@
 
   <mat-form-field>
     <mat-label>Vezető</mat-label>
-    <mat-select required formControlName="leader">
+    <mat-select required formControlName="leaderId">
       <mat-option
         *ngFor="let leader of leaderList; let i = index"
-        [value]="leader"
+        [value]="leader.id"
       >
         {{ leader.firstName }} {{ leader.lastName }} {{ leader.id }}
       </mat-option>
@@ -36,10 +36,9 @@
 </div>
 <div mat-dialog-actions style="justify-content: center;">
   <button
-    mat-button
-    (click)="dialogRef.close()"
-    style="border: 2px solid white;"
-  >
+    mat-raised-button
+    (click)="onCancel()"
+    style="border: 2px solid white;">
     Mégsem
   </button>
   <button
