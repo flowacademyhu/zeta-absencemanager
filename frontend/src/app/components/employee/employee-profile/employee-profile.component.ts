@@ -17,6 +17,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { ChangePasswComponent } from "src/app/components/employee/modals/change-passw/change-passw.component";
 import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { SessionService } from 'src/app/services/session.service';
+import { EmployeeAbsenceEditModalComponent } from '../modals/employee-absence-edit-modal/employee-absence-edit-modal.component';
 
 @Component({
   selector: "app-employee-profile",
@@ -50,7 +51,7 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   }
 
   changePassw() {
-    this.dialog.open(ChangePasswComponent);
+    const dialogRef = this.dialog.open(ChangePasswComponent);
   }
 
   deleteProfile(): void {
@@ -69,5 +70,9 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
             }
           }
       );
-  } 
+  }
+  
+  editProfile() {
+    const dialogRef = this.dialog.open(EmployeeAbsenceEditModalComponent);
+  }
 }
