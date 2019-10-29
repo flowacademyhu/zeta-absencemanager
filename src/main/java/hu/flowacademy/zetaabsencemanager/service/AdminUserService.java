@@ -4,6 +4,7 @@ import hu.flowacademy.zetaabsencemanager.model.*;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,10 @@ public class AdminUserService {
 
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        .orElseThrow(() -> {
+
+          return new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND);
+        });
   }
 
   public List<User> findAllUser() {
@@ -55,7 +59,7 @@ public class AdminUserService {
 
   public User findOneUser(@NotNull Long id) {
     User user = userRepository.findByIdAndDeletedAtNull(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
     return user;
   }
 

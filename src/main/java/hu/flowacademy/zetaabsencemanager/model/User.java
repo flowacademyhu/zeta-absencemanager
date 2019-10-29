@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -40,15 +41,15 @@ public class User implements UserDetails {
   @Column
   private Long id;
 
-  @NotBlank(message = "Firstname is required.")
+  @NotBlank(message = Constants.FIRSTNAME_REQUIRED)
   @Column
   private String firstName;
 
-  @NotBlank(message = "Lastname is required.")
+  @NotBlank(message = Constants.LASTNAME_REQUIRED)
   @Column
   private String lastName;
 
-  @NotBlank(message = "Email is required.")
+  @NotBlank(message = Constants.EMAIL_REQUIRED)
   @Column(unique = true)
   private String email;
 
@@ -57,17 +58,17 @@ public class User implements UserDetails {
 
   @Column
   @Past
-  @NotNull(message = "Date of birth is required.")
+  @NotNull(message = Constants.DOB_REQUIRED)
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate dateOfBirth;
 
   @Column
-  @NotNull(message = "Date of entry is required.")
+  @NotNull(message = Constants.DOE_REQUIRED)
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate dateOfEntry;
 
   @Column
-  @NotNull(message = "Date of trial end is required.")
+  @NotNull(message = Constants.DOET_REQUIRED)
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate dateOfEndTrial;
 
@@ -76,14 +77,14 @@ public class User implements UserDetails {
   private Group group;
 
   @Column
-  @NotBlank(message = "Position is required.")
+  @NotBlank(message = Constants.POSITION_REQUIRED)
   private String position;
 
   @Column
   private Roles role;
 
   @Column
-  @NotNull(message = "Number of children is required.")
+  @NotNull(message = Constants.NOCH_REQUIRED)
   private Integer numberOfChildren;
 
   @Column
