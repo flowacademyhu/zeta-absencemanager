@@ -61,21 +61,21 @@ public class AdminUserService {
 
   public User saveUser(@NotNull User user) {
     User newUser = User.builder()
-            .firstName(user.getFirstName())
-            .lastName(user.getLastName())
-            .dateOfBirth(user.getDateOfBirth())
-            .dateOfEntry(user.getDateOfEntry())
-            .dateOfEndTrial(user.getDateOfEndTrial())
-            .email(user.getEmail())
-            .group(user.getGroup())
-            .position(user.getPosition())
-            .password(passwordEncoder.encode("user"))
-            .role(Roles.EMPLOYEE)
-            .numberOfChildren(user.getNumberOfChildren())
-            .extraAbsenceDays(0)
-            .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
-            .createdAt(LocalDateTime.now())
-            .build();
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .dateOfBirth(user.getDateOfBirth())
+        .dateOfEntry(user.getDateOfEntry())
+        .dateOfEndTrial(user.getDateOfEndTrial())
+        .email(user.getEmail())
+        .group(user.getGroup())
+        .position(user.getPosition())
+        .password(passwordEncoder.encode("user"))
+        .role(Roles.EMPLOYEE)
+        .numberOfChildren(user.getNumberOfChildren())
+        .extraAbsenceDays(0)
+        .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
+        .createdAt(LocalDateTime.now())
+        .build();
     if (user.getExtraAbsenceDays() != null) {
       newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
       newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
@@ -87,7 +87,7 @@ public class AdminUserService {
     userRepository.save(newUser);
     return newUser;
   }
-  
+
 
   public User updateUser(@NotNull Long id, @NotNull User user) {
     User modifyUser = findOneUser(id);
@@ -119,7 +119,6 @@ public class AdminUserService {
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
     Group modifyGroup = groupService.findOne(mod.getGroup().getId());
-    Group modifyLeadedGroup;
     List<Group> groupList = groupService.findAllGroup();
     mod.setRole(Roles.INACTIVE);
     mod.setDeletedBy(authenticationService.getCurrentUser());
@@ -134,13 +133,12 @@ public class AdminUserService {
     }
     for (Group g : groupList) {
       if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
-        modifyLeadedGroup = g;
-        modifyLeadedGroup.setLeader(null);
-        modifyLeadedGroup.setUpdatedAt(LocalDateTime.now());
-        groupRepository.save(modifyLeadedGroup);
+        g.setLeader(null);
+        g.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(g);
       }
     }
-    List <Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(mod);
+    List<Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(mod);
     for (Absence a : needToBeModifiedAbsences) {
       a.setStatus(Status.REJECTED);
       a.setUpdatedBy(authenticationService.getCurrentUser());
@@ -158,21 +156,21 @@ public class AdminUserService {
   public List<User> findAllEmployeesByGroupIsNull() {
     List<User> users = findAllUser();
     List<User> employees = new ArrayList<>();
-    for (int i = 0; i < users.size(); i++) {
-      if (users.get(i).getRole().equals(Roles.EMPLOYEE) && users.get(i).getGroup() == null) {
-        employees.add(users.get(i));
+    for (User u : users) {
+      if (u.getRole().equals(Roles.EMPLOYEE) && u.getGroup() == null) {
+        employees.add(u);
       }
     }
     return employees;
   }
 
   public List<User> findAllEmployeesByGroupId(Long groupId) {
-    Group group=groupService.findOne(groupId);
+    Group group = groupService.findOne(groupId);
     List<User> users = userRepository.findAllByGroupAndDeletedAtNull(group);
     List<User> employees = new ArrayList<>();
-    for (int i = 0; i < users.size(); i++) {
-      if (users.get(i).getRole().equals(Roles.EMPLOYEE)) {
-        employees.add(users.get(i));
+    for (User u : users) {
+      if (u.getRole().equals(Roles.EMPLOYEE)) {
+        employees.add(u);
       }
     }
     return employees;
