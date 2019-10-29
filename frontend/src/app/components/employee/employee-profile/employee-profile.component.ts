@@ -14,9 +14,9 @@ import { takeUntil } from "rxjs/operators";
 import { UserService } from "src/app/services/user.service";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialog } from "@angular/material/dialog";
-import { ChangePasswComponent } from "src/app/components/employee/modals/change-passw/change-passw.component";
-import { EmployeeProfileDeleteModalComponent } from "../modals/employee-profile-delete-modal/employee-profile-delete-modal.component";
-import { SessionService } from "src/app/services/session.service";
+import { ChangePasswModalComponent } from "../../employee/modals/change-passw-modal/change-passw-modal.component";
+import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: "app-employee-profile",
@@ -49,24 +49,25 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
-  changePassw() {
-    this.dialog.open(ChangePasswComponent);
+  changePassw(){
+    this.dialog.open(ChangePasswModalComponent)
   }
 
   deleteProfile(): void {
-    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, {});
+    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { });
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(result => {
-        if (result === true) {
+        if(result === true) {
           this.api
             .employee()
             .deleteProfile(this.user.id)
-            .subscribe(() => {});
-          this.sessionService.logout();
-        }
-      });
+            .subscribe(()=>{});
+            this.sessionService.logout();
+            }
+          }
+      );
   }
 }

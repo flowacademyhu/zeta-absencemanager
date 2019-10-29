@@ -7,24 +7,21 @@ import lombok.Data;
 @Data
 public class PasswordChangeDTO {
 
-  private String firstPassword;
-  private String secondPassword;
+    private String firstPassword;
+    private String secondPassword;
+    private String oldPassword;
 
 
-  public PasswordChangeDTO(String firstPassword, String secondPassword, String dataC) {
-    this.firstPassword = firstPassword;
-    this.secondPassword = secondPassword;
-  }
+    public PasswordChangeDTO(String firstPassword, String secondPassword, String oldPassword) {
+        this.firstPassword = firstPassword;
+        this.secondPassword = secondPassword;
+        this.oldPassword = oldPassword;
+    }
 
-  public PasswordChangeDTO(String firstPassword, String secondPassword) {
-    this.firstPassword = firstPassword;
-    this.secondPassword = secondPassword;
-  }
-
-
-  public PasswordChangeDTO() {
-    this.firstPassword = null;
-    this.secondPassword = null;
-  }
+    public PasswordChangeDTO() {
+        this.firstPassword = null;
+        this.secondPassword = null;
+        this.oldPassword = null;
+    }
 
 }
