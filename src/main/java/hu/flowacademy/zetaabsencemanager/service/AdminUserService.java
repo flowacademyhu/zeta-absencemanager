@@ -5,6 +5,7 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,31 +80,7 @@ public class AdminUserService {
     userRepository.save(newUser);
     return newUser;
   }
-
-  public User saveUserGroupId(Long id, @NotNull User user) {
-    User newUser = User.builder()
-        .firstName(user.getFirstName())
-        .lastName(user.getLastName())
-        .dateOfBirth(user.getDateOfBirth())
-        .dateOfEntry(user.getDateOfEntry())
-        .dateOfEndTrial(user.getDateOfEndTrial())
-        .email(user.getEmail())
-        .group(groupService.findOne(id))
-        .position(user.getPosition())
-        .password(passwordEncoder.encode("user"))
-        .role(Roles.EMPLOYEE)
-        .numberOfChildren(user.getNumberOfChildren())
-        .extraAbsenceDays(0)
-        .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
-        .createdAt(LocalDateTime.now())
-        .build();
-    if (user.getExtraAbsenceDays() != null) {
-      newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
-      newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
-    }
-    userRepository.save(newUser);
-    return newUser;
-  }
+  
 
   public User updateUser(@NotNull Long id, @NotNull User user) {
     User modifyUser = findOneUser(id);
@@ -137,16 +114,16 @@ public class AdminUserService {
     mod.setDeletedBy(authenticationService.getCurrentUser());
     mod.setGroup(null);
     mod.setDeletedAt(LocalDateTime.now());
-    for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
-      if (modifyGroup.getEmployees().get(i).getId().equals(id)) {
-        modifyGroup.getEmployees().remove(i);
+    for (User e : modifyGroup.getEmployees()) {
+      if (modifyGroup.getEmployees().size() > 0 && e.getId().equals(id)) {
+        modifyGroup.getEmployees().remove(e);
         modifyGroup.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(modifyGroup);
       }
     }
-    for (int i = 0; i < groupList.size(); i++) {
-      if (groupList.get(i).getLeader().getId().equals(id)) {
-        modifyLeadedGroup = groupList.get(i);
+    for (Group g : groupList) {
+      if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
+        modifyLeadedGroup = g;
         modifyLeadedGroup.setLeader(null);
         modifyLeadedGroup.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(modifyLeadedGroup);
@@ -165,5 +142,28 @@ public class AdminUserService {
 
   public List<User> findAllLeader() {
     return userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
+  }
+
+  public List<User> findAllEmployeesByGroupIsNull() {
+    List<User> users = findAllUser();
+    List<User> employees = new ArrayList<>();
+    for (int i = 0; i < users.size(); i++) {
+      if (users.get(i).getRole().equals(Roles.EMPLOYEE) && users.get(i).getGroup() == null) {
+        employees.add(users.get(i));
+      }
+    }
+    return employees;
+  }
+
+  public List<User> findAllEmployeesByGroupId(Long groupId) {
+    Group group=groupService.findOne(groupId);
+    List<User> users = userRepository.findAllByGroupAndDeletedAtNull(group);
+    List<User> employees = new ArrayList<>();
+    for (int i = 0; i < users.size(); i++) {
+      if (users.get(i).getRole().equals(Roles.EMPLOYEE)) {
+        employees.add(users.get(i));
+      }
+    }
+    return employees;
   }
 }

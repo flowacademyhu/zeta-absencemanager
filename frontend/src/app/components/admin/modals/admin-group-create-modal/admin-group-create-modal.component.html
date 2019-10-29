@@ -12,10 +12,11 @@
   <mat-form-field>
     <mat-label>Felettes Csoport</mat-label>
     <mat-select formControlName="parentId">
+      <mat-option (click)="addEmployeesToList(0)">None</mat-option>
       <mat-option
         *ngFor="let group of groupList"
         [value]="group.id"
-        (click)="addLeadersToList(group)"
+        (click)="addEmployeesToList(group.id)"
       >
         {{ group.id }} {{ group.name }}
       </mat-option>
@@ -24,12 +25,12 @@
 
   <mat-form-field>
     <mat-label>Vezető</mat-label>
-    <mat-select formControlName="leader">
+    <mat-select required formControlName="leader">
       <mat-option
-        *ngFor="let leader of leaderList; let i = index"
-        [value]="leader"
+        *ngFor="let employee of employeeList; let i = index"
+        [value]="employee"
       >
-        {{ leader.firstName }} {{ leader.lastName }} {{ leader.id }}
+        {{ employee.firstName }} {{ employee.lastName }} {{ employee.id }}
       </mat-option>
     </mat-select>
   </mat-form-field>

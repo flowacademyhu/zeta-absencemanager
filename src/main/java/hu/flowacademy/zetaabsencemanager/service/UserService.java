@@ -87,16 +87,16 @@ public class UserService {
         deleted.setDeletedBy(authenticationService.getCurrentUser());
         deleted.setGroup(null);
         deleted.setDeletedAt(LocalDateTime.now());
-        for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
-            if (modifyGroup.getEmployees().get(i).getId().equals(id)) {
-                modifyGroup.getEmployees().remove(i);
+        for (User e : modifyGroup.getEmployees()) {
+            if (modifyGroup.getEmployees().size() > 0 && e.getId().equals(id)) {
+                modifyGroup.getEmployees().remove(e);
                 modifyGroup.setUpdatedAt(LocalDateTime.now());
                 groupRepository.save(modifyGroup);
             }
         }
-        for (int i = 0; i < groupList.size(); i++) {
-            if (groupList.get(i).getLeader().getId().equals(id)) {
-                modifyLeadedGroup = groupList.get(i);
+        for (Group g : groupList) {
+            if (g.getLeader() != null && g.getLeader().getId().equals(id))  {
+                modifyLeadedGroup = g;
                 modifyLeadedGroup.setLeader(null);
                 modifyLeadedGroup.setUpdatedAt(LocalDateTime.now());
                 groupRepository.save(modifyLeadedGroup);

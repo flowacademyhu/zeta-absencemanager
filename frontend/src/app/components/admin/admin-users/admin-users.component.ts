@@ -53,8 +53,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: User) => {
         console.log(result);
-        // console.log(result.group.id)
-        if (result.group === null) {
           this.api
             .user()
             .createUser(result)
@@ -66,20 +64,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
                   this.dataSource = data;
                 });
             });
-          }
-        if (result.group !== null) {
-          this.api
-            .user()
-            .createUserGroupId(result, result.group.id)
-            .subscribe(u => {
-              this.api
-                .user()
-                .getUsers()
-                .subscribe(data => {
-                  this.dataSource = data;
-                });
-            });
-          }
         });
       
   }
