@@ -18,9 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
 
 
-    @Autowired
-    @Lazy
-    private BCryptPasswordEncoder passwordEncoder;
+  @Autowired
+  @Lazy
+  private BCryptPasswordEncoder passwordEncoder;
 
   @Autowired
   private UserRepository userRepository;
@@ -33,11 +33,11 @@ public class UserService {
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
   }
 
-    public User findOneUser(Long id) {
-        User user = this.userRepository.findByIdAndDeletedAtNull(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-        return user;
-    }
+  public User findOneUser(Long id) {
+    User user = this.userRepository.findByIdAndDeletedAtNull(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+    return user;
+  }
 
   public User updateUser(@NotNull Long id, @NotNull User user) {
     User modifyUser = findOneUser(id);
@@ -51,23 +51,25 @@ public class UserService {
     return modifyUser;
   }
 
-    public User changePassword(@NotNull String firstPassword, @NotNull String secondPassword, @NotNull String oldPassword){
-        User modifyUser = authenticationService.getCurrentUser();
-        String currentPassword = modifyUser.getPassword();
-        if ((passwordEncoder.matches(oldPassword, currentPassword)) && (firstPassword.equals(secondPassword))){
-            modifyUser.setPassword(passwordEncoder.encode(firstPassword));
-            userRepository.save(modifyUser);
-        } else {
-            throw new IllegalArgumentException("The submitted passwords are different.");
-        }
-        return modifyUser;
+  public User changePassword(@NotNull String firstPassword, @NotNull String secondPassword,
+      @NotNull String oldPassword) {
+    User modifyUser = authenticationService.getCurrentUser();
+    String currentPassword = modifyUser.getPassword();
+    if ((passwordEncoder.matches(oldPassword, currentPassword)) && (firstPassword
+        .equals(secondPassword))) {
+      modifyUser.setPassword(passwordEncoder.encode(firstPassword));
+      userRepository.save(modifyUser);
+    } else {
+      throw new IllegalArgumentException("The submitted passwords are different.");
     }
+    return modifyUser;
+  }
 
-    public void delete(@NotNull Long id) {
-        User deleted = findOneUser(id);
-        deleted.setRole(Roles.INACTIVE);
-        deleted.setDeletedBy(authenticationService.getCurrentUser());
-        deleted.setDeletedAt(LocalDateTime.now());
-        userRepository.save(deleted);
-    }
+  public void delete(@NotNull Long id) {
+    User deleted = findOneUser(id);
+    deleted.setRole(Roles.INACTIVE);
+    deleted.setDeletedBy(authenticationService.getCurrentUser());
+    deleted.setDeletedAt(LocalDateTime.now());
+    userRepository.save(deleted);
+  }
 }
