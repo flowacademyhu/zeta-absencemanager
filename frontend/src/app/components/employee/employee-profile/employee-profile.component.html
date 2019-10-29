@@ -57,12 +57,18 @@
       <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
     </mat-list>
   </div>
-  <div class="grid4">
+  <div class="grid4" *ngIf="this.user">
     <mat-list role="list">
-      <mat-list-item role="listitem">{{ total }}</mat-list-item>
-      <mat-list-item role="listitem">{{ available }}</mat-list-item>
-      <mat-list-item role="listitem">{{ used }}</mat-list-item>
-      <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.totalAbsenceDays }}</mat-list-item>
+      <mat-list-item role="listitem">{{
+        user.totalAbsenceDays - user.usedAbsenceDays
+      }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.usedAbsenceDays }}</mat-list-item>
+      <mat-list-item role="listitem"
+        >{{
+          (user.usedAbsenceDays / user.totalAbsenceDays) * 100
+        }}%</mat-list-item
+      >
     </mat-list>
   </div>
   <div class="grid5">
@@ -70,17 +76,33 @@
       <mat-list-item role="listitem"><h4>Betegszabadság</h4></mat-list-item>
       <mat-list-item role="listitem">Összes betegszabadság:</mat-list-item>
       <mat-list-item role="listitem">Kivehető:</mat-list-item>
-      <mat-list-item role="listitem">Kivett:</mat-list-item>
+      <mat-list-item role="listitem">Kivett betegszabadság:</mat-list-item>
+      <mat-list-item role="listitem">Kivett táppénz:</mat-list-item>
+      <mat-list-item role="listitem"
+        >Kivett gyermek betegszabadság:</mat-list-item
+      >
       <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
     </mat-list>
   </div>
-  <div class="grid6">
+  <div class="grid6" *ngIf="this.user">
     <mat-list role="list">
       <mat-list-item role="listitem"> </mat-list-item>
-      <mat-list-item role="listitem">{{ total }}</mat-list-item>
-      <mat-list-item role="listitem">{{ Available }}</mat-list-item>
-      <mat-list-item role="listitem">{{ used }}</mat-list-item>
-      <mat-list-item role="listitem">{{ totalrate }}</mat-list-item>
+      <mat-list-item role="listitem">{{
+        user.totalSickLeaveDays
+      }}</mat-list-item>
+      <mat-list-item role="listitem">{{
+        user.totalSickLeaveDays - user.usedSickLeaveDays
+      }}</mat-list-item>
+      <mat-list-item role="listitem">{{
+        user.usedSickLeaveDays
+      }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.usedSickPay }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.childSickPay }}</mat-list-item>
+      <mat-list-item role="listitem"
+        >{{
+          (user.usedSickLeaveDays / user.totalSickLeaveDays) * 100
+        }}%</mat-list-item
+      >
     </mat-list>
   </div>
 </div>

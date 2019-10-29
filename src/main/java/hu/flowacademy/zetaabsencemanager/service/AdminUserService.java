@@ -38,6 +38,9 @@ public class AdminUserService {
   private GroupService groupService;
 
   @Autowired
+  private AbsenceService absenceService;
+
+  @Autowired
   private BCryptPasswordEncoder passwordEncoder;
 
   public User findByEmail(@NotNull String email) {
@@ -77,6 +80,10 @@ public class AdminUserService {
       newUser.setExtraAbsenceDays(user.getExtraAbsenceDays());
       newUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
     }
+    int availableAbsenceDays = absenceService.availableAbsence(newUser);
+    int sickLeaveDays = absenceService.availableSickLeave(newUser);
+    newUser.setTotalAbsenceDays(availableAbsenceDays);
+    newUser.setTotalSickLeaveDays(sickLeaveDays);
     userRepository.save(newUser);
     return newUser;
   }
@@ -100,6 +107,10 @@ public class AdminUserService {
     }
     modifyUser.setUpdatedAt(LocalDateTime.now());
     modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
+    int availableAbsenceDays = absenceService.availableAbsence(modifyUser);
+    int sickLeaveDays = absenceService.availableSickLeave(modifyUser);
+    modifyUser.setTotalAbsenceDays(availableAbsenceDays);
+    modifyUser.setTotalSickLeaveDays(sickLeaveDays);
     userRepository.save(modifyUser);
     return modifyUser;
   }

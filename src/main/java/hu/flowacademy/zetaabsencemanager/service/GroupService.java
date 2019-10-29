@@ -42,11 +42,10 @@ public class GroupService {
   }
 
   public Group create(@NotNull Group group) {
-      if (group.getLeader() != null) {
-        User modifyUser = userService.findOneUser(group.getLeader().getId());
-        modifyUser.setRole(Roles.LEADER);
-        userRepository.save(modifyUser);
-      }
+      User modifyUser = userService.findOneUser(group.getLeader().getId());
+      modifyUser.setRole(Roles.LEADER);
+      userRepository.save(modifyUser);
+
       return groupRepository.save(group);
   }
 
@@ -80,7 +79,6 @@ public class GroupService {
       u.setGroup(null);
       if (u.getRole().equals(Roles.LEADER)) {
         u.setRole(Roles.EMPLOYEE);
-        // userRepository.save(u);
       }
       u.setUpdatedAt(LocalDateTime.now());
       u.setUpdatedBy(authenticationService.getCurrentUser());

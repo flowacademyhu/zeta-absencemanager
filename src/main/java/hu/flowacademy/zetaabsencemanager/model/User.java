@@ -3,7 +3,6 @@ package hu.flowacademy.zetaabsencemanager.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -90,6 +88,24 @@ public class User implements UserDetails {
 
   @Column
   private String otherAbsenceEntitlement;
+
+  @Column
+  private Integer totalAbsenceDays;
+
+  @Column
+  private Integer usedAbsenceDays;
+
+  @Column
+  private Integer totalSickLeaveDays;
+
+  @Column
+  private Integer usedSickLeaveDays;
+
+  @Column
+  private Integer usedSickPay;
+
+  @Column
+  private Integer childSickPay;
 
   @Column
   private Integer extraAbsenceDays;
