@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,9 @@ public class AbsenceService {
   @Autowired
   private ApplicationEventPublisher publisher;
 
+  @Autowired
+  private FilterService filterService;
+
   public Absence findOne(@NotNull Long id) {
     Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
@@ -46,9 +50,14 @@ public class AbsenceService {
     return absence;
   }
 
-  public AbsenceDTO findAll(Pageable pageable) {
-    User current = authenticationService.getCurrentUser();
-    Page<Absence> absencePage = absenceRepository.findByReporterAndDeletedAtNull(current, pageable);
+  public AbsenceDTO findAll(Long administrationID, Type type,
+      Status status, LocalDate start, LocalDate finish,
+      Integer dayStart, Integer dayEnd, Pageable pageable) {
+    Page<Absence> absencePage = this.absenceRepository
+        .findAll(
+            getFilteredAbsences(administrationID, type, status, start, finish, dayStart, dayEnd),
+            pageable);
+
     return AbsenceDTO.builder()
         .embedded(absencePage.getContent())
         .metadata(AbsenceMetadata.builder()
@@ -137,6 +146,21 @@ public class AbsenceService {
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
+  }
+
+  private Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
+      Status status, LocalDate start, LocalDate finish,
+      Integer dayStart, Integer dayEnd) {
+    return Specification
+        .where(filterService.filterByAdministrationID(administrationID))
+        .and(filterService.filterByType(type))
+        .and(filterService.filterByStatus(status))
+        .and(filterService.filterByBeginStart(start))
+        .and(filterService.filterByBeginFinish(finish))
+        .and(filterService.filterByDaysStart(dayStart))
+        .and(filterService.filterByDaysEnd(dayEnd))
+        .and(filterService.filterByReporter(authenticationService.getCurrentUser()))
+        .and(filterService.filterByDeletedAt());
   }
 
   public int availableAbsence(@NotNull User user) {
