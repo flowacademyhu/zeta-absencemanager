@@ -58,11 +58,10 @@ public class UserService {
     if ((passwordEncoder.matches(oldPassword, currentPassword)) && (firstPassword
         .equals(secondPassword))) {
       modifyUser.setPassword(passwordEncoder.encode(firstPassword));
-      userRepository.save(modifyUser);
+      return userRepository.save(modifyUser);
     } else {
       throw new IllegalArgumentException("The submitted passwords are different.");
     }
-    return modifyUser;
   }
 
   public void delete(@NotNull Long id) {

@@ -44,11 +44,10 @@ public class CurrentUserController {
     return authenticationService.getCurrentUser();
   }
 
-  @PutMapping("/changepassw/{userId}")
-  public User changePassword(@PathVariable("userId") Long userId,
-      @RequestBody PasswordChangeDTO password) {
+  @PutMapping("/changepassw")
+  public User changePassword(@RequestBody PasswordChangeDTO passwords) {
     return userService
-        .changePassword(userId, password.getFirstPassword(), password.getSecondPassword());
+        .changePassword(passwords.getFirstPassword(), passwords.getSecondPassword(), passwords.getOldPassword());
   }
 
 }
