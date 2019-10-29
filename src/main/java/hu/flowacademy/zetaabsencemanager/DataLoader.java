@@ -309,6 +309,7 @@ public class DataLoader implements CommandLineRunner {
         .type(Type.ABSENCE)
         .status(Status.OPEN)
         .duration(2)
+        .administrationID(6l)
         .build();
     this.absenceRepository.save(absence6);
 
@@ -321,6 +322,7 @@ public class DataLoader implements CommandLineRunner {
         .type(Type.ABSENCE)
         .status(Status.OPEN)
         .duration(2)
+        .administrationID(7l)
         .build();
     this.absenceRepository.save(absence7);
 

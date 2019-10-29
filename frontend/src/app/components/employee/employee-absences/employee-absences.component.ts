@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { EmployeeAbsenceCreateModalComponent } from "../modals/employee-absence-create-modal/employee-absence-create-modal.component";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { Absence } from "src/app/models/Absence.model";
-import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { EmployeeAbsenceEditModalComponent } from "../modals/employee-absence-edit-modal/employee-absence-edit-modal.component";
+import { MatPaginator, PageEvent } from '@angular/material';
 
 @Component({
   selector: "app-employee-absences",
@@ -26,18 +26,25 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   ];
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   absences: Absence[];
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  public length = 0;
+  public pageIndex = 0;
+  public pageSize = 5; 
 
   constructor(
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private api: ApiCommunicationService
-  ) {}
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.route.data
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((data: any) => {
-        this.absences = data.absences;
+        this.absences = data.absences.embedded;
+        this.pageSize = data.absences.metadata.pageSize;
+        this.pageIndex = data.absences.metadata.pageIndex;
+        this.length = data.absences.metadata.totalElements;
       });
   }
 
@@ -58,14 +65,7 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(data2 => {
-        this.api
-          .absence()
-          .getAbsences()
-          .subscribe(data => {
-            this.absences = data;
-          });
-      });
+      .subscribe(() => this.router.navigateByUrl(this.router.url));
   }
 
   editAbsence(id: number): void {
@@ -76,18 +76,20 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(data2 => {
-        this.api
-          .absence()
-          .getAbsences()
-          .subscribe(data => {
-            this.absences = data;
-          });
-      });
+      .subscribe(() => this.router.navigateByUrl(this.router.url));
   }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
+  }
+
+  public onPageChange(event: PageEvent) {
+    this.router.navigate(["absences"], {
+      queryParams: { 
+        page: event.pageIndex,
+        size: event.pageSize
+      }
+    })
   }
 }
