@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditModalComponent } from '../modals/admin-user-edit-modal/admin-user-edit-modal.component';
 import { MatTableDataSource } from '@angular/material';
 import { AdminUserDeleteModalComponent } from '../modals/admin-user-delete-modal/admin-user-delete-modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -28,17 +29,21 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiCommunicationService,
+    private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    ) { }
+    ) {
+      this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
+        data => {
+          this.usersList = data.userResolver;
+        },
+        error => {
+          this.error = error;
+        }
+      );
+    }
 
 
-  ngOnInit() {
-    this.api.user().getUsers().subscribe(users => {
-      this.usersList = users;
-      this.dataSource = new MatTableDataSource(this.usersList);
-      console.log(this.usersList);
-    })
-  }
+  ngOnInit() { }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -61,7 +66,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
                 .user()
                 .getUsers()
                 .subscribe(data => {
-                  this.dataSource = data;
+                  this.usersList = data;
                 });
             });
         });
@@ -117,7 +122,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
                 .user()
                 .getUsers()
                 .subscribe(data => {
-                  this.dataSource = data;
+                  this.usersList = data;
                 });
             });
       }});

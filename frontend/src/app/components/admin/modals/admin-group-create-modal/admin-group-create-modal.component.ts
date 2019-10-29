@@ -18,13 +18,12 @@ import { RouterLink } from "@angular/router";
 })
 export class AdminGroupCreateModalComponent implements OnInit {
   public createGroupForm: FormGroup;
-  private groupList: Group[];
   private employeeListByGroupIsNull: User[] = [];
   private employeeList: User[] =  [];
 
   constructor(
     public dialogRef: MatDialogRef<AdminGroupCreateModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User,
+    @Inject(MAT_DIALOG_DATA) public data: Group[],
     public fb: FormBuilder,
     private api: ApiCommunicationService
   ) {
@@ -42,12 +41,6 @@ export class AdminGroupCreateModalComponent implements OnInit {
 
   ngOnInit() {
     this.dialogRef.updateSize("45%", "90%");
-    this.api
-      .group()
-      .getGroups()
-      .subscribe(groups => {
-        this.groupList = groups;
-    });
       this.api
       .user()
       .getEmployees()

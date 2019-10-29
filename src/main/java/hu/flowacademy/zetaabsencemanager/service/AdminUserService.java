@@ -118,17 +118,20 @@ public class AdminUserService {
 
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
-    Group modifyGroup = groupService.findOne(mod.getGroup().getId());
     List<Group> groupList = groupService.findAllGroup();
     mod.setRole(Roles.INACTIVE);
     mod.setDeletedBy(authenticationService.getCurrentUser());
     mod.setGroup(null);
     mod.setDeletedAt(LocalDateTime.now());
-    for (User e : modifyGroup.getEmployees()) {
-      if (modifyGroup.getEmployees().size() > 0 && e.getId().equals(id)) {
-        modifyGroup.getEmployees().remove(e);
-        modifyGroup.setUpdatedAt(LocalDateTime.now());
-        groupRepository.save(modifyGroup);
+    if (mod.getGroup() != null) {
+      Group modifyGroup = groupService.findOne(mod.getGroup().getId());
+      for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
+        if (modifyGroup.getEmployees().size() > 0 && modifyGroup.getEmployees().get(i).getId()
+            .equals(id)) {
+          modifyGroup.getEmployees().remove(modifyGroup.getEmployees().get(i));
+          modifyGroup.setUpdatedAt(LocalDateTime.now());
+          groupRepository.save(modifyGroup);
+        }
       }
     }
     for (Group g : groupList) {

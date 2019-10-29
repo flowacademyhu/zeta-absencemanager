@@ -14,7 +14,7 @@
     <mat-select formControlName="parentId">
       <mat-option (click)="addEmployeesToList(0)">None</mat-option>
       <mat-option
-        *ngFor="let group of groupList"
+        *ngFor="let group of data.group"
         [value]="group.id"
         (click)="addEmployeesToList(group.id)"
       >

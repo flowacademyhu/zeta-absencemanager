@@ -29,6 +29,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
       data => {
         this.dataSource = data.groupResolver;
+        this.groupsList = data.groupResolver;
         console.log(this.dataSource);
         this.transformData();
       },
@@ -51,9 +52,6 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.api.group().getGroups().subscribe(groups => {
-      this.groupsList = groups;
-    })
   }
 
   ngOnDestroy(): void {
@@ -62,7 +60,10 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   }
 
   createGroup(): void {
-    const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {});
+    const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {
+      data: { group: this.groupsList
+      }
+    });
 
     dialogRef
       .afterClosed()

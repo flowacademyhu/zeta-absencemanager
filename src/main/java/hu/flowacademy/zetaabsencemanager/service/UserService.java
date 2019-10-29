@@ -67,40 +67,40 @@ public class UserService {
   }
 
   public void delete(@NotNull Long id) {
-      User deleted = findOneUser(id);
+    User deleted = findOneUser(id);
+    List<Group> groupList = groupService.findAllGroup();
+    deleted.setRole(Roles.INACTIVE);
+    deleted.setDeletedBy(authenticationService.getCurrentUser());
+    deleted.setGroup(null);
+    deleted.setDeletedAt(LocalDateTime.now());
+    if (deleted.getGroup() != null) {
       Group modifyGroup = groupService.findOne(deleted.getGroup().getId());
-      Group modifyLeadedGroup;
-      List<Group> groupList = groupService.findAllGroup();
-      deleted.setRole(Roles.INACTIVE);
-      deleted.setDeletedBy(authenticationService.getCurrentUser());
-      deleted.setGroup(null);
-      deleted.setDeletedAt(LocalDateTime.now());
-      for (User e : modifyGroup.getEmployees()) {
-          if (modifyGroup.getEmployees().size() > 0 && e.getId().equals(id)) {
-              modifyGroup.getEmployees().remove(e);
-              modifyGroup.setUpdatedAt(LocalDateTime.now());
-              groupRepository.save(modifyGroup);
-          }
+      for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
+        if (modifyGroup.getEmployees().size() > 0 && modifyGroup.getEmployees().get(i).getId()
+            .equals(id)) {
+          modifyGroup.getEmployees().remove(modifyGroup.getEmployees().get(i));
+          modifyGroup.setUpdatedAt(LocalDateTime.now());
+          groupRepository.save(modifyGroup);
+        }
       }
-      for (Group g : groupList) {
-          if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
-              modifyLeadedGroup = g;
-              modifyLeadedGroup.setLeader(null);
-              modifyLeadedGroup.setUpdatedAt(LocalDateTime.now());
-              groupRepository.save(modifyLeadedGroup);
-          }
+    }
+    for (Group g : groupList) {
+      if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
+        g.setLeader(null);
+        g.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(g);
       }
-      List<Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(deleted);
-      for (Absence a : needToBeModifiedAbsences) {
-          a.setStatus(Status.REJECTED);
-          a.setReporter(null);
-          a.setUpdatedAt(LocalDateTime.now());
-          a.setUpdatedBy(authenticationService.getCurrentUser());
-          absenceRepository.save(a);
+    }
+    List<Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(deleted);
+    for (Absence a : needToBeModifiedAbsences) {
+      a.setStatus(Status.REJECTED);
+      a.setReporter(null);
+      a.setUpdatedAt(LocalDateTime.now());
+      a.setUpdatedBy(authenticationService.getCurrentUser());
+      absenceRepository.save(a);
       }
-      userRepository.save(deleted);
+    userRepository.save(deleted);
   }
-
 
   public User changePassword(@NotNull String firstPassword, @NotNull String secondPassword,
       @NotNull String oldPassword) {

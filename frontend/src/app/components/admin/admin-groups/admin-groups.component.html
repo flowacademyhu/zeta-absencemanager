@@ -22,7 +22,7 @@
   <ng-container matColumnDef="leaders">
     <mat-header-cell *matHeaderCellDef> Vezető </mat-header-cell>
     <mat-cell *matCellDef="let group">
-      <span *ngIf="group.leader !== null">
+      <span *ngIf="group.leader">
           {{ group.leader.lastName }} {{ group.leader.firstName }}
       </span>
     </mat-cell>
