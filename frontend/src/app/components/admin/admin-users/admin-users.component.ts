@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditModalComponent } from '../modals/admin-user-edit-modal/admin-user-edit-modal.component';
 import { MatTableDataSource } from '@angular/material';
 import { AdminUserDeleteModalComponent } from '../modals/admin-user-delete-modal/admin-user-delete-modal.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -31,19 +31,20 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     private api: ApiCommunicationService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    ) {
-      this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
-        data => {
-          this.usersList = data.userResolver;
-        },
-        error => {
-          this.error = error;
-        }
-      );
-    }
+    public router: Router
+    ) { }
 
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
+      data => {
+        this.usersList = data.userResolver;
+      },
+      error => {
+        this.error = error;
+      }
+    );
+   }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -61,16 +62,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
           this.api
             .user()
             .createUser(result)
-            .subscribe(u => {
-              this.api
-                .user()
-                .getUsers()
-                .subscribe(data => {
-                  this.usersList = data;
-                });
-            });
+            .subscribe(()=> this.router.navigateByUrl(this.router.url));
         });
-      
   }
 
   private dateConverter() {
@@ -117,14 +110,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
           this.api
             .user()
             .deleteUser(id)
-            .subscribe(u => {
-              this.api
-                .user()
-                .getUsers()
-                .subscribe(data => {
-                  this.usersList = data;
-                });
-            });
+            .subscribe(()=> this.router.navigateByUrl(this.router.url));
       }});
   } 
   

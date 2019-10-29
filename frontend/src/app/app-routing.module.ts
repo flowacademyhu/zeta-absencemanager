@@ -53,6 +53,7 @@ const routes: Routes = [
       {
         path: "users",
         component: AdminUsersComponent,
+        runGuardsAndResolvers: "always",
         resolve: {
           userResolver: UserResolver
         }
@@ -60,6 +61,7 @@ const routes: Routes = [
       {
         path: "groups",
         component: AdminGroupsComponent,
+        runGuardsAndResolvers: "always",
         resolve: {
           groupResolver: GroupResolver
         }
