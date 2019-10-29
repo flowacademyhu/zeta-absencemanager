@@ -33,8 +33,8 @@ public class GroupService {
 
   public Group create(@NotNull Group group) {
 
-      group.getLeader().setRole(Roles.LEADER);
-      return groupRepository.save(group);
+    group.getLeader().setRole(Roles.LEADER);
+    return groupRepository.save(group);
   }
 
   public Group updateGroup(@NotNull Long id, @NotNull Group group) {

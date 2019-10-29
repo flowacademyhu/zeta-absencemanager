@@ -30,6 +30,9 @@ public class AdminAbsenceService {
   private AbsenceRepository absenceRepository;
 
   @Autowired
+  private AbsenceService absenceService;
+
+  @Autowired
   private AuthenticationService authenticationService;
 
   @Autowired
@@ -88,10 +91,12 @@ public class AdminAbsenceService {
     absence.setAssignee(absence.getAssignee());
     absence.setStatus(Status.OPEN);
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      absenceService.increaseUsedDays(absence);
       return absenceRepository.save(absence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
     }
+
   }
 
   public Absence update(@NotNull Long id, @NotNull Absence absence) {
@@ -105,6 +110,10 @@ public class AdminAbsenceService {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
+      if (modifyAbsence.getDuration() != absence.getDuration()) {
+        absenceService.increaseUsedDays(absence);
+        absenceService.reduceUsedDays(modifyAbsence);
+      }
       modifyAbsence.setDuration(absence.getDuration());
       modifyAbsence.setEnd(absence.getEnd());
       modifyAbsence.setReporter(absence.getReporter());
@@ -122,9 +131,11 @@ public class AdminAbsenceService {
 
   public void delete(@NotNull Long id) {
     Absence deleted = findOne(id);
+    absenceService.reduceUsedDays(deleted);
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
   }
+
 
 }

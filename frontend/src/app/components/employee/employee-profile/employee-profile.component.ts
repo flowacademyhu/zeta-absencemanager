@@ -52,7 +52,7 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   changePassw(){
     this.dialog.open(ChangePasswModalComponent)
   }
-  
+
   deleteProfile(): void {
     const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { });
 
@@ -69,5 +69,5 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
             }
           }
       );
-  } 
+  }
 }
