@@ -30,7 +30,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Save</button>
+  <button mat-button [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Mentés</button>
 
-  <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+  <button mat-raised-button color="warn" (click)="onCancel()">Mégsem</button>
 </mat-dialog-actions>

@@ -109,9 +109,10 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     
     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
       this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
+      if(result) {
       Object.assign(this.editedGroup, result);
-      console.log(this.editedGroup);      
       this.api.group().updateGroup(this.editedGroup.id, this.editedGroup).subscribe(u => console.log("updated:" + u));
+      }
     });
   }
 

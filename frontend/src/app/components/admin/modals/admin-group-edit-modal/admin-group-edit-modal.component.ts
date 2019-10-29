@@ -36,4 +36,7 @@ export class AdminGroupEditModalComponent implements OnInit {
     this.dialogRef.updateSize("25%", "90%");
   }
 
+  onCancel() {
+    this.dialogRef.close();
+  }
 }
