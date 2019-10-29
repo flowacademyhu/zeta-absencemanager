@@ -9,6 +9,7 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.service.AbsenceService;
 import hu.flowacademy.zetaabsencemanager.service.GroupService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class DataLoader implements CommandLineRunner {
   private final GroupRepository groupRepository;
   private final UserRepository userRepository;
   private final GroupService groupService;
+  private final AbsenceService absenceService;
 
   @Autowired
   @Lazy
@@ -39,11 +41,12 @@ public class DataLoader implements CommandLineRunner {
   @Autowired
   public DataLoader(AbsenceRepository absenceRepository,
       GroupRepository groupRepository,
-      UserRepository userRepository, GroupService groupService) {
+      UserRepository userRepository, GroupService groupService, AbsenceService absenceService) {
     this.absenceRepository = absenceRepository;
     this.groupRepository = groupRepository;
     this.userRepository = userRepository;
     this.groupService = groupService;
+    this.absenceService = absenceService;
   }
 
   @Override
@@ -52,7 +55,7 @@ public class DataLoader implements CommandLineRunner {
     List<String> firstNames =
         Arrays.asList("Allan", "Anastasia", "Andy", "Arlene", "Beau", "Brianna", "Cara", "Carly",
             "Carolina", "Chelsea", "Concetta", "Danilo", "Daron", "Darren", "Debbie", "Devin",
-            "Evan", "Frieda", "Gaylord", "Grover", "Irma", "Jon", "Kristopher", "Leonor", "Lorrie",
+            "Evan", "Frieda", "Samuel", "Grover", "Irma", "Jon", "Kristopher", "Leonor", "Lorrie",
             "Meredith", "Mindy", "Newton", "Peggy", "Pete", "Roderick", "Son", "Tristan", "Timoty");
 
     List<String> lastNames =
@@ -70,12 +73,18 @@ public class DataLoader implements CommandLineRunner {
         .lastName(lastNames.get(0))
         .role(Roles.ADMIN)
         .dateOfBirth(LocalDate.of(1970, Month.FEBRUARY, 28))
-        .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
-        .dateOfEndTrial(LocalDate.of(2010, Month.AUGUST, 12))
+        .dateOfEntry(LocalDate.of(2019, Month.FEBRUARY, 12))
+        .dateOfEndTrial(LocalDate.of(2019, Month.MAY, 12))
         .extraAbsenceDays(0)
         .position("testposition")
         .numberOfChildren(3)
         .build();
+    admin.setTotalAbsenceDays(absenceService.availableAbsence(admin));
+    admin.setTotalSickLeaveDays(absenceService.availableSickLeave(admin));
+    admin.setUsedAbsenceDays(0);
+    admin.setUsedSickLeaveDays(0);
+    admin.setChildSickPay(0);
+    admin.setUsedSickPay(0);
     this.userRepository.save(admin);
 
     List<User> users = new ArrayList<>();
@@ -93,8 +102,14 @@ public class DataLoader implements CommandLineRunner {
           .password(passwordEncoder.encode("user"))
           .position("testposition")
           .extraAbsenceDays(0)
-          .numberOfChildren(3)
+          .numberOfChildren((int) Math.floor(Math.random() * 5))
           .build();
+      user.setTotalAbsenceDays(absenceService.availableAbsence(user));
+      user.setTotalSickLeaveDays(absenceService.availableSickLeave(user));
+      user.setUsedAbsenceDays(0);
+      user.setUsedSickLeaveDays(0);
+      user.setChildSickPay(0);
+      user.setUsedSickPay(0);
       this.userRepository.save(user);
       users.add(user);
     }
