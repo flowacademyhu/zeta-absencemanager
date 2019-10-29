@@ -30,7 +30,9 @@ import {
   MatDialogTitle,
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatSelectModule
+  MatSelectModule,
+  MatSortModule,
+  MatProgressSpinnerModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -65,9 +67,9 @@ import { GroupResolver } from "./resolvers/GroupResolver";
 import { GetEmployeeAbsencesResolver } from "./resolvers/GetEmployeeAbsencesResolver";
 import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
+import { ChangePasswModalComponent } from "./components/employee/modals/change-passw-modal/change-passw-modal.component";
 import { AdminGuard } from "./guards/admin.guard";
 import { AdminGroupEditModalComponent } from './components/admin/modals/admin-group-edit-modal/admin-group-edit-modal.component';
-import { ChangePasswComponent } from "./components/employee/modals/change-passw/change-passw.component";
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
@@ -93,10 +95,10 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
     AdminGroupEditModalComponent,
+    ChangePasswModalComponent,
     AdminGroupDeleteModalComponent,
     AdminAbsenceCreateModalComponent,
     AdminAbsenceEditModalComponent,
-    ChangePasswComponent,
     //employee
     EmployeeProfileComponent,
     EmployeeAbsencesComponent,
@@ -134,6 +136,8 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     MatPaginatorModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
     CommonModule
   ],
   providers: [
@@ -171,7 +175,9 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     AdminUserEditModalComponent,
     AdminUserAddModalComponent,
     AdminGroupEditModalComponent,
-    ChangePasswComponent,
+    ChangePasswModalComponent,
+    AdminGroupCreateModalComponent,
+    ChangePasswModalComponent,
     AdminAbsenceEditModalComponent,
     AdminGroupCreateModalComponent,
     AdminAbsenceCreateModalComponent,
