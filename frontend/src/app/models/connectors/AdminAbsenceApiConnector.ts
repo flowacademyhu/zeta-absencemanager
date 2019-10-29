@@ -11,11 +11,12 @@ export class AdminAbsenceApiConnector extends AbstractApiConnector {
     return this.http.get(this.apiRoute + id);
   }
 
-  public getAbsences(size: number, page: number): Observable<PagedResponse<Absence>> {
+  public getAbsences(size: number, page: number, administrationId?: number): Observable<PagedResponse<Absence>> {
     return this.http.get(this.apiRoute, {
       params: new HttpParams()
         .set('size', size.toString())
         .set('page', page.toString())
+        .set('administrationId', administrationId.toString())
     }) as Observable<PagedResponse<Absence>>;
   }
 
