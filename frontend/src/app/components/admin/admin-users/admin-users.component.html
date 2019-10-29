@@ -1,6 +1,7 @@
 <!-- <app-filter [dataSource]="dataSource"></app-filter> -->
 <div class="actionButton">
-  <button mat-flat-button color="warn" (click)="createUser()">
+  <button mat-flat-button color="warn" [disabled]="this.userData && this.userData.role !== 'ADMIN'"
+    (click)="createUser()">
     Alkalmazott hozzáadása
   </button>
 </div>
