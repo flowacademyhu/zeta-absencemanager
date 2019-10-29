@@ -45,7 +45,7 @@ export class AdminUserAddModalComponent implements OnInit {
       email: new FormControl("", [Validators.required, Validators.email]),
       numberOfChildren: new FormControl("", [Validators.required]),
       otherAbsenceEnt: new FormControl(""),
-      group: new FormControl("")
+      group: new FormControl(null)
     });
   }
 

@@ -1,9 +1,11 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.model.*;
+import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
+import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,19 @@ public class AdminUserService {
   private UserRepository userRepository;
 
   @Autowired
+  private GroupRepository groupRepository;
+
+  @Autowired
+  private AbsenceRepository absenceRepository;
+
+  @Autowired
   private AuthenticationService authenticationService;
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private GroupService groupService;
 
   @Autowired
   private AbsenceService absenceService;
@@ -77,6 +88,7 @@ public class AdminUserService {
     return newUser;
   }
 
+
   public User updateUser(@NotNull Long id, @NotNull User user) {
     User modifyUser = findOneUser(id);
     modifyUser.setLastName(user.getLastName());
@@ -106,13 +118,64 @@ public class AdminUserService {
 
   public void delete(@NotNull Long id) {
     User mod = findOneUser(id);
+    List<Group> groupList = groupService.findAllGroup();
     mod.setRole(Roles.INACTIVE);
     mod.setDeletedBy(authenticationService.getCurrentUser());
+    mod.setGroup(null);
     mod.setDeletedAt(LocalDateTime.now());
+    if (mod.getGroup() != null) {
+      Group modifyGroup = groupService.findOne(mod.getGroup().getId());
+      for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
+        if (modifyGroup.getEmployees().size() > 0 && modifyGroup.getEmployees().get(i).getId()
+            .equals(id)) {
+          modifyGroup.getEmployees().remove(modifyGroup.getEmployees().get(i));
+          modifyGroup.setUpdatedAt(LocalDateTime.now());
+          groupRepository.save(modifyGroup);
+        }
+      }
+    }
+    for (Group g : groupList) {
+      if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
+        g.setLeader(null);
+        g.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(g);
+      }
+    }
+    List<Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(mod);
+    for (Absence a : needToBeModifiedAbsences) {
+      a.setStatus(Status.REJECTED);
+      a.setUpdatedBy(authenticationService.getCurrentUser());
+      a.setUpdatedAt(LocalDateTime.now());
+      absenceRepository.save(a);
+    }
     userRepository.save(mod);
   }
 
+
   public List<User> findAllLeader() {
     return userRepository.findByRoleAndDeletedAtNull(Roles.LEADER);
+  }
+
+  public List<User> findAllEmployeesByGroupIsNull() {
+    List<User> users = findAllUser();
+    List<User> employees = new ArrayList<>();
+    for (User u : users) {
+      if (u.getRole().equals(Roles.EMPLOYEE) && u.getGroup() == null) {
+        employees.add(u);
+      }
+    }
+    return employees;
+  }
+
+  public List<User> findAllEmployeesByGroupId(Long groupId) {
+    Group group = groupService.findOne(groupId);
+    List<User> users = userRepository.findAllByGroupAndDeletedAtNull(group);
+    List<User> employees = new ArrayList<>();
+    for (User u : users) {
+      if (u.getRole().equals(Roles.EMPLOYEE)) {
+        employees.add(u);
+      }
+    }
+    return employees;
   }
 }
