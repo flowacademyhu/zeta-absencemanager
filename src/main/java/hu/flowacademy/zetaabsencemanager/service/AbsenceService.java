@@ -172,7 +172,6 @@ public class AbsenceService {
     if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       Integer restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365.0;
-      System.out.println(multiplier);
     } else {
       multiplier = 1;
     }
