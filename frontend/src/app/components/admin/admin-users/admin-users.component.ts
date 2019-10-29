@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AdminUserEditModalComponent } from '../modals/admin-user-edit-modal/admin-user-edit-modal.component';
 import { MatTableDataSource } from '@angular/material';
 import { AdminUserDeleteModalComponent } from '../modals/admin-user-delete-modal/admin-user-delete-modal.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 
@@ -31,20 +31,19 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     private api: ApiCommunicationService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    public router: Router
+    private route: ActivatedRoute,
+    private router: Router
     ) { }
 
 
   ngOnInit() {
-    this.activatedRoute.data.pipe(takeUntil(this._unsubscribe$)).subscribe(
-      data => {
-        this.usersList = data.userResolver;
-      },
-      error => {
-        this.error = error;
-      }
-    );
-   }
+    this.route.data
+    .pipe(takeUntil(this._unsubscribe$))
+    .subscribe(data => {
+      this.usersList = data.userList;
+      this.dataSource = new MatTableDataSource(this.usersList);
+    })
+  }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -62,24 +61,11 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
           this.api
             .user()
             .createUser(result)
-            .subscribe(()=> this.router.navigateByUrl(this.router.url));
-        });
+            .subscribe(() => this.router.navigateByUrl(this.router.url));
+          });
   }
 
-  private dateConverter() {
-    this.dataSource.dateOfEndTrial = (this.dataSource.dateOfEndTrial as Date).toISOString().split("T")[0].split("-");
-    this.dataSource.dateOfBirth = (this.dataSource.dateOfBirth as Date).toISOString().split("T")[0].split("-");
-    this.dataSource.dateOfEntry = (this.dataSource.dateOfEntry as Date).toISOString().split("T")[0].split("-"); 
-    for (let i = 0; i < 3; i++) {
-      this.dataSource.dateOfEntry[i] = parseInt(this.dataSource.dateOfEntry[i]);
-    }
-    for (let i = 0; i < 3; i++) {
-      this.dataSource.dateOfBirth[i] = parseInt(this.dataSource.dateOfBirth[i]);
-    }
-    for (let i = 0; i < 3; i++) {
-      this.dataSource.dateOfEndTrial[i] = parseInt(this.dataSource.dateOfEndTrial[i]);
-    }
-  }
+
 
   editUser(id: number): void{
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
@@ -90,14 +76,12 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       this.editedUser = this.usersList.filter(user => user.id === id)[0];
       Object.assign(this.editedUser, result);
       this.editedUser.id = id;
-      console.log(this.editedUser);      
-      this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(u => console.log("updated:" + u));
+      this.api.user().updateUser(this.editedUser.id, this.editedUser).subscribe(() => this.router.navigateByUrl(this.router.url));
     });
   }
   
 
   deleteUser(id: number): void {
-    console.log("ID - component: " + id);
     const dialogRef = this.dialog.open(AdminUserDeleteModalComponent, {
       data: {user: this.usersList.filter(user => user.id === id)[0]}
     });
@@ -110,7 +94,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
           this.api
             .user()
             .deleteUser(id)
-            .subscribe(()=> this.router.navigateByUrl(this.router.url));
+            .subscribe(() => this.router.navigateByUrl(this.router.url));
       }});
   } 
   

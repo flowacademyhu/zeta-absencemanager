@@ -33,7 +33,7 @@ export class AdminGroupCreateModalComponent implements OnInit {
         Validators.maxLength(60)
       ]),
       parentId: new FormControl(null),
-      leader: new FormControl(null, [
+      leaderId: new FormControl(null, [
         Validators.required
       ])
     });
@@ -79,5 +79,9 @@ export class AdminGroupCreateModalComponent implements OnInit {
       value: key,
       title: definition[key]
     }));
+  }
+
+  public onCancel(): void {
+    this.dialogRef.close();
   }
 }

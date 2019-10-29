@@ -9,7 +9,7 @@ export class UserApiConnector extends AbstractApiConnector {
     return this.http.get(this.apiRoute + "/" + id);
   }
 
-  public getUsers(): Observable<any> {
+  public getUsers(): Observable<User[]> {
     return this.http.get(this.apiRoute) as Observable<User[]>;
   }
 

@@ -5,6 +5,7 @@ export class Group extends DataEntity {
   constructor(
     public name: string,
     public parentId?: number,
+    public leader?: DataEntity,
     public leaderId?: number
   ) {
     super();
