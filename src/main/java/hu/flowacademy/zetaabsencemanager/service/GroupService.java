@@ -43,7 +43,7 @@ public class GroupService {
 
   public Group create(@NotNull Group group) {
       User modifyUser = userService.findOneUser(group.getLeader().getId());
-      modifyUser.setRole(Roles.LEADER);
+      // modifyUser.setRole(Roles.LEADER);
       userRepository.save(modifyUser);
 
       return groupRepository.save(group);
