@@ -102,7 +102,7 @@ public class AdminAbsenceService {
     absence.setAssignee(absence.getAssignee());
     absence.setStatus(Status.OPEN);
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      absenceService.increaseUsedDays(absence);
+      absenceService.addToUsedDays(absence);
       return absenceRepository.save(absence);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
@@ -122,8 +122,8 @@ public class AdminAbsenceService {
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
       if (modifyAbsence.getDuration() != absence.getDuration()) {
-        absenceService.increaseUsedDays(absence);
-        absenceService.reduceUsedDays(modifyAbsence);
+        absenceService.addToUsedDays(absence);
+        absenceService.removeFromUsedDays(modifyAbsence);
       }
       modifyAbsence.setDuration(absence.getDuration());
       modifyAbsence.setEnd(absence.getEnd());
@@ -141,7 +141,7 @@ public class AdminAbsenceService {
 
   public void delete(@NotNull Long id) {
     Absence deleted = findOne(id);
-    absenceService.reduceUsedDays(deleted);
+    absenceService.removeFromUsedDays(deleted);
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
