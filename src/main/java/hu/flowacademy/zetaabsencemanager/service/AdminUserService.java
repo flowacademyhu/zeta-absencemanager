@@ -54,10 +54,7 @@ public class AdminUserService {
 
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
-        .orElseThrow(() -> {
-
-          return new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND);
-        });
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
   public List<User> findAllUser() {
