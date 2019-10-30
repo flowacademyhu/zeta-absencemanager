@@ -104,7 +104,7 @@ public class StateMachineConfig {
       Absence itemFound = store.findById(item.getId()).orElseThrow(
           () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found."));
       itemFound.setStatus(state);
-      if(state.equals(Status.REJECTED)){
+      if (state == Status.REJECTED) {
         service.removeFromUsedDays(item);
       }
     }
