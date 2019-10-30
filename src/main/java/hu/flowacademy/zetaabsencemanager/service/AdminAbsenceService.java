@@ -52,7 +52,7 @@ public class AdminAbsenceService {
   private FilterService filterService;
 
   public AbsenceDTO findAllAbsence(Long administrationID, Type type,
-      Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
+      Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       Page<Absence> absencePage = this.absenceRepository.findAll(
@@ -149,14 +149,16 @@ public class AdminAbsenceService {
   }
 
   public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
-      Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
+      Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
     return Specification
         .where(filterService.filterByAdministrationID(administrationID))
         .and(filterService.filterByType(type))
         .and(filterService.filterByStatus(status))
-        .and(filterService.filterByReporter(reporter))
-        .and(filterService.filterByAssignee(assignee))
+        .and(filterService.filterByReporterFirstName(reporter))
+        .or(filterService.filterByReporterLastName(reporter))
+        .and(filterService.filterByAssigneeFirstName(assignee))
+        .or(filterService.filterByAssigneeLastName(assignee))
         .and(filterService.filterByBeginStart(start))
         .and(filterService.filterByBeginFinish(finish))
         .and(filterService.filterByDaysStart(dayStart))
@@ -164,10 +166,19 @@ public class AdminAbsenceService {
   }
 
   public Specification<Absence> getFilteredAbsencesLeader(Long administrationID, Type type,
-      Status status, User reporter, LocalDate start, LocalDate finish,
+      Status status, String reporter, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
-    return getFilteredAbsences(administrationID, type, status, reporter,
-        authenticationService.getCurrentUser(), start, finish,
-        dayStart, dayEnd).and(filterService.filterByDeletedAt());
+    return Specification
+        .where(filterService.filterByAdministrationID(administrationID))
+        .and(filterService.filterByType(type))
+        .and(filterService.filterByStatus(status))
+        .and(filterService.filterByReporterFirstName(reporter))
+        .or(filterService.filterByReporterLastName(reporter))
+        .and(filterService.filterByAssignee(authenticationService.getCurrentUser()))
+        .and(filterService.filterByBeginStart(start))
+        .and(filterService.filterByBeginFinish(finish))
+        .and(filterService.filterByDaysStart(dayStart))
+        .and(filterService.filterByDaysEnd(dayEnd))
+        .and(filterService.filterByDeletedAt());
   }
 }

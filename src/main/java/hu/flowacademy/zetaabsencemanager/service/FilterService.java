@@ -29,6 +29,24 @@ public class FilterService {
     };
   }
 
+  public Specification<Absence> filterByReporterFirstName(String reporter) {
+    return (root, query, cb) -> {
+      if (reporter == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("reporter").get("firstName"), "%" + reporter + "%");
+    };
+  }
+
+  public Specification<Absence> filterByReporterLastName(String reporter) {
+    return (root, query, cb) -> {
+      if (reporter == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("reporter").get("lastName"), "%" + reporter + "%");
+    };
+  }
+
   public Specification<Absence> filterByReporter(User reporter) {
     return (root, query, cb) -> {
       if (reporter == null) {
@@ -37,6 +55,7 @@ public class FilterService {
       return cb.equal(root.get("reporter"), reporter);
     };
   }
+
 
   public Specification<Absence> filterByDaysStart(Integer start) {
     return (root, query, cb) -> {
@@ -71,6 +90,24 @@ public class FilterService {
         return cb.isTrue(cb.literal(true));
       }
       return cb.lessThanOrEqualTo(root.get("begin"), finish);
+    };
+  }
+
+  public Specification<Absence> filterByAssigneeFirstName(String assignee) {
+    return (root, query, cb) -> {
+      if (assignee == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("assignee").get("firstName"), "%" + assignee + "%");
+    };
+  }
+
+  public Specification<Absence> filterByAssigneeLastName(String assignee) {
+    return (root, query, cb) -> {
+      if (assignee == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("assignee").get("lastName"), "%" + assignee + "%");
     };
   }
 
