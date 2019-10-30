@@ -10,6 +10,7 @@ import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-mod
 import { User } from 'src/app/models/User.model';
 import { SessionService } from 'src/app/services/session.service';
 import { MatPaginator, PageEvent } from '@angular/material';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: "app-admin-absences",
@@ -61,7 +62,8 @@ export class AdminAbsencesComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private router: Router,
-    private session: SessionService
+    private session: SessionService,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -158,4 +160,9 @@ export class AdminAbsencesComponent implements OnInit {
     this.router.navigate(["admin", "absences"]);
     }
   }
+
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.absencesList, 'sample');
+  }
+
 }

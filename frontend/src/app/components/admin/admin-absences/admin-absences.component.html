@@ -2,6 +2,9 @@
   <button mat-flat-button color="warn" (click)="openDialog()">
     Szabadság hozzáadása
   </button>
+  <button mat-flat-button color="warn" (click)="exportAsXLSX()">
+      Export
+    </button>  
 <mat-checkbox [(ngModel)]="checkedFilter" #checkbox (change)='onFilterReset(checkbox.checked)'>Szűrés</mat-checkbox>
 </div>
 
