@@ -19,7 +19,7 @@ export enum Status {
 }
 
 export class AbsencesFilter {
-  administrationID: string;
+  administrationID: number;
   type: AbsenceType;
   status: Status;
   reporter: string;

@@ -127,6 +127,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   }
 
   public onFilter() {
+    console.log(this.absenceFilter);
     this.router.navigate(["admin", "absences"], {
       queryParams: this.absenceFilter
     })

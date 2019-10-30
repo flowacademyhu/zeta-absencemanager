@@ -21,7 +21,7 @@
     <ng-container matColumnDef="start">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Kezdő dátum" [(ngModel)]="absenceFilter.start" />
+                <input matInput type="datetime-local" placeholder="Kezdő dátum" (change)='onFilter()' [(ngModel)]="absenceFilter.start" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -29,7 +29,7 @@
     <ng-container matColumnDef="finish">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Befejező dátum" [(ngModel)]="absenceFilter.finish" />
+                <input matInput type="datetime-local" placeholder="Befejező dátum" (change)='onFilter()' [(ngModel)]="absenceFilter.finish" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -37,7 +37,7 @@
     <ng-container matColumnDef="dayStart">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Min. Nap" [(ngModel)]="absenceFilter.dayStart" />
+                <input matInput type="number" placeholder="Min. Nap" (change)='onFilter()' [(ngModel)]="absenceFilter.dayStart" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -45,14 +45,14 @@
     <ng-container matColumnDef="dayEnd">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Max. Nap" [(ngModel)]="absenceFilter.dayEnd" />
+                <input matInput type="number" placeholder="Max. Nap" (onChange)='onFilter()' [(ngModel)]="absenceFilter.dayEnd" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="absenceFilter.type" placeholder="Típus">
+            <mat-select [(ngModel)]="absenceFilter.type" (onChange)='onFilter()' placeholder="Típus">
                 <mat-option *ngFor="let type of absenceType" [value]="type">
                   {{ type | type }}
                 </mat-option>
