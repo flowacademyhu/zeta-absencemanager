@@ -9,6 +9,7 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
@@ -47,9 +48,9 @@ public class AbsenceService {
 
   public Absence findOne(@NotNull Long id) {
     Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
-        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found"));
+        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.ABSENCE_NOT_FOUND));
     if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Absence not found");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.ABSENCE_NOT_FOUND);
     }
     return absence;
   }
@@ -85,7 +86,9 @@ public class AbsenceService {
         user.setUsedSickLeaveDays(user.getUsedSickLeaveDays() + absence.getDuration());
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
-      user.setChildSickPay(user.getChildSickPay() + absence.getDuration());
+      user.setUsedChildSickPay(user.getUsedChildSickPay() + absence.getDuration());
+    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()+absence.getDuration());
     }
     userRepository.save(user);
   }
@@ -102,7 +105,9 @@ public class AbsenceService {
         user.setUsedSickLeaveDays(user.getUsedSickLeaveDays() - absence.getDuration());
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
-      user.setChildSickPay(user.getChildSickPay() - absence.getDuration());
+      user.setUsedChildSickPay(user.getUsedChildSickPay() - absence.getDuration());
+    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()-absence.getDuration());
     }
     userRepository.save(user);
   }
@@ -121,10 +126,10 @@ public class AbsenceService {
   public Absence update(@NotNull Long id, @NotNull Absence absence) {
     Absence modifyAbsence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
     if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-          "You can only modify your absences");
+          Constants.UNAUTHORIZED_ABSENCE);
     }
     if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
         .equals(modifyAbsence.getType())) {
@@ -170,7 +175,6 @@ public class AbsenceService {
   }
 
   public int availableAbsence(@NotNull User user) {
-    int calculatedAbsence = 0;
     int allAbsence = 20;
     int[] borders = {25, 28, 31, 33, 35, 37, 39, 41, 43, 45};
     double multiplier;
@@ -178,7 +182,6 @@ public class AbsenceService {
     if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       Integer restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365.0;
-      System.out.println(multiplier);
     } else {
       multiplier = 1;
     }

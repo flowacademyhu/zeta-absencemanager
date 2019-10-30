@@ -11,6 +11,7 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
@@ -86,12 +87,12 @@ public class AdminAbsenceService {
   public Absence findOne(@NotNull Long id) {
     Absence foundAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         foundAbsence.getAssignee().equals(authenticationService.getCurrentUser()))) {
       return foundAbsence;
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.CAN_NOT_ACCESS_DATA);
     }
   }
 
@@ -105,7 +106,7 @@ public class AdminAbsenceService {
       absenceService.addToUsedDays(absence);
       return absenceRepository.save(absence);
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.CAN_NOT_ACCESS_DATA);
     }
 
   }
@@ -114,7 +115,7 @@ public class AdminAbsenceService {
     this.absenceValidator.validateAbsenceSave(absence);
     Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
     User current = authenticationService.getCurrentUser();
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         modifyAbsence.getAssignee().equals(current))) {
@@ -135,7 +136,7 @@ public class AdminAbsenceService {
       modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
       return absenceRepository.save(modifyAbsence);
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.CAN_NOT_ACCESS_DATA);
     }
   }
 
