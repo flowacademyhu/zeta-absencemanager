@@ -59,6 +59,7 @@ export class AdminGroupCreateModalComponent implements OnInit {
       .getEmployeesByGroup(id)
       .subscribe(e => {
         this.employeeList = e;
+        console.log(this.employeeList);
       });
     }
     if (id === 0) {

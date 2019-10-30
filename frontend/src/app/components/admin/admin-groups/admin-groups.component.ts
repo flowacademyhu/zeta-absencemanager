@@ -107,12 +107,18 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AdminGroupEditModalComponent, {
       data: { group: this.dataSource.filter(group => group.id === id)[0] }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
-      if (result) {
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(result => {
+        this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
+        if (result) {
         Object.assign(this.editedGroup, result);
         let modifiedGroup = new Group(result.name, result.parent, <DataEntity>{ "id": result.leader });
-        this.api.group().updateGroup(this.editedGroup.id, modifiedGroup).subscribe(() => this.router.navigateByUrl(this.router.url));
+        this.api
+          .group()
+          .updateGroup(this.editedGroup.id, modifiedGroup)
+          .subscribe(() => this.router.navigateByUrl(this.router.url));
       }
     });
   }

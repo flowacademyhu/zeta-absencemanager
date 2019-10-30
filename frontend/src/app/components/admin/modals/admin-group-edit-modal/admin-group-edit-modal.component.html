@@ -6,6 +6,7 @@
         type="text"
         placeholder="name"
         formControlName="name"
+        required
         id="name"
       /> 
     </mat-form-field>
@@ -13,16 +14,22 @@
     <mat-form-field>
       <mat-label>Felettes Csoport</mat-label>
       <mat-select formControlName="parent">
-        <mat-option *ngFor="let group of groupList" [value]="group.id">
-          {{ group.id }} {{ group.name }} 
+        <mat-option (click)="addEmployeesToList(0)">None</mat-option>
+        <mat-option *ngFor="let group of groupList"
+            [value]="group.id"
+            (click)="addEmployeesToList(group.id)">
+          {{ group.name }} 
         </mat-option>
       </mat-select>
     </mat-form-field>
+
     <mat-form-field>
         <mat-label>Vezető</mat-label>
-        <mat-select formControlName="leader">
-          <mat-option *ngFor="let user of userList" [value]="user.id">
-            {{ user.id }} {{ user.lastName }} {{ user.firstName }} 
+        <mat-select required formControlName="leader">
+          <mat-option
+          *ngFor="let employee of employeeList; let i = index"
+          [value]="data.group.leader">
+            {{ employee.lastName }} {{ employee.firstName }} 
           </mat-option>
         </mat-select>
       </mat-form-field>
