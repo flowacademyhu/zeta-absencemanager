@@ -83,6 +83,9 @@ public class UserService {
       deleted.setGroup(null);
       deleted.setDeletedAt(LocalDateTime.now());
       userRepository.save(deleted);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "You can't delete your profile, because your role is leader.");
     }
   }
 

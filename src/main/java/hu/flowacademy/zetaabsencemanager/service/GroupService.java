@@ -1,5 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @Transactional
@@ -43,22 +46,32 @@ public class GroupService {
 
   public Group create(@NotNull Group group) {
       User modifyUser = userService.findOneUser(group.getLeader().getId());
-      // modifyUser.setRole(Roles.LEADER);
+      modifyUser.setRole(Roles.LEADER);
       userRepository.save(modifyUser);
 
       return groupRepository.save(group);
   }
 
   public Group updateGroup(@NotNull Long id, @NotNull Group group) {
+
     Group modifyGroup = findOne(id);
-    modifyGroup.setName(group.getName());
-    modifyGroup.setParentId(group.getParentId());
-    modifyGroup.setEmployees(group.getEmployees());
-    if (group.getLeader().getGroup().getId() == modifyGroup.getParentId()
-        && group.getLeader().getRole() == Roles.EMPLOYEE) {
-      modifyGroup.setLeader(group.getLeader());
+
+    User modifyOldLeader = userService.findOneUser(modifyGroup.getLeader().getId());    // Beállítjuk a szerkesztett Group leader-jének a role-ját EMPLOYEE-vá
+    modifyOldLeader.setRole(Roles.EMPLOYEE);
+    userRepository.save(modifyOldLeader);
+
+    modifyGroup.setName(group.getName());   // set-eljük a szerkesztett Group nevét
+    modifyGroup.setParentId(group.getParentId()); // set-eljük a szerkesztett Group parentId-ját
+
+    if ((group.getLeader().getGroup().getId() == modifyGroup.getParentId() // Ez felesleges, mert nem csak a parent group-ból lehet employee-t választani
+        || group.getLeader().getGroup() == null) && group.getLeader().getRole() == Roles.EMPLOYEE) {   // Ha a kapott Group leader-je a kapott Group parent groupjában szerepel és a leader
+      modifyGroup.setLeader(group.getLeader());           // role-ja EMPLOYEE, akkor beállítjuk őt a szerkesztett Group leader-jének
     }
-    modifyGroup.setUpdatedAt(LocalDateTime.now());
+    User modifyNewLeader = userService.findOneUser(modifyGroup.getLeader().getId()); // A szerkesztett Group leader-jének a role-ját LEADER-ré set-eljük.
+    modifyNewLeader.setRole(Roles.LEADER);
+    userRepository.save(modifyNewLeader);
+
+    modifyGroup.setUpdatedAt(LocalDateTime.now());  // set-eljük a szerkesztett Group updatedAt adattagját
     groupRepository.save(modifyGroup);
     return modifyGroup;
   }
@@ -67,34 +80,26 @@ public class GroupService {
     Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
-    List<Group> needToBeModifiedGroups = groupRepository.findAllByParentId(group.getId());
-    for (Group g : needToBeModifiedGroups) {
-      g.setParentId(null);
-      g.setLeader(null);
-      g.setUpdatedAt(LocalDateTime.now());
-      groupRepository.save(g);
-    }
-    List<User> needToBeModifiedEmployees = userRepository.findAllByGroupAndDeletedAtNull(group);
-    for (User u : needToBeModifiedEmployees) {
-      u.setGroup(null);
-      if (u.getRole().equals(Roles.LEADER)) {
-        u.setRole(Roles.EMPLOYEE);
+    if (isEmpty(group.getEmployees())) {
+      List<Group> childGroups = groupRepository.findAllByParentId(group.getId());
+      for (Group g : childGroups) {
+        g.setParentId(null);              // A child Group-ok parent ID-ját nullázom
+        g.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(g);
       }
-      u.setUpdatedAt(LocalDateTime.now());
-      u.setUpdatedBy(authenticationService.getCurrentUser());
-      userRepository.save(u);
-    }
-    if (group.getLeader() != null) {
       User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
-      needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
+      needToBeModifiedLeader.setRole(Roles.EMPLOYEE);     // A törölt Group vezetőjének a role-ját EMPLOYEE-ra módosítom
       needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
       needToBeModifiedLeader.setUpdatedBy(authenticationService.getCurrentUser());
       userRepository.save(needToBeModifiedLeader);
-    }
-    group.setEmployees(null);
-    group.setLeader(null);
-    group.setDeletedAt(LocalDateTime.now());
 
-    groupRepository.save(group);
+      group.setLeader(null);      // A törölt Group leader-ét kinullázom;
+      group.setDeletedAt(LocalDateTime.now());
+
+      groupRepository.save(group);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "You can't delete a group, while it has employees.");
+    }
   }
 }
