@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,10 +45,11 @@ public class CurrentUserController {
     return authenticationService.getCurrentUser();
   }
 
-  @PutMapping("/changepassw")
+  @PostMapping("/changepassw")
   public User changePassword(@RequestBody PasswordChangeDTO passwords) {
     return userService
-        .changePassword(passwords.getFirstPassword(), passwords.getSecondPassword(), passwords.getOldPassword());
+        .changePassword(passwords.getFirstPassword(), passwords.getSecondPassword(),
+            passwords.getOldPassword());
   }
 
 }
