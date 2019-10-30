@@ -21,24 +21,50 @@
   </mat-form-field>
   <br />
 
-  <!--   <mat-form-field>
-        <input
-          matInput
-          [matDatepicker]="dateOfBirth"
-          placeholder="date of birth"
-          formControlName="dateOfBirth"
-          id="dateOfBirth"
-          (click)="dateOfBirth.open()"
-        />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="dateOfBirth"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #dateOfBirth></mat-datepicker>
-      </mat-form-field>
-      <br>
+  <mat-form-field>
+    <input
+      matInput
+      [matDatepicker]="dateOfBirth"
+      placeholder="Születési dátum"
+      formControlName="dateOfBirth"
+      id="dateOfBirth"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dateOfBirth"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dateOfBirth></mat-datepicker>
+  </mat-form-field>
+  <br />
 
-    -->
+  <mat-form-field>
+    <input
+      matInput
+      [matDatepicker]="dateofentry"
+      formControlName="dateOfEntry"
+      placeholder="Belépés dátuma"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dateofentry"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dateofentry></mat-datepicker>
+  </mat-form-field>
+  <br />
+
+  <mat-form-field>
+    <input
+      matInput
+      [matDatepicker]="endOfTrial"
+      placeholder="Próbaidő vége"
+      formControlName="endOfTrial"
+      id="endOfTrial"
+    />
+    <mat-datepicker-toggle matSuffix [for]="endOfTrial"></mat-datepicker-toggle>
+    <mat-datepicker #endOfTrial></mat-datepicker>
+  </mat-form-field>
+  <br />
+
   <mat-form-field>
     <input
       matInput
@@ -49,22 +75,15 @@
   </mat-form-field>
   <br />
 
-  <!--     <mat-form-field>
-        <input
-          matInput
-          [matDatepicker]="endOfTrial"
-          placeholder="endOfTrial"
-          formControlName="endOfTrial"
-          id="endOfTrial"
-          (click)="endOfTrial.open()"
-        />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="endOfTrial"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #endOfTrial></mat-datepicker>
-      </mat-form-field>
-      <br> -->
+  <mat-form-field>
+    <mat-label>Csoport</mat-label>
+    <mat-select formControlName="group">
+      <mat-option *ngFor="let g of groups" [value]="g">
+        {{ g.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
 
   <mat-form-field>
     <input
@@ -76,6 +95,24 @@
     />
   </mat-form-field>
   <br />
+
+  <mat-form-field>
+    <input
+      type="number"
+      matInput
+      required
+      placeholder="Gyermekek száma"
+      formControlName="numberOfChildren"
+    />
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Egyéb szabadságra jogosító tényezők"
+      formControlName="otherAbsenceEnt"
+    />
+  </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions>
