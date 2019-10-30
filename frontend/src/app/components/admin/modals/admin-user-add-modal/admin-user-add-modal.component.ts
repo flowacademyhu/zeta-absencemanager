@@ -43,6 +43,7 @@ export class AdminUserAddModalComponent implements OnInit {
         Validators.maxLength(60)
       ]),
       email: new FormControl("", [Validators.required, Validators.email]),
+      password: new FormControl("", [Validators.required]),
       numberOfChildren: new FormControl("", [Validators.required]),
       otherAbsenceEnt: new FormControl(""),
       group: new FormControl(null)
