@@ -67,7 +67,8 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
 
   createGroup(): void {
     const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {
-      data: { group: this.groupsList
+      data: {
+        group: this.groupsList
       }
     });
 
@@ -76,7 +77,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: Group) => {
         console.log(result);
-        result.leader = <DataEntity>{id: result.leaderId};
+        result.leader = <DataEntity>{ id: result.leaderId };
         this.api
           .group()
           .createGroup(result)
@@ -87,36 +88,40 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   deleteGroup(id: number): void {
     console.log("ID - component: " + id);
     const dialogRef = this.dialog.open(AdminGroupDeleteModalComponent, {
-      data: {group: this.groupsList.filter(group => group.id === id)[0]}
+      data: { group: this.groupsList.filter(group => group.id === id)[0] }
     });
-    
+
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(result => {
-        if(result === true) {
+        if (result === true) {
           this.api
             .group()
             .deleteGroup(id)
             .subscribe(() => this.router.navigateByUrl(this.router.url));
-      }});
+        }
+      });
   }
-  
+
   editGroup(id: number): void {
     const dialogRef = this.dialog.open(AdminGroupEditModalComponent, {
-      data: {group: this.dataSource.filter(group => group.id === id)[0]}
+      data: { group: this.dataSource.filter(group => group.id === id)[0] }
     });
-    
-    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
-      if(result) {
-        console.log(result);
-        result.leader = <Object>{id: 10, group: {id: 2}, role: "EMPLOYEE"};
-        
 
-      Object.assign(this.editedGroup, result);
-      console.log(this.editedGroup);
-      this.api.group().updateGroup(this.editedGroup.id, this.editedGroup).subscribe(u => console.log("updated:" + u));
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      console.log("after closed result: " + result);
+      this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
+      if (result) {
+        console.log(result);
+        // result.leader = <Object>{id: 10, group: {id: 2}, role: "EMPLOYEE"};
+        result.leader = <Object>{ "id": result.leader };
+        result.parentId = result.parent;
+        Object.assign(this.editedGroup, result);
+        console.log(this.editedGroup);
+        let daGroup = new Group(result.name, result.parentId, <DataEntity>{ "id": result.leader.id });
+        console.log(daGroup);
+        this.api.group().updateGroup(this.editedGroup.id, daGroup).subscribe(() => this.router.navigateByUrl(this.router.url)); // this.editedGroup -> daGroup
       }
     });
   }
