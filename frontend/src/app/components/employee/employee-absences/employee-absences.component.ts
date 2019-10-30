@@ -7,6 +7,7 @@ import { Subject } from "rxjs";
 import { Absence } from "src/app/models/Absence.model";
 import { EmployeeAbsenceEditModalComponent } from "../modals/employee-absence-edit-modal/employee-absence-edit-modal.component";
 import { MatPaginator, PageEvent } from '@angular/material';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: "app-employee-absences",
@@ -34,7 +35,8 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private excelService: ExcelService
     ) {}
 
   ngOnInit() {
@@ -91,5 +93,9 @@ export class EmployeeAbsencesComponent implements OnInit, OnDestroy {
         size: event.pageSize
       }
     })
+  }
+
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.absences, 'sample');
   }
 }
