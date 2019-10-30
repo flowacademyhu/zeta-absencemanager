@@ -80,8 +80,8 @@ public class UserService {
             absenceRepository.save(a);
           }
         }
+        deleted.setDeletedBy(authenticationService.getCurrentUser());
         deleted.setRole(Roles.INACTIVE);
-        // deleted.setDeletedBy(authenticationService.getCurrentUser());
         deleted.setGroup(null);
         deleted.setDeletedAt(LocalDateTime.now());
         userRepository.save(deleted);

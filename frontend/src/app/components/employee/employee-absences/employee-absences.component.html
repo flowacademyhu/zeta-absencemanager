@@ -2,6 +2,9 @@
   <button mat-flat-button color="warn" (click)="openDialog()">
     Szabadság hozzáadása
   </button>
+    <button mat-flat-button color="warn" (click)="exportAsXLSX()">
+      Export
+    </button>  
 </div>
 <mat-table [dataSource]="absences" class="table-responsive mat-elevation-z8">
   <ng-container matColumnDef="id">

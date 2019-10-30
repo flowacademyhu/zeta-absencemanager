@@ -53,25 +53,15 @@ public class GroupService {
   }
 
   public Group updateGroup(@NotNull Long id, @NotNull Group group) {
-
     Group modifyGroup = findOne(id);
-
-    User modifyOldLeader = userService.findOneUser(modifyGroup.getLeader().getId());    // Beállítjuk a szerkesztett Group leader-jének a role-ját EMPLOYEE-vá
-    modifyOldLeader.setRole(Roles.EMPLOYEE);
-    userRepository.save(modifyOldLeader);
-
-    modifyGroup.setName(group.getName());   // set-eljük a szerkesztett Group nevét
-    modifyGroup.setParentId(group.getParentId()); // set-eljük a szerkesztett Group parentId-ját
-
-    if ((group.getLeader().getGroup().getId() == modifyGroup.getParentId() // Ez felesleges, mert nem csak a parent group-ból lehet employee-t választani
-        || group.getLeader().getGroup() == null) && group.getLeader().getRole() == Roles.EMPLOYEE) {   // Ha a kapott Group leader-je a kapott Group parent groupjában szerepel és a leader
-      modifyGroup.setLeader(group.getLeader());           // role-ja EMPLOYEE, akkor beállítjuk őt a szerkesztett Group leader-jének
+    modifyGroup.setName(group.getName());
+    modifyGroup.setParentId(group.getParentId());
+    modifyGroup.setEmployees(group.getEmployees());
+    if (group.getLeader().getGroup().getId() == modifyGroup.getParentId()
+        && group.getLeader().getRole() == Roles.EMPLOYEE) {
+      modifyGroup.setLeader(group.getLeader());
     }
-    User modifyNewLeader = userService.findOneUser(modifyGroup.getLeader().getId()); // A szerkesztett Group leader-jének a role-ját LEADER-ré set-eljük.
-    modifyNewLeader.setRole(Roles.LEADER);
-    userRepository.save(modifyNewLeader);
-
-    modifyGroup.setUpdatedAt(LocalDateTime.now());  // set-eljük a szerkesztett Group updatedAt adattagját
+    modifyGroup.setUpdatedAt(LocalDateTime.now());
     groupRepository.save(modifyGroup);
     return modifyGroup;
   }
@@ -83,17 +73,17 @@ public class GroupService {
     if (isEmpty(group.getEmployees())) {
       List<Group> childGroups = groupRepository.findAllByParentId(group.getId());
       for (Group g : childGroups) {
-        g.setParentId(null);              // A child Group-ok parent ID-ját nullázom
+        g.setParentId(null);
         g.setUpdatedAt(LocalDateTime.now());
         groupRepository.save(g);
       }
       User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
-      needToBeModifiedLeader.setRole(Roles.EMPLOYEE);     // A törölt Group vezetőjének a role-ját EMPLOYEE-ra módosítom
+      needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
       needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
       needToBeModifiedLeader.setUpdatedBy(authenticationService.getCurrentUser());
       userRepository.save(needToBeModifiedLeader);
 
-      group.setLeader(null);      // A törölt Group leader-ét kinullázom;
+      group.setLeader(null);
       group.setDeletedAt(LocalDateTime.now());
 
       groupRepository.save(group);

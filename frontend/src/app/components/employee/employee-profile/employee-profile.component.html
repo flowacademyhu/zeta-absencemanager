@@ -60,9 +60,9 @@
   <div class="grid4" *ngIf="this.user">
     <mat-list role="list">
       <mat-list-item role="listitem">{{ user.totalAbsenceDays }}</mat-list-item>
-      <mat-list-item role="listitem">{{
-        user.totalAbsenceDays - user.usedAbsenceDays
-      }}</mat-list-item>
+      <mat-list-item role="listitem"
+        >{{ user.totalAbsenceDays - user.usedAbsenceDays }}
+      </mat-list-item>
       <mat-list-item role="listitem">{{ user.usedAbsenceDays }}</mat-list-item>
       <mat-list-item role="listitem"
         >{{

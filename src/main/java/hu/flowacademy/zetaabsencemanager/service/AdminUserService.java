@@ -158,7 +158,7 @@ public class AdminUserService {
 
         List<Absence> needToBeModifiedAbsences = absenceRepository
             .findByReporterAndDeletedAtNull(mod);
-        for (Absence a : needToBeModifiedAbsences) {         // a törölt User absence-einek státuszát REJECTED-dé tesszük
+        for (Absence a : needToBeModifiedAbsences) {
           if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.APPROVED))) {
             a.setStatus(Status.REJECTED);
             a.setUpdatedAt(LocalDateTime.now());
@@ -166,9 +166,9 @@ public class AdminUserService {
             absenceRepository.save(a);
           }
         }
-        mod.setRole(Roles.INACTIVE);    // a törölt user role-ját INACTIVE-vá tesszük
+        mod.setRole(Roles.INACTIVE);
         mod.setDeletedBy(authenticationService.getCurrentUser());
-        mod.setGroup(null);         // null-ozzuk a User group adattagját
+        mod.setGroup(null);
         mod.setDeletedAt(LocalDateTime.now());
         userRepository.save(mod);
       } else {
