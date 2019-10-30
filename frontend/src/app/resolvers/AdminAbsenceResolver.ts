@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { ApiCommunicationService } from 'src/app/services/api-communication.service';
 import { Observable } from 'rxjs';
 import { PagedResponse } from '../models/PagedResponse.model';
+import { AbsencesPagedRequest } from '../models/AbsencesPagedRequest';
 
 @Injectable()
 export class AdminAbsenceResolver implements Resolve<PagedResponse<Absence>> {
@@ -22,7 +23,9 @@ export class AdminAbsenceResolver implements Resolve<PagedResponse<Absence>> {
         const finish = route.queryParams['finish'];
         const dayStart = route.queryParams['dayStart'];
         const dayEnd = route.queryParams['dayEnd'];
+
+        const pagedRequest = new AbsencesPagedRequest(size, page, administrationId);
         
-        return this.api.adminAbsence().getAbsences(size?size: 5, page?page: 0);
+        return this.api.adminAbsence().getAbsences(pagedRequest);
     }
 }

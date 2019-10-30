@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { Absence } from "../Absence.model";
 import { HttpParams } from '@angular/common/http';
 import { PagedResponse } from '../PagedResponse.model';
+import { AbsencesPagedRequest } from '../AbsencesPagedRequest';
 
 export class AdminAbsenceApiConnector extends AbstractApiConnector {
   protected apiRoute: string = this.apiBaseUrl + "admin/absence/";
@@ -11,13 +12,8 @@ export class AdminAbsenceApiConnector extends AbstractApiConnector {
     return this.http.get(this.apiRoute + id);
   }
 
-  public getAbsences(size: number, page: number, administrationId?: number): Observable<PagedResponse<Absence>> {
-    return this.http.get(this.apiRoute, {
-      params: new HttpParams()
-        .set('size', size.toString())
-        .set('page', page.toString())
-        .set('administrationId', administrationId.toString())
-    }) as Observable<PagedResponse<Absence>>;
+  public getAbsences(pagedRequest: AbsencesPagedRequest): Observable<PagedResponse<Absence>> {
+    return this.http.get(this.apiRoute, pagedRequest) as Observable<PagedResponse<Absence>>;
   }
 
   public createAbsence(absence: Absence): Observable<any> {
