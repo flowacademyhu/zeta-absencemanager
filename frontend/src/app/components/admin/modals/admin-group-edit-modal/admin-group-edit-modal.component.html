@@ -28,7 +28,7 @@
         <mat-select required formControlName="leader">
           <mat-option
           *ngFor="let employee of employeeList; let i = index"
-          [value]="data.group.leader">
+          [value]="employee">
             {{ employee.lastName }} {{ employee.firstName }} 
           </mat-option>
         </mat-select>
