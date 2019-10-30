@@ -113,15 +113,9 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       console.log("after closed result: " + result);
       this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
       if (result) {
-        console.log(result);
-        // result.leader = <Object>{id: 10, group: {id: 2}, role: "EMPLOYEE"};
-        result.leader = <Object>{ "id": result.leader };
-        result.parentId = result.parent;
         Object.assign(this.editedGroup, result);
-        console.log(this.editedGroup);
-        let daGroup = new Group(result.name, result.parentId, <DataEntity>{ "id": result.leader.id });
-        console.log(daGroup);
-        this.api.group().updateGroup(this.editedGroup.id, daGroup).subscribe(() => this.router.navigateByUrl(this.router.url)); // this.editedGroup -> daGroup
+        let modifiedGroup = new Group(result.name, result.parent, <DataEntity>{ "id": result.leader });
+        this.api.group().updateGroup(this.editedGroup.id, modifiedGroup).subscribe(() => this.router.navigateByUrl(this.router.url));
       }
     });
   }

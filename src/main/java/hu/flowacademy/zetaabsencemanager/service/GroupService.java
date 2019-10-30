@@ -51,13 +51,20 @@ public class GroupService {
     Group modifyGroup = findOne(id);
     modifyGroup.setName(group.getName());
     modifyGroup.setParentId(group.getParentId());
-    modifyGroup.setEmployees(group.getEmployees());
-//    if (group.getLeader().getGroup().getId().equals(modifyGroup.getParentId())
-//        && group.getLeader().getRole() == Roles.EMPLOYEE) {
+    if (!modifyGroup.getLeader().getId().equals(group.getLeader().getId())) {
+      User oldLeader = userService.findOneUser(modifyGroup.getLeader().getId());
+      if (oldLeader.getRole() != Roles.ADMIN) {
+        oldLeader.setRole(Roles.EMPLOYEE);
+        userRepository.save(oldLeader);
+      }
+      User newLeader = userService.findOneUser(group.getLeader().getId());
+      if (newLeader.getRole() != Roles.ADMIN) {
+        newLeader.setRole(Roles.LEADER);
+        userRepository.save(newLeader);
+      }
+    }
     modifyGroup.setLeader(group.getLeader());
-//    }
     modifyGroup.setUpdatedAt(LocalDateTime.now());
-    System.out.println(modifyGroup);
     groupRepository.save(modifyGroup);
     return modifyGroup;
   }
