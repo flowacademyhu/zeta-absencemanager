@@ -3,7 +3,11 @@ package hu.flowacademy.zetaabsencemanager.config;
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
+<<<<<<< HEAD
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
+=======
+import hu.flowacademy.zetaabsencemanager.service.AbsenceService;
+>>>>>>> development
 import java.util.EnumSet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,11 +100,17 @@ public class StateMachineConfig {
     @Autowired
     private AbsenceRepository store;
 
+    @Autowired
+    private AbsenceService service;
+
     @Override
     public void moveToState(Status state, Absence item, Object... infos) {
       Absence itemFound = store.findById(item.getId()).orElseThrow(
           () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.ABSENCE_NOT_FOUND));
       itemFound.setStatus(state);
+      if (state == Status.REJECTED) {
+        service.removeFromUsedDays(item);
+      }
     }
   }
 }

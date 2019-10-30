@@ -6,6 +6,7 @@ import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
+import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
@@ -42,6 +43,9 @@ public class AbsenceService {
   @Autowired
   private FilterService filterService;
 
+  @Autowired
+  private UserRepository userRepository;
+
   public Absence findOne(@NotNull Long id) {
     Absence absence = absenceRepository.findByIdAndDeletedAtNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.ABSENCE_NOT_FOUND));
@@ -70,10 +74,10 @@ public class AbsenceService {
         .build();
   }
 
-  public void increaseUsedDays(Absence absence) {
+  public void addToUsedDays(Absence absence) {
     User user = absence.getReporter();
     if (absence.getType() == Type.ABSENCE) {
-      user.setUsedAbsenceDays(user.getTotalAbsenceDays() + absence.getDuration());
+      user.setUsedAbsenceDays(user.getUsedAbsenceDays() + absence.getDuration());
     } else if (absence.getType() == Type.NON_WORKING) {
       if ((user.getUsedSickLeaveDays() + absence.getDuration()) > 15) {
         user.setUsedAbsenceDays(15);
@@ -86,12 +90,13 @@ public class AbsenceService {
     } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
       user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()+absence.getDuration());
     }
+    userRepository.save(user);
   }
 
-  public void reduceUsedDays(Absence absence) {
+  public void removeFromUsedDays(Absence absence) {
     User user = absence.getReporter();
     if (absence.getType() == Type.ABSENCE) {
-      user.setUsedAbsenceDays(user.getTotalAbsenceDays() - absence.getDuration());
+      user.setUsedAbsenceDays(user.getUsedAbsenceDays() - absence.getDuration());
     } else if (absence.getType() == Type.NON_WORKING) {
       if ((user.getUsedSickPay() < absence.getDuration())) {
         Integer duration = absence.getDuration() - user.getUsedSickPay();
@@ -104,6 +109,7 @@ public class AbsenceService {
     } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
       user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()-absence.getDuration());
     }
+    userRepository.save(user);
   }
 
   public Absence create(@NotNull Absence absence) {
@@ -113,7 +119,7 @@ public class AbsenceService {
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
     absence.setStatus(Status.OPEN);
-    increaseUsedDays(absence);
+    addToUsedDays(absence);
     return absenceRepository.save(absence);
   }
 
@@ -127,10 +133,8 @@ public class AbsenceService {
     }
     if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
         .equals(modifyAbsence.getType())) {
-      reduceUsedDays(modifyAbsence);
-      if(!absence.getStatus().equals(Status.REJECTED)){
-        increaseUsedDays(absence);
-      }
+      removeFromUsedDays(modifyAbsence);
+      addToUsedDays(absence);
     }
     modifyAbsence.setType(absence.getType());
     modifyAbsence.setBegin(absence.getBegin());
@@ -149,7 +153,7 @@ public class AbsenceService {
 
   public void delete(@NotNull Long id) {
     Absence deleted = findOne(id);
-    reduceUsedDays(deleted);
+    removeFromUsedDays(deleted);
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
