@@ -3,6 +3,7 @@ package hu.flowacademy.zetaabsencemanager.service;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class AuthenticationService {
     return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
         .map(Authentication::getName)
         .flatMap(userRepository::findByEmailAndDeletedAtNull)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.USER_NOT_FOUND));
   }
 
   public Boolean hasRole(Roles role) {

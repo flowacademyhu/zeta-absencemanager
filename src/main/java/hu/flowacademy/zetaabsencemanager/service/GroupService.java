@@ -5,6 +5,7 @@ import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -32,7 +33,8 @@ public class GroupService {
 
   public Group findOne(@NotNull Long id) {
     return groupRepository.findByIdAndDeletedAtIsNull(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.GROUP_NOT_FOUND));
   }
 
   public List<Group> findAllGroup() {
@@ -64,7 +66,7 @@ public class GroupService {
   public void delete(@NotNull Long id) {
     Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
     List<Group> needToBeModifiedGroups = groupRepository.findAllByParentId(group.getId());
     for (Group g : needToBeModifiedGroups) {
       g.setParentId(null);

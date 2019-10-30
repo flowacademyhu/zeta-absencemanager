@@ -8,6 +8,7 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -47,12 +48,12 @@ public class UserService {
 
   public User findByEmail(String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
   public User findOneUser(Long id) {
     User user = this.userRepository.findByIdAndDeletedAtNull(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
     return user;
   }
 
@@ -112,7 +113,7 @@ public class UserService {
       modifyUser.setPassword(passwordEncoder.encode(firstPassword));
       return userRepository.save(modifyUser);
     } else {
-      throw new IllegalArgumentException("The submitted passwords are different.");
+      throw new IllegalArgumentException(Constants.NOT_EQUAL_PWS);
     }
   }
 
