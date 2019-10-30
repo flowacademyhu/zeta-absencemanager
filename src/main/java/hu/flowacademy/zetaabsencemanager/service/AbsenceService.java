@@ -127,8 +127,10 @@ public class AbsenceService {
     }
     if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
         .equals(modifyAbsence.getType())) {
-      increaseUsedDays(absence);
       reduceUsedDays(modifyAbsence);
+      if(!absence.getStatus().equals(Status.REJECTED)){
+        increaseUsedDays(absence);
+      }
     }
     modifyAbsence.setType(absence.getType());
     modifyAbsence.setBegin(absence.getBegin());
