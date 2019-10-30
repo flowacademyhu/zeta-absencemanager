@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
-import { User } from 'src/app/models/User.model';
-import { AdminGroupEditModalComponent } from '../modals/admin-group-edit-modal/admin-group-edit-modal.component';
+import { MatTableDataSource, MatFormFieldControl } from "@angular/material";
+import { User } from "src/app/models/User.model";
+import { AdminGroupEditModalComponent } from "../modals/admin-group-edit-modal/admin-group-edit-modal.component";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Group } from "src/app/models/Group.model";
@@ -18,7 +18,14 @@ import { DataEntity } from "src/app/models/DataEntity.model";
   styleUrls: ["./admin-groups.component.css"]
 })
 export class AdminGroupsComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ["name", "parent", "leaders", "employees", "edit", "delete"];
+  displayedColumns: string[] = [
+    "name",
+    "parent",
+    "leaders",
+    "employees",
+    "edit",
+    "delete"
+  ];
   dataSource: any;
   error: string;
   private _unsubscribe$ = new Subject<void>();
@@ -36,7 +43,6 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       data => {
         this.dataSource = data.groupResolver;
         this.groupsList = data.groupResolver;
-        console.log(this.dataSource);
         this.transformData();
       },
       error => {
@@ -75,7 +81,6 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: any) => {
-        console.log(result.leaderId.id);
         result.leader = <DataEntity>{ id: result.leaderId.id };
         this.api
           .group()
@@ -85,7 +90,6 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   }
 
   deleteGroup(id: number): void {
-    console.log("ID - component: " + id);
     const dialogRef = this.dialog.open(AdminGroupDeleteModalComponent, {
       data: { group: this.groupsList.filter(group => group.id === id)[0] }
     });
@@ -107,13 +111,21 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AdminGroupEditModalComponent, {
       data: { group: this.dataSource.filter(group => group.id === id)[0] }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
-      if (result) {
-        Object.assign(this.editedGroup, result);
-        let modifiedGroup = new Group(result.name, result.parent, <DataEntity>{ "id": result.leader });
-        this.api.group().updateGroup(this.editedGroup.id, modifiedGroup).subscribe(() => this.router.navigateByUrl(this.router.url));
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(result => {
+        this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
+        if (result) {
+          Object.assign(this.editedGroup, result);
+          let modifiedGroup = new Group(result.name, result.parent, <
+            DataEntity
+          >{ id: result.leader });
+          this.api
+            .group()
+            .updateGroup(this.editedGroup.id, modifiedGroup)
+            .subscribe(() => this.router.navigateByUrl(this.router.url));
+        }
+      });
   }
 }

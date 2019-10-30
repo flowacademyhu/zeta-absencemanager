@@ -210,4 +210,8 @@ public class AdminUserService {
     }
     return employees;
   }
+
+  public List<User> findEverybodyByGroup(Long groupId) {
+    return userRepository.findByGroupAndDeletedAtNull(groupService.findOne(groupId));
+  }
 }
