@@ -13,6 +13,7 @@ import {
 } from "@angular/material/dialog";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { User } from "src/app/models/User.model";
+import { Group } from "src/app/models/Group.model";
 
 @Component({
   selector: "app-admin-user-edit-modal",
@@ -22,6 +23,8 @@ import { User } from "src/app/models/User.model";
 export class AdminUserEditModalComponent implements OnInit {
   public editUserDataForm: FormGroup;
   private error: string;
+  private groups: Group[];
+  private isOtherAbsenceEnt: boolean = false;
 
   constructor(
     private api: ApiCommunicationService,
@@ -40,9 +43,18 @@ export class AdminUserEditModalComponent implements OnInit {
       group: new FormControl(data.user.group),
       email: new FormControl(data.user.email, Validators.required),
       numberOfChildren: new FormControl(data.user.numberOfChildren),
-      otherAbsenceEnt: new FormControl(data.user.otherAbsenceEnt)
+      otherAbsenceEnt: new FormControl(data.user.otherAbsenceEnt),
+      extraAbsenceDays: new FormControl(data.user.extraAbsenceDays)
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.api
+      .group()
+      .getGroups()
+      .subscribe(g => {
+        this.groups = g;
+        console.log(g);
+      });
+  }
 }

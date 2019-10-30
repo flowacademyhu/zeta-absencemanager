@@ -106,11 +106,23 @@
     />
   </mat-form-field>
   <br />
+
   <mat-form-field>
     <input
+      (change)="isOtherAbsenceEnt = true"
       matInput
       placeholder="Egyéb szabadságra jogosító tényezők"
       formControlName="otherAbsenceEnt"
+    />
+  </mat-form-field>
+  <br />
+
+  <mat-form-field *ngIf="isOtherAbsenceEnt">
+    <input
+      type="number"
+      matInput
+      placeholder="Extra szabad napok"
+      formControlName="extraAbsenceDays"
     />
   </mat-form-field>
 </mat-dialog-content>
