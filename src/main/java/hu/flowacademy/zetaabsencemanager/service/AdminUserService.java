@@ -137,7 +137,6 @@ public class AdminUserService {
         modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
       }
       modifyUser.setUpdatedAt(LocalDateTime.now());
-      modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
       int availableAbsenceDays = absenceService.availableAbsence(modifyUser);
       int sickLeaveDays = absenceService.availableSickLeave(modifyUser);
       modifyUser.setTotalAbsenceDays(availableAbsenceDays);
@@ -156,7 +155,6 @@ public class AdminUserService {
       User mod = findOneUser(id);
       List<Group> groupList = groupService.findAllGroup();
       mod.setRole(Roles.INACTIVE);
-      mod.setDeletedBy(authenticationService.getCurrentUser());
       mod.setGroup(null);
       mod.setDeletedAt(LocalDateTime.now());
       if (mod.getGroup() != null) {

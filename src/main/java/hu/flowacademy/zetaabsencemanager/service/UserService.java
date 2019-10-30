@@ -1,14 +1,16 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import hu.flowacademy.zetaabsencemanager.model.*;
+import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
+import hu.flowacademy.zetaabsencemanager.model.Status;
+import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -60,7 +62,6 @@ public class UserService {
     modifyUser.setFirstName(user.getFirstName());
     modifyUser.setEmail(user.getEmail());
     modifyUser.setUpdatedAt(LocalDateTime.now());
-    // modifyUser.setUpdatedBy(authenticationService.getCurrentUser()); not working cuz of dataloder calling it without currentuser TODO
     userRepository.save(modifyUser);
     modifyUser.setPassword(null);
     return modifyUser;
@@ -70,7 +71,6 @@ public class UserService {
     User deleted = findOneUser(id);
     List<Group> groupList = groupService.findAllGroup();
     deleted.setRole(Roles.INACTIVE);
-    deleted.setDeletedBy(authenticationService.getCurrentUser());
     deleted.setGroup(null);
     deleted.setDeletedAt(LocalDateTime.now());
     if (deleted.getGroup() != null) {
@@ -91,14 +91,15 @@ public class UserService {
         groupRepository.save(g);
       }
     }
-    List<Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(deleted);
+    List<Absence> needToBeModifiedAbsences = absenceRepository
+        .findByReporterAndDeletedAtNull(deleted);
     for (Absence a : needToBeModifiedAbsences) {
       a.setStatus(Status.REJECTED);
       a.setReporter(null);
       a.setUpdatedAt(LocalDateTime.now());
       a.setUpdatedBy(authenticationService.getCurrentUser());
       absenceRepository.save(a);
-      }
+    }
     userRepository.save(deleted);
   }
 

@@ -125,12 +125,6 @@ public class User implements UserDetails {
   @Column
   private LocalDateTime deletedAt;
 
-  @ManyToOne
-  private User updatedBy;
-
-  @ManyToOne
-  private User deletedBy;
-
   @JsonIgnore
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
