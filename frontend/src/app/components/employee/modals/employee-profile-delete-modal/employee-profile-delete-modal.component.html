@@ -1,4 +1,6 @@
 <h1 mat-dialog-title>Profil törlése</h1>
+
+<div *ngIf="data.user.role !== 'LEADER'">
 <div>
       <mat-dialog-content>
         Biztos, hogy törölni szeretné profilját?
@@ -21,4 +23,27 @@
     >
       Igen
     </button>
+</div>
+</div>
+
+
+
+<div *ngIf="data.user.role === 'LEADER'">
+
+  <div>
+      <mat-dialog-content>
+        Ön jelenleg vezető beosztású dolgozó, így nincs lehetőség profiljának törlésére.
+      </mat-dialog-content>
+  </div>
+  
+  <div mat-dialog-actions style="justify-content: center;">
+    <button
+      mat-button
+      mat-dialog-close
+      style="border: 2px solid white;"
+    >
+      Rendben
+    </button>
+  </div>
+  
 </div>

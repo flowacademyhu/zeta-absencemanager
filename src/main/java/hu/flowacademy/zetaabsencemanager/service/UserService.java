@@ -67,25 +67,31 @@ public class UserService {
   }
 
   public void delete(@NotNull Long id) {
-    User deleted = findOneUser(id);
-    if (!deleted.getRole().equals(Roles.LEADER)) {
-      List<Absence> needToBeModifiedAbsences = absenceRepository
-          .findByReporterAndDeletedAtNull(deleted);
-      for (Absence a : needToBeModifiedAbsences) {
-        a.setStatus(Status.REJECTED);
-        a.setReporter(null);
-        a.setUpdatedAt(LocalDateTime.now());
-        a.setUpdatedBy(authenticationService.getCurrentUser());
-        absenceRepository.save(a);
+    if (id.equals(authenticationService.getCurrentUser().getId())) {
+      User deleted = findOneUser(id);
+      if (!deleted.getRole().equals(Roles.LEADER)) {
+        List<Absence> needToBeModifiedAbsences = absenceRepository
+            .findByReporterAndDeletedAtNull(deleted);
+        for (Absence a : needToBeModifiedAbsences) {
+          if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.OPEN))) {
+            a.setStatus(Status.REJECTED);
+            a.setUpdatedAt(LocalDateTime.now());
+            a.setUpdatedBy(authenticationService.getCurrentUser());
+            absenceRepository.save(a);
+          }
+        }
+        deleted.setRole(Roles.INACTIVE);
+        // deleted.setDeletedBy(authenticationService.getCurrentUser());
+        deleted.setGroup(null);
+        deleted.setDeletedAt(LocalDateTime.now());
+        userRepository.save(deleted);
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "You can't delete your profile, because your role is leader.");
       }
-      deleted.setRole(Roles.INACTIVE);
-      // deleted.setDeletedBy(authenticationService.getCurrentUser());
-      deleted.setGroup(null);
-      deleted.setDeletedAt(LocalDateTime.now());
-      userRepository.save(deleted);
     } else {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "You can't delete your profile, because your role is leader.");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          "You can only delete your profile.");
     }
   }
 

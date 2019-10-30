@@ -54,7 +54,9 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   }
 
   deleteProfile(): void {
-    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { });
+    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { 
+      data: { user: this.user }
+    });
 
     dialogRef
       .afterClosed()

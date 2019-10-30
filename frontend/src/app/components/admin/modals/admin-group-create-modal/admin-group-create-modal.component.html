@@ -18,7 +18,7 @@
         [value]="group.id"
         (click)="addEmployeesToList(group.id)"
       >
-        {{ group.id }} {{ group.name }}
+        {{ group.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -30,7 +30,7 @@
         *ngFor="let employee of employeeList; let i = index"
         [value]="employee"
       >
-        {{ employee.firstName }} {{ employee.lastName }} {{ employee.id }}
+        {{ employee.firstName }} {{ employee.lastName }}
       </mat-option>
     </mat-select>
   </mat-form-field>

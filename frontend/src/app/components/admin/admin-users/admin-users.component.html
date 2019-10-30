@@ -12,7 +12,7 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Név</th>
       <td mat-cell *matCellDef="let user">
-        {{ user.id }} {{ user.email }} {{ user.lastName }} {{ user.firstName }}
+        {{ user.lastName }} {{ user.firstName }}
       </td>
     </ng-container>
 
@@ -67,7 +67,7 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef>Törlés</th>
       <td mat-cell *matCellDef="let user">
-        <button mat-icon-button [disabled]="this.userData && this.userData.role !== 'ADMIN'"
+        <button mat-icon-button [disabled]="this.userData && this.userData.role !== 'ADMIN' || user.role === 'ADMIN'"
           (click)="deleteUser(user.id)">
           <mat-icon>delete</mat-icon>
         </button>
