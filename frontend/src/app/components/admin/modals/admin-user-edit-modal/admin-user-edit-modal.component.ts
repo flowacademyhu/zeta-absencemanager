@@ -31,7 +31,6 @@ export class AdminUserEditModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public fb: FormBuilder
   ) {
-    console.log(data.user);
     this.editUserDataForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),

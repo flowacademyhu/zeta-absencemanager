@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -53,11 +54,19 @@ public class GroupService {
     Group modifyGroup = findOne(id);
     modifyGroup.setName(group.getName());
     modifyGroup.setParentId(group.getParentId());
-    modifyGroup.setEmployees(group.getEmployees());
-    if (group.getLeader().getGroup().getId() == modifyGroup.getParentId()
-        && group.getLeader().getRole() == Roles.EMPLOYEE) {
-      modifyGroup.setLeader(group.getLeader());
+    if (!modifyGroup.getLeader().getId().equals(group.getLeader().getId())) {
+      User oldLeader = userService.findOneUser(modifyGroup.getLeader().getId());
+      if (oldLeader.getRole() != Roles.ADMIN) {
+        oldLeader.setRole(Roles.EMPLOYEE);
+        userRepository.save(oldLeader);
+      }
+      User newLeader = userService.findOneUser(group.getLeader().getId());
+      if (newLeader.getRole() != Roles.ADMIN) {
+        newLeader.setRole(Roles.LEADER);
+        userRepository.save(newLeader);
+      }
     }
+    modifyGroup.setLeader(group.getLeader());
     modifyGroup.setUpdatedAt(LocalDateTime.now());
     groupRepository.save(modifyGroup);
     return modifyGroup;
@@ -67,32 +76,26 @@ public class GroupService {
     Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             Constants.INVALID_ARGUMENTS));
-    List<Group> needToBeModifiedGroups = groupRepository.findAllByParentId(group.getId());
-    for (Group g : needToBeModifiedGroups) {
-      g.setParentId(null);
-      g.setLeader(null);
-      g.setUpdatedAt(LocalDateTime.now());
-      groupRepository.save(g);
-    }
-    List<User> needToBeModifiedEmployees = userRepository.findAllByGroupAndDeletedAtNull(group);
-    for (User u : needToBeModifiedEmployees) {
-      u.setGroup(null);
-      if (u.getRole().equals(Roles.LEADER)) {
-        u.setRole(Roles.EMPLOYEE);
+
+    if (CollectionUtils.isEmpty(group.getEmployees())) {
+      List<Group> childGroups = groupRepository.findAllByParentId(group.getId());
+      for (Group g : childGroups) {
+        g.setParentId(null);
+        g.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(g);
       }
-      u.setUpdatedAt(LocalDateTime.now());
-      userRepository.save(u);
-    }
-    if (group.getLeader() != null) {
       User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
       needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
       needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
       userRepository.save(needToBeModifiedLeader);
-    }
-    group.setEmployees(null);
-    group.setLeader(null);
-    group.setDeletedAt(LocalDateTime.now());
 
-    groupRepository.save(group);
+      group.setLeader(null);
+      group.setDeletedAt(LocalDateTime.now());
+
+      groupRepository.save(group);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "You can't delete a group, while it has employees.");
+    }
   }
 }

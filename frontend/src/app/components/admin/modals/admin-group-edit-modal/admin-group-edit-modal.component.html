@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Csoport Szerkesztése</h2>
+ <mat-dialog-content [formGroup]="editGroupDataForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="name"
+        formControlName="name"
+        id="name"
+      /> 
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <mat-label>Felettes Csoport</mat-label>
+      <mat-select formControlName="parent">
+        <mat-option *ngFor="let group of groupList" [value]="group.id">
+          {{ group.id }} {{ group.name }} 
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Vezető</mat-label>
+        <mat-select formControlName="leader">
+          <mat-option *ngFor="let user of userList" [value]="user.id">
+            {{ user.id }} {{ user.lastName }} {{ user.firstName }} 
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Mentés</button>
+
+  <button mat-raised-button color="warn" (click)="onCancel()">Mégsem</button>
+</mat-dialog-actions>

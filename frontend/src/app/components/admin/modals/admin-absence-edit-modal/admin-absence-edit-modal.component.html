@@ -256,7 +256,7 @@
     <button type="button" mat-raised-button (click)="onAction('DONE')" *ngIf="showButton('ADMIN', 'ADMINISTRATED')">Lezárás</button>  
     <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="showButton('LEADER', 'UNDER_REVIEW')">Elutasítás</button>
     <button type="button" mat-raised-button (click)="onAction('REJECTED')" *ngIf="this.userRole && this.userRole === 'ADMIN' && this.absence && this.absence.status !== 'DONE'">Elutasítás</button>
-    <button mat-raised-button color="warn" (click)="onCancel()">
+    <button type="button" color="warn" (click)="onCancel()">
       Mégsem
     </button>
 
