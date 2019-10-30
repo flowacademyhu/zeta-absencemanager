@@ -6,8 +6,8 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminGroupCreateModalComponent } from "src/app/components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
-import { AdminGroupDeleteModalComponent } from '../modals/admin-group-delete-modal/admin-group-delete-modal.component';
-import { DataEntity } from 'src/app/models/DataEntity.model';
+import { AdminGroupDeleteModalComponent } from "../modals/admin-group-delete-modal/admin-group-delete-modal.component";
+import { DataEntity } from "src/app/models/DataEntity.model";
 
 @Component({
   selector: "app-admin-groups",
@@ -15,7 +15,13 @@ import { DataEntity } from 'src/app/models/DataEntity.model';
   styleUrls: ["./admin-groups.component.css"]
 })
 export class AdminGroupsComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ["name", "parent", "leaders", "employees", "delete"];
+  displayedColumns: string[] = [
+    "name",
+    "parent",
+    "leaders",
+    "employees",
+    "delete"
+  ];
   dataSource: any;
   error: string;
   private _unsubscribe$ = new Subject<void>();
@@ -53,8 +59,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -63,16 +68,15 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
 
   createGroup(): void {
     const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {
-      data: { group: this.groupsList
-      }
+      data: { group: this.groupsList }
     });
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe((result: Group) => {
-        console.log(result);
-        result.leader = <DataEntity>{id: result.leaderId};
+      .subscribe((result: any) => {
+        console.log(result.leaderId.id);
+        result.leader = <DataEntity>{ id: result.leaderId.id };
         this.api
           .group()
           .createGroup(result)
@@ -83,19 +87,19 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
   deleteGroup(id: number): void {
     console.log("ID - component: " + id);
     const dialogRef = this.dialog.open(AdminGroupDeleteModalComponent, {
-      data: {group: this.groupsList.filter(group => group.id === id)[0]}
+      data: { group: this.groupsList.filter(group => group.id === id)[0] }
     });
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(result => {
-        if(result === true) {
+        if (result === true) {
           this.api
             .group()
             .deleteGroup(id)
             .subscribe(() => this.router.navigateByUrl(this.router.url));
-      }});
-  } 
-
+        }
+      });
+  }
 }

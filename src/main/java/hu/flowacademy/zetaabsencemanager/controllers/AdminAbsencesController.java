@@ -5,7 +5,6 @@ import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
-import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
 import hu.flowacademy.zetaabsencemanager.service.AuthenticationService;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
@@ -42,8 +41,8 @@ public class AdminAbsencesController {
       @RequestParam(required = false) Long administrationID,
       @RequestParam(required = false) Type type,
       @RequestParam(required = false) Status status,
-      @RequestParam(required = false) User reporter,
-      @RequestParam(required = false) User assignee,
+      @RequestParam(required = false) String reporter,
+      @RequestParam(required = false) String assignee,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finish,
       @RequestParam(required = false) Integer dayStart,
