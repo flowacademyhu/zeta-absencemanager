@@ -1,4 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { MatTableDataSource, MatFormFieldControl } from '@angular/material';
+import { User } from 'src/app/models/User.model';
+import { AdminGroupEditModalComponent } from '../modals/admin-group-edit-modal/admin-group-edit-modal.component';
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Group } from "src/app/models/Group.model";
@@ -15,18 +18,13 @@ import { DataEntity } from "src/app/models/DataEntity.model";
   styleUrls: ["./admin-groups.component.css"]
 })
 export class AdminGroupsComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = [
-    "name",
-    "parent",
-    "leaders",
-    "employees",
-    "delete"
-  ];
+  displayedColumns: string[] = ["name", "parent", "leaders", "employees", "edit", "delete"];
   dataSource: any;
   error: string;
   private _unsubscribe$ = new Subject<void>();
   groupData: Group;
   groupsList: Group[];
+  editedGroup: any;
 
   constructor(
     private api: ApiCommunicationService,
@@ -68,7 +66,9 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
 
   createGroup(): void {
     const dialogRef = this.dialog.open(AdminGroupCreateModalComponent, {
-      data: { group: this.groupsList }
+      data: {
+        group: this.groupsList
+      }
     });
 
     dialogRef
@@ -101,5 +101,19 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
             .subscribe(() => this.router.navigateByUrl(this.router.url));
         }
       });
+  }
+
+  editGroup(id: number): void {
+    const dialogRef = this.dialog.open(AdminGroupEditModalComponent, {
+      data: { group: this.dataSource.filter(group => group.id === id)[0] }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      this.editedGroup = this.dataSource.filter(group => group.id === id)[0];
+      if (result) {
+        Object.assign(this.editedGroup, result);
+        let modifiedGroup = new Group(result.name, result.parent, <DataEntity>{ "id": result.leader });
+        this.api.group().updateGroup(this.editedGroup.id, modifiedGroup).subscribe(() => this.router.navigateByUrl(this.router.url));
+      }
+    });
   }
 }
