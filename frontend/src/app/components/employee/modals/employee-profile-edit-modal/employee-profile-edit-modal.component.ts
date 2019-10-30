@@ -30,8 +30,12 @@ export class EmployeeProfileEditModalComponent implements OnInit {
         Validators.required,
         Validators.maxLength(60)
       ]),
-      dateOfBirth: new FormControl(
-        data.user.dateOfBirth),
+      dateOfBirth: new FormControl( 
+        new Date (
+          data.user.dateOfBirth[0],
+          data.user.dateOfBirth[1] - 1,  
+          data.user.dateOfBirth[2]
+          )),
       numberOfChildren: new FormControl(
         data.user.numberOfChildren, Validators.required)
     })
