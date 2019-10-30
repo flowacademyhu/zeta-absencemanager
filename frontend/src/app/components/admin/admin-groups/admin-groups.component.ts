@@ -9,8 +9,8 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminGroupCreateModalComponent } from "src/app/components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
-import { AdminGroupDeleteModalComponent } from '../modals/admin-group-delete-modal/admin-group-delete-modal.component';
-import { DataEntity } from 'src/app/models/DataEntity.model';
+import { AdminGroupDeleteModalComponent } from "../modals/admin-group-delete-modal/admin-group-delete-modal.component";
+import { DataEntity } from "src/app/models/DataEntity.model";
 
 @Component({
   selector: "app-admin-groups",
@@ -57,8 +57,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -75,9 +74,9 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe((result: Group) => {
-        console.log(result);
-        result.leader = <DataEntity>{ id: result.leaderId };
+      .subscribe((result: any) => {
+        console.log(result.leaderId.id);
+        result.leader = <DataEntity>{ id: result.leaderId.id };
         this.api
           .group()
           .createGroup(result)
@@ -119,5 +118,4 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 }
