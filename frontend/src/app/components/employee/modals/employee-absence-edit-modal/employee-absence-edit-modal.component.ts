@@ -150,7 +150,6 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
 
   public onAction(action: Status): void {
     this.absence.status = action;
-    console.log(action);
     var modifiedAbsence = {
       id: this.absence.id,
       begin: this.absence.begin,
