@@ -133,7 +133,7 @@ public class DataLoader implements CommandLineRunner {
     users.add(leader);
 
     List<User> g1u = Arrays
-        .asList(users.get(0), users.get(2), users.get(3), users.get(1), users.get(32));
+        .asList(users.get(0), users.get(3), users.get(1), users.get(32));
     Group group1 = Group.builder()
         .employees(List.of())
         .name("Group1")

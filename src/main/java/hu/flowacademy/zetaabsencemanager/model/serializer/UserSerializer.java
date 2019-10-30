@@ -15,9 +15,8 @@ public class UserSerializer extends JsonSerializer {
       SerializerProvider serializerProvider) throws IOException {
     if (o instanceof Collection) {
       var users = (Collection<User>) o;
-      jsonGenerator.writeObject(users.stream().peek(user -> {
-        user.setGroup(null);
-      }).collect(Collectors.toList()));
+      jsonGenerator.writeObject(
+          users.stream().peek(user -> user.setGroup(null)).collect(Collectors.toList()));
     }
   }
 }

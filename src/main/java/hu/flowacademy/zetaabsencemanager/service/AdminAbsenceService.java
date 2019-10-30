@@ -122,6 +122,7 @@ public class AdminAbsenceService {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
+      modifyAbsence.setAdministrationID(absence.getAdministrationID());
       if (modifyAbsence.getDuration() != absence.getDuration()) {
         absenceService.addToUsedDays(absence);
         absenceService.removeFromUsedDays(modifyAbsence);
@@ -152,13 +153,13 @@ public class AdminAbsenceService {
       Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
     return Specification
-        .where(filterService.filterByAdministrationID(administrationID))
-        .and(filterService.filterByType(type))
+        .where(filterService.filterByType(type))
+        .and(filterService.filterByAdministrationID(administrationID))
         .and(filterService.filterByStatus(status))
-        .and(filterService.filterByReporterFirstName(reporter))
-        .or(filterService.filterByReporterLastName(reporter))
-        .and(filterService.filterByAssigneeFirstName(assignee))
-        .or(filterService.filterByAssigneeLastName(assignee))
+        .and(filterService.filterByReporterFirstName(reporter)
+            .or(filterService.filterByReporterLastName(reporter)))
+        .and(filterService.filterByAssigneeFirstName(assignee)
+            .or(filterService.filterByAssigneeLastName(assignee)))
         .and(filterService.filterByBeginStart(start))
         .and(filterService.filterByBeginFinish(finish))
         .and(filterService.filterByDaysStart(dayStart))
@@ -172,8 +173,8 @@ public class AdminAbsenceService {
         .where(filterService.filterByAdministrationID(administrationID))
         .and(filterService.filterByType(type))
         .and(filterService.filterByStatus(status))
-        .and(filterService.filterByReporterFirstName(reporter))
-        .or(filterService.filterByReporterLastName(reporter))
+        .and(filterService.filterByReporterFirstName(reporter)
+            .or(filterService.filterByReporterLastName(reporter)))
         .and(filterService.filterByAssignee(authenticationService.getCurrentUser()))
         .and(filterService.filterByBeginStart(start))
         .and(filterService.filterByBeginFinish(finish))

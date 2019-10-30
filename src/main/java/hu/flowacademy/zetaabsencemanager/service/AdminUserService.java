@@ -54,7 +54,8 @@ public class AdminUserService {
 
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
   public List<User> findAllUser() {
@@ -81,7 +82,8 @@ public class AdminUserService {
       if (this.userValidator.IsInLeadersGroup(this.authenticationService.getCurrentUser(), user)) {
         return user;
       } else {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.USER_NOT_IN_YOUR_GROUP);
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+            Constants.USER_NOT_IN_YOUR_GROUP);
       }
     }
   }
@@ -115,7 +117,8 @@ public class AdminUserService {
       userRepository.save(newUser);
       return newUser;
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.ONLY_ADMIN_CAN_CREATE_USER);
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          Constants.ONLY_ADMIN_CAN_CREATE_USER);
     }
   }
 
@@ -138,7 +141,6 @@ public class AdminUserService {
         modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
       }
       modifyUser.setUpdatedAt(LocalDateTime.now());
-      modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
       int availableAbsenceDays = absenceService.availableAbsence(modifyUser);
       int sickLeaveDays = absenceService.availableSickLeave(modifyUser);
       modifyUser.setTotalAbsenceDays(availableAbsenceDays);
@@ -147,7 +149,7 @@ public class AdminUserService {
       return modifyUser;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-         Constants.YOU_CAN_ONLY_MODIFY_YOUR_PROFILE);
+          Constants.YOU_CAN_ONLY_MODIFY_YOUR_PROFILE);
     }
   }
 
@@ -168,7 +170,6 @@ public class AdminUserService {
           }
         }
         mod.setRole(Roles.INACTIVE);
-        mod.setDeletedBy(authenticationService.getCurrentUser());
         mod.setGroup(null);
         mod.setDeletedAt(LocalDateTime.now());
         userRepository.save(mod);
@@ -208,5 +209,9 @@ public class AdminUserService {
       }
     }
     return employees;
+  }
+
+  public List<User> findEverybodyByGroup(Long groupId) {
+    return userRepository.findByGroupAndDeletedAtNull(groupService.findOne(groupId));
   }
 }

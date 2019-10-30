@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -87,7 +87,6 @@ public class GroupService {
       User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
       needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
       needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
-      needToBeModifiedLeader.setUpdatedBy(authenticationService.getCurrentUser());
       userRepository.save(needToBeModifiedLeader);
 
       group.setLeader(null);
