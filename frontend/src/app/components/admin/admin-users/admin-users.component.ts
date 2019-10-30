@@ -9,6 +9,7 @@ import { AdminUserEditModalComponent } from "../modals/admin-user-edit-modal/adm
 import { MatTableDataSource } from "@angular/material";
 import { AdminUserDeleteModalComponent } from "../modals/admin-user-delete-modal/admin-user-delete-modal.component";
 import { Router, ActivatedRoute } from "@angular/router";
+import { Absence } from "src/app/models/Absence.model";
 
 @Component({
   selector: "app-admin-users",
@@ -67,6 +68,9 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: User) => {
+        result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
+        result.dateOfEntry = Absence.convertDate(result.dateOfEntry);
+        result.dateOfEndTrial = Absence.convertDate(result.dateOfEndTrial);
         this.api
           .user()
           .createUser(result)
@@ -85,6 +89,9 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         if (result != undefined) {
           this.editedUser = this.usersList.filter(user => user.id === id)[0];
+          result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
+          result.dateOfEntry = Absence.convertDate(result.dateOfEntry);
+          result.dateOfEndTrial = Absence.convertDate(result.dateOfEndTrial);
           Object.assign(this.editedUser, result);
           this.editedUser.id = id;
           this.api

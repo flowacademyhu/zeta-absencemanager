@@ -55,13 +55,16 @@
   <mat-form-field>
     <input
       matInput
-      [matDatepicker]="endOfTrial"
+      [matDatepicker]="dateOfEndTrial"
       placeholder="Próbaidő vége"
-      formControlName="endOfTrial"
-      id="endOfTrial"
+      formControlName="dateOfEndTrial"
+      id="dateOfEndTrial"
     />
-    <mat-datepicker-toggle matSuffix [for]="endOfTrial"></mat-datepicker-toggle>
-    <mat-datepicker #endOfTrial></mat-datepicker>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dateOfEndTrial"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dateOfEndTrial></mat-datepicker>
   </mat-form-field>
   <br />
 

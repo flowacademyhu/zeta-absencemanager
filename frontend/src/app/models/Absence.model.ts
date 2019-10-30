@@ -61,9 +61,9 @@ export class Absence extends DataEntity {
   }
 
   public static convertDate(date: Date): number[] {
-    var year = date.getUTCFullYear();
-    var month = date.getUTCMonth() + 1;
-    var day = date.getUTCDate() + 1;
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
     var dateArray: number[] = [year, month, day];
     return dateArray;
   }

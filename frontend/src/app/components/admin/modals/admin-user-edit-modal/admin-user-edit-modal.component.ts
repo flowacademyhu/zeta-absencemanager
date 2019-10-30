@@ -14,6 +14,7 @@ import {
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { User } from "src/app/models/User.model";
 import { Group } from "src/app/models/Group.model";
+import * as moment from "moment";
 
 @Component({
   selector: "app-admin-user-edit-modal",
@@ -36,9 +37,27 @@ export class AdminUserEditModalComponent implements OnInit {
     this.editUserDataForm = new FormGroup({
       firstName: new FormControl(data.user.firstName, Validators.required),
       lastName: new FormControl(data.user.lastName, Validators.required),
-      dateOfBirth: new FormControl(data.user.dateOfBirth),
-      dateOfEntry: new FormControl(data.user.dateOfEntry),
-      endOfTrial: new FormControl(data.user.dateOfEndTrial),
+      dateOfBirth: new FormControl(
+        new Date(
+          data.user.dateOfBirth[0],
+          data.user.dateOfBirth[1] - 1,
+          data.user.dateOfBirth[2]
+        )
+      ),
+      dateOfEntry: new FormControl(
+        new Date(
+          data.user.dateOfEntry[0],
+          data.user.dateOfEntry[1] - 1,
+          data.user.dateOfEntry[2]
+        )
+      ),
+      dateOfEndTrial: new FormControl(
+        new Date(
+          data.user.dateOfEndTrial[0],
+          data.user.dateOfEndTrial[1] - 1,
+          data.user.dateOfEndTrial[2]
+        )
+      ),
       position: new FormControl(data.user.position, Validators.required),
       group: new FormControl(data.user.group),
       email: new FormControl(data.user.email, Validators.required),
@@ -54,7 +73,6 @@ export class AdminUserEditModalComponent implements OnInit {
       .getGroups()
       .subscribe(g => {
         this.groups = g;
-        console.log(g);
       });
   }
 }
