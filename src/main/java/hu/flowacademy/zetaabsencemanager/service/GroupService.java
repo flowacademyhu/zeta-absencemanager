@@ -1,7 +1,5 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import static org.springframework.util.ObjectUtils.isEmpty;
-
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
@@ -70,7 +68,7 @@ public class GroupService {
     Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "The submitted arguments are invalid."));
-    if (isEmpty(group.getEmployees())) {
+    if (CollectionUtils.isEmpty(group.getEmployees())) {
       List<Group> childGroups = groupRepository.findAllByParentId(group.getId());
       for (Group g : childGroups) {
         g.setParentId(null);
