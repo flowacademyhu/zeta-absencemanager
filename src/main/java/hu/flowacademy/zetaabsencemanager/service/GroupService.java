@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @Transactional
@@ -67,34 +68,27 @@ public class GroupService {
     Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             Constants.INVALID_ARGUMENTS));
-    List<Group> needToBeModifiedGroups = groupRepository.findAllByParentId(group.getId());
-    for (Group g : needToBeModifiedGroups) {
-      g.setParentId(null);
-      g.setLeader(null);
-      g.setUpdatedAt(LocalDateTime.now());
-      groupRepository.save(g);
-    }
-    List<User> needToBeModifiedEmployees = userRepository.findAllByGroupAndDeletedAtNull(group);
-    for (User u : needToBeModifiedEmployees) {
-      u.setGroup(null);
-      if (u.getRole().equals(Roles.LEADER)) {
-        u.setRole(Roles.EMPLOYEE);
+
+    if (CollectionUtils.isEmpty(group.getEmployees())) {
+      List<Group> childGroups = groupRepository.findAllByParentId(group.getId());
+      for (Group g : childGroups) {
+        g.setParentId(null);
+        g.setUpdatedAt(LocalDateTime.now());
+        groupRepository.save(g);
       }
-      u.setUpdatedAt(LocalDateTime.now());
-      u.setUpdatedBy(authenticationService.getCurrentUser());
-      userRepository.save(u);
-    }
-    if (group.getLeader() != null) {
       User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
       needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
       needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
       needToBeModifiedLeader.setUpdatedBy(authenticationService.getCurrentUser());
       userRepository.save(needToBeModifiedLeader);
-    }
-    group.setEmployees(null);
-    group.setLeader(null);
-    group.setDeletedAt(LocalDateTime.now());
 
-    groupRepository.save(group);
+      group.setLeader(null);
+      group.setDeletedAt(LocalDateTime.now());
+
+      groupRepository.save(group);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          "You can't delete a group, while it has employees.");
+    }
   }
 }

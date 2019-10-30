@@ -68,39 +68,32 @@ public class UserService {
   }
 
   public void delete(@NotNull Long id) {
-    User deleted = findOneUser(id);
-    List<Group> groupList = groupService.findAllGroup();
-    deleted.setRole(Roles.INACTIVE);
-    deleted.setDeletedBy(authenticationService.getCurrentUser());
-    deleted.setGroup(null);
-    deleted.setDeletedAt(LocalDateTime.now());
-    if (deleted.getGroup() != null) {
-      Group modifyGroup = groupService.findOne(deleted.getGroup().getId());
-      for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
-        if (modifyGroup.getEmployees().size() > 0 && modifyGroup.getEmployees().get(i).getId()
-            .equals(id)) {
-          modifyGroup.getEmployees().remove(modifyGroup.getEmployees().get(i));
-          modifyGroup.setUpdatedAt(LocalDateTime.now());
-          groupRepository.save(modifyGroup);
+    if (id.equals(authenticationService.getCurrentUser().getId())) {
+      User deleted = findOneUser(id);
+      if (!deleted.getRole().equals(Roles.LEADER)) {
+        List<Absence> needToBeModifiedAbsences = absenceRepository
+            .findByReporterAndDeletedAtNull(deleted);
+        for (Absence a : needToBeModifiedAbsences) {
+          if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.OPEN))) {
+            a.setStatus(Status.REJECTED);
+            a.setUpdatedAt(LocalDateTime.now());
+            a.setUpdatedBy(authenticationService.getCurrentUser());
+            absenceRepository.save(a);
+          }
         }
+        deleted.setDeletedBy(authenticationService.getCurrentUser());
+        deleted.setRole(Roles.INACTIVE);
+        deleted.setGroup(null);
+        deleted.setDeletedAt(LocalDateTime.now());
+        userRepository.save(deleted);
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "You can't delete your profile, because your role is leader.");
       }
+    } else {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          "You can only delete your profile.");
     }
-    for (Group g : groupList) {
-      if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
-        g.setLeader(null);
-        g.setUpdatedAt(LocalDateTime.now());
-        groupRepository.save(g);
-      }
-    }
-    List<Absence> needToBeModifiedAbsences = absenceRepository.findByReporterAndDeletedAtNull(deleted);
-    for (Absence a : needToBeModifiedAbsences) {
-      a.setStatus(Status.REJECTED);
-      a.setReporter(null);
-      a.setUpdatedAt(LocalDateTime.now());
-      a.setUpdatedBy(authenticationService.getCurrentUser());
-      absenceRepository.save(a);
-      }
-    userRepository.save(deleted);
   }
 
   public User changePassword(@NotNull String firstPassword, @NotNull String secondPassword,

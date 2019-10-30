@@ -155,38 +155,27 @@ public class AdminUserService {
   public void delete(@NotNull Long id) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       User mod = findOneUser(id);
-      List<Group> groupList = groupService.findAllGroup();
-      mod.setRole(Roles.INACTIVE);
-      mod.setDeletedBy(authenticationService.getCurrentUser());
-      mod.setGroup(null);
-      mod.setDeletedAt(LocalDateTime.now());
-      if (mod.getGroup() != null) {
-        Group modifyGroup = groupService.findOne(mod.getGroup().getId());
-        for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
-          if (modifyGroup.getEmployees().size() > 0 && modifyGroup.getEmployees().get(i).getId()
-              .equals(id)) {
-            modifyGroup.getEmployees().remove(modifyGroup.getEmployees().get(i));
-            modifyGroup.setUpdatedAt(LocalDateTime.now());
-            groupRepository.save(modifyGroup);
+      if (!mod.getRole().equals(Roles.LEADER)) {
+
+        List<Absence> needToBeModifiedAbsences = absenceRepository
+            .findByReporterAndDeletedAtNull(mod);
+        for (Absence a : needToBeModifiedAbsences) {
+          if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.APPROVED))) {
+            a.setStatus(Status.REJECTED);
+            a.setUpdatedAt(LocalDateTime.now());
+            a.setUpdatedBy(authenticationService.getCurrentUser());
+            absenceRepository.save(a);
           }
         }
+        mod.setRole(Roles.INACTIVE);
+        mod.setDeletedBy(authenticationService.getCurrentUser());
+        mod.setGroup(null);
+        mod.setDeletedAt(LocalDateTime.now());
+        userRepository.save(mod);
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "You can't delete leader's profile.");
       }
-      for (Group g : groupList) {
-        if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
-          g.setLeader(null);
-          g.setUpdatedAt(LocalDateTime.now());
-          groupRepository.save(g);
-        }
-      }
-      List<Absence> needToBeModifiedAbsences = absenceRepository
-          .findByReporterAndDeletedAtNull(mod);
-      for (Absence a : needToBeModifiedAbsences) {
-        a.setStatus(Status.REJECTED);
-        a.setUpdatedBy(authenticationService.getCurrentUser());
-        a.setUpdatedAt(LocalDateTime.now());
-        absenceRepository.save(a);
-      }
-      userRepository.save(mod);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           Constants.YOU_CAN_ONLY_DELETE_YOUR_PROFILE);

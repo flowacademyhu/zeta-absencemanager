@@ -1,4 +1,6 @@
-<h1 mat-dialog-title>Alkamlazott törlése</h1>
+
+<h1 mat-dialog-title >Alkamlazott törlése</h1>
+<div *ngIf="data.user.role !== 'LEADER'">
 <div>
       <mat-dialog-content>
         Biztos, hogy törölni szeretné {{ data.user.lastName }} {{ data.user.firstName }} alkalmazottat?
@@ -22,4 +24,27 @@
       Igen
     </button>
 </div>
+</div>
+
+<div *ngIf="data.user.role === 'LEADER'">
+
+<div>
+    <mat-dialog-content>
+      {{ data.user.lastName }} {{ data.user.firstName }} jelenleg vezető beosztású dolgozó, így nincs lehetőség profiljának törlésére.
+    </mat-dialog-content>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+  <button
+    mat-button
+    mat-dialog-close
+    style="border: 2px solid white;"
+  >
+    Rendben
+  </button>
+</div>
+
+</div>
+
+
 
