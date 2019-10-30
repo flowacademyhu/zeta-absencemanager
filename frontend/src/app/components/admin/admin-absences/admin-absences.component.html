@@ -45,14 +45,14 @@
     <ng-container matColumnDef="dayEnd">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="number" placeholder="Max. Nap" (onChange)='onFilter()' [(ngModel)]="absenceFilter.dayEnd" />
+                <input matInput type="number" placeholder="Max. Nap" (change)='onFilter()' [(ngModel)]="absenceFilter.dayEnd" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="absenceFilter.type" (onChange)='onFilter()' placeholder="Típus">
+            <mat-select [(ngModel)]="absenceFilter.type" (selectionChange)='onFilter()' placeholder="Típus">
                 <mat-option *ngFor="let type of absenceType" [value]="type">
                   {{ type | type }}
                 </mat-option>
@@ -62,7 +62,7 @@
 
     <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="absenceFilter.status" placeholder="Státusz">
+            <mat-select [(ngModel)]="absenceFilter.status" (selectionChange)='onFilter()' placeholder="Státusz">
                 <mat-option *ngFor="let status of absenceStatus" [value]="status">
                   {{ status | status }}
                 </mat-option>
