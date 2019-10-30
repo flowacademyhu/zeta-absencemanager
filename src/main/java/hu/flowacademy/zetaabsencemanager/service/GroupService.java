@@ -4,12 +4,11 @@ import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
+import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-
-import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
-import jdk.jshell.execution.LoaderDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,8 @@ public class GroupService {
 
   public Group findOne(@NotNull Long id) {
     return groupRepository.findByIdAndDeletedAtIsNull(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Group not found"));
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.GROUP_NOT_FOUND));
   }
 
   public List<Group> findAllGroup() {
@@ -43,11 +43,11 @@ public class GroupService {
   }
 
   public Group create(@NotNull Group group) {
-      User modifyUser = userService.findOneUser(group.getLeader().getId());
-      modifyUser.setRole(Roles.LEADER);
-      userRepository.save(modifyUser);
+    User modifyUser = userService.findOneUser(group.getLeader().getId());
+    modifyUser.setRole(Roles.LEADER);
+    userRepository.save(modifyUser);
 
-      return groupRepository.save(group);
+    return groupRepository.save(group);
   }
 
   public Group updateGroup(@NotNull Long id, @NotNull Group group) {
@@ -67,7 +67,8 @@ public class GroupService {
   public void delete(@NotNull Long id) {
     Group group = groupRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
+
     if (CollectionUtils.isEmpty(group.getEmployees())) {
       List<Group> childGroups = groupRepository.findAllByParentId(group.getId());
       for (Group g : childGroups) {

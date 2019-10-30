@@ -1,5 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -34,18 +35,18 @@ public class Absence implements HasStateAndId<Long, Status> {
   private Long administrationID;
 
   @Column
-  @NotNull(message = "Type must be set.")
+  @NotNull(message = Constants.TYPE_REQUIRED)
   private Type type;
 
   @Column
   private String summary;
 
   @Column
-  @NotNull(message = "Begin date is required.")
+  @NotNull(message = Constants.BEGIN_REQUIRED)
   private LocalDate begin;
 
   @Column
-  @NotNull(message = "End date is required.")
+  @NotNull(message =Constants.END_REQUIRED)
   private LocalDate end;
 
   @Column
