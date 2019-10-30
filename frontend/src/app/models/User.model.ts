@@ -6,6 +6,7 @@ export class User extends DataEntity {
   public firstName: string;
   public lastName: string;
   public email: string;
+  public password: string;
   public dateOfBirth: any;
   public dateOfEntry: any;
   public dateOfEndTrial: any;
@@ -26,6 +27,7 @@ export class User extends DataEntity {
     firstName?: string,
     lastName?: string,
     email?: string,
+    password?: string,
     dateOfBirth?: any,
     dateOfEntry?: any,
     position?: string,
@@ -40,6 +42,7 @@ export class User extends DataEntity {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.password = password;
     this.dateOfBirth = dateOfBirth;
     this.dateOfEntry = dateOfEntry;
     this.position = position;
