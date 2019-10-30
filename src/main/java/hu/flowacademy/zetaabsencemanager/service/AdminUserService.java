@@ -9,6 +9,7 @@ import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class AdminUserService {
 
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
   public List<User> findAllUser() {
@@ -64,7 +65,7 @@ public class AdminUserService {
           .findByLeaderAndDeletedAtNull(this.authenticationService.getCurrentUser())
           .orElseThrow(
               () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                  "Group not found, you are not leader of any group."));
+                  Constants.GROUP_NOT_FOUND_YOU_ARE_NOT_LEADER));
       return this.userRepository.findByGroupAndDeletedAtNull(group);
     }
   }
@@ -73,14 +74,14 @@ public class AdminUserService {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return userRepository.findByIdAndDeletedAtNull(id)
           .orElseThrow(
-              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
     } else {
       User user = userRepository.findByIdAndDeletedAtNull(id).orElseThrow(
-          () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+          () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
       if (this.userValidator.IsInLeadersGroup(this.authenticationService.getCurrentUser(), user)) {
         return user;
       } else {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not in your group.");
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.USER_NOT_IN_YOUR_GROUP);
       }
     }
   }
@@ -114,7 +115,7 @@ public class AdminUserService {
       userRepository.save(newUser);
       return newUser;
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admin can create user.");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.ONLY_ADMIN_CAN_CREATE_USER);
     }
   }
 
@@ -146,7 +147,7 @@ public class AdminUserService {
       return modifyUser;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-          "You can only modify your profile.");
+         Constants.YOU_CAN_ONLY_MODIFY_YOUR_PROFILE);
     }
   }
 
@@ -188,7 +189,7 @@ public class AdminUserService {
       userRepository.save(mod);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-          "You can only delete your profile.");
+          Constants.YOU_CAN_ONLY_DELETE_YOUR_PROFILE);
     }
   }
 

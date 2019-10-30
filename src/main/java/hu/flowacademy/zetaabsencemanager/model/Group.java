@@ -2,6 +2,7 @@ package hu.flowacademy.zetaabsencemanager.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hu.flowacademy.zetaabsencemanager.model.serializer.UserSerializer;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Group {
   private Long parentId;
 
   @Column(unique = true)
-  @NotBlank(message = "Group name is required.")
+  @NotBlank(message = Constants.GROUP_NAME_REQUIRED)
   private String name;
 
   @OneToOne
