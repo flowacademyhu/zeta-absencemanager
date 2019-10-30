@@ -82,7 +82,9 @@ public class AbsenceService {
         user.setUsedSickLeaveDays(user.getUsedSickLeaveDays() + absence.getDuration());
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
-      user.setChildSickPay(user.getChildSickPay() + absence.getDuration());
+      user.setUsedChildSickPay(user.getUsedChildSickPay() + absence.getDuration());
+    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()+absence.getDuration());
     }
   }
 
@@ -98,7 +100,9 @@ public class AbsenceService {
         user.setUsedSickLeaveDays(user.getUsedSickLeaveDays() - absence.getDuration());
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
-      user.setChildSickPay(user.getChildSickPay() - absence.getDuration());
+      user.setUsedChildSickPay(user.getUsedChildSickPay() - absence.getDuration());
+    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()-absence.getDuration());
     }
   }
 
