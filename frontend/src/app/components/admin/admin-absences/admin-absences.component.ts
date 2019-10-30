@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { Absence, AbsenceType, Status } from "src/app/models/Absence.model";
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from "@angular/core";
+import { Absence, AbsenceType, Status, AbsencesFilter } from "src/app/models/Absence.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, debounceTime } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
@@ -17,13 +17,13 @@ import { ExcelService } from 'src/app/services/excel.service';
   templateUrl: "./admin-absences.component.html",
   styleUrls: ["./admin-absences.component.css"]
 })
-export class AdminAbsencesComponent implements OnInit {
+export class AdminAbsencesComponent implements OnInit, OnDestroy {
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
   displayedColumns: string[] = [ 
     "id", "begin", "end", "days", "type", "status", "created_at", "reporter", "assignee", "edit"
   ];
   filterColumns: string[] = [
-    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee", "search"
+    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee"
   ];
   public absencesList: Absence[];
   private user: any;
@@ -47,15 +47,9 @@ export class AdminAbsencesComponent implements OnInit {
   ];
 
   checkedFilter: false;
-  administrationID?: number;
-  type?: AbsenceType;
-  status?: Status; 
-  reporter?: string; 
-  assignee?: string;
-  start?: any; 
-  finish?: any; 
-  dayStart?: number;
-  dayEnd?: number;
+  absenceFilter: AbsencesFilter = new AbsencesFilter;
+  private stringFilter = new Subject();
+  public stringFilter$ = this.stringFilter.asObservable();
 
   constructor(
     public api: ApiCommunicationService,
@@ -75,7 +69,9 @@ export class AdminAbsencesComponent implements OnInit {
       this.pageIndex = data.adminAbsenceList.metadata.pageIndex;
       this.length = data.adminAbsenceList.metadata.totalElements;
     });
-
+    this.stringFilter$
+            .pipe(debounceTime(500), takeUntil(this._unsubscribe$))
+            .subscribe(() => this.onFilter());
   }
 
 
@@ -132,31 +128,13 @@ export class AdminAbsencesComponent implements OnInit {
 
   public onFilter() {
     this.router.navigate(["admin", "absences"], {
-      queryParams: { 
-        administrationID: this.administrationID,
-        type: this.type,
-        status: this.status, 
-        reporter: this.reporter, 
-        assignee: this.assignee,
-        start: this.start,
-        finish: this.finish,
-        dayStart: this.dayStart,
-        dayEnd: this.dayEnd
-      }
+      queryParams: this.absenceFilter
     })
   }
 
   public onFilterReset(checked: boolean) {
     if(!checked){
-    this.administrationID = null;
-    this.type = null;
-    this.status = null; 
-    this.reporter = null; 
-    this.assignee = null;
-    this.start = null; 
-    this.finish = null; 
-    this.dayStart = null;
-    this.dayEnd = null;
+    this.absenceFilter = new AbsencesFilter;
     this.router.navigate(["admin", "absences"]);
     }
   }

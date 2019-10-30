@@ -13,7 +13,7 @@
     <ng-container matColumnDef="administrationID">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field >
-                <input matInput type="number" placeholder="Azonosító" [(ngModel)]="administrationID"/>
+                <input matInput type="number" placeholder="Azonosító" (change)='onFilter()' [(ngModel)]="absenceFilter.administrationID"/>
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -21,15 +21,15 @@
     <ng-container matColumnDef="start">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Kezdő dátum" [(ngModel)]="start" />
+                <input matInput type="datetime-local" placeholder="Kezdő dátum" [(ngModel)]="absenceFilter.start" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
-
+    
     <ng-container matColumnDef="finish">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Befejező dátum" [(ngModel)]="finish" />
+                <input matInput type="datetime-local" placeholder="Befejező dátum" [(ngModel)]="absenceFilter.finish" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -37,7 +37,7 @@
     <ng-container matColumnDef="dayStart">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Min. Nap" [(ngModel)]="dayStart" />
+                <input matInput type="datetime-local" placeholder="Min. Nap" [(ngModel)]="absenceFilter.dayStart" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -45,14 +45,14 @@
     <ng-container matColumnDef="dayEnd">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Max. Nap" [(ngModel)]="dayEnd" />
+                <input matInput type="datetime-local" placeholder="Max. Nap" [(ngModel)]="absenceFilter.dayEnd" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
 
     <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="type" placeholder="Típus">
+            <mat-select [(ngModel)]="absenceFilter.type" placeholder="Típus">
                 <mat-option *ngFor="let type of absenceType" [value]="type">
                   {{ type | type }}
                 </mat-option>
@@ -62,7 +62,7 @@
 
     <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="status" placeholder="Státusz">
+            <mat-select [(ngModel)]="absenceFilter.status" placeholder="Státusz">
                 <mat-option *ngFor="let status of absenceStatus" [value]="status">
                   {{ status | status }}
                 </mat-option>
@@ -73,7 +73,7 @@
     <ng-container matColumnDef="reporter">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="text" placeholder="Jogosult" [(ngModel)]="reporter" />
+                <input matInput type="text" placeholder="Jogosult" (keyup)="this.stringFilter.next()" [(ngModel)]="absenceFilter.reporter" />
               </mat-form-field>
         </mat-header-cell>
     </ng-container>
@@ -81,15 +81,9 @@
     <ng-container matColumnDef="assignee">
         <mat-header-cell *matHeaderCellDef>
             <mat-form-field>
-                <input matInput type="text" placeholder="Felettes" [(ngModel)]="assignee" />
+                <input matInput type="text" placeholder="Felettes" (keyup)="this.stringFilter.next()" [(ngModel)]="absenceFilter.assignee" />
               </mat-form-field>
         </mat-header-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="search">
-        <mat-header-cell *matHeaderCellDef>
-    <button mat-flat-button color="warn" (click)="onFilter()">Keresés</button>
-</mat-header-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
