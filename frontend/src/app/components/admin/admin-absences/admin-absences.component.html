@@ -2,14 +2,104 @@
   <button mat-flat-button color="warn" (click)="openDialog()">
     Szabadság hozzáadása
   </button>
+<mat-checkbox [(ngModel)]="checkedFilter" #checkbox (change)='onFilterReset(checkbox.checked)'>Szűrés</mat-checkbox>
 </div>
+
+
+<mat-table *ngIf="checkedFilter" class="filterTable">
+    <ng-container matColumnDef="administrationID">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field >
+                <input matInput type="number" placeholder="Azonosító" [(ngModel)]="administrationID"/>
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="start">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Kezdő dátum" [(ngModel)]="start" />
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="finish">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Befejező dátum" [(ngModel)]="finish" />
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dayStart">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Min. Nap" [(ngModel)]="dayStart" />
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dayEnd">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput type="datetime-local" placeholder="Max. Nap" [(ngModel)]="dayEnd" />
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-select [(ngModel)]="type" placeholder="Típus">
+                <mat-option *ngFor="let type of absenceType" [value]="type">
+                  {{ type | type }}
+                </mat-option>
+              </mat-select>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-select [(ngModel)]="status" placeholder="Státusz">
+                <mat-option *ngFor="let status of absenceStatus" [value]="status">
+                  {{ status | status }}
+                </mat-option>
+              </mat-select>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reporter">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Jogosult" [(ngModel)]="reporter" />
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="assignee">
+        <mat-header-cell *matHeaderCellDef>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Felettes" [(ngModel)]="assignee" />
+              </mat-form-field>
+        </mat-header-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="search">
+        <mat-header-cell *matHeaderCellDef>
+    <button mat-flat-button color="warn" (click)="onFilter()">Keresés</button>
+</mat-header-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: filterColumns"></mat-row>  
+</mat-table>
 
 <mat-table
   [dataSource]="absencesList"
-  class="table-responsive mat-elevation-z8" 
->
+  class="table-responsive mat-elevation-z8" >
+
   <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef> Azonosító </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Azonosító
+      </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.administrationID }}
     </mat-cell>

@@ -16,15 +16,17 @@ export class AdminAbsenceResolver implements Resolve<PagedResponse<Absence>> {
         //parameters
         const page = +route.queryParams['page'];
         const size = +route.queryParams['size'];
-        const administrationId = route.queryParams['administrationId'];
+        const administrationID = route.queryParams['administrationID'];
         const type = route.queryParams['type'];
         const status = route.queryParams['status'];
+        const reporter = route.queryParams['reporter'];
+        const assignee = route.queryParams['assignee'];
         const start = route.queryParams['start'];
         const finish = route.queryParams['finish'];
         const dayStart = route.queryParams['dayStart'];
         const dayEnd = route.queryParams['dayEnd'];
 
-        const pagedRequest = new AbsencesPagedRequest(size, page, administrationId);
+        const pagedRequest = new AbsencesPagedRequest(page?page: 0, size?size: 5, administrationID, type, status, reporter, assignee, start, finish, dayStart, dayEnd);
         
         return this.api.adminAbsence().getAbsences(pagedRequest);
     }

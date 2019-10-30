@@ -9,3 +9,7 @@ mat-header-cell {
 mat-cell {
   color: black;
 }
+
+.filterTable {
+  background-color: #424242;
+}

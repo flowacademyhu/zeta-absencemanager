@@ -13,7 +13,14 @@ export class AdminAbsenceApiConnector extends AbstractApiConnector {
   }
 
   public getAbsences(pagedRequest: AbsencesPagedRequest): Observable<PagedResponse<Absence>> {
-    return this.http.get(this.apiRoute, pagedRequest) as Observable<PagedResponse<Absence>>;
+    let httpParams = new HttpParams();
+    Object.keys(pagedRequest).forEach(function (key) {
+      if(pagedRequest[key]){
+      httpParams = httpParams.append(key, pagedRequest[key]);
+      }
+    });
+    console.log(httpParams);
+    return this.http.get(this.apiRoute, {params: httpParams}) as Observable<PagedResponse<Absence>>;
   }
 
   public createAbsence(absence: Absence): Observable<any> {
