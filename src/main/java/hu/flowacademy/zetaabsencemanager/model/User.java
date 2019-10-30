@@ -3,7 +3,9 @@ package hu.flowacademy.zetaabsencemanager.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import hu.flowacademy.zetaabsencemanager.model.serializer.GroupSerializer;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -73,7 +75,7 @@ public class User implements UserDetails {
   private LocalDate dateOfEndTrial;
 
   @ManyToOne
-  @JsonIgnore
+  @JsonSerialize(using = GroupSerializer.class)
   private Group group;
 
   @Column
