@@ -58,7 +58,6 @@ export class AdminUserAddModalComponent implements OnInit {
       .getGroups()
       .subscribe(g => {
         this.groups = g;
-        console.log(g);
       });
     this.dialogRef.updateSize("50%", "100%");
   }

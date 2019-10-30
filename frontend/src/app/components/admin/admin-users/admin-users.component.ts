@@ -68,13 +68,15 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: User) => {
-        result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
-        result.dateOfEntry = Absence.convertDate(result.dateOfEntry);
-        result.dateOfEndTrial = Absence.convertDate(result.dateOfEndTrial);
-        this.api
-          .user()
-          .createUser(result)
-          .subscribe(() => this.router.navigateByUrl(this.router.url));
+        if (result != undefined) {
+          result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
+          result.dateOfEntry = Absence.convertDate(result.dateOfEntry);
+          result.dateOfEndTrial = Absence.convertDate(result.dateOfEndTrial);
+          this.api
+            .user()
+            .createUser(result)
+            .subscribe(() => this.router.navigateByUrl(this.router.url));
+        }
       });
   }
 
