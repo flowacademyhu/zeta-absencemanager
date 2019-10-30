@@ -18,6 +18,18 @@ export enum Status {
   REJECTED = "REJECTED"
 }
 
+export class AbsencesFilter {
+  administrationID: number;
+  type: AbsenceType;
+  status: Status;
+  reporter: string;
+  assignee: string;
+  start: string;
+  finish: string;
+  dayStart: number;
+  dayEnd: number
+}
+
 export class Absence extends DataEntity {
   public type: AbsenceType;
   public summary: string;
