@@ -12,9 +12,7 @@ import {
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
-import { User } from "src/app/models/User.model";
 import { Group } from "src/app/models/Group.model";
-import * as moment from "moment";
 
 @Component({
   selector: "app-admin-user-edit-modal",
@@ -35,35 +33,17 @@ export class AdminUserEditModalComponent implements OnInit {
   ) {
     console.log(data.user);
     this.editUserDataForm = new FormGroup({
-      firstName: new FormControl(data.user.firstName, Validators.required),
-      lastName: new FormControl(data.user.lastName, Validators.required),
-      dateOfBirth: new FormControl(
-        new Date(
-          data.user.dateOfBirth[0],
-          data.user.dateOfBirth[1] - 1,
-          data.user.dateOfBirth[2]
-        )
-      ),
-      dateOfEntry: new FormControl(
-        new Date(
-          data.user.dateOfEntry[0],
-          data.user.dateOfEntry[1] - 1,
-          data.user.dateOfEntry[2]
-        )
-      ),
-      dateOfEndTrial: new FormControl(
-        new Date(
-          data.user.dateOfEndTrial[0],
-          data.user.dateOfEndTrial[1] - 1,
-          data.user.dateOfEndTrial[2]
-        )
-      ),
-      position: new FormControl(data.user.position, Validators.required),
-      group: new FormControl(data.user.group),
-      email: new FormControl(data.user.email, Validators.required),
-      numberOfChildren: new FormControl(data.user.numberOfChildren),
-      otherAbsenceEnt: new FormControl(data.user.otherAbsenceEnt),
-      extraAbsenceDays: new FormControl(data.user.extraAbsenceDays)
+      firstName: new FormControl("", Validators.required),
+      lastName: new FormControl("", Validators.required),
+      dateOfBirth: new FormControl(""),
+      dateOfEntry: new FormControl(""),
+      dateOfEndTrial: new FormControl(""),
+      position: new FormControl("", Validators.required),
+      group: new FormControl(""),
+      email: new FormControl("", Validators.required),
+      numberOfChildren: new FormControl(""),
+      otherAbsenceEnt: new FormControl(""),
+      extraAbsenceDays: new FormControl("")
     });
   }
 
@@ -73,6 +53,32 @@ export class AdminUserEditModalComponent implements OnInit {
       .getGroups()
       .subscribe(g => {
         this.groups = g;
+
+        this.editUserDataForm.patchValue({
+          firstName: this.data.user.firstName,
+          lastName: this.data.user.lastName,
+          dateOfBirth: new Date(
+            this.data.user.dateOfBirth[0],
+            this.data.user.dateOfBirth[1] - 1,
+            this.data.user.dateOfBirth[2]
+          ),
+          dateOfEntry: new Date(
+            this.data.user.dateOfEntry[0],
+            this.data.user.dateOfEntry[1] - 1,
+            this.data.user.dateOfEntry[2]
+          ),
+          dateOfEndTrial: new Date(
+            this.data.user.dateOfEndTrial[0],
+            this.data.user.dateOfEndTrial[1] - 1,
+            this.data.user.dateOfEndTrial[2]
+          ),
+          position: this.data.user.position,
+          group: this.groups.find(g => g.id == this.data.user.group.id),
+          email: this.data.user.email,
+          numberOfChildren: this.data.user.numberOfChildren,
+          otherAbsenceEnt: this.data.user.otherAbsenceEnt,
+          extraAbsenceDays: this.data.user.extraAbsenceDays
+        });
       });
   }
 }
