@@ -46,7 +46,7 @@ export class AdminUserAddModalComponent implements OnInit {
       password: new FormControl("", [Validators.required]),
       numberOfChildren: new FormControl("", [Validators.required]),
       otherAbsenceEnt: new FormControl(""),
-      group: new FormControl("")
+      group: new FormControl(null)
     });
   }
 
