@@ -121,6 +121,7 @@ public class AdminAbsenceService {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
+      modifyAbsence.setAdministrationID(absence.getAdministrationID());
       if (modifyAbsence.getDuration() != absence.getDuration()) {
         absenceService.increaseUsedDays(absence);
         absenceService.reduceUsedDays(modifyAbsence);

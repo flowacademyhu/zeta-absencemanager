@@ -1,7 +1,6 @@
 package hu.flowacademy.zetaabsencemanager.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import hu.flowacademy.zetaabsencemanager.model.serializer.UserSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,7 +42,8 @@ public class Group {
   private User leader;
 
   @OneToMany(mappedBy = "group")
-  @JsonSerialize(using = UserSerializer.class)
+  // @JsonSerialize(using = UserSerializer.class)
+  @JsonIgnore
   private List<User> employees = new ArrayList<>();
 
   @Column
