@@ -53,7 +53,7 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   }
 
   changePassw(){
-   const dialogRef = this.dialog.open(ChangePasswModalComponent)
+    this.dialog.open(ChangePasswModalComponent)
   }
 
   deleteProfile(): void {
@@ -83,7 +83,7 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
       result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
       }
       Object.assign(this.user, result);      
-      this.api.user().updateSelfUser(this.user.id, this.user).subscribe(u => console.log("updated:" + u));
+      this.api.user().updateSelfUser(this.user.id, this.user).subscribe();
     });
   }
 }

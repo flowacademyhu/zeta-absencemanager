@@ -16,7 +16,6 @@ export class EmployeeProfileEditModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public fb: FormBuilder
   ) {
-    console.log(data.user);
     this.employeeProfileEditForm = new FormGroup({
       firstName: new FormControl(
         data.user.firstName,
