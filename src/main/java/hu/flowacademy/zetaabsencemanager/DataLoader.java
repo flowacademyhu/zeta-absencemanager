@@ -86,6 +86,7 @@ public class DataLoader implements CommandLineRunner {
     admin.setUsedAbsenceDays(0);
     admin.setUsedSickLeaveDays(0);
     admin.setUsedSickPay(0);
+    admin.setUsedChildSickPay(0);
     admin.setUsedSickPay(0);
     this.userRepository.save(admin);
 
@@ -137,7 +138,7 @@ public class DataLoader implements CommandLineRunner {
     Group group1 = Group.builder()
         .employees(List.of())
         .name("Group1")
-        .leader(users.get(2))
+        .leader(leader)
         .employees(g1u)
         .build();
     groupRepository.save(group1);
