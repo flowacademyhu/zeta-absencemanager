@@ -214,7 +214,7 @@
       type="button"
       mat-raised-button
       (click)="onAction('REJECTED')"
-      color="primary"
+      color="warn"
       *ngIf="this.absence && this.absence.status === 'OPEN'"
     >
       Visszavonás
@@ -227,7 +227,7 @@
     >
       Lezárás
     </button>
-    <button mat-raised-button color="primary" (click)="onCancel()">
+    <button mat-raised-button color="accent" (click)="onCancel()">
       Mégsem
     </button>
   </mat-dialog-actions>
