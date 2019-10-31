@@ -39,6 +39,10 @@ export class UserApiConnector extends AbstractApiConnector {
     return this.http.put(this.apiRoute + "/" + id, user, {});
   }
 
+  public updateSelfUser(id: number, user: User): Observable<any> {
+    return this.http.put(this.apiBaseUrl + "user/" + id, user, {});
+  }
+
   //TODO backend delete method is void yet
   public deleteUser(id: number): Observable<any> {
     return this.http.delete(this.apiRoute + "/" + id) as Observable<any>;

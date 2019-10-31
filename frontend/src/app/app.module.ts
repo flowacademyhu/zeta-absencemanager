@@ -76,6 +76,7 @@ import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-
 import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
 import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-group-delete-modal/admin-group-delete-modal.component';
 import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
+import { EmployeeProfileEditModalComponent } from './components/employee/modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
 import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
 
 @NgModule({
@@ -109,6 +110,7 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     //pipe
     AbsenceTypePipe,
     AbsenceStatusPipe,
+    EmployeeProfileEditModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -173,6 +175,7 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     //employee modals
     EmployeeAbsenceCreateModalComponent,
     EmployeeAbsenceEditModalComponent,
+    EmployeeProfileEditModalComponent,
     //admin modals
     AdminUserEditModalComponent,
     AdminUserAddModalComponent,
@@ -181,7 +184,6 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     AdminGroupCreateModalComponent,
     ChangePasswModalComponent,
     AdminAbsenceEditModalComponent,
-    AdminGroupCreateModalComponent,
     AdminAbsenceCreateModalComponent,
     AdminUserDeleteModalComponent,
     AdminGroupDeleteModalComponent,
