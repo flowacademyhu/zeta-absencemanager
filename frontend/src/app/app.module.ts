@@ -53,7 +53,6 @@ import { HeaderComponent } from "./components/common/header/header.component";
 import { FooterComponent } from "./components/common/footer/footer.component";
 import { ContentComponent } from "./components/common/content/content.component";
 import { AdminUsersComponent } from "./components/admin/admin-users/admin-users.component";
-import { FilterComponent } from "./components/common/filter/filter.component";
 import { AdminAbsencesComponent } from "./components/admin/admin-absences/admin-absences.component";
 import { EmployeeAbsencesComponent } from "./components/employee/employee-absences/employee-absences.component";
 import { EmployeeAbsenceCreateModalComponent } from "./components/employee/modals/employee-absence-create-modal/employee-absence-create-modal.component";
@@ -86,7 +85,6 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     FooterComponent,
     ContentComponent,
     LoginComponent,
-    FilterComponent,
     //admin
     AdminAbsencesComponent,
     AdminUsersComponent,

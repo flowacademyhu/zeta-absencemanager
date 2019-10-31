@@ -1,12 +1,11 @@
 <!-- <app-filter [dataSource]="dataSource"></app-filter> -->
 <div class="actionButton">
-  <button mat-flat-button color="warn" [disabled]="this.userData && this.userData.role !== 'ADMIN'"
+  <button mat-flat-button color="primary" [disabled]="this.userData && this.userData.role !== 'ADMIN'"
     (click)="createUser()">
     Alkalmazott hozzáadása
   </button>
 </div>
 
-<div class="mat-elevation-z8">
   <table mat-table [dataSource]="usersList" class="table-responsive mat-elevation-z8">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
@@ -77,4 +76,3 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-</div>

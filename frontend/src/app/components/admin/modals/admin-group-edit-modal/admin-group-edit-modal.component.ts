@@ -33,7 +33,7 @@ export class AdminGroupEditModalComponent implements OnInit {
   ngOnInit() {
     this.api.user().getUsers().subscribe(users => this.userList = users);
     this.api.group().getGroups().subscribe(groups => this.groupList = groups);
-    this.dialogRef.updateSize("25%", "90%");
+    this.dialogRef.updateSize("35%", "60%");
   }
 
   onCancel() {

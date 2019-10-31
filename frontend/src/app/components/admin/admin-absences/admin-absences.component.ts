@@ -23,7 +23,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     "id", "begin", "end", "days", "type", "status", "created_at", "reporter", "assignee", "edit"
   ];
   filterColumns: string[] = [
-    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee"
+    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee", "edit"
   ];
   public absencesList: Absence[];
   private user: any;
@@ -32,6 +32,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   public pageIndex = 0;
   public pageSize = 5;
   public absenceStatus: Status[] = [
+    null,
     Status.OPEN,
     Status.UNDER_REVIEW,
     Status.APPROVED,
@@ -40,6 +41,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     Status.DONE
   ]
   public absenceType: AbsenceType[] = [
+    null,
     AbsenceType.ABSENCE,
     AbsenceType.CHILD_SICK_PAY,
     AbsenceType.NON_WORKING,

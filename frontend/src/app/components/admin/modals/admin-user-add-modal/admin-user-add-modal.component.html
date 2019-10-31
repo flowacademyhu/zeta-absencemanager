@@ -146,11 +146,12 @@
   </div>
 </div>
 <div mat-dialog-actions style="justify-content: center;">
-  <button mat-raised-button color="warn" (click)="dialogRef.close()">
+  <button mat-raised-button color="accent" (click)="dialogRef.close()">
     Mégsem
   </button>
   <button
     mat-button
+    color="primary"
     [disabled]="!createUserForm.valid"
     [mat-dialog-close]="createUserForm.value"
     cdkFocusInitial

@@ -37,13 +37,15 @@
 </div>
 <div mat-dialog-actions style="justify-content: center;">
   <button
-    mat-raised-button
+    mat-flat-button
+    color="accent"
     (click)="onCancel()"
     style="border: 2px solid white;">
     Mégsem
   </button>
   <button
-    mat-button
+    mat-flat-button
+    color="primary"
     [disabled]="!createGroupForm.valid"
     [mat-dialog-close]="createGroupForm.value"
     cdkFocusInitial
