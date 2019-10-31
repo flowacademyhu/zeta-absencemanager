@@ -72,12 +72,20 @@ export class AdminUserEditModalComponent implements OnInit {
             this.data.user.dateOfEndTrial[2]
           ),
           position: this.data.user.position,
-          group: this.groups.find(g => g.id == this.data.user.group.id),
+          group: this.groupCheck(),
           email: this.data.user.email,
           numberOfChildren: this.data.user.numberOfChildren,
           otherAbsenceEnt: this.data.user.otherAbsenceEnt,
           extraAbsenceDays: this.data.user.extraAbsenceDays
         });
       });
+  }
+
+  groupCheck() {
+    if (this.data.user.group === null) {
+      return null
+    } else {
+      return this.groups.find(g => g.id == this.data.user.group.id);
+    }
   }
 }

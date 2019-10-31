@@ -82,11 +82,13 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: any) => {
+        if (result) {
         result.leader = <DataEntity>{ id: result.leaderId.id };
         this.api
           .group()
           .createGroup(result)
           .subscribe(() => this.router.navigateByUrl(this.router.url));
+        }
       });
   }
 
