@@ -15,6 +15,8 @@ export class AdminGroupEditModalComponent implements OnInit {
   private leader: User;
   private userList: User[];
   private groupList: Group[];
+  private employeeListByGroupIsNull: User[] = [];
+  private employeeList: User[] =  [];
 
 
   constructor(
@@ -24,17 +26,65 @@ export class AdminGroupEditModalComponent implements OnInit {
     public fb: FormBuilder
   ) {
     this.editGroupDataForm = new FormGroup({
-      name: new FormControl(data.group.name, Validators.required),
-      parent: new FormControl(data.group.parentId, Validators.required),
-      leader: new FormControl(this.data.group.leader.id, Validators.required)
+      name: new FormControl(data.group.name,
+        Validators.required),
+      parent: new FormControl(data.group.parentId),
+      leader: new FormControl(this.data.group.leader, Validators.required)
       });
     }
 
+  private editedGroup : Group = this.data.group;  
+
   ngOnInit() {
-    this.api.user().getUsers().subscribe(users => this.userList = users);
+    console.log(this.data.group)
+    this.api
+    .user()
+    .getEmployees()
+    .subscribe( e => {
+      this.employeeListByGroupIsNull = e;
+      for (let i = 0; i < this.employeeListByGroupIsNull.length; i++) {
+        this.employeeList.push(this.employeeListByGroupIsNull[i])
+      }
+      this.employeeList.push(this.data.group.leader);
+    })
     this.api.group().getGroups().subscribe(groups => this.groupList = groups);
     this.dialogRef.updateSize("35%", "60%");
   }
+
+  
+  addEmployeesToList(id: number) {
+    if (id > 0) {
+    this.api
+      .user()
+      .getEmployeesByGroup(id)
+      .subscribe((e: User[]) => {
+        this.employeeList = e;
+        if (id === this.data.group.parentId) {
+          this.employeeList.push(this.data.group.leader);
+          this.employeeList.forEach(element => {
+          });
+        }
+      });
+    }
+    if (id === 0) {
+      this.employeeList = this.employeeListByGroupIsNull;
+    }
+  }
+  
+  groupSelector(definition) {
+    return Object.keys(definition).map(key => ({
+      value: key,
+      title: definition[key]
+    }));
+  }
+  
+  userSelector(definition) {
+    return Object.keys(definition).map(key => ({
+      value: key,
+      title: definition[key]
+    }));
+  }
+  
 
   onCancel() {
     this.dialogRef.close();

@@ -73,16 +73,6 @@ public class UserService {
     if (id.equals(authenticationService.getCurrentUser().getId())) {
       User deleted = findOneUser(id);
       if (!deleted.getRole().equals(Roles.LEADER)) {
-        List<Absence> needToBeModifiedAbsences = absenceRepository
-            .findByReporterAndDeletedAtNull(deleted);
-        for (Absence a : needToBeModifiedAbsences) {
-          if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.OPEN))) {
-            a.setStatus(Status.REJECTED);
-            a.setUpdatedAt(LocalDateTime.now());
-            a.setUpdatedBy(authenticationService.getCurrentUser());
-            absenceRepository.save(a);
-          }
-        }
         deleted.setRole(Roles.INACTIVE);
         deleted.setGroup(null);
         deleted.setDeletedAt(LocalDateTime.now());

@@ -81,6 +81,7 @@
   <mat-form-field>
     <mat-label>Csoport</mat-label>
     <mat-select formControlName="group">
+      <mat-option [disabled]="data.user.role === 'LEADER'" [value]=null>Nincs</mat-option>
       <mat-option *ngFor="let g of groups" [value]="g">
         {{ g.name }}
       </mat-option>

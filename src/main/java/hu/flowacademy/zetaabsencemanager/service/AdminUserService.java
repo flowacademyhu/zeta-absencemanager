@@ -158,17 +158,6 @@ public class AdminUserService {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       User mod = findOneUser(id);
       if (!mod.getRole().equals(Roles.LEADER)) {
-
-        List<Absence> needToBeModifiedAbsences = absenceRepository
-            .findByReporterAndDeletedAtNull(mod);
-        for (Absence a : needToBeModifiedAbsences) {
-          if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.APPROVED))) {
-            a.setStatus(Status.REJECTED);
-            a.setUpdatedAt(LocalDateTime.now());
-            a.setUpdatedBy(authenticationService.getCurrentUser());
-            absenceRepository.save(a);
-          }
-        }
         mod.setRole(Roles.INACTIVE);
         mod.setGroup(null);
         mod.setDeletedAt(LocalDateTime.now());

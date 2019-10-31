@@ -42,6 +42,7 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       data => {
         this.dataSource = data.groupResolver;
         this.groupsList = data.groupResolver;
+        console.log(this.groupsList);
         this.transformData();
       },
       error => {
@@ -80,11 +81,13 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((result: any) => {
+        if (result) {
         result.leader = <DataEntity>{ id: result.leaderId.id };
         this.api
           .group()
           .createGroup(result)
           .subscribe(() => this.router.navigateByUrl(this.router.url));
+        }
       });
   }
 
@@ -119,7 +122,8 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
           Object.assign(this.editedGroup, result);
           let modifiedGroup = new Group(result.name, result.parent, <
             DataEntity
-          >{ id: result.leader });
+          >{ id: result.leader.id });
+          console.log(modifiedGroup);
           this.api
             .group()
             .updateGroup(this.editedGroup.id, modifiedGroup)

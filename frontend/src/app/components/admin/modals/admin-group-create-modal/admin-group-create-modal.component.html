@@ -12,7 +12,7 @@
   <mat-form-field>
     <mat-label>Felettes Csoport</mat-label>
     <mat-select formControlName="parentId">
-      <mat-option (click)="addEmployeesToList(0)">None</mat-option>
+      <mat-option (click)="addEmployeesToList(0)">Nincs</mat-option>
       <mat-option
         *ngFor="let group of data.group"
         [value]="group.id"
@@ -30,7 +30,7 @@
         *ngFor="let employee of employeeList; let i = index"
         [value]="employee"
       >
-        {{ employee.firstName }} {{ employee.lastName }}
+        {{ employee.lastName }} {{ employee.firstName }} 
       </mat-option>
     </mat-select>
   </mat-form-field>
