@@ -18,6 +18,18 @@ export enum Status {
   REJECTED = "REJECTED"
 }
 
+export class AbsencesFilter {
+  administrationID: number;
+  type: AbsenceType;
+  status: Status;
+  reporter: string;
+  assignee: string;
+  start: string;
+  finish: string;
+  dayStart: number;
+  dayEnd: number
+}
+
 export class Absence extends DataEntity {
   public type: AbsenceType;
   public summary: string;
@@ -61,9 +73,9 @@ export class Absence extends DataEntity {
   }
 
   public static convertDate(date: Date): number[] {
-    var year = date.getUTCFullYear();
-    var month = date.getUTCMonth() + 1;
-    var day = date.getUTCDate() + 1;
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
     var dateArray: number[] = [year, month, day];
     return dateArray;
   }

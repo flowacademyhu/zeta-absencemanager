@@ -32,7 +32,8 @@ import {
   MAT_DIALOG_DATA,
   MatSelectModule,
   MatSortModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatCheckboxModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -138,7 +139,8 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     MatSelectModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    CommonModule
+    CommonModule,
+    MatCheckboxModule
   ],
   providers: [
     EmployeeShowResolver,

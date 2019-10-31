@@ -13,7 +13,7 @@ public class GroupSerializer extends JsonSerializer {
       SerializerProvider serializerProvider) throws IOException {
     if (o instanceof Group) {
       Group group = (Group) o;
-      group.getEmployees().forEach(user -> user.setGroup(null));
+      group.getLeader().setGroup(null);
       jsonGenerator.writeObject(group);
     }
   }

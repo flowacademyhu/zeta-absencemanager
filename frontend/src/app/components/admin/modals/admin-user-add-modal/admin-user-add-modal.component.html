@@ -105,12 +105,12 @@
   </div>
   <div>
     <mat-form-field>
-    <input
-    matInput
-    required
-    placeholder="Jelszó"
-    formControlName="password"
-    />
+      <input
+        matInput
+        required
+        placeholder="Jelszó"
+        formControlName="password"
+      />
     </mat-form-field>
   </div>
   <div>
@@ -127,9 +127,20 @@
   <div>
     <mat-form-field>
       <input
+        (change)="isOtherAbsenceEnt = true"
         matInput
         placeholder="Egyéb szabadságra jogosító tényezők"
         formControlName="otherAbsenceEnt"
+      />
+    </mat-form-field>
+  </div>
+  <div *ngIf="isOtherAbsenceEnt">
+    <mat-form-field>
+      <input
+        type="number"
+        matInput
+        placeholder="Extra szabad napok"
+        formControlName="extraAbsenceDays"
       />
     </mat-form-field>
   </div>
