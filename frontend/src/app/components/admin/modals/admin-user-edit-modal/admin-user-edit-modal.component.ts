@@ -47,6 +47,8 @@ export class AdminUserEditModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dialogRef.updateSize("35%", "95%");
+
     this.api
       .group()
       .getGroups()

@@ -1,0 +1,8 @@
+mat-form-field {
+    width: 70%;
+}
+
+.mat-dialog-content {
+    justify-content: center;
+    max-height: 75vh;
+}

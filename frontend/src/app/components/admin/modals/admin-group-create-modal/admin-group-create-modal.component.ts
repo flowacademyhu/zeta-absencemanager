@@ -40,7 +40,7 @@ export class AdminGroupCreateModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dialogRef.updateSize("45%", "90%");
+    this.dialogRef.updateSize("35%", "40%");
       this.api
       .user()
       .getEmployees()

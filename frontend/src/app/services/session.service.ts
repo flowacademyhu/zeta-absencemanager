@@ -11,9 +11,9 @@ import { ApiCommunicationService } from './api-communication.service';
 /* Reasons for login rejection */ 
 export enum LoginRejectionReason {
   ACCEPTED = "",
-	UNKNOWN = "Unknown error",
-	SERVICE_UNAVAILABLE = "Service currently unavailable",
-	BAD_CREDENTIALS = "Invalid username or password"
+	UNKNOWN = "Ismeretlen hiba.",
+	SERVICE_UNAVAILABLE = "Szolgáltatás jelenleg nem elérhető.",
+	BAD_CREDENTIALS = "Hibás felhasználónév vagy jelszó."
 }
 
 @Injectable()

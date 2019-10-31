@@ -134,6 +134,7 @@
   <button
     mat-button
     [disabled]="!editUserDataForm.valid"
+    color="primary"
     [mat-dialog-close]="editUserDataForm.value"
     cdkFocusInitial
     style="border: 2px solid white;"
@@ -141,7 +142,7 @@
     Mentés
   </button>
 
-  <button mat-raised-button color="warn" (click)="dialogRef.close()">
+  <button mat-raised-button color="accent" (click)="dialogRef.close()">
     Mégsem
   </button>
 </mat-dialog-actions>

@@ -1,10 +1,8 @@
 .footer {
     text-align: center;
-    background: #c54b3c;
-    color: white;
     align-items: center;
     padding: 8px;
     position: sticky;
     bottom:0;
-    width: 99%;
+    justify-content: center;
 }

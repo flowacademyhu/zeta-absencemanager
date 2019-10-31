@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>Csoport Szerkesztése</h2>
- <mat-dialog-content [formGroup]="editGroupDataForm">
+ <mat-dialog-content [formGroup]="editGroupDataForm" style="text-align: center;">
     <mat-form-field>
+      <mat-label> Név </mat-label>
       <input
         matInput
         type="text"
@@ -27,10 +28,10 @@
         </mat-select>
       </mat-form-field>
 
-</mat-dialog-content>
 
-<mat-dialog-actions>
-  <button mat-button [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Mentés</button>
+<mat-dialog-actions style="justify-content: center;">
+  <button mat-button color="primary" [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Mentés</button>
 
-  <button mat-raised-button color="warn" (click)="onCancel()">Mégsem</button>
+  <button mat-flat-button color="accent" (click)="onCancel()">Mégsem</button>
 </mat-dialog-actions>
+</mat-dialog-content>
