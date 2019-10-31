@@ -151,9 +151,18 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
   public onAction(action: Status): void {
     this.absence.status = action;
     var modifiedAbsence = {
-      id: this.absence.id, begin: this.absence.begin, end: this.absence.end, assignee: this.absence.assignee, type: this.absence.type,
-      duration: this.absence.duration, reporter: this.absence.reporter, status: action
+      id: this.absence.id,
+      begin: this.absence.begin,
+      end: this.absence.end,
+      assignee: this.absence.assignee,
+      type: this.absence.type,
+      duration: this.absence.duration,
+      reporter: this.absence.reporter,
+      status: action
     };
-    this.api.absence().updateAbsence(this.absence.id, modifiedAbsence).subscribe(result => console.log(result));
+    this.api
+      .absence()
+      .updateAbsence(this.absence.id, modifiedAbsence)
+      .subscribe(result => console.log(result));
   }
 }

@@ -22,13 +22,19 @@ export class UserApiConnector extends AbstractApiConnector {
   }
 
   public getEmployeesByGroup(id: number): Observable<any> {
-    return this.http.get(this.apiRoute + "/employees/" + id) as Observable<User[]>;
+    return this.http.get(this.apiRoute + "/employees/" + id) as Observable<
+      User[]
+    >;
+  }
+
+  public getEverybodyByGroup(id: number): Observable<any> {
+    return this.http.get(this.apiRoute + "/employees/group/" + id);
   }
 
   public createUser(user: User): Observable<any> {
     return this.http.post(this.apiRoute, user, {}) as Observable<User[]>;
   }
-  
+
   public updateUser(id: number, user: User): Observable<any> {
     return this.http.put(this.apiRoute + "/" + id, user, {});
   }

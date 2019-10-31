@@ -41,6 +41,11 @@ public class AdminUsersController {
     return adminUserService.findAllEmployeesByGroupId(id);
   }
 
+  @GetMapping("/employees/group/{id}")
+  public List<User> getEverybodyFromGroup(@PathVariable("id") Long id) {
+    return adminUserService.findEverybodyByGroup(id);
+  }
+
   @PostMapping("")
   public User createUser(@RequestBody User user) {
     return adminUserService.saveUser(user);

@@ -9,6 +9,7 @@ import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,8 @@ public class AdminUserService {
 
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
   public List<User> findAllUser() {
@@ -64,7 +66,7 @@ public class AdminUserService {
           .findByLeaderAndDeletedAtNull(this.authenticationService.getCurrentUser())
           .orElseThrow(
               () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                  "Group not found, you are not leader of any group."));
+                  Constants.GROUP_NOT_FOUND_YOU_ARE_NOT_LEADER));
       return this.userRepository.findByGroupAndDeletedAtNull(group);
     }
   }
@@ -73,14 +75,15 @@ public class AdminUserService {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return userRepository.findByIdAndDeletedAtNull(id)
           .orElseThrow(
-              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
     } else {
       User user = userRepository.findByIdAndDeletedAtNull(id).orElseThrow(
-          () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found."));
+          () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
       if (this.userValidator.IsInLeadersGroup(this.authenticationService.getCurrentUser(), user)) {
         return user;
       } else {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not in your group.");
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+            Constants.USER_NOT_IN_YOUR_GROUP);
       }
     }
   }
@@ -114,7 +117,8 @@ public class AdminUserService {
       userRepository.save(newUser);
       return newUser;
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admin can create user.");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+          Constants.ONLY_ADMIN_CAN_CREATE_USER);
     }
   }
 
@@ -137,7 +141,6 @@ public class AdminUserService {
         modifyUser.setExtraAbsencesUpdatedAt(LocalDateTime.now());
       }
       modifyUser.setUpdatedAt(LocalDateTime.now());
-      modifyUser.setUpdatedBy(authenticationService.getCurrentUser());
       int availableAbsenceDays = absenceService.availableAbsence(modifyUser);
       int sickLeaveDays = absenceService.availableSickLeave(modifyUser);
       modifyUser.setTotalAbsenceDays(availableAbsenceDays);
@@ -146,7 +149,7 @@ public class AdminUserService {
       return modifyUser;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-          "You can only modify your profile.");
+          Constants.YOU_CAN_ONLY_MODIFY_YOUR_PROFILE);
     }
   }
 
@@ -154,41 +157,29 @@ public class AdminUserService {
   public void delete(@NotNull Long id) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       User mod = findOneUser(id);
-      List<Group> groupList = groupService.findAllGroup();
-      mod.setRole(Roles.INACTIVE);
-      mod.setDeletedBy(authenticationService.getCurrentUser());
-      mod.setGroup(null);
-      mod.setDeletedAt(LocalDateTime.now());
-      if (mod.getGroup() != null) {
-        Group modifyGroup = groupService.findOne(mod.getGroup().getId());
-        for (int i = 0; i < modifyGroup.getEmployees().size(); i++) {
-          if (modifyGroup.getEmployees().size() > 0 && modifyGroup.getEmployees().get(i).getId()
-              .equals(id)) {
-            modifyGroup.getEmployees().remove(modifyGroup.getEmployees().get(i));
-            modifyGroup.setUpdatedAt(LocalDateTime.now());
-            groupRepository.save(modifyGroup);
+      if (!mod.getRole().equals(Roles.LEADER)) {
+
+        List<Absence> needToBeModifiedAbsences = absenceRepository
+            .findByReporterAndDeletedAtNull(mod);
+        for (Absence a : needToBeModifiedAbsences) {
+          if (a.getStatus().equals(Status.OPEN) || (a.getStatus().equals(Status.APPROVED))) {
+            a.setStatus(Status.REJECTED);
+            a.setUpdatedAt(LocalDateTime.now());
+            a.setUpdatedBy(authenticationService.getCurrentUser());
+            absenceRepository.save(a);
           }
         }
+        mod.setRole(Roles.INACTIVE);
+        mod.setGroup(null);
+        mod.setDeletedAt(LocalDateTime.now());
+        userRepository.save(mod);
+      } else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "You can't delete leader's profile.");
       }
-      for (Group g : groupList) {
-        if (g.getLeader() != null && g.getLeader().getId().equals(id)) {
-          g.setLeader(null);
-          g.setUpdatedAt(LocalDateTime.now());
-          groupRepository.save(g);
-        }
-      }
-      List<Absence> needToBeModifiedAbsences = absenceRepository
-          .findByReporterAndDeletedAtNull(mod);
-      for (Absence a : needToBeModifiedAbsences) {
-        a.setStatus(Status.REJECTED);
-        a.setUpdatedBy(authenticationService.getCurrentUser());
-        a.setUpdatedAt(LocalDateTime.now());
-        absenceRepository.save(a);
-      }
-      userRepository.save(mod);
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-          "You can only delete your profile.");
+          Constants.YOU_CAN_ONLY_DELETE_YOUR_PROFILE);
     }
   }
 
@@ -218,5 +209,9 @@ public class AdminUserService {
       }
     }
     return employees;
+  }
+
+  public List<User> findEverybodyByGroup(Long groupId) {
+    return userRepository.findByGroupAndDeletedAtNull(groupService.findOne(groupId));
   }
 }

@@ -11,6 +11,7 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
+import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
@@ -51,7 +52,7 @@ public class AdminAbsenceService {
   private FilterService filterService;
 
   public AbsenceDTO findAllAbsence(Long administrationID, Type type,
-      Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
+      Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       Page<Absence> absencePage = this.absenceRepository.findAll(
@@ -86,12 +87,12 @@ public class AdminAbsenceService {
   public Absence findOne(@NotNull Long id) {
     Absence foundAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         foundAbsence.getAssignee().equals(authenticationService.getCurrentUser()))) {
       return foundAbsence;
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.CAN_NOT_ACCESS_DATA);
     }
   }
 
@@ -102,10 +103,10 @@ public class AdminAbsenceService {
     absence.setAssignee(absence.getAssignee());
     absence.setStatus(Status.OPEN);
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      absenceService.increaseUsedDays(absence);
+      absenceService.addToUsedDays(absence);
       return absenceRepository.save(absence);
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.CAN_NOT_ACCESS_DATA);
     }
 
   }
@@ -114,16 +115,17 @@ public class AdminAbsenceService {
     this.absenceValidator.validateAbsenceSave(absence);
     Absence modifyAbsence = absenceRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "The submitted arguments are invalid."));
+            Constants.INVALID_ARGUMENTS));
     User current = authenticationService.getCurrentUser();
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         modifyAbsence.getAssignee().equals(current))) {
       modifyAbsence.setType(absence.getType());
       modifyAbsence.setBegin(absence.getBegin());
       modifyAbsence.setSummary(absence.getSummary());
+      modifyAbsence.setAdministrationID(absence.getAdministrationID());
       if (modifyAbsence.getDuration() != absence.getDuration()) {
-        absenceService.increaseUsedDays(absence);
-        absenceService.reduceUsedDays(modifyAbsence);
+        absenceService.addToUsedDays(absence);
+        absenceService.removeFromUsedDays(modifyAbsence);
       }
       modifyAbsence.setDuration(absence.getDuration());
       modifyAbsence.setEnd(absence.getEnd());
@@ -135,27 +137,29 @@ public class AdminAbsenceService {
       modifyAbsence.setUpdatedBy(authenticationService.getCurrentUser());
       return absenceRepository.save(modifyAbsence);
     } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can not access data");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Constants.CAN_NOT_ACCESS_DATA);
     }
   }
 
   public void delete(@NotNull Long id) {
     Absence deleted = findOne(id);
-    absenceService.reduceUsedDays(deleted);
+    absenceService.removeFromUsedDays(deleted);
     deleted.setDeletedAt(LocalDateTime.now());
     deleted.setDeletedBy(authenticationService.getCurrentUser());
     update(id, deleted);
   }
 
   public Specification<Absence> getFilteredAbsences(Long administrationID, Type type,
-      Status status, User reporter, User assignee, LocalDate start, LocalDate finish,
+      Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
     return Specification
-        .where(filterService.filterByAdministrationID(administrationID))
-        .and(filterService.filterByType(type))
+        .where(filterService.filterByType(type))
+        .and(filterService.filterByAdministrationID(administrationID))
         .and(filterService.filterByStatus(status))
-        .and(filterService.filterByReporter(reporter))
-        .and(filterService.filterByAssignee(assignee))
+        .and(filterService.filterByReporterFirstName(reporter)
+            .or(filterService.filterByReporterLastName(reporter)))
+        .and(filterService.filterByAssigneeFirstName(assignee)
+            .or(filterService.filterByAssigneeLastName(assignee)))
         .and(filterService.filterByBeginStart(start))
         .and(filterService.filterByBeginFinish(finish))
         .and(filterService.filterByDaysStart(dayStart))
@@ -163,10 +167,19 @@ public class AdminAbsenceService {
   }
 
   public Specification<Absence> getFilteredAbsencesLeader(Long administrationID, Type type,
-      Status status, User reporter, LocalDate start, LocalDate finish,
+      Status status, String reporter, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd) {
-    return getFilteredAbsences(administrationID, type, status, reporter,
-        authenticationService.getCurrentUser(), start, finish,
-        dayStart, dayEnd).and(filterService.filterByDeletedAt());
+    return Specification
+        .where(filterService.filterByAdministrationID(administrationID))
+        .and(filterService.filterByType(type))
+        .and(filterService.filterByStatus(status))
+        .and(filterService.filterByReporterFirstName(reporter)
+            .or(filterService.filterByReporterLastName(reporter)))
+        .and(filterService.filterByAssignee(authenticationService.getCurrentUser()))
+        .and(filterService.filterByBeginStart(start))
+        .and(filterService.filterByBeginFinish(finish))
+        .and(filterService.filterByDaysStart(dayStart))
+        .and(filterService.filterByDaysEnd(dayEnd))
+        .and(filterService.filterByDeletedAt());
   }
 }

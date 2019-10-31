@@ -21,6 +21,56 @@
   </mat-form-field>
   <br />
 
+<<<<<<< HEAD
+=======
+  <mat-form-field>
+    <input
+      matInput
+      [matDatepicker]="dateOfBirth"
+      placeholder="Születési dátum"
+      formControlName="dateOfBirth"
+      id="dateOfBirth"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dateOfBirth"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dateOfBirth></mat-datepicker>
+  </mat-form-field>
+  <br />
+
+  <mat-form-field>
+    <input
+      matInput
+      [matDatepicker]="dateofentry"
+      formControlName="dateOfEntry"
+      placeholder="Belépés dátuma"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dateofentry"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dateofentry></mat-datepicker>
+  </mat-form-field>
+  <br />
+
+  <mat-form-field>
+    <input
+      matInput
+      [matDatepicker]="dateOfEndTrial"
+      placeholder="Próbaidő vége"
+      formControlName="dateOfEndTrial"
+      id="dateOfEndTrial"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dateOfEndTrial"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dateOfEndTrial></mat-datepicker>
+  </mat-form-field>
+  <br />
+
+>>>>>>> development
   <mat-form-field>
     <input
       matInput
@@ -31,6 +81,19 @@
   </mat-form-field>
   <br />
 
+<<<<<<< HEAD
+=======
+  <mat-form-field>
+    <mat-label>Csoport</mat-label>
+    <mat-select formControlName="group">
+      <mat-option *ngFor="let g of groups" [value]="g">
+        {{ g.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+
+>>>>>>> development
   <mat-form-field>
     <input
       matInput
@@ -41,6 +104,36 @@
     />
   </mat-form-field>
   <br />
+
+  <mat-form-field>
+    <input
+      type="number"
+      matInput
+      required
+      placeholder="Gyermekek száma"
+      formControlName="numberOfChildren"
+    />
+  </mat-form-field>
+  <br />
+
+  <mat-form-field>
+    <input
+      (change)="isOtherAbsenceEnt = true"
+      matInput
+      placeholder="Egyéb szabadságra jogosító tényezők"
+      formControlName="otherAbsenceEnt"
+    />
+  </mat-form-field>
+  <br />
+
+  <mat-form-field *ngIf="isOtherAbsenceEnt">
+    <input
+      type="number"
+      matInput
+      placeholder="Extra szabad napok"
+      formControlName="extraAbsenceDays"
+    />
+  </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions>

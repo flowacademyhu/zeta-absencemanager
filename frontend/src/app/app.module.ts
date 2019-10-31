@@ -32,7 +32,8 @@ import {
   MAT_DIALOG_DATA,
   MatSelectModule,
   MatSortModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatCheckboxModule
 } from "@angular/material/";
 
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -69,13 +70,14 @@ import { AuthGuard } from "./guards/auth.guard";
 import { userSessionStarterFactory } from "./utils/UserSessionStarterFactory";
 import { ChangePasswModalComponent } from "./components/employee/modals/change-passw-modal/change-passw-modal.component";
 import { AdminGuard } from "./guards/admin.guard";
-import { AdminGroupCreateModalComponent } from "./components/admin/modals/admin-group-create-modal/admin-group-create-modal.component";
+import { AdminGroupEditModalComponent } from './components/admin/modals/admin-group-edit-modal/admin-group-edit-modal.component';
 import { AdminAbsenceCreateModalComponent } from "./components/admin/modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "./components/admin/modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 import { AdminUserDeleteModalComponent } from './components/admin/modals/admin-user-delete-modal/admin-user-delete-modal.component';
 import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-group-delete-modal/admin-group-delete-modal.component';
 import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { EmployeeProfileEditModalComponent } from './components/employee/modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
+import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +96,7 @@ import { EmployeeProfileEditModalComponent } from './components/employee/modals/
     AdminUserEditModalComponent,
     AdminUserDeleteModalComponent,
     AdminGroupCreateModalComponent,
+    AdminGroupEditModalComponent,
     ChangePasswModalComponent,
     AdminGroupDeleteModalComponent,
     AdminAbsenceCreateModalComponent,
@@ -138,7 +141,8 @@ import { EmployeeProfileEditModalComponent } from './components/employee/modals/
     MatSelectModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    CommonModule
+    CommonModule,
+    MatCheckboxModule
   ],
   providers: [
     EmployeeShowResolver,
@@ -175,10 +179,11 @@ import { EmployeeProfileEditModalComponent } from './components/employee/modals/
     //admin modals
     AdminUserEditModalComponent,
     AdminUserAddModalComponent,
+    AdminGroupEditModalComponent,
+    ChangePasswModalComponent,
     AdminGroupCreateModalComponent,
     ChangePasswModalComponent,
     AdminAbsenceEditModalComponent,
-    AdminGroupCreateModalComponent,
     AdminAbsenceCreateModalComponent,
     AdminUserDeleteModalComponent,
     AdminGroupDeleteModalComponent,

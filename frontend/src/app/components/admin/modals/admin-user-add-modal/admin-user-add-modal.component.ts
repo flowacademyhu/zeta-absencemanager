@@ -19,6 +19,7 @@ export class AdminUserAddModalComponent implements OnInit {
   public createUserForm: FormGroup;
 
   groups: Group[];
+  private isOtherAbsenceEnt: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<AdminUserAddModalComponent>,
@@ -46,7 +47,8 @@ export class AdminUserAddModalComponent implements OnInit {
       password: new FormControl("", [Validators.required]),
       numberOfChildren: new FormControl("", [Validators.required]),
       otherAbsenceEnt: new FormControl(""),
-      group: new FormControl(null)
+      group: new FormControl(null),
+      extraAbsenceDays: new FormControl("")
     });
   }
 
@@ -56,8 +58,7 @@ export class AdminUserAddModalComponent implements OnInit {
       .getGroups()
       .subscribe(g => {
         this.groups = g;
-        console.log(g);
       });
-    this.dialogRef.updateSize("25%", "90%");
+    this.dialogRef.updateSize("50%", "100%");
   }
 }

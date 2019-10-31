@@ -7,7 +7,7 @@ export class Group extends DataEntity {
     public parentId?: number,
     public leader?: DataEntity,
     public leaderId?: number
-  ) {
+    ) {
     super();
   }
 }

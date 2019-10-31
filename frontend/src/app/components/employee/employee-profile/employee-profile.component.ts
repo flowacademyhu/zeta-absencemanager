@@ -17,7 +17,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { ChangePasswModalComponent } from "../../employee/modals/change-passw-modal/change-passw-modal.component";
 import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { SessionService } from 'src/app/services/session.service';
-import { EmployeeAbsenceEditModalComponent } from '../modals/employee-absence-edit-modal/employee-absence-edit-modal.component';
 import { EmployeeProfileEditModalComponent } from '../modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
 import { Absence } from 'src/app/models/Absence.model';
 
@@ -52,26 +51,27 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
-  changePassw(){
-    this.dialog.open(ChangePasswModalComponent)
+  changePassw() {
+    this.dialog.open(ChangePasswModalComponent);
   }
 
   deleteProfile(): void {
-    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { });
+    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { 
+      data: { user: this.user }
+    });
 
     dialogRef
       .afterClosed()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(result => {
-        if(result === true) {
+        if (result === true) {
           this.api
             .employee()
             .deleteProfile(this.user.id)
-            .subscribe(()=>{});
-            this.sessionService.logout();
-            }
-          }
-      );
+            .subscribe(() => {});
+          this.sessionService.logout();
+        }
+      });
   }
   
   openEditProfile() {

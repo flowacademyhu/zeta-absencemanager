@@ -1,16 +1,13 @@
 <h1 mat-dialog-title>Csoport törlése</h1>
-<div>
-      <mat-dialog-content>
-        Biztos, hogy törölni szeretné a(z) {{ data.group.name }} nevű csoportot?
-      </mat-dialog-content>
-</div>
+<div *ngIf="employees && employees.length === 0">
+  <div>
+    <mat-dialog-content>
+      Biztos, hogy törölni szeretné a(z) {{ data.group.name }} nevű csoportot?
+    </mat-dialog-content>
+  </div>
 
-<div mat-dialog-actions style="justify-content: center;">
-    <button
-      mat-button
-      mat-dialog-close
-      style="border: 2px solid white;"
-    >
+  <div mat-dialog-actions style="justify-content: center;">
+    <button mat-button mat-dialog-close style="border: 2px solid white;">
       Mégsem
     </button>
     <button
@@ -21,4 +18,20 @@
     >
       Igen
     </button>
+  </div>
+</div>
+
+<div *ngIf="employees && employees.length > 0">
+  <div>
+    <mat-dialog-content>
+      A(z) {{ data.group.name }} nevű csoportban jelenleg szerepel egy vagy több
+      alkalmazott, ezért a törlés nem lehetséges.
+    </mat-dialog-content>
+  </div>
+
+  <div mat-dialog-actions style="justify-content: center;">
+    <button mat-button mat-dialog-close style="border: 2px solid white;">
+      Rendben
+    </button>
+  </div>
 </div>

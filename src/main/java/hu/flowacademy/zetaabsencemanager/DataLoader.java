@@ -52,6 +52,8 @@ public class DataLoader implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
 
+    int counter = 0;
+
     List<String> firstNames =
         Arrays.asList("Allan", "Anastasia", "Andy", "Arlene", "Beau", "Brianna", "Cara", "Carly",
             "Carolina", "Chelsea", "Concetta", "Danilo", "Daron", "Darren", "Debbie", "Devin",
@@ -83,7 +85,7 @@ public class DataLoader implements CommandLineRunner {
     admin.setTotalSickLeaveDays(absenceService.availableSickLeave(admin));
     admin.setUsedAbsenceDays(0);
     admin.setUsedSickLeaveDays(0);
-    admin.setChildSickPay(0);
+    admin.setUsedSickPay(0);
     admin.setUsedSickPay(0);
     this.userRepository.save(admin);
 
@@ -108,7 +110,7 @@ public class DataLoader implements CommandLineRunner {
       user.setTotalSickLeaveDays(absenceService.availableSickLeave(user));
       user.setUsedAbsenceDays(0);
       user.setUsedSickLeaveDays(0);
-      user.setChildSickPay(0);
+      user.setUsedChildSickPay(0);
       user.setUsedSickPay(0);
       this.userRepository.save(user);
       users.add(user);
@@ -116,8 +118,8 @@ public class DataLoader implements CommandLineRunner {
 
     User leader = User.builder()
         .email("leader@leader.com")
-        .firstName("LEADER")
-        .lastName("JANI")
+        .firstName(firstNames.get(33))
+        .lastName(lastNames.get(33))
         .role(Roles.LEADER)
         .dateOfBirth(LocalDate.of(1970, Month.APRIL, 1))
         .dateOfEntry(LocalDate.of(2010, Month.MAY, 12))
@@ -131,7 +133,7 @@ public class DataLoader implements CommandLineRunner {
     users.add(leader);
 
     List<User> g1u = Arrays
-        .asList(users.get(0), users.get(2), users.get(3), users.get(1), users.get(32));
+        .asList(users.get(0), users.get(3), users.get(1), users.get(32));
     Group group1 = Group.builder()
         .employees(List.of())
         .name("Group1")
@@ -148,7 +150,7 @@ public class DataLoader implements CommandLineRunner {
     Group group2 = Group.builder()
         .employees(List.of())
         .name("Group2")
-        .leader(leader)
+        .leader(users.get(1))
         .employees(g2u)
         .parentId(group1.getId())
         .build();
@@ -157,6 +159,9 @@ public class DataLoader implements CommandLineRunner {
       user.setGroup(group2);
       userRepository.save(user);
     }
+    User l2 = this.userRepository.getOne(2L);
+    l2.setRole(Roles.LEADER);
+    userRepository.save(l2);
 
     List<User> g3u = Arrays.asList(users.get(6), users.get(7));
     Group group3 = Group.builder()
@@ -171,6 +176,9 @@ public class DataLoader implements CommandLineRunner {
       user.setGroup(group3);
       userRepository.save(user);
     }
+    User l3 = this.userRepository.getOne(4L);
+    l3.setRole(Roles.LEADER);
+    userRepository.save(l3);
 
     List<User> g4u = Arrays
         .asList(users.get(8), users.get(9), users.get(10), users.get(11), users.get(12),
@@ -187,6 +195,9 @@ public class DataLoader implements CommandLineRunner {
       user.setGroup(group4);
       userRepository.save(user);
     }
+    User l4 = this.userRepository.getOne(5L);
+    l4.setRole(Roles.LEADER);
+    userRepository.save(l4);
 
     List<User> g5u = Arrays
         .asList(users.get(14), users.get(15), users.get(16), users.get(17), users.get(18),
@@ -203,6 +214,9 @@ public class DataLoader implements CommandLineRunner {
       user.setGroup(group5);
       userRepository.save(user);
     }
+    User l5 = this.userRepository.getOne(6L);
+    l5.setRole(Roles.LEADER);
+    userRepository.save(l5);
 
     List<User> g6u = Arrays
         .asList(users.get(20), users.get(21), users.get(22), users.get(23), users.get(24),
@@ -218,6 +232,9 @@ public class DataLoader implements CommandLineRunner {
       user.setGroup(group6);
       userRepository.save(user);
     }
+    User l6 = this.userRepository.getOne(7L);
+    l6.setRole(Roles.LEADER);
+    userRepository.save(l6);
 
     List<User> g7u = Arrays
         .asList(users.get(26), users.get(27), users.get(28), users.get(29), users.get(30),
@@ -234,6 +251,9 @@ public class DataLoader implements CommandLineRunner {
       user.setGroup(group7);
       userRepository.save(user);
     }
+    User l7 = this.userRepository.getOne(8L);
+    l7.setRole(Roles.LEADER);
+    userRepository.save(l7);
 
     Absence absence1 = Absence.builder()
         .begin(LocalDate.of(2019, Month.SEPTEMBER, 24))
@@ -325,6 +345,6 @@ public class DataLoader implements CommandLineRunner {
         .administrationID(7l)
         .build();
     this.absenceRepository.save(absence7);
-
   }
+
 }
