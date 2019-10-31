@@ -198,13 +198,14 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button mat-raised-button [disabled]="!createAbsenceForm.valid">
+    <button mat-raised-button [disabled]="!createAbsenceForm.valid" color="primary">
       {{ isFormEdited() ? "Mentés" : "Szerkesztés" }}
     </button>
     <button
       type="button"
       mat-raised-button
       (click)="onAction('UNDER_REVIEW')"
+      color="primary"
       *ngIf="this.absence && this.absence.status === 'OPEN'"
     >
       Elküldés
@@ -213,6 +214,7 @@
       type="button"
       mat-raised-button
       (click)="onAction('REJECTED')"
+      color="primary"
       *ngIf="this.absence && this.absence.status === 'OPEN'"
     >
       Visszavonás
@@ -221,11 +223,11 @@
       type="button"
       mat-raised-button
       (click)="onAction('DONE')"
-      *ngIf="this.absence && this.absence.status === 'ADMINISTRATED'"
+      *ngIf="this.absence && this.absence.status === 'ADMINISTRATED'" color="primary"
     >
       Lezárás
     </button>
-    <button mat-raised-button color="warn" (click)="onCancel()">
+    <button mat-raised-button color="primary" (click)="onCancel()">
       Mégsem
     </button>
   </mat-dialog-actions>

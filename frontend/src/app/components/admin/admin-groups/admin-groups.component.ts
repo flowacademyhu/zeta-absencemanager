@@ -22,7 +22,6 @@ export class AdminGroupsComponent implements OnInit, OnDestroy {
     "name",
     "parent",
     "leaders",
-    "employees",
     "edit",
     "delete"
   ];

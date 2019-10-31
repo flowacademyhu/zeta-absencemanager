@@ -48,7 +48,7 @@ export class AdminGroupEditModalComponent implements OnInit {
       this.employeeList.push(this.data.group.leader);
     })
     this.api.group().getGroups().subscribe(groups => this.groupList = groups);
-    this.dialogRef.updateSize("25%", "90%");
+    this.dialogRef.updateSize("35%", "60%");
   }
 
   

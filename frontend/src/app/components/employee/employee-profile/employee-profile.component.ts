@@ -15,8 +15,10 @@ import { UserService } from "src/app/services/user.service";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ChangePasswModalComponent } from "../../employee/modals/change-passw-modal/change-passw-modal.component";
-import { EmployeeProfileDeleteModalComponent } from "../modals/employee-profile-delete-modal/employee-profile-delete-modal.component";
-import { SessionService } from "src/app/services/session.service";
+import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
+import { SessionService } from 'src/app/services/session.service';
+import { EmployeeProfileEditModalComponent } from '../modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
+import { Absence } from 'src/app/models/Absence.model';
 
 @Component({
   selector: "app-employee-profile",
@@ -70,5 +72,18 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
           this.sessionService.logout();
         }
       });
+  }
+  
+  openEditProfile() {
+    const dialogRef = this.dialog.open(EmployeeProfileEditModalComponent, {
+      data: {user: this.user}
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
+      if(result){
+      result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
+      }
+      Object.assign(this.user, result);      
+      this.api.user().updateSelfUser(this.user.id, this.user).subscribe();
+    });
   }
 }

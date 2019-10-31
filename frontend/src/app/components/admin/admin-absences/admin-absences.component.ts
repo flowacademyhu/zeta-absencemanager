@@ -9,6 +9,7 @@ import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
 import { User } from 'src/app/models/User.model';
 import { SessionService } from 'src/app/services/session.service';
+import * as cloneDeep from "lodash/cloneDeep";
 import { MatPaginator, PageEvent } from '@angular/material';
 import { ExcelService } from 'src/app/services/excel.service';
 
@@ -23,7 +24,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     "id", "begin", "end", "days", "type", "status", "created_at", "reporter", "assignee", "edit"
   ];
   filterColumns: string[] = [
-    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee"
+    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee", "edit"
   ];
   public absencesList: Absence[];
   private user: any;
@@ -32,6 +33,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   public pageIndex = 0;
   public pageSize = 5;
   public absenceStatus: Status[] = [
+    null,
     Status.OPEN,
     Status.UNDER_REVIEW,
     Status.APPROVED,
@@ -40,6 +42,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     Status.DONE
   ]
   public absenceType: AbsenceType[] = [
+    null,
     AbsenceType.ABSENCE,
     AbsenceType.CHILD_SICK_PAY,
     AbsenceType.NON_WORKING,
@@ -141,7 +144,22 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   }
 
   exportAsXLSX(): void {
-    this.excelService.exportAsExcelFile(this.absencesList, 'sample');
+    const list: any = cloneDeep(this.absencesList);
+    list.forEach((absence) => {
+      absence.reporter = absence.reporter.lastName + " " + absence.reporter.firstName;
+      absence.assignee = absence.assignee.lastName + " " + absence.assignee.firstName;
+      absence.begin = absence.begin.toString();
+      absence.end = absence.end.toString();
+      delete absence.createdBy;
+      delete absence.updatedBy;
+      delete absence.deletedBy;
+      delete absence.createdAt;
+      delete absence.updatedAt;
+      delete absence.deletedAt;
+    });
+    console.log(this.absencesList);
+    console.log(list);
+    this.excelService.exportAsExcelFile(list, 'sample');
   }
 
 }
