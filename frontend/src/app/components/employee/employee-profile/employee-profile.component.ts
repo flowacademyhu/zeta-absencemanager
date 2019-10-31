@@ -43,8 +43,8 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
       .employee()
       .getCurrent()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe((user: User) => (this.user = user));
-  }
+      .subscribe((user: User) => this.user = user);
+    }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();

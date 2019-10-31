@@ -6,7 +6,7 @@
   <button mat-flat-button color="primary" (click)="deleteProfile()">
     Profil törlése
   </button>
-  <button mat-flat-button color="warn" (click)="openEditProfile()">
+  <button mat-flat-button color="primary" (click)="openEditProfile()">
     Profil szerkesztése
   </button>
 </div>
@@ -47,7 +47,7 @@
       }}.</mat-list-item
     >
     <mat-list-item role="listitem">{{ user.position }}</mat-list-item>
-    <mat-list-item role="listitem">{{ user.supervisor }}</mat-list-item>
+    <mat-list-item role="listitem">{{ user.group.leader.firstName }} {{  user.group.leader.lastName }}</mat-list-item>
     <mat-list-item role="listitem">{{ user.numberOfChildren }}</mat-list-item>
     <mat-list-item role="listitem">{{ user.otherAbsenceEnt }}</mat-list-item>
   </mat-list>
@@ -91,7 +91,6 @@
               <mat-list-item role="listitem"
                 >Kivett gyermek betegszabadság:</mat-list-item
               >
-              <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
             </mat-list>
         </div>
         <div class="section-50">
@@ -107,12 +106,7 @@
                   user.usedSickLeaveDays
                 }}</mat-list-item>
                 <mat-list-item role="listitem">{{ user.usedSickPay }}</mat-list-item>
-                <mat-list-item role="listitem">{{ user.childSickPay }}</mat-list-item>
-                <mat-list-item role="listitem"
-                  >{{
-                    (user.usedSickLeaveDays / user.totalSickLeaveDays) * 100
-                  }}%</mat-list-item
-                >
+                <mat-list-item role="listitem">{{ user.usedChildSickPay }}</mat-list-item>
               </mat-list>
           </div>
     </mat-card>

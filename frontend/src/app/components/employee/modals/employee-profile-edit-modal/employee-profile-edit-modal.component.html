@@ -54,15 +54,16 @@
   </div>
 </mat-dialog-content> 
   <div mat-dialog-actions style="justify-content: center;">
-    <button mat-button (click)="dialogRef.close()" style="border: 2px solid white;">
-      Mégsem
-    </button>
+   
     <button 
-        mat-button 
-        style="border: 2px solid white;"
+        mat-flat-button
+        color="primary" 
         [disabled]="!employeeProfileEditForm.valid"
         [mat-dialog-close]="employeeProfileEditForm.value"
         >
       Mentés
     </button>
+    <button mat-flat-button color="accent" (click)="dialogRef.close()" >
+        Mégsem
+      </button>
   </div>

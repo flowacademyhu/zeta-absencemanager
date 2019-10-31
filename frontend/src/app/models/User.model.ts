@@ -21,6 +21,7 @@ export class User extends DataEntity {
   public usedAbsenceDays: number;
   public usedSickLeaveDays: number;
   public absences: Absence[];
+  public usedChildSickPay: number;
 
   //TODO for now, added some optional variables to constructor
   constructor(
@@ -36,7 +37,8 @@ export class User extends DataEntity {
     totalAbsenceDays?: number,
     totalSickLeaveDays?: number,
     usedAbsenceDays?: number,
-    usedSickLeaveDays?: number
+    usedSickLeaveDays?: number,
+    usedChildSickPay?: number
   ) {
     super();
     this.firstName = firstName;
@@ -52,5 +54,6 @@ export class User extends DataEntity {
     this.usedAbsenceDays = usedAbsenceDays;
     this.totalSickLeaveDays = totalSickLeaveDays;
     this.usedSickLeaveDays = usedSickLeaveDays;
+    this.usedChildSickPay = usedChildSickPay;
   }
 }
