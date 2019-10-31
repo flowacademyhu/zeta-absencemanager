@@ -130,6 +130,12 @@ public class DataLoader implements CommandLineRunner {
         .extraAbsenceDays(0)
         .numberOfChildren(3)
         .build();
+    leader.setTotalAbsenceDays(absenceService.availableAbsence(leader));
+    leader.setTotalSickLeaveDays(absenceService.availableSickLeave(leader));
+    leader.setUsedAbsenceDays(0);
+    leader.setUsedSickLeaveDays(0);
+    leader.setUsedSickPay(0);
+    leader.setUsedChildSickPay(0);
     this.userRepository.save(leader);
     users.add(leader);
 
