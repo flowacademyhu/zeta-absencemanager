@@ -3,6 +3,5 @@ mat-form-field {
 }
 
 .mat-dialog-content {
-    justify-content: center;
     max-height: 75vh;
 }

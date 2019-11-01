@@ -34,7 +34,11 @@
     <!-- Supervisor Column -->
     <ng-container matColumnDef="supervisor">
       <th mat-header-cell *matHeaderCellDef>Felettes</th>
-      <td mat-cell *matCellDef="let user">{{ user.supervisor }}</td>
+      <td mat-cell *matCellDef="let user">
+        <ng-container *ngIf="user.group">
+        {{ user.group.leader.firstName }} {{ user.group.leader.lastName }}
+      </ng-container>
+    </td>
     </ng-container>
 
     <!-- DOE  Column-->

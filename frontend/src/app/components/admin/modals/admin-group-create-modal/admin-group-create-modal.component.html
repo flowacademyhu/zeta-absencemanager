@@ -1,6 +1,5 @@
 <h1 mat-dialog-title>Csoport létrehozása</h1>
-<div
-  mat-dialog-content
+<mat-dialog-content
   [formGroup]="createGroupForm"
   style="text-align: center;"
 >
@@ -34,15 +33,9 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-</div>
-<div mat-dialog-actions style="justify-content: center;">
-  <button
-    mat-flat-button
-    color="accent"
-    (click)="onCancel()"
-    style="border: 2px solid white;">
-    Mégsem
-  </button>
+</mat-dialog-content>
+<mat-dialog-actions style="justify-content: center;">
+  
   <button
     mat-flat-button
     color="primary"
@@ -53,4 +46,11 @@
   >
     Mentés
   </button>
-</div>
+  <button
+    mat-flat-button
+    color="accent"
+    (click)="onCancel()"
+    style="border: 2px solid white;">
+    Mégsem
+  </button>
+</mat-dialog-actions>

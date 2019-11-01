@@ -36,6 +36,7 @@ export class AdminGroupEditModalComponent implements OnInit {
   private editedGroup : Group = this.data.group;  
 
   ngOnInit() {
+    this.dialogRef.updateSize("35%", "60%");
     console.log(this.data.group)
     this.api
     .user()
@@ -48,7 +49,7 @@ export class AdminGroupEditModalComponent implements OnInit {
       this.employeeList.push(this.data.group.leader);
     })
     this.api.group().getGroups().subscribe(groups => this.groupList = groups);
-    this.dialogRef.updateSize("35%", "60%");
+    
   }
 
   

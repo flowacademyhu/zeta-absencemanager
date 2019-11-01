@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Alkalmazott szerkesztése</h2>
-<mat-dialog-content [formGroup]="editUserDataForm">
+<mat-dialog-content [formGroup]="editUserDataForm" style="text-align: center;">
   <mat-form-field>
     <input
       matInput
@@ -129,9 +129,8 @@
       formControlName="extraAbsenceDays"
     />
   </mat-form-field>
-</mat-dialog-content>
 
-<mat-dialog-actions>
+<mat-dialog-actions style="justify-content: center;">
   <button
     mat-button
     [disabled]="!editUserDataForm.valid"
@@ -147,3 +146,5 @@
     Mégsem
   </button>
 </mat-dialog-actions>
+</mat-dialog-content>
+

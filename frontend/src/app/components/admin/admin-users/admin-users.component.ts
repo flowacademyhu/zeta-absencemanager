@@ -46,6 +46,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.data.pipe(takeUntil(this._unsubscribe$)).subscribe(data => {
       this.usersList = data.userList;
+      console.log(data);
       this.dataSource = new MatTableDataSource(this.usersList);
     });
     this.api
