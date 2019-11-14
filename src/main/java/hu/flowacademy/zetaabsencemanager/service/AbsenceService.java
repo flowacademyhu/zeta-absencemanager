@@ -174,6 +174,7 @@ public class AbsenceService {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           Constants.UNAUTHORIZED_ABSENCE);
     }
+    intervallValidate(absence, absence.getReporter().getGroup());
     if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
         .equals(modifyAbsence.getType())) {
       removeFromUsedDays(modifyAbsence);

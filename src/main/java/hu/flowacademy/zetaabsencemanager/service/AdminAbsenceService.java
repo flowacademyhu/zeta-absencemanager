@@ -120,6 +120,7 @@ public class AdminAbsenceService {
         () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             Constants.INVALID_ARGUMENTS));
     User current = authenticationService.getCurrentUser();
+    absenceService.intervallValidate(absence, absence.getReporter().getGroup());
     if (this.authenticationService.hasRole(Roles.ADMIN) || (
         modifyAbsence.getAssignee().equals(current))) {
       modifyAbsence.setType(absence.getType());
