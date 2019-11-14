@@ -16,4 +16,6 @@ public interface AbsenceRepository extends JpaRepository<Absence, Long>,
 
   List<Absence> findByReporterAndDeletedAtNull(User user);
 
+  List<Absence> findByAssigneeAndDeletedAtNull(User user);
+
 }
