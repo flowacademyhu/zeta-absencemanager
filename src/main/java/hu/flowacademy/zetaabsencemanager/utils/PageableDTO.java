@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AbsenceDTO<T> {
+public class PageableDTO<T> {
 
-  private AbsenceMetadata metadata;
+  private PageableMetadata metadata;
   private List<T> embedded;
 }

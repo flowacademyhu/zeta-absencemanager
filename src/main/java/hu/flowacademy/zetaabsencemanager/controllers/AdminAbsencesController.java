@@ -7,7 +7,7 @@ import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.service.AdminAbsenceService;
 import hu.flowacademy.zetaabsencemanager.service.AuthenticationService;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
+import hu.flowacademy.zetaabsencemanager.utils.PageableDTO;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +37,7 @@ public class AdminAbsencesController {
   }
 
   @GetMapping("")
-  public AbsenceDTO<Absence> getAll(Pageable pageable,
+  public PageableDTO<Absence> getAll(Pageable pageable,
       @RequestParam(required = false) Long administrationID,
       @RequestParam(required = false) Type type,
       @RequestParam(required = false) Status status,

@@ -7,9 +7,9 @@ import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
+import hu.flowacademy.zetaabsencemanager.utils.PageableDTO;
+import hu.flowacademy.zetaabsencemanager.utils.PageableMetadata;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,16 +65,16 @@ public class AdminUserService {
             () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
-  public AbsenceDTO<User> findAllUserFilterPagination(String name, LocalDate dateOfEntryStart,
+  public PageableDTO<User> findAllUserFilterPagination(String name, LocalDate dateOfEntryStart,
       LocalDate dateOfEntryFinish, LocalDate dateOfEndTrialStart, LocalDate dateOfEndTrialFinish,
       Group groupFilter, String position, Roles role, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       Page<User> userPage = this.userRepository
           .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
               dateOfEndTrialFinish, groupFilter, position, role), pageable);
-      return AbsenceDTO.<User>builder()
+      return PageableDTO.<User>builder()
           .embedded(userPage.getContent())
-          .metadata(AbsenceMetadata.builder()
+          .metadata(PageableMetadata.builder()
               .totalElements(userPage.getTotalElements())
               .totalPages(userPage.getTotalPages())
               .pageNumber(userPage.getNumber())
@@ -90,9 +90,9 @@ public class AdminUserService {
       Page<User> userPage = this.userRepository
           .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
               dateOfEndTrialFinish, group, position, role), pageable);
-      return AbsenceDTO.<User>builder()
+      return PageableDTO.<User>builder()
           .embedded(userPage.getContent())
-          .metadata(AbsenceMetadata.builder()
+          .metadata(PageableMetadata.builder()
               .totalElements(userPage.getTotalElements())
               .totalPages(userPage.getTotalPages())
               .pageNumber(userPage.getNumber())

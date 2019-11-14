@@ -4,7 +4,7 @@ import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.service.AdminUserService;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
+import hu.flowacademy.zetaabsencemanager.utils.PageableDTO;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class AdminUsersController {
   }
 
   @GetMapping("")
-  public AbsenceDTO<User> getAll(Pageable pageable,
+  public PageableDTO<User> getAll(Pageable pageable,
       @RequestParam(required = false) String name,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryStart,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryFinish,
