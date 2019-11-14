@@ -94,7 +94,7 @@ public class GroupService {
       groupRepository.save(group);
     } else {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "You can't delete a group, while it has employees.");
+         Constants.GROUP_HAS_EMPLOYEES);
     }
   }
 }

@@ -79,11 +79,11 @@ public class UserService {
         userRepository.save(deleted);
       } else {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "You can't delete your profile, because your role is leader.");
+            Constants.ROLE_LEADER);
       }
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-          "You can only delete your profile.");
+         Constants.DELETE_ONLY_YOUR_PROFILE);
     }
   }
 
