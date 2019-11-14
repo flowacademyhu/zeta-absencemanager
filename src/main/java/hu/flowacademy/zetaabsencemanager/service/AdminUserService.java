@@ -74,7 +74,9 @@ public class AdminUserService {
           .orElseThrow(
               () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                   Constants.GROUP_NOT_FOUND_YOU_ARE_NOT_LEADER));
-      return this.userRepository.findByGroupAndDeletedAtNull(group);
+      return this.userRepository
+          .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
+              dateOfEndTrialFinish, group, position, role));
     }
   }
 
