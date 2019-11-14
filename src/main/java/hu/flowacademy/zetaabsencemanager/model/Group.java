@@ -42,6 +42,9 @@ public class Group {
   @OneToOne
   private User leader;
 
+  @Column
+  private Integer minimalWorkers;
+
   @OneToMany(mappedBy = "group")
   // @JsonSerialize(using = UserSerializer.class)
   @JsonIgnore

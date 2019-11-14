@@ -46,7 +46,6 @@ public class GroupService {
     User modifyUser = userService.findOneUser(group.getLeader().getId());
     modifyUser.setRole(Roles.LEADER);
     userRepository.save(modifyUser);
-
     return groupRepository.save(group);
   }
 
