@@ -19,7 +19,7 @@ import { RouterLink } from "@angular/router";
 export class AdminGroupCreateModalComponent implements OnInit {
   public createGroupForm: FormGroup;
   private employeeListByGroupIsNull: User[] = [];
-  private employeeList: User[] =  [];
+  private employeeList: User[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AdminGroupCreateModalComponent>,
@@ -33,39 +33,37 @@ export class AdminGroupCreateModalComponent implements OnInit {
         Validators.maxLength(60)
       ]),
       parentId: new FormControl(null),
-      leaderId: new FormControl(null, [
-        Validators.required
-      ])
+      leaderId: new FormControl(null, [Validators.required]),
+      minimalWorkers: new FormControl(null, [Validators.required])
     });
   }
 
   ngOnInit() {
     this.dialogRef.updateSize("35%", "50%");
-      this.api
+    this.api
       .user()
       .getEmployees()
       .subscribe(e => {
         this.employeeListByGroupIsNull = e;
         for (let i = 0; i < this.employeeListByGroupIsNull.length; i++) {
-          this.employeeList.push(this.employeeListByGroupIsNull[i])
+          this.employeeList.push(this.employeeListByGroupIsNull[i]);
         }
       });
   }
 
   addEmployeesToList(id: number) {
     if (id > 0) {
-    this.api
-      .user()
-      .getEmployeesByGroup(id)
-      .subscribe(e => {
-        this.employeeList = e;
-        console.log(this.employeeList);
-      });
+      this.api
+        .user()
+        .getEmployeesByGroup(id)
+        .subscribe(e => {
+          this.employeeList = e;
+          console.log(this.employeeList);
+        });
     }
     if (id === 0) {
       this.employeeList = this.employeeListByGroupIsNull;
     }
-
   }
 
   groupSelector(definition) {
