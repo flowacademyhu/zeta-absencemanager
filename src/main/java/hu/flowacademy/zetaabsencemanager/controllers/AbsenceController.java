@@ -31,7 +31,7 @@ public class AbsenceController {
   }
 
   @GetMapping("")
-  public AbsenceDTO getAll(Pageable pageable,
+  public AbsenceDTO<Absence> getAll(Pageable pageable,
       @RequestParam(required = false) Long administrationID,
       @RequestParam(required = false) Type type,
       @RequestParam(required = false) Status status,

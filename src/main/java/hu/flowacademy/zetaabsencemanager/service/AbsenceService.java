@@ -55,7 +55,7 @@ public class AbsenceService {
     return absence;
   }
 
-  public AbsenceDTO findAll(Long administrationID, Type type,
+  public AbsenceDTO<Absence> findAll(Long administrationID, Type type,
       Status status, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd, Pageable pageable) {
     Page<Absence> absencePage = this.absenceRepository
@@ -63,7 +63,7 @@ public class AbsenceService {
             getFilteredAbsences(administrationID, type, status, start, finish, dayStart, dayEnd),
             pageable);
 
-    return AbsenceDTO.builder()
+    return AbsenceDTO.<Absence>builder()
         .embedded(absencePage.getContent())
         .metadata(AbsenceMetadata.builder()
             .totalElements(absencePage.getTotalElements())
@@ -87,8 +87,8 @@ public class AbsenceService {
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
       user.setUsedChildSickPay(user.getUsedChildSickPay() + absence.getDuration());
-    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
-      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()+absence.getDuration());
+    } else if (absence.getType() == Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence() + absence.getDuration());
     }
     userRepository.save(user);
   }
@@ -106,8 +106,8 @@ public class AbsenceService {
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
       user.setUsedChildSickPay(user.getUsedChildSickPay() - absence.getDuration());
-    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
-      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()-absence.getDuration());
+    } else if (absence.getType() == Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence() - absence.getDuration());
     }
     userRepository.save(user);
   }

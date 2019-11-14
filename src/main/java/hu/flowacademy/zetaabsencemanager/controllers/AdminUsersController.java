@@ -4,9 +4,11 @@ import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.service.AdminUserService;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +33,7 @@ public class AdminUsersController {
   }
 
   @GetMapping("")
-  public List<User> getAll(
+  public AbsenceDTO<User> getAll(Pageable pageable,
       @RequestParam(required = false) String name,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryStart,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryFinish,
@@ -42,7 +44,7 @@ public class AdminUsersController {
       @RequestParam(required = false) Roles role) {
     return adminUserService
         .findAllUserFilterPagination(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
-            dateOfEndTrialFinish, group, position, role);
+            dateOfEndTrialFinish, group, position, role, pageable);
   }
 
   @GetMapping("/employees")

@@ -51,14 +51,14 @@ public class AdminAbsenceService {
   @Autowired
   private FilterService filterService;
 
-  public AbsenceDTO findAllAbsence(Long administrationID, Type type,
+  public AbsenceDTO<Absence> findAllAbsence(Long administrationID, Type type,
       Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       Page<Absence> absencePage = this.absenceRepository.findAll(
           getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
               dayStart, dayEnd), pageable);
-      return AbsenceDTO.builder()
+      return AbsenceDTO.<Absence>builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()
               .totalElements(absencePage.getTotalElements())
@@ -72,7 +72,7 @@ public class AdminAbsenceService {
           .findAll(
               getFilteredAbsencesLeader(administrationID, type, status, reporter, start, finish,
                   dayStart, dayEnd), pageable);
-      return AbsenceDTO.builder()
+      return AbsenceDTO.<Absence>builder()
           .embedded(absencePage.getContent())
           .metadata(AbsenceMetadata.builder()
               .totalElements(absencePage.getTotalElements())

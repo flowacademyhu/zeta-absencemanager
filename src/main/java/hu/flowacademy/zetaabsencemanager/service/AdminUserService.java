@@ -7,6 +7,8 @@ import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
+import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -61,22 +65,40 @@ public class AdminUserService {
             () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
   }
 
-  public List<User> findAllUserFilterPagination(String name, LocalDate dateOfEntryStart,
+  public AbsenceDTO<User> findAllUserFilterPagination(String name, LocalDate dateOfEntryStart,
       LocalDate dateOfEntryFinish, LocalDate dateOfEndTrialStart, LocalDate dateOfEndTrialFinish,
-      Group groupFilter, String position, Roles role) {
+      Group groupFilter, String position, Roles role, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
-      return this.userRepository
+      Page<User> userPage = this.userRepository
           .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
-              dateOfEndTrialFinish, groupFilter, position, role));
+              dateOfEndTrialFinish, groupFilter, position, role), pageable);
+      return AbsenceDTO.<User>builder()
+          .embedded(userPage.getContent())
+          .metadata(AbsenceMetadata.builder()
+              .totalElements(userPage.getTotalElements())
+              .totalPages(userPage.getTotalPages())
+              .pageNumber(userPage.getNumber())
+              .pageSize(userPage.getSize())
+              .build())
+          .build();
     } else {
       Group group = this.groupRepository
           .findByLeaderAndDeletedAtNull(this.authenticationService.getCurrentUser())
           .orElseThrow(
               () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                   Constants.GROUP_NOT_FOUND_YOU_ARE_NOT_LEADER));
-      return this.userRepository
+      Page<User> userPage = this.userRepository
           .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
-              dateOfEndTrialFinish, group, position, role));
+              dateOfEndTrialFinish, group, position, role), pageable);
+      return AbsenceDTO.<User>builder()
+          .embedded(userPage.getContent())
+          .metadata(AbsenceMetadata.builder()
+              .totalElements(userPage.getTotalElements())
+              .totalPages(userPage.getTotalPages())
+              .pageNumber(userPage.getNumber())
+              .pageSize(userPage.getSize())
+              .build())
+          .build();
     }
   }
 

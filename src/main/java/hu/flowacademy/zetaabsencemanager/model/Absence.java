@@ -46,7 +46,7 @@ public class Absence implements HasStateAndId<Long, Status> {
   private LocalDate begin;
 
   @Column
-  @NotNull(message =Constants.END_REQUIRED)
+  @NotNull(message = Constants.END_REQUIRED)
   private LocalDate end;
 
   @Column
