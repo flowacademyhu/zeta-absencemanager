@@ -2,6 +2,7 @@ package hu.flowacademy.zetaabsencemanager.service;
 
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
@@ -98,6 +99,8 @@ public class AdminAbsenceService {
 
   public Absence create(Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
+    Group group = absence.getReporter().getGroup();
+    absenceService.intervallValidate(absence, group);
     absence.setCreatedAt(LocalDateTime.now());
     absence.setCreatedBy(authenticationService.getCurrentUser());
     absence.setAssignee(absence.getAssignee());

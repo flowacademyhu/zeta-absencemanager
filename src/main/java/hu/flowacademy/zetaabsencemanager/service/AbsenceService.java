@@ -100,6 +100,21 @@ public class AbsenceService {
     return counter;
   }
 
+  public void intervallValidate(Absence absence, Group group){
+    List<LocalDate> dates = absence.getBegin().datesUntil(absence.getEnd())
+        .collect(Collectors.toList());
+    List<LocalDate> forbiddenDays = null;
+    for (int i = 0; i < dates.size(); i++) {
+      if (emloyeesOnAbsence(group, dates.get(i)) < group.getMinimalWorkers()) {
+        forbiddenDays.add(dates.get(i));
+      }
+    }
+    if (forbiddenDays != null) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+          Constants.TOO_FEW_WORKERS + forbiddenDays);
+    }
+  }
+
   public void addToUsedDays(Absence absence) {
     User user = absence.getReporter();
     if (absence.getType() == Type.ABSENCE) {
@@ -140,19 +155,8 @@ public class AbsenceService {
 
   public Absence create(@NotNull Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
-    List<LocalDate> dates = absence.getBegin().datesUntil(absence.getEnd())
-        .collect(Collectors.toList());
     Group group = authenticationService.getCurrentUser().getGroup();
-    List<LocalDate> forbiddenDays = null;
-    for (int i = 0; i < dates.size(); i++) {
-      if (emloyeesOnAbsence(group, dates.get(i)) < group.getMinimalWorkers()) {
-        forbiddenDays.add(dates.get(i));
-      }
-    }
-    if (forbiddenDays != null) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-          Constants.TOO_FEW_WORKERS + forbiddenDays);
-    }
+    intervallValidate(absence, group);
     absence.setReporter(authenticationService.getCurrentUser());
     absence.setAssignee(authenticationService.getCurrentUser().getGroup().getLeader());
     absence.setCreatedAt(LocalDateTime.now());
