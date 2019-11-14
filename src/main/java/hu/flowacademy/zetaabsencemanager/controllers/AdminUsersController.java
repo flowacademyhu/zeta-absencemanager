@@ -1,9 +1,13 @@
 package hu.flowacademy.zetaabsencemanager.controllers;
 
+import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.service.AdminUserService;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,12 +28,21 @@ public class AdminUsersController {
   @GetMapping("/{id}")
   public User getOne(@PathVariable("id") Long id) {
     return adminUserService.findOneUser(id);
-
   }
 
   @GetMapping("")
-  public List<User> getAll() {
-    return adminUserService.findAllUser();
+  public List<User> getAll(
+      @RequestParam(required = false) String name,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryStart,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryFinish,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEndTrialStart,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEndTrialFinish,
+      @RequestParam(required = false) Group group,
+      @RequestParam(required = false) String position,
+      @RequestParam(required = false) Roles role) {
+    return adminUserService
+        .findAllUserFilterPagination(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
+            dateOfEndTrialFinish, group, position, role);
   }
 
   @GetMapping("/employees")

@@ -1,6 +1,8 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Group;
+import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
@@ -131,5 +133,86 @@ public class FilterService {
 
   public Specification<Absence> filterByDeletedAt() {
     return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+  }
+
+  public Specification<User> userFilterByFirstname(String name) {
+    return (root, query, cb) -> {
+      if (name == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("firstName"), "%" + name + "%");
+    };
+  }
+
+  public Specification<User> userFilterByLastname(String name) {
+    return (root, query, cb) -> {
+      if (name == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("lastName"), "%" + name + "%");
+    };
+  }
+
+  public Specification<User> userFilterByDateOfEntryStart(LocalDate dateOfEntryStart) {
+    return (root, query, cb) -> {
+      if (dateOfEntryStart == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.greaterThanOrEqualTo(root.get("dateOfEntry"), dateOfEntryStart);
+    };
+  }
+
+  public Specification<User> userFilterByDateOfEntryFinish(LocalDate dateOfEntryFinish) {
+    return (root, query, cb) -> {
+      if (dateOfEntryFinish == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.lessThanOrEqualTo(root.get("dateOfEntry"), dateOfEntryFinish);
+    };
+  }
+
+  public Specification<User> userFilterByDateOfEndTrialStart(LocalDate dateOfEndTrialStart) {
+    return (root, query, cb) -> {
+      if (dateOfEndTrialStart == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.greaterThanOrEqualTo(root.get("dateOfEndTrial"), dateOfEndTrialStart);
+    };
+  }
+
+  public Specification<User> userFilterByDateOfEndTrialFinish(LocalDate dateOfEndTrialFinish) {
+    return (root, query, cb) -> {
+      if (dateOfEndTrialFinish == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.lessThanOrEqualTo(root.get("dateOfEndTrial"), dateOfEndTrialFinish);
+    };
+  }
+
+  public Specification<User> userFilterByGroup(Group group) {
+    return (root, query, cb) -> {
+      if (group == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.equal(root.get("group"), group);
+    };
+  }
+
+  public Specification<User> userFilterByPosition(String position) {
+    return (root, query, cb) -> {
+      if (position == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.like(root.get("position"), "%" + position + "%");
+    };
+  }
+
+  public Specification<User> userFilterByRole(Roles role) {
+    return (root, query, cb) -> {
+      if (role == null) {
+        return cb.isTrue(cb.literal(true));
+      }
+      return cb.equal(root.get("role"), role);
+    };
   }
 }
