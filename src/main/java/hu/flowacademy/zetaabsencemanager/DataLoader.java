@@ -146,6 +146,7 @@ public class DataLoader implements CommandLineRunner {
         .name("Group1")
         .leader(leader)
         .employees(g1u)
+        .minimalWorkers(0)
         .build();
     groupRepository.save(group1);
     for (User user : g1u) {
@@ -159,6 +160,7 @@ public class DataLoader implements CommandLineRunner {
         .name("Group2")
         .leader(users.get(1))
         .employees(g2u)
+        .minimalWorkers(0)
         .parentId(group1.getId())
         .build();
     groupRepository.save(group2);
@@ -174,6 +176,7 @@ public class DataLoader implements CommandLineRunner {
     Group group3 = Group.builder()
         .employees(List.of())
         .name("Group3")
+        .minimalWorkers(0)
         .leader(userRepository.getOne(4L))
         .employees(g3u)
         .parentId(group1.getId())
@@ -193,6 +196,7 @@ public class DataLoader implements CommandLineRunner {
     Group group4 = Group.builder()
         .employees(List.of())
         .name("Group4")
+        .minimalWorkers(0)
         .leader(userRepository.getOne(5L))
         .parentId(group2.getId())
         .employees(g4u)
@@ -212,6 +216,7 @@ public class DataLoader implements CommandLineRunner {
     Group group5 = Group.builder()
         .employees(List.of())
         .name("Group5")
+        .minimalWorkers(0)
         .leader(userRepository.getOne(6L))
         .parentId(group2.getId())
         .employees(g5u)
@@ -233,6 +238,7 @@ public class DataLoader implements CommandLineRunner {
         .name("Group6")
         .leader(userRepository.getOne(7L))
         .parentId(group3.getId())
+        .minimalWorkers(0)
         .build();
     this.groupRepository.save(group6);
     for (User user : g6u) {
@@ -250,6 +256,7 @@ public class DataLoader implements CommandLineRunner {
         .employees(List.of())
         .name("Group7")
         .employees(g7u)
+        .minimalWorkers(0)
         .leader(userRepository.getOne(8L))
         .parentId(group3.getId())
         .build();
