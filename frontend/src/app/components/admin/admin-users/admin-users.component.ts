@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminUserAddModalComponent } from "src/app/components/admin/modals/admin-user-add-modal/admin-user-add-modal.component";
-import { User } from "src/app/models/User.model";
+import { User, UserFilter, Role } from "src/app/models/User.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -27,6 +27,16 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     "edit",
     "delete"
   ];
+  filterColumns: string[] = [
+    "name",
+    "dateOfEntryStart",
+    "dateOfEntryFinish",
+    "dateOfEndTrialStart",
+    "dateOfEndTrialFinish",
+    "group",
+    "position",
+    "role"
+  ];
   dataSource: any; // --> filter
 
   editedUser: User;
@@ -36,7 +46,11 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   public length = 0;
   public pageIndex = 0;
   public pageSize = 5;
+  private checkedFilter: false;
+  private userFilter: UserFilter = new UserFilter();
   private _unsubscribe$ = new Subject<void>();
+  private groups;
+  private roles;
 
   constructor(
     private api: ApiCommunicationService,
@@ -60,6 +74,13 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .subscribe(currentUser => {
         this.userData = currentUser;
       });
+    this.api
+      .group()
+      .getGroups()
+      .subscribe(g => {
+        this.groups = g;
+      });
+    this.roles = User.enumSelector(Role);
   }
 
   ngOnDestroy(): void {
@@ -134,6 +155,20 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         page: event.pageIndex,
         size: event.pageSize
       }
+    });
+  }
+
+  public onFilterReset(checked: boolean) {
+    if (!checked) {
+      this.userFilter = new UserFilter();
+      this.router.navigate(["admin", "users"]);
+    }
+  }
+
+  public onFilter() {
+    console.log(this.userFilter.dateOfEntryStart);
+    this.router.navigate(["admin", "users"], {
+      queryParams: this.userFilter
     });
   }
 }

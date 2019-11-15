@@ -2,6 +2,24 @@ import { Group } from "src/app/models/Group.model";
 import { Absence } from "./Absence.model";
 import { DataEntity } from "./DataEntity.model";
 
+export enum Role {
+  ADMIN = "ADMIN",
+  LEADER = "LEADER",
+  EMPLOYEE = "EMPLOYEE",
+  INACTIVE = "INACTIVE"
+}
+
+export class UserFilter {
+  public name: string;
+  public dateOfEntryStart: any;
+  public dateOfEntryFinish: any;
+  public dateOfEndTrialStart: any;
+  public dateOfEndTrialFinish: any;
+  public group: Group;
+  public position: string;
+  public role: string;
+}
+
 export class User extends DataEntity {
   public firstName: string;
   public lastName: string;
@@ -55,5 +73,9 @@ export class User extends DataEntity {
     this.totalSickLeaveDays = totalSickLeaveDays;
     this.usedSickLeaveDays = usedSickLeaveDays;
     this.usedChildSickPay = usedChildSickPay;
+  }
+
+  public static enumSelector(definition) {
+    return Object.keys(definition);
   }
 }

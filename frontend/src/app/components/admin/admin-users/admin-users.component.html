@@ -1,4 +1,3 @@
-<!-- <app-filter [dataSource]="dataSource"></app-filter> -->
 <div class="actionButton">
   <button
     mat-flat-button
@@ -8,7 +7,137 @@
   >
     Alkalmazott hozzáadása
   </button>
+
+  <mat-checkbox
+    color="primary"
+    [(ngModel)]="checkedFilter"
+    #checkbox
+    (change)="onFilterReset(checkbox.checked)"
+    >Szűrés</mat-checkbox
+  >
 </div>
+<!--------------------Szűrő-------------------->
+<mat-table *ngIf="checkedFilter" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Név"
+          (change)="onFilter()"
+          [(ngModel)]="userFilter.name"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dateOfEntryStart">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="datetime-local"
+          placeholder="Belépés dátuma - kezdő dátum"
+          (change)="onFilter()"
+          [(ngModel)]="userFilter.dateOfEntryStart"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dateOfEntryFinish">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="datetime-local"
+          placeholder="Belépés dátuma - befejező dátum"
+          (change)="onFilter()"
+          [(ngModel)]="userFilter.dateOfEntryFinish"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dateOfEndTrialStart">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="datetime-local"
+          placeholder="Próbaidő vége - kezdő dátum"
+          (change)="onFilter()"
+          [(ngModel)]="userFilter.dateOfEndTrialStart"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dateOfEndTrialFinish">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="datetime-local"
+          placeholder="Próbaidő vége - befejező dátum"
+          (change)="onFilter()"
+          [(ngModel)]="userFilter.dateOfEndTrialFinish"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="group">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-select
+        [(ngModel)]="userFilter.group"
+        (selectionChange)="onFilter()"
+        placeholder="Csoport"
+      >
+        <mat-option [value]="null"> </mat-option>
+        <mat-option *ngFor="let group of groups" [value]="group.id">
+          {{ group.name }}
+        </mat-option>
+      </mat-select>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="position">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Munkakör"
+          (change)="onFilter()"
+          [(ngModel)]="userFilter.position"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="role">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-select
+        [(ngModel)]="userFilter.role"
+        (selectionChange)="onFilter()"
+        placeholder="Szerep"
+      >
+        <mat-option [value]="null"> </mat-option>
+        <mat-option *ngFor="let role of roles" [value]="role">
+          {{ role | role }}
+        </mat-option>
+      </mat-select>
+    </mat-header-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: filterColumns"></mat-row>
+</mat-table>
+
+<!-- <app-filter [dataSource]="dataSource"></app-filter> -->
+<!------------------------Táblázat---------------------->
 <table
   mat-table
   [dataSource]="usersList"
