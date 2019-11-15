@@ -1,5 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from "@angular/core";
-import { Absence, AbsenceType, Status, AbsencesFilter } from "src/app/models/Absence.model";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy
+} from "@angular/core";
+import {
+  Absence,
+  AbsenceType,
+  Status,
+  AbsencesFilter
+} from "src/app/models/Absence.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
@@ -7,11 +18,11 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
-import { User } from 'src/app/models/User.model';
-import { SessionService } from 'src/app/services/session.service';
+import { User } from "src/app/models/User.model";
+import { SessionService } from "src/app/services/session.service";
 import * as cloneDeep from "lodash/cloneDeep";
-import { MatPaginator, PageEvent } from '@angular/material';
-import { ExcelService } from 'src/app/services/excel.service';
+import { MatPaginator, PageEvent } from "@angular/material";
+import { ExcelService } from "src/app/services/excel.service";
 
 @Component({
   selector: "app-admin-absences",
@@ -20,11 +31,29 @@ import { ExcelService } from 'src/app/services/excel.service';
 })
 export class AdminAbsencesComponent implements OnInit, OnDestroy {
   private _unsubscribe$: Subject<boolean> = new Subject<boolean>();
-  displayedColumns: string[] = [ 
-    "id", "begin", "end", "days", "type", "status", "created_at", "reporter", "assignee", "edit"
+  displayedColumns: string[] = [
+    "id",
+    "begin",
+    "end",
+    "days",
+    "type",
+    "status",
+    "created_at",
+    "reporter",
+    "assignee",
+    "edit"
   ];
   filterColumns: string[] = [
-    "administrationID","start", "finish", "dayStart", "dayEnd", "type", "status", "reporter", "assignee", "edit"
+    "administrationID",
+    "start",
+    "finish",
+    "dayStart",
+    "dayEnd",
+    "type",
+    "status",
+    "reporter",
+    "assignee",
+    "edit"
   ];
   public absencesList: Absence[];
   private user: any;
@@ -40,7 +69,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     Status.REJECTED,
     Status.ADMINISTRATED,
     Status.DONE
-  ]
+  ];
   public absenceType: AbsenceType[] = [
     null,
     AbsenceType.ABSENCE,
@@ -50,7 +79,7 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   ];
 
   checkedFilter: false;
-  absenceFilter: AbsencesFilter = new AbsencesFilter;
+  absenceFilter: AbsencesFilter = new AbsencesFilter();
   private stringFilter = new Subject();
   public stringFilter$ = this.stringFilter.asObservable();
 
@@ -64,19 +93,16 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.data
-    .pipe(takeUntil(this._unsubscribe$))
-    .subscribe(data => {
+    this.route.data.pipe(takeUntil(this._unsubscribe$)).subscribe(data => {
       this.absencesList = data.adminAbsenceList.embedded;
       this.pageSize = data.adminAbsenceList.metadata.pageSize;
       this.pageIndex = data.adminAbsenceList.metadata.pageIndex;
       this.length = data.adminAbsenceList.metadata.totalElements;
     });
     this.stringFilter$
-            .pipe(debounceTime(500), takeUntil(this._unsubscribe$))
-            .subscribe(() => this.onFilter());
+      .pipe(debounceTime(500), takeUntil(this._unsubscribe$))
+      .subscribe(() => this.onFilter());
   }
-
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -122,32 +148,34 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
 
   public onPageChange(event: PageEvent) {
     this.router.navigate(["admin", "absences"], {
-      queryParams: { 
+      queryParams: {
         page: event.pageIndex,
         size: event.pageSize
       }
-    })
+    });
   }
 
   public onFilter() {
     console.log(this.absenceFilter);
     this.router.navigate(["admin", "absences"], {
       queryParams: this.absenceFilter
-    })
+    });
   }
 
   public onFilterReset(checked: boolean) {
-    if(!checked){
-    this.absenceFilter = new AbsencesFilter;
-    this.router.navigate(["admin", "absences"]);
+    if (!checked) {
+      this.absenceFilter = new AbsencesFilter();
+      this.router.navigate(["admin", "absences"]);
     }
   }
 
   exportAsXLSX(): void {
     const list: any = cloneDeep(this.absencesList);
-    list.forEach((absence) => {
-      absence.reporter = absence.reporter.lastName + " " + absence.reporter.firstName;
-      absence.assignee = absence.assignee.lastName + " " + absence.assignee.firstName;
+    list.forEach(absence => {
+      absence.reporter =
+        absence.reporter.lastName + " " + absence.reporter.firstName;
+      absence.assignee =
+        absence.assignee.lastName + " " + absence.assignee.firstName;
       absence.begin = absence.begin.toString();
       absence.end = absence.end.toString();
       delete absence.createdBy;
@@ -159,7 +187,6 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     });
     console.log(this.absencesList);
     console.log(list);
-    this.excelService.exportAsExcelFile(list, 'sample');
+    this.excelService.exportAsExcelFile(list, "sample");
   }
-
 }

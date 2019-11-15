@@ -33,6 +33,11 @@ public class AdminUsersController {
   }
 
   @GetMapping("")
+  public List<User> getAllUser() {
+    return adminUserService.findAllUser();
+  }
+
+  @GetMapping("/paginated")
   public PageableDTO<User> getAll(Pageable pageable,
       @RequestParam(required = false) String name,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEntryStart,

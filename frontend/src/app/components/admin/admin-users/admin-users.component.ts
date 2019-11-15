@@ -6,7 +6,7 @@ import { ApiCommunicationService } from "src/app/services/api-communication.serv
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AdminUserEditModalComponent } from "../modals/admin-user-edit-modal/admin-user-edit-modal.component";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, PageEvent } from "@angular/material";
 import { AdminUserDeleteModalComponent } from "../modals/admin-user-delete-modal/admin-user-delete-modal.component";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Absence } from "src/app/models/Absence.model";
@@ -33,6 +33,9 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   userData: User;
   usersList: User[];
   error: string;
+  public length = 0;
+  public pageIndex = 0;
+  public pageSize = 5;
   private _unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -45,8 +48,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this._unsubscribe$)).subscribe(data => {
-      this.usersList = data.userList;
-      console.log(data);
+      this.usersList = data.userList.embedded;
+      this.pageSize = data.userList.metadata.pageSize;
+      this.pageIndex = data.userList.metadata.pageIndex;
+      this.length = data.userList.metadata.totalElements;
       this.dataSource = new MatTableDataSource(this.usersList);
     });
     this.api
@@ -121,5 +126,14 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
             .subscribe(() => this.router.navigateByUrl(this.router.url));
         }
       });
+  }
+
+  public onPageChange(event: PageEvent) {
+    this.router.navigate(["admin", "users"], {
+      queryParams: {
+        page: event.pageIndex,
+        size: event.pageSize
+      }
+    });
   }
 }
