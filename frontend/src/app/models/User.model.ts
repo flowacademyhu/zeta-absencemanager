@@ -9,17 +9,6 @@ export enum Role {
   INACTIVE = "INACTIVE"
 }
 
-export class UserFilter {
-  public name: string;
-  public dateOfEntryStart: any;
-  public dateOfEntryFinish: any;
-  public dateOfEndTrialStart: any;
-  public dateOfEndTrialFinish: any;
-  public group: Group;
-  public position: string;
-  public role: string;
-}
-
 export class User extends DataEntity {
   public firstName: string;
   public lastName: string;

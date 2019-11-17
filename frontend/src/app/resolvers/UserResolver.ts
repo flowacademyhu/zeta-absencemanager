@@ -27,6 +27,7 @@ export class UserResolver implements Resolve<PagedResponse<User>> {
     const group = route.queryParams["group"];
     const position = route.queryParams["position"];
     const role = route.queryParams["role"];
+    const sort = route.queryParams["sort"];
     const pagedRequest = new UsersPagedRequest(
       page ? page : 0,
       size ? size : 5,
@@ -37,7 +38,8 @@ export class UserResolver implements Resolve<PagedResponse<User>> {
       dateOfEndTrialFinish,
       group,
       position,
-      role
+      role,
+      sort
     );
     return this.api.user().getUsersPaginated(pagedRequest);
   }

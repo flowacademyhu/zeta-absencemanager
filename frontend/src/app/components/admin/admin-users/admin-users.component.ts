@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminUserAddModalComponent } from "src/app/components/admin/modals/admin-user-add-modal/admin-user-add-modal.component";
-import { User, UserFilter, Role } from "src/app/models/User.model";
+import { User, Role } from "src/app/models/User.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AdminUserEditModalComponent } from "../modals/admin-user-edit-modal/admin-user-edit-modal.component";
-import { MatTableDataSource, PageEvent } from "@angular/material";
+import { MatTableDataSource, PageEvent, Sort } from "@angular/material";
 import { AdminUserDeleteModalComponent } from "../modals/admin-user-delete-modal/admin-user-delete-modal.component";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Absence } from "src/app/models/Absence.model";
+import { UsersPagedRequest } from "src/app/models/UsersPagedRequest";
 
 @Component({
   selector: "app-admin-users",
@@ -47,7 +48,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   public pageIndex = 0;
   public pageSize = 5;
   private checkedFilter: false;
-  private userFilter: UserFilter = new UserFilter();
+  //private userFilter: UserFilter = new UserFilter();
+  //private sort: Sort;
+  //private page: Object;
+  private usersPagedRequest = new UsersPagedRequest();
   private _unsubscribe$ = new Subject<void>();
   private groups;
   private roles;
@@ -150,25 +154,56 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   public onPageChange(event: PageEvent) {
+    this.addDataToUsersPagedRequest(event, undefined);
     this.router.navigate(["admin", "users"], {
-      queryParams: {
-        page: event.pageIndex,
-        size: event.pageSize
-      }
+      queryParams: this.usersPagedRequest
     });
   }
 
   public onFilterReset(checked: boolean) {
     if (!checked) {
-      this.userFilter = new UserFilter();
-      this.router.navigate(["admin", "users"]);
+      this.clearFilterData();
+      this.router.navigate(["admin", "users"], {
+        queryParams: this.usersPagedRequest
+      });
     }
   }
 
   public onFilter() {
-    console.log(this.userFilter.dateOfEntryStart);
     this.router.navigate(["admin", "users"], {
-      queryParams: this.userFilter
+      queryParams: this.usersPagedRequest
     });
+  }
+
+  sortData(sort: Sort) {
+    this.addDataToUsersPagedRequest(undefined, sort);
+    this.router.navigate(["admin", "users"], {
+      queryParams: this.usersPagedRequest
+    });
+  }
+
+  addDataToUsersPagedRequest(event?: PageEvent, sort?: Sort) {
+    if (event != undefined) {
+      this.usersPagedRequest.page = event.pageIndex;
+      this.usersPagedRequest.size = event.pageSize;
+    }
+    if (sort != undefined) {
+      if (sort.direction == "") {
+        this.usersPagedRequest.sort = undefined;
+      } else {
+        this.usersPagedRequest.sort = sort.active + "," + sort.direction;
+      }
+    }
+  }
+
+  clearFilterData() {
+    this.usersPagedRequest.name = undefined;
+    this.usersPagedRequest.dateOfEntryStart = undefined;
+    this.usersPagedRequest.dateOfEntryFinish = undefined;
+    this.usersPagedRequest.dateOfEndTrialStart = undefined;
+    this.usersPagedRequest.dateOfEndTrialFinish = undefined;
+    this.usersPagedRequest.group = undefined;
+    this.usersPagedRequest.position = undefined;
+    this.usersPagedRequest.role = undefined;
   }
 }

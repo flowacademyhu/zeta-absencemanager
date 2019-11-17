@@ -2,8 +2,8 @@ import { Group } from "./Group.model";
 
 export class UsersPagedRequest {
   constructor(
-    page: number,
-    size: number,
+    page?: number,
+    size?: number,
     name?: string,
     dateOfEntryStart?: any,
     dateOfEntryFinish?: any,
@@ -11,7 +11,8 @@ export class UsersPagedRequest {
     dateOfEndTrialFinish?: any,
     group?: Group,
     position?: string,
-    role?: string
+    role?: string,
+    sort?: string
   ) {
     this.page = page;
     if (size) {
@@ -25,10 +26,11 @@ export class UsersPagedRequest {
     this.group = group;
     this.position = position;
     this.role = role;
+    this.sort = sort;
   }
 
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   name?: string;
   dateOfEntryStart?: any;
   dateOfEntryFinish?: any;
@@ -37,4 +39,5 @@ export class UsersPagedRequest {
   group?: Group;
   position?: string;
   role?: string;
+  sort?: string;
 }
