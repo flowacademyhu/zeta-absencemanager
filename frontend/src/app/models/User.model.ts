@@ -2,6 +2,13 @@ import { Group } from "src/app/models/Group.model";
 import { Absence } from "./Absence.model";
 import { DataEntity } from "./DataEntity.model";
 
+export enum Role {
+  ADMIN = "ADMIN",
+  LEADER = "LEADER",
+  EMPLOYEE = "EMPLOYEE",
+  INACTIVE = "INACTIVE"
+}
+
 export class User extends DataEntity {
   public firstName: string;
   public lastName: string;
@@ -15,7 +22,7 @@ export class User extends DataEntity {
   public numberOfChildren: number;
   public otherAbsenceEnt: string;
   public group: Group;
-  public role: string;
+  public role: Role;
   public totalAbsenceDays: number;
   public totalSickLeaveDays: number;
   public usedAbsenceDays: number;

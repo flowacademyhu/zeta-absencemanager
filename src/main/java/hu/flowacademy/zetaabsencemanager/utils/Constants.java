@@ -22,7 +22,7 @@ public abstract class Constants {
   public static final String DOET_REQUIRED="A próbaidő végének megadása kötelező";
   public static final String POSITION_REQUIRED="Munkakör megadása kötelező";
   public static final String NOCH_REQUIRED="Gyermekek számának megadása kötelező";
-  public static final String USER_NOT_IN_YOUR_GROUP="A munkavállaló nejm az Ön csoportjába tartozik";
+  public static final String USER_NOT_IN_YOUR_GROUP="A munkavállaló nem az Ön csoportjába tartozik";
   public static final String ONLY_ADMIN_CAN_CREATE_USER="Csak az adminisztrátor hozhat létre felhasználót";
   public static final String YOU_CAN_ONLY_MODIFY_YOUR_PROFILE="Csak a saját profilját módosíthatja";
   public static final String YOU_CAN_ONLY_DELETE_YOUR_PROFILE="Csak a saját profilját törölheti";

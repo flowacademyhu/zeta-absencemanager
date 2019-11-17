@@ -12,6 +12,8 @@ import { AdminGroupsComponent } from "./components/admin/admin-groups/admin-grou
 import { GroupResolver } from "./resolvers/GroupResolver";
 import { AuthGuard } from "./guards/auth.guard";
 import { AdminGuard } from "./guards/admin.guard";
+import { AdminDeletedUsersComponent } from './components/admin/admin-deleted-users/admin-deleted-users.component';
+import { DeletedUsersResolver } from './resolvers/DeletedUsersResolver';
 
 const routes: Routes = [
   {
@@ -57,6 +59,14 @@ const routes: Routes = [
         runGuardsAndResolvers: "always",        
         resolve: {
           userList : UserResolver
+        }
+      },
+      {
+        path: "deleted-users",
+        component: AdminDeletedUsersComponent,
+        runGuardsAndResolvers: "always",        
+        resolve: {
+          userList : DeletedUsersResolver
         }
       },
       {

@@ -77,6 +77,9 @@ import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-
 import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { EmployeeProfileEditModalComponent } from './components/employee/modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
 import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
+import { AdminDeletedUsersComponent } from './components/admin/admin-deleted-users/admin-deleted-users.component';
+import { DeletedUsersResolver } from './resolvers/DeletedUsersResolver';
+import { UserRolePipe } from './pipes/user-role-pipe';
 
 @NgModule({
   declarations: [
@@ -89,6 +92,7 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     //admin
     AdminAbsencesComponent,
     AdminUsersComponent,
+    AdminDeletedUsersComponent,
     AdminGroupsComponent,
     AdminUserAddModalComponent,
     AdminUserEditModalComponent,
@@ -108,7 +112,8 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     //pipe
     AbsenceTypePipe,
     AbsenceStatusPipe,
-    EmployeeProfileEditModalComponent,
+    UserRolePipe,
+    EmployeeProfileEditModalComponent
   ],
   imports: [
     BrowserModule,
@@ -148,6 +153,7 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     GroupResolver,
     GetEmployeeAbsencesResolver,
     UserResolver,
+    DeletedUsersResolver,
     SessionService,
     ApiCommunicationService,
     UserService,

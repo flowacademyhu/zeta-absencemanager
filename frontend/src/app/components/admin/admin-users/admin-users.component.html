@@ -4,6 +4,10 @@
     (click)="createUser()">
     Alkalmazott hozzáadása
   </button>
+  <button mat-flat-button color="primary" [disabled]="this.userData && this.userData.role !== 'ADMIN'"
+  [routerLink]="'/admin/deleted-users'">
+  Törölt Alkalmazottak listája
+</button>
 </div>
 
   <table mat-table [dataSource]="usersList" class="table-responsive mat-elevation-z8">

@@ -1,0 +1,116 @@
+<!-- <app-filter [dataSource]="dataSource"></app-filter> -->
+<button mat-flat-button color="primary" [disabled]="this.userData && this.userData.role !== 'ADMIN'"
+  [routerLink]="'/admin/users'">
+  Vissza
+</button>      
+
+        <table mat-table [dataSource]="usersList" class="table-responsive mat-elevation-z8">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Név</th>
+            <td mat-cell *matCellDef="let user">
+              {{ user.lastName }} {{ user.firstName }}
+            </td>
+          </ng-container>
+      
+          <!-- Dob Column -->
+          <ng-container matColumnDef="dob">
+            <th mat-header-cell *matHeaderCellDef>Születési dátum</th>
+            <td mat-cell *matCellDef="let user">
+              <span *ngIf="user.dateOfBirth[1] < 10 && user.dateOfBirth[2] > 9">
+                {{ user.dateOfBirth[0] }}.0{{ user.dateOfBirth[1] }}.{{
+                  user.dateOfBirth[2]
+                }}.
+            </span>
+            <span *ngIf="user.dateOfBirth[1] > 9 && user.dateOfBirth[2] < 10">
+                {{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.0{{
+                  user.dateOfBirth[2]
+                }}.
+            </span>
+            <span *ngIf="user.dateOfBirth[1] < 10 && user.dateOfBirth[2] < 10">
+              {{ user.dateOfBirth[0] }}.0{{ user.dateOfBirth[1] }}.0{{
+                user.dateOfBirth[2]
+              }}.
+            </span>
+            <span *ngIf="user.dateOfBirth[1] > 9 && user.dateOfBirth[2] > 9">
+              {{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
+                user.dateOfBirth[2]
+              }}.
+            </span>
+            </td>
+          </ng-container>
+      
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>Munkakör</th>
+            <td mat-cell *matCellDef="let user">{{ user.position }}</td>
+          </ng-container>
+      
+          <!-- DOE  Column-->
+          <ng-container matColumnDef="doe">
+            <th mat-header-cell *matHeaderCellDef>Kezdés dátuma</th>
+            <td mat-cell *matCellDef="let user">
+              <span *ngIf="user.dateOfEntry[1] < 10 && user.dateOfEntry[2] > 9">
+                  {{ user.dateOfEntry[0] }}.0{{ user.dateOfEntry[1] }}.{{
+                    user.dateOfEntry[2]
+                  }}.
+              </span>
+              <span *ngIf="user.dateOfEntry[1] > 9 && user.dateOfEntry[2] < 10">
+                  {{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.0{{
+                    user.dateOfEntry[2]
+                  }}.
+              </span>
+              <span *ngIf="user.dateOfEntry[1] < 10 && user.dateOfEntry[2] < 10">
+                {{ user.dateOfEntry[0] }}.0{{ user.dateOfEntry[1] }}.0{{
+                  user.dateOfEntry[2]
+                }}.
+            </span>
+            <span *ngIf="user.dateOfEntry[1] > 9 && user.dateOfEntry[2] > 9">
+                {{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
+                  user.dateOfEntry[2]
+                }}.
+            </span>
+            </td>
+          </ng-container>
+      
+          <!-- E-mail Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>E-mail</th>
+            <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="deletedAt">
+            <th mat-header-cell *matHeaderCellDef>Törlés dátuma</th>
+            <td mat-cell *matCellDef="let user">
+            <span *ngIf="user.deletedAt[1] < 10 && user.deletedAt[2] > 9">
+                {{ user.deletedAt[0] }}.0{{ user.deletedAt[1] }}.{{
+                  user.deletedAt[2]
+                }}.
+            </span>
+            <span *ngIf="user.deletedAt[1] > 9 && user.deletedAt[2] < 10">
+                {{ user.deletedAt[0] }}.{{ user.deletedAt[1] }}.0{{
+                  user.deletedAt[2]
+                }}.
+            </span>
+            <span *ngIf="user.deletedAt[1] < 10 && user.deletedAt[2] < 10">
+              {{ user.deletedAt[0] }}.0{{ user.deletedAt[1] }}.0{{
+                user.deletedAt[2]
+              }}.
+            </span>
+            <span *ngIf="user.deletedAt[1] > 9 && user.deletedAt[2] > 9">
+              {{ user.deletedAt[0] }}.{{ user.deletedAt[1] }}.{{
+                user.deletedAt[2]
+              }}.
+            </span>
+          </td>
+          </ng-container>
+
+          <!-- Role Column -->
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Státusz</th>
+            <td mat-cell *matCellDef="let user">{{ user.role | role }}</td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
