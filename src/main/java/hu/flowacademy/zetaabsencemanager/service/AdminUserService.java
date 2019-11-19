@@ -71,6 +71,14 @@ public class AdminUserService {
     }
   }
 
+  public List<User> findAllDeletedUsers() {
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      return this.userRepository.findByDeletedAtNotNull();
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.CAN_NOT_ACCESS_DATA);
+    }
+  }
+
   public User findOneUser(@NotNull Long id) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       return userRepository.findByIdAndDeletedAtNull(id)

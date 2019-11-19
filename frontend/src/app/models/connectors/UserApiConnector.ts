@@ -13,6 +13,10 @@ export class UserApiConnector extends AbstractApiConnector {
     return this.http.get(this.apiRoute) as Observable<User[]>;
   }
 
+  public getDeletedUsers(): Observable<User[]> {
+    return this.http.get(this.apiRoute + "/deleted-employees") as Observable<User[]>;
+  }
+
   public getLeaders(): Observable<any> {
     return this.http.get(this.apiRoute + "/leaders");
   }

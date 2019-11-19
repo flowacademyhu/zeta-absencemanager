@@ -36,6 +36,11 @@ public class AdminUsersController {
     return adminUserService.findAllEmployeesByGroupIsNull();
   }
 
+  @GetMapping("/deleted-employees")
+  public List<User> getDeletedEmployees() {
+    return adminUserService.findAllDeletedUsers();
+  }
+
   @GetMapping("/employees/{id}")
   public List<User> getEmployeesByGroup(@PathVariable("id") Long id) {
     return adminUserService.findAllEmployeesByGroupId(id);
