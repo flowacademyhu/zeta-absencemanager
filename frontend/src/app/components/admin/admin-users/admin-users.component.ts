@@ -25,6 +25,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     "supervisor",
     "doe",
     "email",
+    "szerep",
     "edit",
     "delete"
   ];
