@@ -156,7 +156,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   public onFilter(): void {
     this.clearEmptyFilter();
-    console.log(this.usersPagedRequest);
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
