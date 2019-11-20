@@ -38,9 +38,9 @@ export class UserResolver implements Resolve<PagedResponse<User>> {
       dateOfEndTrialFinish,
       group,
       position,
-      role,
       sort
     );
+    pagedRequest.role = role;
     return this.api.user().getUsersPaginated(pagedRequest);
   }
 }

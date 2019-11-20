@@ -46,7 +46,7 @@ public class AdminUsersController {
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfEndTrialFinish,
       @RequestParam(required = false) Group group,
       @RequestParam(required = false) String position,
-      @RequestParam(required = false) Roles role) {
+      @RequestParam(required = false) Roles[] role) {
     return adminUserService
         .findAllUserFilterPagination(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
             dateOfEndTrialFinish, group, position, role, pageable);

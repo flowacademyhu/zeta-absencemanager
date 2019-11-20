@@ -18,7 +18,7 @@ import { UsersPagedRequest } from "src/app/models/UsersPagedRequest";
   styleUrls: ["./admin-users.component.css"]
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = [
+  private displayedColumns: string[] = [
     "name",
     "dob",
     "position",
@@ -28,22 +28,11 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     "edit",
     "delete"
   ];
-  filterColumns: string[] = [
-    "name",
-    "dateOfEntryStart",
-    "dateOfEntryFinish",
-    "dateOfEndTrialStart",
-    "dateOfEndTrialFinish",
-    "group",
-    "position",
-    "role"
-  ];
-  dataSource: any; // --> filter
 
-  editedUser: User;
-  userData: User;
-  usersList: User[];
-  error: string;
+  private editedUser: User;
+  private userData: User;
+  private usersList: User[];
+  private error: string;
   public length = 0;
   public pageIndex = 0;
   public pageSize = 5;
@@ -66,7 +55,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       this.pageSize = data.userList.metadata.pageSize;
       this.pageIndex = data.userList.metadata.pageIndex;
       this.length = data.userList.metadata.totalElements;
-      this.dataSource = new MatTableDataSource(this.usersList);
     });
     this.api
       .employee()
@@ -88,7 +76,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
-  createUser(): void {
+  public createUser(): void {
     const dialogRef = this.dialog.open(AdminUserAddModalComponent, {});
 
     dialogRef
@@ -107,7 +95,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       });
   }
 
-  editUser(id: number): void {
+  public editUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
       data: { user: this.usersList.filter(user => user.id === id)[0] }
     });
@@ -131,7 +119,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteUser(id: number): void {
+  public deleteUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserDeleteModalComponent, {
       data: { user: this.usersList.filter(user => user.id === id)[0] }
     });
@@ -149,14 +137,14 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onPageChange(event: PageEvent) {
+  public onPageChange(event: PageEvent): void {
     this.addDataToUsersPagedRequest(event, undefined);
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
   }
 
-  public onFilterReset(checked: boolean) {
+  public onFilterReset(checked: boolean): void {
     if (!checked) {
       this.clearFilterData();
       this.router.navigate(["admin", "users"], {
@@ -165,20 +153,20 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onFilter() {
+  public onFilter(): void {
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
   }
 
-  sortData(sort: Sort) {
+  public sortData(sort: Sort): void {
     this.addDataToUsersPagedRequest(undefined, sort);
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
   }
 
-  addDataToUsersPagedRequest(event?: PageEvent, sort?: Sort) {
+  public addDataToUsersPagedRequest(event?: PageEvent, sort?: Sort): void {
     if (event != undefined) {
       this.usersPagedRequest.page = event.pageIndex;
       this.usersPagedRequest.size = event.pageSize;
@@ -192,7 +180,32 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  clearFilterData() {
+  public addRoleToRoles(checked: boolean, role: Role): void {
+    if (checked) {
+      if (this.usersPagedRequest.role == undefined) {
+        this.usersPagedRequest.role = [];
+      }
+      this.usersPagedRequest.role.push(role);
+      this.onFilter();
+    } else {
+      this.usersPagedRequest.role = this.usersPagedRequest.role.filter(
+        r => r != role
+      );
+      if (this.usersPagedRequest.role.length == 0) {
+        this.usersPagedRequest.role = undefined;
+      }
+      this.onFilter();
+    }
+  }
+
+  public isInRoles(role: Role): boolean {
+    return (
+      this.usersPagedRequest.role != undefined &&
+      this.usersPagedRequest.role.includes(role)
+    );
+  }
+
+  public clearFilterData(): void {
     this.usersPagedRequest.name = undefined;
     this.usersPagedRequest.dateOfEntryStart = undefined;
     this.usersPagedRequest.dateOfEntryFinish = undefined;

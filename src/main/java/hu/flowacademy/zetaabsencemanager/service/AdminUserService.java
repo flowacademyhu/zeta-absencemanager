@@ -67,7 +67,7 @@ public class AdminUserService {
 
   public PageableDTO<User> findAllUserFilterPagination(String name, LocalDate dateOfEntryStart,
       LocalDate dateOfEntryFinish, LocalDate dateOfEndTrialStart, LocalDate dateOfEndTrialFinish,
-      Group groupFilter, String position, Roles role, Pageable pageable) {
+      Group groupFilter, String position, Roles[] role, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       Page<User> userPage = this.userRepository
           .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
@@ -250,7 +250,7 @@ public class AdminUserService {
 
   public Specification<User> getFilteredUsers(String name, LocalDate dateOfEntryStart,
       LocalDate dateOfEntryFinish, LocalDate dateOfEndTrialStart, LocalDate dateOfEndTrialFinish,
-      Group group, String position, Roles role) {
+      Group group, String position, Roles[] role) {
     return Specification
         .where(
             filterService.userFilterByFirstname(name).or(filterService.userFilterByLastname(name)))

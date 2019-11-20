@@ -7,6 +7,9 @@ import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -207,12 +210,16 @@ public class FilterService {
     };
   }
 
-  public Specification<User> userFilterByRole(Roles role) {
+  public Specification<User> userFilterByRole(Roles[] role) {
     return (root, query, cb) -> {
       if (role == null) {
         return cb.isTrue(cb.literal(true));
       }
-      return cb.equal(root.get("role"), role);
+      List<Predicate> predicates = new ArrayList<>();
+      for (Roles r : role) {
+        predicates.add(cb.equal(root.get("role"), r));
+      }
+      return cb.or(predicates.toArray(new Predicate[predicates.size()]));
     };
   }
 }

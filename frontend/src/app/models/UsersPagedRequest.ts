@@ -1,4 +1,5 @@
 import { Group } from "./Group.model";
+import { Role } from "./User.model";
 
 export class UsersPagedRequest {
   constructor(
@@ -11,7 +12,6 @@ export class UsersPagedRequest {
     dateOfEndTrialFinish?: any,
     group?: Group,
     position?: string,
-    role?: string,
     sort?: string
   ) {
     this.page = page;
@@ -25,7 +25,7 @@ export class UsersPagedRequest {
     this.dateOfEndTrialFinish = dateOfEndTrialFinish;
     this.group = group;
     this.position = position;
-    this.role = role;
+    this.role = [Role.ADMIN, Role.LEADER, Role.EMPLOYEE];
     this.sort = sort;
   }
 
@@ -38,6 +38,6 @@ export class UsersPagedRequest {
   dateOfEndTrialFinish?: any;
   group?: Group;
   position?: string;
-  role?: string;
+  role?: Role[];
   sort?: string;
 }

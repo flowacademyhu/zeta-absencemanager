@@ -16,6 +16,9 @@
     >Szűrés</mat-checkbox
   >
 </div>
+
+<!-----------------------Szűrő------------------------->
+
 <mat-sidenav-container>
   <mat-sidenav mode="side" [(opened)]="checkedFilter">
     <mat-form-field>
@@ -32,7 +35,7 @@
       <input
         matInput
         type="date"
-        placeholder="Belépés dátuma - kezdő dátum"
+        placeholder="Kezdés dátuma - kezdő dátum"
         (change)="onFilter()"
         [(ngModel)]="usersPagedRequest.dateOfEntryStart"
       />
@@ -42,7 +45,7 @@
       <input
         matInput
         type="date"
-        placeholder="Belépés dátuma - befejező dátum"
+        placeholder="Kezdés dátuma - befejező dátum"
         (change)="onFilter()"
         [(ngModel)]="usersPagedRequest.dateOfEntryFinish"
       />
@@ -91,140 +94,18 @@
       />
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-select
-        [(ngModel)]="usersPagedRequest.role"
-        (selectionChange)="onFilter()"
-        placeholder="Szerep"
+    <mat-label>Szerep</mat-label>
+    <div *ngFor="let role of roles">
+      <mat-checkbox
+        [checked]="isInRoles(role)"
+        color="primary"
+        #checkbox
+        (change)="addRoleToRoles(checkbox.checked, role)"
+        >{{ role | role }}</mat-checkbox
       >
-        <mat-option [value]="null"> </mat-option>
-        <mat-option *ngFor="let role of roles" [value]="role">
-          {{ role | role }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <!--------------------Szűrő-------------------->
-    <!-- <mat-table *ngIf="checkedFilter" class="mat-elevation-z8">
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field>
-        <input
-          matInput
-          type="text"
-          placeholder="Név"
-          (change)="onFilter()"
-          [(ngModel)]="usersPagedRequest.name"
-        />
-      </mat-form-field>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="dateOfEntryStart">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field>
-        <input
-          matInput
-          type="datetime-local"
-          placeholder="Belépés dátuma - kezdő dátum"
-          (change)="onFilter()"
-          [(ngModel)]="usersPagedRequest.dateOfEntryStart"
-        />
-      </mat-form-field>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="dateOfEntryFinish">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field>
-        <input
-          matInput
-          type="datetime-local"
-          placeholder="Belépés dátuma - befejező dátum"
-          (change)="onFilter()"
-          [(ngModel)]="usersPagedRequest.dateOfEntryFinish"
-        />
-      </mat-form-field>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="dateOfEndTrialStart">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field>
-        <input
-          matInput
-          type="datetime-local"
-          placeholder="Próbaidő vége - kezdő dátum"
-          (change)="onFilter()"
-          [(ngModel)]="usersPagedRequest.dateOfEndTrialStart"
-        />
-      </mat-form-field>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="dateOfEndTrialFinish">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field>
-        <input
-          matInput
-          type="datetime-local"
-          placeholder="Próbaidő vége - befejező dátum"
-          (change)="onFilter()"
-          [(ngModel)]="usersPagedRequest.dateOfEndTrialFinish"
-        />
-      </mat-form-field>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="group">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-select
-        [(ngModel)]="usersPagedRequest.group"
-        (selectionChange)="onFilter()"
-        placeholder="Csoport"
-      >
-        <mat-option [value]="null"> </mat-option>
-        <mat-option *ngFor="let group of groups" [value]="group.id">
-          {{ group.name }}
-        </mat-option>
-      </mat-select>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="position">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-form-field>
-        <input
-          matInput
-          type="text"
-          placeholder="Munkakör"
-          (change)="onFilter()"
-          [(ngModel)]="usersPagedRequest.position"
-        />
-      </mat-form-field>
-    </mat-header-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="role">
-    <mat-header-cell *matHeaderCellDef>
-      <mat-select
-        [(ngModel)]="usersPagedRequest.role"
-        (selectionChange)="onFilter()"
-        placeholder="Szerep"
-      >
-        <mat-option [value]="null"> </mat-option>
-        <mat-option *ngFor="let role of roles" [value]="role">
-          {{ role | role }}
-        </mat-option>
-      </mat-select>
-    </mat-header-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: filterColumns"></mat-row>
-</mat-table> -->
-
     <!-- <app-filter [dataSource]="dataSource"></app-filter> -->
     <!------------------------Táblázat---------------------->
     <table
