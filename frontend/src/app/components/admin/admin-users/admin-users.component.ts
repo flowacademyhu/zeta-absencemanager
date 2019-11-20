@@ -48,9 +48,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   public pageIndex = 0;
   public pageSize = 5;
   private checkedFilter: false;
-  //private userFilter: UserFilter = new UserFilter();
-  //private sort: Sort;
-  //private page: Object;
   private usersPagedRequest = new UsersPagedRequest();
   private _unsubscribe$ = new Subject<void>();
   private groups;
@@ -58,7 +55,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private api: ApiCommunicationService,
-    private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router

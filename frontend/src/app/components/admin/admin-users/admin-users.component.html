@@ -16,8 +16,97 @@
     >Szűrés</mat-checkbox
   >
 </div>
-<!--------------------Szűrő-------------------->
-<mat-table *ngIf="checkedFilter" class="mat-elevation-z8">
+<mat-sidenav-container>
+  <mat-sidenav mode="side" [(opened)]="checkedFilter">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="Név"
+        (change)="onFilter()"
+        [(ngModel)]="usersPagedRequest.name"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="date"
+        placeholder="Belépés dátuma - kezdő dátum"
+        (change)="onFilter()"
+        [(ngModel)]="usersPagedRequest.dateOfEntryStart"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="date"
+        placeholder="Belépés dátuma - befejező dátum"
+        (change)="onFilter()"
+        [(ngModel)]="usersPagedRequest.dateOfEntryFinish"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="date"
+        placeholder="Próbaidő vége - kezdő dátum"
+        (change)="onFilter()"
+        [(ngModel)]="usersPagedRequest.dateOfEndTrialStart"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="date"
+        placeholder="Próbaidő vége - befejező dátum"
+        (change)="onFilter()"
+        [(ngModel)]="usersPagedRequest.dateOfEndTrialFinish"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select
+        [(ngModel)]="usersPagedRequest.group"
+        (selectionChange)="onFilter()"
+        placeholder="Csoport"
+      >
+        <mat-option [value]="null"> </mat-option>
+        <mat-option *ngFor="let group of groups" [value]="group.id">
+          {{ group.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="Munkakör"
+        (change)="onFilter()"
+        [(ngModel)]="usersPagedRequest.position"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select
+        [(ngModel)]="usersPagedRequest.role"
+        (selectionChange)="onFilter()"
+        placeholder="Szerep"
+      >
+        <mat-option [value]="null"> </mat-option>
+        <mat-option *ngFor="let role of roles" [value]="role">
+          {{ role | role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <!--------------------Szűrő-------------------->
+    <!-- <mat-table *ngIf="checkedFilter" class="mat-elevation-z8">
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef>
       <mat-form-field>
@@ -134,113 +223,117 @@
 
   <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: filterColumns"></mat-row>
-</mat-table>
+</mat-table> -->
 
-<!-- <app-filter [dataSource]="dataSource"></app-filter> -->
-<!------------------------Táblázat---------------------->
-<table
-  mat-table
-  [dataSource]="usersList"
-  class="table-responsive mat-elevation-z8"
-  matSort
-  (matSortChange)="sortData($event)"
->
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="lastName">Név</th>
-    <td mat-cell *matCellDef="let user">
-      {{ user.lastName }} {{ user.firstName }}
-    </td>
-  </ng-container>
-
-  <!-- Dob Column -->
-  <ng-container matColumnDef="dob">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="dateOfBirth">
-      Születési dátum
-    </th>
-    <td mat-cell *matCellDef="let user">
-      {{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
-        user.dateOfBirth[2]
-      }}.
-    </td>
-  </ng-container>
-
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="position">
-      Munkakör
-    </th>
-    <td mat-cell *matCellDef="let user">{{ user.position }}</td>
-  </ng-container>
-
-  <!-- Supervisor Column -->
-  <ng-container matColumnDef="supervisor">
-    <th mat-header-cell *matHeaderCellDef>Felettes</th>
-    <td mat-cell *matCellDef="let user">
-      <ng-container *ngIf="user.group">
-        {{ user.group.leader.firstName }} {{ user.group.leader.lastName }}
+    <!-- <app-filter [dataSource]="dataSource"></app-filter> -->
+    <!------------------------Táblázat---------------------->
+    <table
+      mat-table
+      [dataSource]="usersList"
+      class="table-responsive mat-elevation-z8"
+      matSort
+      (matSortChange)="sortData($event)"
+    >
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="lastName">
+          Név
+        </th>
+        <td mat-cell *matCellDef="let user">
+          {{ user.lastName }} {{ user.firstName }}
+        </td>
       </ng-container>
-    </td>
-  </ng-container>
 
-  <!-- DOE  Column-->
-  <ng-container matColumnDef="doe">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header="dateOfEntry">
-      Kezdés dátuma
-    </th>
-    <td mat-cell *matCellDef="let user">
-      {{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
-        user.dateOfEntry[2]
-      }}.
-    </td>
-  </ng-container>
+      <!-- Dob Column -->
+      <ng-container matColumnDef="dob">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dateOfBirth">
+          Születési dátum
+        </th>
+        <td mat-cell *matCellDef="let user">
+          {{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
+            user.dateOfBirth[2]
+          }}.
+        </td>
+      </ng-container>
 
-  <!-- E-mail -->
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef>E-mail</th>
-    <td mat-cell *matCellDef="let user">{{ user.email }}</td>
-  </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="position">
+          Munkakör
+        </th>
+        <td mat-cell *matCellDef="let user">{{ user.position }}</td>
+      </ng-container>
 
-  <ng-container matColumnDef="edit">
-    <th mat-header-cell *matHeaderCellDef>Szerkesztés</th>
-    <td mat-cell *matCellDef="let element">
-      <button
-        mat-icon-button
-        [disabled]="this.userData && this.userData.role !== 'ADMIN'"
-        (click)="editUser(element.id)"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+      <!-- Supervisor Column -->
+      <ng-container matColumnDef="supervisor">
+        <th mat-header-cell *matHeaderCellDef>Felettes</th>
+        <td mat-cell *matCellDef="let user">
+          <ng-container *ngIf="user.group">
+            {{ user.group.leader.firstName }} {{ user.group.leader.lastName }}
+          </ng-container>
+        </td>
+      </ng-container>
 
-  <ng-container matColumnDef="delete">
-    <th mat-header-cell *matHeaderCellDef>Törlés</th>
-    <td mat-cell *matCellDef="let user">
-      <button
-        mat-icon-button
-        [disabled]="
-          (this.userData && this.userData.role !== 'ADMIN') ||
-          user.role === 'ADMIN'
-        "
-        (click)="deleteUser(user.id)"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+      <!-- DOE  Column-->
+      <ng-container matColumnDef="doe">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="dateOfEntry">
+          Kezdés dátuma
+        </th>
+        <td mat-cell *matCellDef="let user">
+          {{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
+            user.dateOfEntry[2]
+          }}.
+        </td>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+      <!-- E-mail -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>E-mail</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
 
-<mat-paginator
-  class="mat-elevation-z8"
-  [length]="length"
-  [pageSize]="pageSize"
-  [pageIndex]="pageIndex"
-  [pageSizeOptions]="[5, 10, 25]"
-  [showFirstLastButtons]="true"
-  (page)="onPageChange($event)"
->
-</mat-paginator>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>Szerkesztés</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            [disabled]="this.userData && this.userData.role !== 'ADMIN'"
+            (click)="editUser(element.id)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Törlés</th>
+        <td mat-cell *matCellDef="let user">
+          <button
+            mat-icon-button
+            [disabled]="
+              (this.userData && this.userData.role !== 'ADMIN') ||
+              user.role === 'ADMIN'
+            "
+            (click)="deleteUser(user.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      class="mat-elevation-z8"
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 25]"
+      [showFirstLastButtons]="true"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </mat-sidenav-content>
+</mat-sidenav-container>
