@@ -6,7 +6,7 @@ import { ApiCommunicationService } from "src/app/services/api-communication.serv
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AdminUserEditModalComponent } from "../modals/admin-user-edit-modal/admin-user-edit-modal.component";
-import { MatTableDataSource, PageEvent, Sort } from "@angular/material";
+import { PageEvent, Sort } from "@angular/material";
 import { AdminUserDeleteModalComponent } from "../modals/admin-user-delete-modal/admin-user-delete-modal.component";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Absence } from "src/app/models/Absence.model";
@@ -215,7 +215,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.usersPagedRequest.dateOfEndTrialFinish = undefined;
     this.usersPagedRequest.group = undefined;
     this.usersPagedRequest.position = undefined;
-    this.usersPagedRequest.role = undefined;
+    this.usersPagedRequest.role = [Role.ADMIN, Role.EMPLOYEE, Role.LEADER];
   }
 
   public clearEmptyFilter(): void {

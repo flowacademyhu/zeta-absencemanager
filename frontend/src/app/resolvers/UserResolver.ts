@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Resolve } from "@angular/router";
 import { Observable } from "rxjs";
 import { ActivatedRouteSnapshot } from "@angular/router";
-import { User } from "../models/User.model";
+import { User, Role } from "../models/User.model";
 import { ApiCommunicationService } from "../services/api-communication.service";
 import { PagedResponse } from "../models/PagedResponse.model";
 import { UsersPagedRequest } from "../models/UsersPagedRequest";
@@ -40,7 +40,7 @@ export class UserResolver implements Resolve<PagedResponse<User>> {
       position,
       sort
     );
-    pagedRequest.role = role;
+    pagedRequest.role = role ? role : [Role.ADMIN, Role.EMPLOYEE, Role.LEADER];
     return this.api.user().getUsersPaginated(pagedRequest);
   }
 }
