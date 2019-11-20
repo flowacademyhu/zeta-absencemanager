@@ -155,6 +155,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   public onFilter(): void {
+    this.clearEmptyFilter();
+    console.log(this.usersPagedRequest);
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
@@ -215,5 +217,26 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.usersPagedRequest.group = undefined;
     this.usersPagedRequest.position = undefined;
     this.usersPagedRequest.role = undefined;
+  }
+
+  public clearEmptyFilter(): void {
+    if (this.usersPagedRequest.name == "") {
+      this.usersPagedRequest.name = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEntryStart == "") {
+      this.usersPagedRequest.dateOfEntryStart = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEntryFinish == "") {
+      this.usersPagedRequest.dateOfEntryFinish = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEndTrialStart == "") {
+      this.usersPagedRequest.dateOfEndTrialStart = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEndTrialFinish == "") {
+      this.usersPagedRequest.dateOfEndTrialFinish = undefined;
+    }
+    if (this.usersPagedRequest.position == "") {
+      this.usersPagedRequest.position = undefined;
+    }
   }
 }
