@@ -60,10 +60,12 @@
 
 <mat-table
   [dataSource]="absencesList"
-  class="table-responsive mat-elevation-z8" >
+  class="table-responsive mat-elevation-z8"
+  matSort
+  (matSortChange)="sortData($event)" >
 
   <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef>Azonosító
+      <mat-header-cell *matHeaderCellDef mat-sort-header="administrationID">Azonosító
       </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.administrationID }}
@@ -71,7 +73,7 @@
   </ng-container>
 
   <ng-container matColumnDef="begin">
-    <mat-header-cell *matHeaderCellDef> Kezdő dátum </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="begin"> Kezdő dátum </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.begin[0] }}.{{ absence.begin[1] }}.{{
         absence.begin[2]
@@ -80,31 +82,31 @@
   </ng-container>
 
   <ng-container matColumnDef="end">
-    <mat-header-cell *matHeaderCellDef> Befejező dátum </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="end"> Befejező dátum </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.end[0] }}.{{ absence.end[1] }}.{{ absence.end[2] }}.</mat-cell
     >
   </ng-container>
 
   <ng-container matColumnDef="days">
-    <mat-header-cell *matHeaderCellDef> Napok száma </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="duration"> Napok száma </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.duration }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="type">
-    <mat-header-cell *matHeaderCellDef> Típus </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="type"> Típus </mat-header-cell>
     <mat-cell *matCellDef="let absence"> {{ absence.type | type }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef> Státusz </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="status"> Státusz </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.status | status}}
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="created_at">
-    <mat-header-cell *matHeaderCellDef> Létrehozás dátuma </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="createdAt"> Létrehozás dátuma </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.createdAt[0] }}.{{ absence.createdAt[1] }}.{{
         absence.createdAt[2]
@@ -113,7 +115,7 @@
   </ng-container>
 
   <ng-container matColumnDef="reporter">
-    <mat-header-cell *matHeaderCellDef> Jogosult </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="reporter.lastName"> Jogosult </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       <span *ngIf="absence.reporter"
         >{{ absence.reporter.lastName }} {{ absence.reporter.firstName }}</span
@@ -122,7 +124,7 @@
   </ng-container>
 
   <ng-container matColumnDef="assignee">
-    <mat-header-cell *matHeaderCellDef> Felettes </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header="assignee.lastName"> Felettes </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       <span *ngIf="absence.assignee"
         >{{ absence.assignee.lastName }} {{ absence.assignee.firstName }}</span

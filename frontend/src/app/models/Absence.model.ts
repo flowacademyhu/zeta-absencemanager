@@ -27,7 +27,8 @@ export class AbsencesFilter {
   start: string;
   finish: string;
   dayStart: number;
-  dayEnd: number
+  dayEnd: number;
+  sort: string
 }
 
 export class Absence extends DataEntity {
