@@ -1,9 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
-import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
-import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.UserValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
@@ -103,6 +101,11 @@ public class AdminUserService {
           .role(Roles.EMPLOYEE)
           .numberOfChildren(user.getNumberOfChildren())
           .extraAbsenceDays(0)
+          .usedAbsenceDays(0)
+          .usedChildSickPay(0)
+          .usedNonPayAbsence(0)
+          .usedSickLeaveDays(0)
+          .usedSickPay(0)
           .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
           .createdAt(LocalDateTime.now())
           .build();
