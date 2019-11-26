@@ -212,7 +212,9 @@ public class AbsenceService {
   public int availableSickLeave(@NotNull User user) {
     int allSickLeave = 15;
     double multiplier;
-    if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
+    if (user.getDateOfEndTrial().isAfter(LocalDate.now())) {
+      multiplier = ((double) (DAYS.between(user.getDateOfEntry(), user.getDateOfEndTrial()))) / 365;
+    } else if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       int restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365.0;
     } else {
