@@ -1,8 +1,5 @@
 <h1 mat-dialog-title>Csoport létrehozása</h1>
-<mat-dialog-content
-  [formGroup]="createGroupForm"
-  style="text-align: center;"
->
+<mat-dialog-content [formGroup]="createGroupForm" style="text-align: center;">
   <div>
     <mat-form-field>
       <input matInput required formControlName="name" placeholder="Név" />
@@ -29,13 +26,20 @@
         *ngFor="let employee of employeeList; let i = index"
         [value]="employee"
       >
-        {{ employee.lastName }} {{ employee.firstName }} 
+        {{ employee.lastName }} {{ employee.firstName }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      required
+      formControlName="minimalWorkers"
+      placeholder="Minimum benn lévők"
+    />
+  </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions style="justify-content: center;">
-  
   <button
     mat-flat-button
     color="primary"
@@ -50,7 +54,8 @@
     mat-flat-button
     color="accent"
     (click)="onCancel()"
-    style="border: 2px solid white;">
+    style="border: 2px solid white;"
+  >
     Mégsem
   </button>
 </mat-dialog-actions>

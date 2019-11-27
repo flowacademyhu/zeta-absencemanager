@@ -1,4 +1,3 @@
-
 <div class="actionButton">
   <button mat-flat-button color="primary" (click)="changePassw()">
     Jelszó megváltoztatása
@@ -12,102 +11,106 @@
 </div>
 
 <mat-card class="mat-elevation-z8 wrapper">
-<div class="section-50">
-  <mat-list role="list">
-    <mat-list-item role="listitem">Név:</mat-list-item>
-    <mat-list-item role="listitem">Születési dátum:</mat-list-item>
-    <mat-list-item role="listitem">Belépés dátuma:</mat-list-item>
-    <mat-list-item role="listitem">Próbaidő vége:</mat-list-item>
-    <mat-list-item role="listitem">Munkakör:</mat-list-item>
-    <mat-list-item role="listitem">Felettes:</mat-list-item>
-    <mat-list-item role="listitem">Gyermekek száma:</mat-list-item>
-    <mat-list-item role="listitem"
-      >Egyéb szabadságra jogosító tényezők:</mat-list-item
-    >
-  </mat-list>
-</div>
-<div *ngIf="user" class="section-50">
-  <mat-list role="list">
-    <mat-list-item role="listitem"
-      > {{ user.lastName }} {{ user.firstName }}</mat-list-item
-    >
-    <mat-list-item role="listitem"
-      >{{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
-        user.dateOfBirth[2]
-      }}.</mat-list-item
-    >
-    <mat-list-item role="listitem"
-      >{{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
-        user.dateOfEntry[2]
-      }}.</mat-list-item
-    >
-    <mat-list-item role="listitem"
-      >{{ user.dateOfEndTrial[0] }}.{{ user.dateOfEndTrial[1] }}.{{
-        user.dateOfEndTrial[2]
-      }}.</mat-list-item
-    >
-    <mat-list-item role="listitem">{{ user.position }}</mat-list-item>
-    <mat-list-item role="listitem">{{ user.group.leader.firstName }} {{  user.group.leader.lastName }}</mat-list-item>
-    <mat-list-item role="listitem">{{ user.numberOfChildren }}</mat-list-item>
-    <mat-list-item role="listitem">{{ user.otherAbsenceEnt }}</mat-list-item>
-  </mat-list>
-</div>
+  <div class="section-50">
+    <mat-list role="list">
+      <mat-list-item role="listitem">Név:</mat-list-item>
+      <mat-list-item role="listitem">Születési dátum:</mat-list-item>
+      <mat-list-item role="listitem">Belépés dátuma:</mat-list-item>
+      <mat-list-item role="listitem">Próbaidő vége:</mat-list-item>
+      <mat-list-item role="listitem">Munkakör:</mat-list-item>
+      <mat-list-item role="listitem">Felettes:</mat-list-item>
+      <mat-list-item role="listitem">Gyermekek száma:</mat-list-item>
+      <mat-list-item role="listitem"
+        >Egyéb szabadságra jogosító tényezők:</mat-list-item
+      >
+    </mat-list>
+  </div>
+  <div *ngIf="user" class="section-50">
+    <mat-list role="list">
+      <mat-list-item role="listitem">
+        {{ user.lastName }} {{ user.firstName }}</mat-list-item
+      >
+      <mat-list-item role="listitem"
+        >{{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
+          user.dateOfBirth[2]
+        }}.</mat-list-item
+      >
+      <mat-list-item role="listitem"
+        >{{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
+          user.dateOfEntry[2]
+        }}.</mat-list-item
+      >
+      <mat-list-item role="listitem"
+        >{{ user.dateOfEndTrial[0] }}.{{ user.dateOfEndTrial[1] }}.{{
+          user.dateOfEndTrial[2]
+        }}.</mat-list-item
+      >
+      <mat-list-item role="listitem">{{ user.position }}</mat-list-item>
+      <mat-list-item role="listitem"
+        >{{ user.group.leader.firstName }}
+        {{ user.group.leader.lastName }}</mat-list-item
+      >
+      <mat-list-item role="listitem">{{ user.numberOfChildren }}</mat-list-item>
+      <mat-list-item role="listitem">{{ user.otherAbsenceEnt }}</mat-list-item>
+    </mat-list>
+  </div>
 </mat-card>
-
 
 <section class="wrapper">
   <mat-card class="mat-elevation-z8 wrapper" style="margin-right: 1rem;">
     <div class="section-50">
-        <mat-list role="list">
-            <mat-list-item role="listitem">Összes szabadság:</mat-list-item>
-            <mat-list-item role="listitem">Kivehető:</mat-list-item>
-            <mat-list-item role="listitem">Kivett:</mat-list-item>
-            <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
-          </mat-list>
+      <mat-list role="list">
+        <mat-list-item role="listitem">Összes szabadság:</mat-list-item>
+        <mat-list-item role="listitem">Kivehető:</mat-list-item>
+        <mat-list-item role="listitem">Kivett:</mat-list-item>
+        <mat-list-item role="listitem">Kivett szabadság aránya:</mat-list-item>
+      </mat-list>
     </div>
     <div class="section-50">
-        <mat-list role="list">
-            <mat-list-item role="listitem">{{ user.totalAbsenceDays }}</mat-list-item>
-            <mat-list-item role="listitem"
-              >{{ user.totalAbsenceDays - user.usedAbsenceDays }}
-            </mat-list-item>
-            <mat-list-item role="listitem">{{ user.usedAbsenceDays }}</mat-list-item>
-            <mat-list-item role="listitem"
-              >{{
-                (user.usedAbsenceDays / user.totalAbsenceDays) * 100
-              }}%</mat-list-item
-            >
-          </mat-list>
-      </div>
+      <mat-list role="list" *ngIf="user">
+        <mat-list-item role="listitem">{{
+          user.totalAbsenceDays
+        }}</mat-list-item>
+        <mat-list-item role="listitem"
+          >{{ user.totalAbsenceDays - user.usedAbsenceDays }}
+        </mat-list-item>
+        <mat-list-item role="listitem">{{
+          user.usedAbsenceDays
+        }}</mat-list-item>
+        <mat-list-item role="listitem">{{ absenceRatio }}%</mat-list-item>
+      </mat-list>
+    </div>
   </mat-card>
   <mat-card class="mat-elevation-z8 wrapper">
-      <div class="section-50">
-          <mat-list role="list">
-              <mat-list-item role="listitem"><h4>Betegszabadság</h4></mat-list-item>
-              <mat-list-item role="listitem">Összes betegszabadság:</mat-list-item>
-              <mat-list-item role="listitem">Kivehető:</mat-list-item>
-              <mat-list-item role="listitem">Kivett betegszabadság:</mat-list-item>
-              <mat-list-item role="listitem">Kivett táppénz:</mat-list-item>
-              <mat-list-item role="listitem"
-                >Kivett gyermek betegszabadság:</mat-list-item
-              >
-            </mat-list>
-        </div>
-        <div class="section-50">
-            <mat-list role="list">
-                <mat-list-item role="listitem"> </mat-list-item>
-                <mat-list-item role="listitem">{{
-                  user.totalSickLeaveDays
-                }}</mat-list-item>
-                <mat-list-item role="listitem">{{
-                  user.totalSickLeaveDays - user.usedSickLeaveDays
-                }}</mat-list-item>
-                <mat-list-item role="listitem">{{
-                  user.usedSickLeaveDays
-                }}</mat-list-item>
-                <mat-list-item role="listitem">{{ user.usedSickPay }}</mat-list-item>
-                <mat-list-item role="listitem">{{ user.usedChildSickPay }}</mat-list-item>
-              </mat-list>
-          </div>
-    </mat-card>
+    <div class="section-50">
+      <mat-list role="list">
+        <mat-list-item role="listitem"><h4>Betegszabadság</h4></mat-list-item>
+        <mat-list-item role="listitem">Összes betegszabadság:</mat-list-item>
+        <mat-list-item role="listitem">Kivehető:</mat-list-item>
+        <mat-list-item role="listitem">Kivett betegszabadság:</mat-list-item>
+        <mat-list-item role="listitem">Kivett táppénz:</mat-list-item>
+        <mat-list-item role="listitem"
+          >Kivett gyermek betegszabadság:</mat-list-item
+        >
+      </mat-list>
+    </div>
+    <div class="section-50">
+      <mat-list role="list" *ngIf="user">
+        <mat-list-item role="listitem"> </mat-list-item>
+        <mat-list-item role="listitem">{{
+          user.totalSickLeaveDays
+        }}</mat-list-item>
+        <mat-list-item role="listitem">{{
+          user.totalSickLeaveDays - user.usedSickLeaveDays
+        }}</mat-list-item>
+        <mat-list-item role="listitem">{{
+          user.usedSickLeaveDays
+        }}</mat-list-item>
+        <mat-list-item role="listitem">{{ user.usedSickPay }}</mat-list-item>
+        <mat-list-item role="listitem">{{
+          user.usedChildSickPay
+        }}</mat-list-item>
+      </mat-list>
+    </div>
+  </mat-card>
 </section>

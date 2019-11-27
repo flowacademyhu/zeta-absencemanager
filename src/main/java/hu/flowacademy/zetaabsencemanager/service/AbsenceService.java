@@ -1,6 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
 import hu.flowacademy.zetaabsencemanager.model.Absence;
+import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
 import hu.flowacademy.zetaabsencemanager.model.User;
@@ -12,7 +13,10 @@ import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -74,6 +78,44 @@ public class AbsenceService {
         .build();
   }
 
+  public boolean isOnAbsence(User user, LocalDate date) {
+    List<Absence> absences = absenceRepository.findByReporterAndDeletedAtNull(user);
+    for (int i = 0; i < absences.size(); i++) {
+      Absence absence = absences.get(i);
+      if ((absence.getBegin().isBefore(date) && absence.getEnd().isAfter(date)) || absence.getEnd()
+          .equals(date) || absence.getBegin().equals(date)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public int emloyeesOnAbsence(Group group, LocalDate date) {
+    int counter = 0;
+    List<User> employees = userRepository.findAllByGroupAndDeletedAtNull(group);
+    for (int i = 0; i < employees.size(); i++) {
+      if (isOnAbsence(employees.get(i), date)) {
+        counter = counter + 1;
+      }
+    }
+    return counter;
+  }
+
+  public void intervallValidate(Absence absence, Group group){
+    List<LocalDate> dates = absence.getBegin().datesUntil(absence.getEnd())
+        .collect(Collectors.toList());
+    List<LocalDate> forbiddenDays = null;
+    for (int i = 0; i < dates.size(); i++) {
+      if (emloyeesOnAbsence(group, dates.get(i)) < group.getMinimalWorkers()) {
+        forbiddenDays.add(dates.get(i));
+      }
+    }
+    if (forbiddenDays != null) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+          Constants.TOO_FEW_WORKERS + forbiddenDays);
+    }
+  }
+
   public void addToUsedDays(Absence absence) {
     User user = absence.getReporter();
     if (absence.getType() == Type.ABSENCE) {
@@ -87,8 +129,8 @@ public class AbsenceService {
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
       user.setUsedChildSickPay(user.getUsedChildSickPay() + absence.getDuration());
-    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
-      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()+absence.getDuration());
+    } else if (absence.getType() == Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence() + absence.getDuration());
     }
     userRepository.save(user);
   }
@@ -106,14 +148,18 @@ public class AbsenceService {
       }
     } else if (absence.getType() == Type.CHILD_SICK_PAY) {
       user.setUsedChildSickPay(user.getUsedChildSickPay() - absence.getDuration());
-    } else if(absence.getType()==Type.UNPAID_HOLIDAY) {
-      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence()-absence.getDuration());
+    } else if (absence.getType() == Type.UNPAID_HOLIDAY) {
+      user.setUsedNonPayAbsence(user.getUsedNonPayAbsence() - absence.getDuration());
     }
     userRepository.save(user);
   }
 
   public Absence create(@NotNull Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
+    Group group = authenticationService.getCurrentUser().getGroup();
+    if(group!=null) {
+      intervallValidate(absence, group);
+    }
     absence.setReporter(authenticationService.getCurrentUser());
     absence.setAssignee(authenticationService.getCurrentUser().getGroup().getLeader());
     absence.setCreatedAt(LocalDateTime.now());
@@ -130,6 +176,9 @@ public class AbsenceService {
     if (!absence.getReporter().getId().equals(authenticationService.getCurrentUser().getId())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           Constants.UNAUTHORIZED_ABSENCE);
+    }
+    if(absence.getReporter().getGroup()!=null) {
+      intervallValidate(absence, absence.getReporter().getGroup());
     }
     if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
         .equals(modifyAbsence.getType())) {

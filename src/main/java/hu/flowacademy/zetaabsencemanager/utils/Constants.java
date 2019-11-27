@@ -27,6 +27,8 @@ public abstract class Constants {
   public static final String YOU_CAN_ONLY_MODIFY_YOUR_PROFILE="Csak a saját profilját módosíthatja";
   public static final String YOU_CAN_ONLY_DELETE_YOUR_PROFILE="Csak a saját profilját törölheti";
   public static final String GROUP_NOT_FOUND_YOU_ARE_NOT_LEADER="Csoport nem található, Ön nem vezető egy csoportban sem";
-
-
+  public static final String TOO_FEW_WORKERS ="A csoportban nem lehetséges több szabadság a megadott napokon";
+  public static final String GROUP_HAS_EMPLOYEES= "Nem törölhető a csoport, amíg vannak benne alkalmazottak";
+  public static final String ROLE_LEADER="A profil nem törölhető, mert vezető státuszban van";
+  public static final String DELETE_ONLY_YOUR_PROFILE="Csak a saját profilját törölheti";
 }
