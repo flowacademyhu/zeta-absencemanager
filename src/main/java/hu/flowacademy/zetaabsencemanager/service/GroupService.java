@@ -1,8 +1,11 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
+import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
@@ -25,6 +28,9 @@ public class GroupService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private AbsenceRepository absenceRepository;
 
   @Autowired
   private UserService userService;
@@ -53,6 +59,7 @@ public class GroupService {
     Group modifyGroup = findOne(id);
     modifyGroup.setName(group.getName());
     modifyGroup.setParentId(group.getParentId());
+    List<Absence> modifyAbsences = absenceRepository.findByAssigneeAndDeletedAtNull(modifyGroup.getLeader());
     if (!modifyGroup.getLeader().getId().equals(group.getLeader().getId())) {
       User oldLeader = userService.findOneUser(modifyGroup.getLeader().getId());
       if (oldLeader.getRole() != Roles.ADMIN) {
@@ -63,6 +70,14 @@ public class GroupService {
       if (newLeader.getRole() != Roles.ADMIN) {
         newLeader.setRole(Roles.LEADER);
         userRepository.save(newLeader);
+      }
+      for (Absence a : modifyAbsences) {
+        if (a.getStatus().equals(Status.OPEN)
+            || a.getStatus().equals(Status.UNDER_REVIEW)) {
+          a.setAssignee(newLeader);
+          a.setUpdatedAt(LocalDateTime.now());
+          a.setUpdatedBy(authenticationService.getCurrentUser());
+        }
       }
     }
     modifyGroup.setLeader(group.getLeader());
@@ -84,10 +99,11 @@ public class GroupService {
         groupRepository.save(g);
       }
       User needToBeModifiedLeader = userService.findOneUser(group.getLeader().getId());
-      needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
-      needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
-      userRepository.save(needToBeModifiedLeader);
-
+      if (needToBeModifiedLeader.getRole() != Roles.ADMIN) {
+        needToBeModifiedLeader.setRole(Roles.EMPLOYEE);
+        needToBeModifiedLeader.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(needToBeModifiedLeader);
+      }
       group.setLeader(null);
       group.setDeletedAt(LocalDateTime.now());
 
