@@ -1,44 +1,63 @@
 <h2 mat-dialog-title>Csoport Szerkesztése</h2>
- <mat-dialog-content [formGroup]="editGroupDataForm" style="text-align: center;">
-    <mat-form-field>
-      <mat-label> Név </mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="name"
-        formControlName="name"
-        required
-        id="name"
-      /> 
-    </mat-form-field>
-    <br>
-    <mat-form-field>
-      <mat-label>Felettes Csoport</mat-label>
-      <mat-select formControlName="parent">
-        <mat-option (click)="addEmployeesToList(0)">Nincs</mat-option>
-        <mat-option *ngFor="let group of groupList"
-            [value]="group.id"
-            (click)="addEmployeesToList(group.id)">
-          {{ group.name }} 
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<mat-dialog-content [formGroup]="editGroupDataForm" style="text-align: center;">
+  <mat-form-field>
+    <mat-label> Név </mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="name"
+      formControlName="name"
+      required
+      id="name"
+    />
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Felettes Csoport</mat-label>
+    <mat-select formControlName="parent">
+      <mat-option (click)="addEmployeesToList(0)">Nincs</mat-option>
+      <mat-option
+        *ngFor="let group of groupList"
+        [value]="group.id"
+        (click)="addEmployeesToList(group.id)"
+      >
+        {{ group.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-    <mat-form-field>
-        <mat-label>Vezető</mat-label>
-        <mat-select required formControlName="leader">
-          <mat-option
-          *ngFor="let employee of employeeList; let i = index"
-          [value]="employee">
-            {{ employee.lastName }} {{ employee.firstName }} 
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <mat-form-field>
+    <mat-label>Vezető</mat-label>
+    <mat-select required formControlName="leader">
+      <mat-option
+        *ngFor="let employee of employeeList; let i = index"
+        [value]="employee"
+      >
+        {{ employee.lastName }} {{ employee.firstName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      required
+      formControlName="minimalWorkers"
+      placeholder="Minimum benn lévők"
+    />
+  </mat-form-field>
 
+  <mat-dialog-actions style="justify-content: center;">
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!editGroupDataForm.valid"
+      [mat-dialog-close]="editGroupDataForm.value"
+      cdkFocusInitial
+      style="border: 2px solid white;"
+    >
+      Mentés
+    </button>
 
-<mat-dialog-actions style="justify-content: center;">
-  <button mat-button color="primary" [disabled]='!editGroupDataForm.valid' [mat-dialog-close]="editGroupDataForm.value" cdkFocusInitial style="border: 2px solid white;">Mentés</button>
-
-  <button mat-flat-button color="accent" (click)="onCancel()">Mégsem</button>
-</mat-dialog-actions>
+    <button mat-flat-button color="accent" (click)="onCancel()">Mégsem</button>
+  </mat-dialog-actions>
 </mat-dialog-content>

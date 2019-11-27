@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -156,7 +157,9 @@ public class AbsenceService {
   public Absence create(@NotNull Absence absence) {
     this.absenceValidator.validateAbsenceSave(absence);
     Group group = authenticationService.getCurrentUser().getGroup();
-    intervallValidate(absence, group);
+    if(group!=null) {
+      intervallValidate(absence, group);
+    }
     absence.setReporter(authenticationService.getCurrentUser());
     absence.setAssignee(authenticationService.getCurrentUser().getGroup().getLeader());
     absence.setCreatedAt(LocalDateTime.now());
@@ -174,7 +177,9 @@ public class AbsenceService {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
           Constants.UNAUTHORIZED_ABSENCE);
     }
-    intervallValidate(absence, absence.getReporter().getGroup());
+    if(absence.getReporter().getGroup()!=null) {
+      intervallValidate(absence, absence.getReporter().getGroup());
+    }
     if (absence.getDuration() != modifyAbsence.getDuration() || !absence.getType()
         .equals(modifyAbsence.getType())) {
       removeFromUsedDays(modifyAbsence);
