@@ -15,10 +15,11 @@ import { UserService } from "src/app/services/user.service";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ChangePasswModalComponent } from "../../employee/modals/change-passw-modal/change-passw-modal.component";
-import { EmployeeProfileDeleteModalComponent } from '../modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
-import { SessionService } from 'src/app/services/session.service';
-import { EmployeeProfileEditModalComponent } from '../modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
-import { Absence } from 'src/app/models/Absence.model';
+import { EmployeeProfileDeleteModalComponent } from "../modals/employee-profile-delete-modal/employee-profile-delete-modal.component";
+import { SessionService } from "src/app/services/session.service";
+import { EmployeeProfileEditModalComponent } from "../modals/employee-profile-edit-modal/employee-profile-edit-modal.component";
+import { Absence } from "src/app/models/Absence.model";
+//import { userInfo } from "os";
 
 @Component({
   selector: "app-employee-profile",
@@ -28,6 +29,7 @@ import { Absence } from 'src/app/models/Absence.model';
 export class EmployeeProfileComponent implements OnInit, OnDestroy {
   private _unsubscribe$: Subject<boolean> = new Subject();
   public user: User;
+  public absenceRatio: number;
 
   constructor(
     private userService: UserService,
@@ -43,8 +45,14 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
       .employee()
       .getCurrent()
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe((user: User) => this.user = user);
-    }
+      .subscribe((user: User) => {
+        this.user = user;
+        this.absenceRatio =
+          Math.round(
+            (this.user.usedAbsenceDays / this.user.totalAbsenceDays) * 10000
+          ) / 100;
+      });
+  }
 
   ngOnDestroy(): void {
     this._unsubscribe$.next();
@@ -56,7 +64,7 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
   }
 
   deleteProfile(): void {
-    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, { 
+    const dialogRef = this.dialog.open(EmployeeProfileDeleteModalComponent, {
       data: { user: this.user }
     });
 
@@ -73,17 +81,23 @@ export class EmployeeProfileComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+
   openEditProfile() {
     const dialogRef = this.dialog.open(EmployeeProfileEditModalComponent, {
-      data: {user: this.user}
+      data: { user: this.user }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this._unsubscribe$)).subscribe(result => {
-      if(result){
-      result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
-      }
-      Object.assign(this.user, result);      
-      this.api.user().updateSelfUser(this.user.id, this.user).subscribe();
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(result => {
+        if (result) {
+          result.dateOfBirth = Absence.convertDate(result.dateOfBirth);
+        }
+        Object.assign(this.user, result);
+        this.api
+          .user()
+          .updateSelfUser(this.user.id, this.user)
+          .subscribe();
+      });
   }
 }
