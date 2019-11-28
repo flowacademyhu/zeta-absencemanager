@@ -22,10 +22,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     "name",
     "dob",
     "position",
-    "supervisor",
+    "group",
     "doe",
     "email",
-    "szerep",
+    "role",
     "edit",
     "delete"
   ];
@@ -139,7 +139,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   }
 
   public onPageChange(event: PageEvent): void {
-    this.addDataToUsersPagedRequest(event, undefined);
+    this.addPaginationToUsersPagedRequest(event);
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
@@ -156,30 +156,31 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   public onFilter(): void {
     this.clearEmptyFilter();
+    this.usersPagedRequest.page = 0;
+    this.pageIndex = 0;
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
   }
 
   public sortData(sort: Sort): void {
-    this.addDataToUsersPagedRequest(undefined, sort);
+    this.addSortingToUsersPagedRequest(sort);
     this.router.navigate(["admin", "users"], {
       queryParams: this.usersPagedRequest
     });
   }
 
-  public addDataToUsersPagedRequest(event?: PageEvent, sort?: Sort): void {
-    if (event != undefined) {
-      this.usersPagedRequest.page = event.pageIndex;
-      this.usersPagedRequest.size = event.pageSize;
+  public addSortingToUsersPagedRequest(sort: Sort): void {
+    if (sort.direction == "") {
+      this.usersPagedRequest.sort = undefined;
+    } else {
+      this.usersPagedRequest.sort = sort.active + "," + sort.direction;
     }
-    if (sort != undefined) {
-      if (sort.direction == "") {
-        this.usersPagedRequest.sort = undefined;
-      } else {
-        this.usersPagedRequest.sort = sort.active + "," + sort.direction;
-      }
-    }
+  }
+
+  public addPaginationToUsersPagedRequest(event: PageEvent): void {
+    this.usersPagedRequest.page = event.pageIndex;
+    this.usersPagedRequest.size = event.pageSize;
   }
 
   public addRoleToRoles(checked: boolean, role: Role): void {
