@@ -77,6 +77,7 @@ import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-
 import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { EmployeeProfileEditModalComponent } from './components/employee/modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
 import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
+import { DateFormatPipe } from './pipes/date-format-pipe';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-
     //pipe
     AbsenceTypePipe,
     AbsenceStatusPipe,
+    DateFormatPipe,
     EmployeeProfileEditModalComponent,
   ],
   imports: [

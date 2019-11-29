@@ -19,9 +19,7 @@
     <ng-container matColumnDef="dob">
       <th mat-header-cell *matHeaderCellDef>Születési dátum</th>
       <td mat-cell *matCellDef="let user">
-        {{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
-          user.dateOfBirth[2]
-        }}.
+        {{ user.dateOfBirth | dates }}.
       </td>
     </ng-container>
 
