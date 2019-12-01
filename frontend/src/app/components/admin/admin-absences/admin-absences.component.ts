@@ -54,13 +54,21 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
   private stringFilter = new Subject();
   public stringFilter$ = this.stringFilter.asObservable();
 
+  private getDate(date) {
+    let formatedDate = [];
+    for (let i = 0; i < 3; i++) {
+      formatedDate.push(date[i]);
+    }
+    return formatedDate;
+  }
+
   constructor(
     public api: ApiCommunicationService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private router: Router,
     private session: SessionService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
   ) {}
 
   ngOnInit() {

@@ -55,7 +55,7 @@
     <div class="showData">
       <p>Kezdő dátum:</p>
       <p *ngIf="absence && !formEditState.isBeginEdited">
-        {{ absence.begin | date: "yyyy - MM - dd" }}
+        {{ absence.begin | date: "yyyy.MM.dd." }}
       </p>
 
       <mat-form-field *ngIf="formEditState.isBeginEdited">
@@ -88,7 +88,7 @@
     <div class="showData">
       <p>Befejező dátum:</p>
       <p *ngIf="absence && !formEditState.isEndEdited">
-        {{ absence.end | date: "yyyy - MM - dd" }}
+        {{ absence.end | date: "yyyy.MM.dd." }}
       </p>
 
       <mat-form-field *ngIf="formEditState.isEndEdited">
@@ -181,16 +181,14 @@
     <div class="showData">
       <p>Létrehozás dátuma:</p>
       <p *ngIf="absence">
-        {{ absence.createdAt[0] }} - {{ absence.createdAt[1] }} -
-        {{ absence.createdAt[2] }}
+        {{ getDate(absence.createdAt) | date:"yyyy.MM.dd." }}
       </p>
     </div>
 
     <div class="showData" *ngIf="absence && absence.deletedAt">
       <p>Törlés dátuma:</p>
       <p>
-        {{ absence.deletedAt[0] }} - {{ absence.deletedAt[1] }} -
-        {{ absence.deletedAt[2] }}
+        {{ getDate(absence.deletedAt) | date:"yyyy.MM.dd." }}
       </p>
     </div>
 

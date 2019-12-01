@@ -35,6 +35,14 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
   };
   private duration;
 
+  private getDate(date) {
+    let formatedDate = [];
+    for (let i = 0; i < 3; i++) {
+      formatedDate.push(date[i]);
+    }
+    return formatedDate;
+  }
+
   constructor(
     private api: ApiCommunicationService,
     private session: SessionService,

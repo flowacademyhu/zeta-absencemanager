@@ -1,11 +1,11 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatMenuModule } from "@angular/material/menu";
 import { NgModule, APP_INITIALIZER } from "@angular/core";
-import { MatPaginatorModule } from "@angular/material";
+import { MatPaginatorModule, MAT_DATE_LOCALE } from "@angular/material";
 import { HttpClientModule } from "@angular/common/http";
 
 import {
@@ -77,7 +77,6 @@ import { AdminGroupDeleteModalComponent } from './components/admin/modals/admin-
 import { EmployeeProfileDeleteModalComponent } from './components/employee/modals/employee-profile-delete-modal/employee-profile-delete-modal.component';
 import { EmployeeProfileEditModalComponent } from './components/employee/modals/employee-profile-edit-modal/employee-profile-edit-modal.component';
 import { AdminGroupCreateModalComponent } from './components/admin/modals/admin-group-create-modal/admin-group-create-modal.component';
-import { DateFormatPipe } from './pipes/date-format-pipe';
 
 @NgModule({
   declarations: [
@@ -109,7 +108,6 @@ import { DateFormatPipe } from './pipes/date-format-pipe';
     //pipe
     AbsenceTypePipe,
     AbsenceStatusPipe,
-    DateFormatPipe,
     EmployeeProfileEditModalComponent,
   ],
   imports: [
@@ -155,12 +153,15 @@ import { DateFormatPipe } from './pipes/date-format-pipe';
     UserService,
     AuthGuard,
     AdminGuard,
+    DatePipe,
     {
       provide: APP_INITIALIZER,
       useFactory: userSessionStarterFactory,
       deps: [SessionService],
       multi: true
     },
+    { provide: MAT_DATE_LOCALE,
+      useValue: 'hun'},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
