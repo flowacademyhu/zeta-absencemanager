@@ -36,6 +36,14 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
+  private getDate(date) {
+    let formatedDate = [];
+    for (let i = 0; i < 3; i++) {
+      formatedDate.push(date[i]);
+    }
+    return formatedDate;
+  }
+
   ngOnInit() {
     this.createAbsenceForm = new FormGroup({
       type: new FormControl("", Validators.required),
