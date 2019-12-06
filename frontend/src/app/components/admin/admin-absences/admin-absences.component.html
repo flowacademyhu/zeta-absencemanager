@@ -139,7 +139,7 @@
   <ng-container matColumnDef="created_at">
     <mat-header-cell *matHeaderCellDef> Létrehozás dátuma </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      {{ getDate(absence.createdAt) | date:"yyyy.MM.dd." }} </mat-cell>
+      {{ dateFormingService.getDate(absence.createdAt) | date:"yyyy.MM.dd." }} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="reporter">

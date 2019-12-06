@@ -7,6 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { takeUntil } from "rxjs/operators";
 import { User } from "src/app/models/User.model";
 import * as moment from "moment";
+import { DateFormingService } from 'src/app/services/date-forming.service';
 
 @Component({
   selector: "app-employee-absence-edit-modal",
@@ -33,6 +34,7 @@ export class EmployeeAbsenceEditModalComponent implements OnInit, OnDestroy {
   constructor(
     private api: ApiCommunicationService,
     private dialogRef: MatDialogRef<EmployeeAbsenceEditModalComponent>,
+    private dateFormingService: DateFormingService,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 

@@ -231,14 +231,14 @@
     <div class="showData">
       <p>Létrehozás dátuma:</p>
       <p *ngIf="absence">
-        {{ getDate(absence.createdAt) | date: "yyyy.MM.dd." }}
+        {{ dateFormingService(absence.createdAt) | date: "yyyy.MM.dd." }}
       </p>
     </div>
 
     <div class="showData" *ngIf="absence && absence.deletedAt">
       <p>Törlés dátuma:</p>
       <p>
-        {{ getDate(absence.deletedAt) | date: "yyyy.MM.dd." }}
+        {{ dateFormingService.getDate(absence.deletedAt) | date: "yyyy.MM.dd." }}
       </p>
     </div>
 

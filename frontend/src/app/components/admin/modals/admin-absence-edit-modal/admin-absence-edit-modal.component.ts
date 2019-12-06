@@ -8,6 +8,7 @@ import { takeUntil } from "rxjs/operators";
 import { User } from "src/app/models/User.model";
 import * as moment from "moment";
 import { SessionService } from 'src/app/services/session.service';
+import { DateFormingService } from 'src/app/services/date-forming.service';
 
 @Component({
   selector: "app-admin-absence-edit-modal",
@@ -47,6 +48,7 @@ export class AdminAbsenceEditModalComponent implements OnInit, OnDestroy {
     private api: ApiCommunicationService,
     private session: SessionService,
     private dialogRef: MatDialogRef<AdminAbsenceEditModalComponent>,
+    private dateFormingService: DateFormingService,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) { }
 
