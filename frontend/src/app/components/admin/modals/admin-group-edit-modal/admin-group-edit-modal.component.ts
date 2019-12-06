@@ -12,11 +12,8 @@ import { Group } from 'src/app/models/Group.model';
 })
 export class AdminGroupEditModalComponent implements OnInit {
   public editGroupDataForm: FormGroup;
-  private leader: User;
-  private userList: User[];
   private groupList: Group[];
   private employeeListByGroupIsNull: User[] = [];
-  private employeeListByOrigParentGroup: User[] = [];
   private employeeList: User[] =  [];
 
 
@@ -38,7 +35,6 @@ export class AdminGroupEditModalComponent implements OnInit {
 
   ngOnInit() {
     this.dialogRef.updateSize("35%", "60%");
-    console.log(this.data.group)
     this.api
     .user()
     .getEmployees()
@@ -61,7 +57,6 @@ export class AdminGroupEditModalComponent implements OnInit {
       .subscribe( e => {
         this.employeeList = e;
         this.employeeList.push(this.data.group.leader);
-        console.log(this.employeeList);
       })
     }
     this.api
