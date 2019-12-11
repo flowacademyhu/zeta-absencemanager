@@ -19,9 +19,7 @@
     <ng-container matColumnDef="dob">
       <th mat-header-cell *matHeaderCellDef>Születési dátum</th>
       <td mat-cell *matCellDef="let user">
-        {{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
-          user.dateOfBirth[2]
-        }}.
+        {{ user.dateOfBirth | date:"yyyy.MM.dd." }}
       </td>
     </ng-container>
 
@@ -45,9 +43,7 @@
     <ng-container matColumnDef="doe">
       <th mat-header-cell *matHeaderCellDef>Kezdés dátuma</th>
       <td mat-cell *matCellDef="let user">
-        {{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
-          user.dateOfEntry[2]
-        }}.
+        {{ user.dateOfEntry | date:"yyyy.MM.dd." }}
       </td>
     </ng-container>
 
