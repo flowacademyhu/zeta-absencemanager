@@ -12,6 +12,7 @@ import { SessionService } from 'src/app/services/session.service';
 import * as cloneDeep from "lodash/cloneDeep";
 import { MatPaginator, PageEvent } from '@angular/material';
 import { ExcelService } from 'src/app/services/excel.service';
+import { DateFormingService } from 'src/app/services/date-forming.service';
 
 @Component({
   selector: "app-admin-absences",
@@ -60,8 +61,10 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private session: SessionService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private dateFormingService: DateFormingService
   ) {}
+
 
   ngOnInit() {
     this.route.data

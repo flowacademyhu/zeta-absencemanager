@@ -32,19 +32,13 @@
       > {{ user.lastName }} {{ user.firstName }}</mat-list-item
     >
     <mat-list-item role="listitem"
-      >{{ user.dateOfBirth[0] }}.{{ user.dateOfBirth[1] }}.{{
-        user.dateOfBirth[2]
-      }}.</mat-list-item
+      >{{ user.dateOfBirth | date: "yyyy.MM.dd."}}</mat-list-item
     >
     <mat-list-item role="listitem"
-      >{{ user.dateOfEntry[0] }}.{{ user.dateOfEntry[1] }}.{{
-        user.dateOfEntry[2]
-      }}.</mat-list-item
+      >{{ user.dateOfEntry | date: "yyyy.MM.dd."}}</mat-list-item
     >
     <mat-list-item role="listitem"
-      >{{ user.dateOfEndTrial[0] }}.{{ user.dateOfEndTrial[1] }}.{{
-        user.dateOfEndTrial[2]
-      }}.</mat-list-item
+      >{{ user.dateOfEndTrial | date: "yyyy.MM.dd."}}</mat-list-item
     >
     <mat-list-item role="listitem">{{ user.position }}</mat-list-item>
     <mat-list-item role="listitem">{{ user.group.leader.firstName }} {{  user.group.leader.lastName }}</mat-list-item>
