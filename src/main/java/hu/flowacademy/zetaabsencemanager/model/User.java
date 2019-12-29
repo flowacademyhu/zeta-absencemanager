@@ -119,12 +119,6 @@ public class User implements UserDetails {
   @Column
   private LocalDateTime extraAbsencesUpdatedAt;
 
-  @Column
-  private Integer nextYearTotalAbsenceDays;
-
-  @Column
-  private Integer nextYearUsedAbsenceDays;
-
   @OneToMany
   private List<Absence> absences;
 
