@@ -20,13 +20,12 @@ public class ScheduledTasksConfig {
   @Autowired
   private AbsenceService absenceService;
 
-  @Scheduled(fixedRate = 3000)
+  @Scheduled(cron = "0 0 6 * * ?")
   public void trialCheck() {
-    userRepository.findByDeletedAtNullAndDateOfEndTrialEquals(LocalDate.now().minusDays(1))
-        .forEach(user -> {
-          availableAbsenceRecalculation(user);
-          System.out.println(user.getDateOfEndTrial());
-        });
+    userRepository
+        .findByDeletedAtNullAndDateOfEndTrialEquals(
+            LocalDate.now().minusDays(1))
+        .forEach(this::availableAbsenceRecalculation);
   }
 
   private void availableAbsenceRecalculation(@NotNull User user) {
@@ -54,7 +53,6 @@ public class ScheduledTasksConfig {
     }
     user.setTotalAbsenceDays((int) Math.round(allAbsence * multiplier));
     user.setTotalSickLeaveDays((int) Math.round(allSickLeave * multiplier));
-    // TODO usedAbsences
     userRepository.save(user);
   }
 }

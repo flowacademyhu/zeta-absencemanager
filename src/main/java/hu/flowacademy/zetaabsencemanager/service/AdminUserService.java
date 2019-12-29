@@ -118,7 +118,6 @@ public class AdminUserService {
       newUser.setTotalAbsenceDays(availableAbsenceDays);
       newUser.setTotalSickLeaveDays(sickLeaveDays);
       userRepository.save(newUser);
-      System.out.println(newUser.getTotalAbsenceDays());
       return newUser;
     } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
