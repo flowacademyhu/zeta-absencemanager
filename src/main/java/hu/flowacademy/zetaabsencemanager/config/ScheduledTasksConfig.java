@@ -28,6 +28,22 @@ public class ScheduledTasksConfig {
         .forEach(this::availableAbsenceRecalculation);
   }
 
+  @Scheduled(cron = "0 0 1 1 JAN ?")
+  public void yearlyRecalculation() {
+    userRepository
+        .findByDeletedAtNull()
+        .forEach(user -> {
+          user.setTotalAbsenceDays(absenceService.availableAbsence(user));
+          user.setTotalSickLeaveDays(absenceService.availableSickLeave(user));
+          user.setUsedAbsenceDays(0);
+          user.setUsedSickLeaveDays(0);
+          user.setUsedChildSickPay(0);
+          user.setUsedSickPay(0);
+          user.setUsedNonPayAbsence(0);
+          userRepository.save(user);
+        });
+  }
+
   private void availableAbsenceRecalculation(@NotNull User user) {
     int allAbsence = 20;
     int allSickLeave = 15;
@@ -56,5 +72,3 @@ public class ScheduledTasksConfig {
     userRepository.save(user);
   }
 }
-
-// TODO yearlyrecalc
