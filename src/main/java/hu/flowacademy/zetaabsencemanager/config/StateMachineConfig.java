@@ -108,12 +108,11 @@ public class StateMachineConfig {
     public void moveToState(Status state, Absence item, Object... infos) {
       Absence itemFound = store.findById(item.getId()).orElseThrow(
           () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.ABSENCE_NOT_FOUND));
-      String oldStatus = itemFound.getStatus().toString();
+      String oldStatus = itemFound.getStatus().name();
       itemFound.setStatus(state);
       String message =
           "Az ön szabadságigényének státusza " + oldStatus + "-ról " + itemFound.getStatus()
               .toString() + "-re változott.";
-      System.out.println(message);
       messageService.sendEmail(item.getReporter().getEmail(), "Státusz változás", message);
       if (state == Status.REJECTED) {
         service.removeFromUsedDays(item);
