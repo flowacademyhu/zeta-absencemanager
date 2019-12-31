@@ -17,14 +17,14 @@
   <ng-container matColumnDef="begin">
     <mat-header-cell *matHeaderCellDef> Kezdő dátum </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      {{ absence.begin | date: "yyyy - MM - dd" }}
+      {{ absence.begin | date: "yyyy.MM.dd." }}
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="end">
     <mat-header-cell *matHeaderCellDef> Befejező dátum </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      {{ absence.end | date: "yyyy - MM - dd" }}
+      {{ absence.end | date: "yyyy.MM.dd." }}
     </mat-cell>
   </ng-container>
 

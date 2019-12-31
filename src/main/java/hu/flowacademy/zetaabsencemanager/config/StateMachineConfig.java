@@ -4,6 +4,7 @@ import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.service.AbsenceService;
+import hu.flowacademy.zetaabsencemanager.service.MessageService;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
 import java.util.EnumSet;
 import lombok.extern.slf4j.Slf4j;
@@ -100,11 +101,20 @@ public class StateMachineConfig {
     @Autowired
     private AbsenceService service;
 
+    @Autowired
+    private MessageService messageService;
+
     @Override
     public void moveToState(Status state, Absence item, Object... infos) {
       Absence itemFound = store.findById(item.getId()).orElseThrow(
           () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.ABSENCE_NOT_FOUND));
+      String oldStatus = itemFound.getStatus().toString();
       itemFound.setStatus(state);
+      String message =
+          "Az ön szabadságigényének státusza " + oldStatus + "-ról " + itemFound.getStatus()
+              .toString() + "-re változott.";
+      System.out.println(message);
+      messageService.sendEmail(item.getReporter().getEmail(), "Státusz változás", message);
       if (state == Status.REJECTED) {
         service.removeFromUsedDays(item);
       }

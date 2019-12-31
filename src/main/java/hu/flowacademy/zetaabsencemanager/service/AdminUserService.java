@@ -147,6 +147,11 @@ public class AdminUserService {
           .role(Roles.EMPLOYEE)
           .numberOfChildren(user.getNumberOfChildren())
           .extraAbsenceDays(0)
+          .usedAbsenceDays(0)
+          .usedChildSickPay(0)
+          .usedNonPayAbsence(0)
+          .usedSickLeaveDays(0)
+          .usedSickPay(0)
           .otherAbsenceEntitlement(user.getOtherAbsenceEntitlement())
           .createdAt(LocalDateTime.now())
           .build();

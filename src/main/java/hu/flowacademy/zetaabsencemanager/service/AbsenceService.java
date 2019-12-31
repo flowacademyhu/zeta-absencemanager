@@ -1,5 +1,7 @@
 package hu.flowacademy.zetaabsencemanager.service;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import hu.flowacademy.zetaabsencemanager.model.Absence;
 import hu.flowacademy.zetaabsencemanager.model.Status;
 import hu.flowacademy.zetaabsencemanager.model.Type;
@@ -179,7 +181,9 @@ public class AbsenceService {
     int[] borders = {25, 28, 31, 33, 35, 37, 39, 41, 43, 45};
     double multiplier;
     int age = LocalDate.now().getYear() - user.getDateOfBirth().getYear();
-    if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
+    if (user.getDateOfEndTrial().isAfter(LocalDate.now())) {
+      multiplier = ((double) (DAYS.between(user.getDateOfEntry(), user.getDateOfEndTrial()))) / 365;
+    } else if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       Integer restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365.0;
     } else {
@@ -208,7 +212,9 @@ public class AbsenceService {
   public int availableSickLeave(@NotNull User user) {
     int allSickLeave = 15;
     double multiplier;
-    if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
+    if (user.getDateOfEndTrial().isAfter(LocalDate.now())) {
+      multiplier = ((double) (DAYS.between(user.getDateOfEntry(), user.getDateOfEndTrial()))) / 365;
+    } else if (user.getDateOfEntry().getYear() == LocalDate.now().getYear()) {
       int restDays = 365 - user.getDateOfEntry().getDayOfYear();
       multiplier = restDays / 365.0;
     } else {

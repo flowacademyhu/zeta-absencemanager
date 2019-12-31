@@ -12,8 +12,6 @@ import { Group } from 'src/app/models/Group.model';
 })
 export class AdminGroupEditModalComponent implements OnInit {
   public editGroupDataForm: FormGroup;
-  private leader: User;
-  private userList: User[];
   private groupList: Group[];
   private employeeListByGroupIsNull: User[] = [];
   private employeeList: User[] =  [];
@@ -37,18 +35,41 @@ export class AdminGroupEditModalComponent implements OnInit {
 
   ngOnInit() {
     this.dialogRef.updateSize("35%", "60%");
-    console.log(this.data.group)
     this.api
     .user()
     .getEmployees()
     .subscribe( e => {
       this.employeeListByGroupIsNull = e;
-      for (let i = 0; i < this.employeeListByGroupIsNull.length; i++) {
-        this.employeeList.push(this.employeeListByGroupIsNull[i])
-      }
-      this.employeeList.push(this.data.group.leader);
     })
-    this.api.group().getGroups().subscribe(groups => this.groupList = groups);
+    if (this.data.group.parentId) {
+    this.api
+    .user()
+    .getEmployeesByGroup(this.data.group.parentId)
+    .subscribe(e => {
+      this.employeeList = e;
+      this.employeeList.push(this.data.group.leader);
+      })
+    }
+    if (!this.data.group.parentId) {
+      this.api
+      .user()
+      .getEmployees()
+      .subscribe( e => {
+        this.employeeList = e;
+        this.employeeList.push(this.data.group.leader);
+      })
+    }
+    this.api
+    .group()
+    .getGroups()
+    .subscribe(groups => { 
+      this.groupList = groups;
+      for (let i = 0; i < this.groupList.length; i++) {
+        if (this.groupList[i].id == this.data.group.id) {
+          this.groupList.splice(i, 1);
+        }
+      }
+    });
     
   }
 
@@ -69,6 +90,9 @@ export class AdminGroupEditModalComponent implements OnInit {
     }
     if (id === 0) {
       this.employeeList = this.employeeListByGroupIsNull;
+      if (!this.data.group.parentId) {
+        this.employeeList.push(this.data.group.leader);
+      }
     }
   }
   

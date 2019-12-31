@@ -3,6 +3,7 @@ package hu.flowacademy.zetaabsencemanager.repository;
 import hu.flowacademy.zetaabsencemanager.model.Group;
 import hu.flowacademy.zetaabsencemanager.model.Roles;
 import hu.flowacademy.zetaabsencemanager.model.User;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long>,
   List<User> findByRoleAndDeletedAtNull(Roles role);
 
   List<User> findByGroupAndDeletedAtNull(Group group);
+
+  List<User> findByDeletedAtNullAndDateOfEndTrialEquals(LocalDate date);
 }
