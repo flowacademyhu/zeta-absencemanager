@@ -7,10 +7,9 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { MatDialogConfig, MatDialog } from "@angular/material/dialog";
 import { AdminAbsenceCreateModalComponent } from "../modals/admin-absence-create-modal/admin-absence-create-modal.component";
 import { AdminAbsenceEditModalComponent } from "../modals/admin-absence-edit-modal/admin-absence-edit-modal.component";
-import { User } from 'src/app/models/User.model';
 import { SessionService } from 'src/app/services/session.service';
 import * as cloneDeep from "lodash/cloneDeep";
-import { MatPaginator, PageEvent } from '@angular/material';
+import { MatPaginator, PageEvent, Sort } from '@angular/material';
 import { ExcelService } from 'src/app/services/excel.service';
 import { DateFormingService } from 'src/app/services/date-forming.service';
 
@@ -144,6 +143,19 @@ export class AdminAbsencesComponent implements OnInit, OnDestroy {
     this.absenceFilter = new AbsencesFilter;
     this.router.navigate(["admin", "absences"]);
     }
+  }
+
+  public sortData(sort: Sort): void {
+    if (sort != undefined) {
+      if (sort.direction == "") {
+        this.absenceFilter.sort = undefined;
+      } else {
+        this.absenceFilter.sort = sort.active + "," + sort.direction;
+      }
+    }
+    this.router.navigate(["admin", "absences"], {
+      queryParams: this.absenceFilter
+    });
   }
 
   exportAsXLSX(): void {

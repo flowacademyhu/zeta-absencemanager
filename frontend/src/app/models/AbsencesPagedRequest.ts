@@ -2,7 +2,7 @@ import { AbsenceType, Status } from './Absence.model';
 
 export class AbsencesPagedRequest {
     constructor(page: number, limit: number, administrationID?: number, type?: AbsenceType, status?: Status, reporter?: number, assignee?: number,
-                start?: any, finish?: any, dayStart?: number, dayEnd?: number) {
+                start?: any, finish?: any, dayStart?: number, dayEnd?: number, sort?: string) {
         this.page = page;
         if (limit) {
             this.size = limit;
@@ -16,6 +16,7 @@ export class AbsencesPagedRequest {
         this.finish = finish;
         this.dayStart = dayStart;
         this.dayEnd = dayEnd;
+        this.sort = sort;
     }
     
     page: number;
@@ -29,4 +30,5 @@ export class AbsencesPagedRequest {
     finish?: any; 
     dayStart?: number;
     dayEnd?: number;
+    sort?: string
 }

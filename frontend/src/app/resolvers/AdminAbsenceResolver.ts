@@ -25,8 +25,9 @@ export class AdminAbsenceResolver implements Resolve<PagedResponse<Absence>> {
         const finish = route.queryParams['finish'];
         const dayStart = route.queryParams['dayStart'];
         const dayEnd = route.queryParams['dayEnd'];
+        const sort = route.queryParams["sort"];
 
-        const pagedRequest = new AbsencesPagedRequest(page?page: 0, size?size: 5, administrationID, type, status, reporter, assignee, start, finish, dayStart, dayEnd);
+        const pagedRequest = new AbsencesPagedRequest(page?page: 0, size?size: 5, administrationID, type, status, reporter, assignee, start, finish, dayStart, dayEnd, sort);
         
         return this.api.adminAbsence().getAbsences(pagedRequest);
     }
