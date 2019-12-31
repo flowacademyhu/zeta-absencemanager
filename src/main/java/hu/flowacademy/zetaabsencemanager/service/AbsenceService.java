@@ -9,9 +9,9 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
+import hu.flowacademy.zetaabsencemanager.utils.PageableDTO;
+import hu.flowacademy.zetaabsencemanager.utils.PageableMetadata;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
@@ -57,7 +57,7 @@ public class AbsenceService {
     return absence;
   }
 
-  public AbsenceDTO findAll(Long administrationID, Type type,
+  public PageableDTO<Absence> findAll(Long administrationID, Type type,
       Status status, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd, Pageable pageable) {
     Page<Absence> absencePage = this.absenceRepository
@@ -65,9 +65,9 @@ public class AbsenceService {
             getFilteredAbsences(administrationID, type, status, start, finish, dayStart, dayEnd),
             pageable);
 
-    return AbsenceDTO.builder()
+    return PageableDTO.<Absence>builder()
         .embedded(absencePage.getContent())
-        .metadata(AbsenceMetadata.builder()
+        .metadata(PageableMetadata.builder()
             .totalElements(absencePage.getTotalElements())
             .totalPages(absencePage.getTotalPages())
             .pageNumber(absencePage.getNumber())

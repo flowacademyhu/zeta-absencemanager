@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminUserAddModalComponent } from "src/app/components/admin/modals/admin-user-add-modal/admin-user-add-modal.component";
-import { User } from "src/app/models/User.model";
+import { User, Role } from "src/app/models/User.model";
 import { ApiCommunicationService } from "src/app/services/api-communication.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AdminUserEditModalComponent } from "../modals/admin-user-edit-modal/admin-user-edit-modal.component";
-import { MatTableDataSource } from "@angular/material";
+import { PageEvent, Sort } from "@angular/material";
 import { AdminUserDeleteModalComponent } from "../modals/admin-user-delete-modal/admin-user-delete-modal.component";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Absence } from "src/app/models/Absence.model";
+import { UsersPagedRequest } from "src/app/models/UsersPagedRequest";
 
 @Component({
   selector: "app-admin-users",
@@ -17,27 +18,33 @@ import { Absence } from "src/app/models/Absence.model";
   styleUrls: ["./admin-users.component.css"]
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = [
+  private displayedColumns: string[] = [
     "name",
     "dob",
     "position",
-    "supervisor",
+    "group",
     "doe",
     "email",
+    "role",
     "edit",
     "delete"
   ];
-  dataSource: any; // --> filter
 
-  editedUser: User;
-  userData: User;
-  usersList: User[];
-  error: string;
+  private editedUser: User;
+  private userData: User;
+  private usersList: User[];
+  private error: string;
+  public length = 0;
+  public pageIndex = 0;
+  public pageSize = 5;
+  private checkedFilter: false;
+  private usersPagedRequest = new UsersPagedRequest();
   private _unsubscribe$ = new Subject<void>();
+  private groups;
+  private roles;
 
   constructor(
     private api: ApiCommunicationService,
-    private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router
@@ -45,9 +52,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this._unsubscribe$)).subscribe(data => {
-      this.usersList = data.userList;
-      console.log(data);
-      this.dataSource = new MatTableDataSource(this.usersList);
+      this.usersList = data.userList.embedded;
+      this.pageSize = data.userList.metadata.pageSize;
+      this.pageIndex = data.userList.metadata.pageIndex;
+      this.length = data.userList.metadata.totalElements;
     });
     this.api
       .employee()
@@ -55,6 +63,13 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       .subscribe(currentUser => {
         this.userData = currentUser;
       });
+    this.api
+      .group()
+      .getGroups()
+      .subscribe(g => {
+        this.groups = g;
+      });
+    this.roles = User.enumSelector(Role);
   }
 
   ngOnDestroy(): void {
@@ -62,7 +77,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
-  createUser(): void {
+  public createUser(): void {
     const dialogRef = this.dialog.open(AdminUserAddModalComponent, {});
 
     dialogRef
@@ -81,7 +96,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       });
   }
 
-  editUser(id: number): void {
+  public editUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserEditModalComponent, {
       data: { user: this.usersList.filter(user => user.id === id)[0] }
     });
@@ -105,7 +120,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteUser(id: number): void {
+  public deleteUser(id: number): void {
     const dialogRef = this.dialog.open(AdminUserDeleteModalComponent, {
       data: { user: this.usersList.filter(user => user.id === id)[0] }
     });
@@ -121,5 +136,107 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
             .subscribe(() => this.router.navigateByUrl(this.router.url));
         }
       });
+  }
+
+  public onPageChange(event: PageEvent): void {
+    this.addPaginationToUsersPagedRequest(event);
+    this.router.navigate(["admin", "users"], {
+      queryParams: this.usersPagedRequest
+    });
+  }
+
+  public onFilterReset(checked: boolean): void {
+    if (!checked) {
+      this.clearFilterData();
+      this.router.navigate(["admin", "users"], {
+        queryParams: this.usersPagedRequest
+      });
+    }
+  }
+
+  public onFilter(): void {
+    this.clearEmptyFilter();
+    this.usersPagedRequest.page = 0;
+    this.pageIndex = 0;
+    this.router.navigate(["admin", "users"], {
+      queryParams: this.usersPagedRequest
+    });
+  }
+
+  public sortData(sort: Sort): void {
+    this.addSortingToUsersPagedRequest(sort);
+    this.router.navigate(["admin", "users"], {
+      queryParams: this.usersPagedRequest
+    });
+  }
+
+  public addSortingToUsersPagedRequest(sort: Sort): void {
+    if (sort.direction == "") {
+      this.usersPagedRequest.sort = undefined;
+    } else {
+      this.usersPagedRequest.sort = sort.active + "," + sort.direction;
+    }
+  }
+
+  public addPaginationToUsersPagedRequest(event: PageEvent): void {
+    this.usersPagedRequest.page = event.pageIndex;
+    this.usersPagedRequest.size = event.pageSize;
+  }
+
+  public addRoleToRoles(checked: boolean, role: Role): void {
+    if (checked) {
+      if (this.usersPagedRequest.role == undefined) {
+        this.usersPagedRequest.role = [];
+      }
+      this.usersPagedRequest.role.push(role);
+      this.onFilter();
+    } else {
+      this.usersPagedRequest.role = this.usersPagedRequest.role.filter(
+        r => r != role
+      );
+      if (this.usersPagedRequest.role.length == 0) {
+        this.usersPagedRequest.role = undefined;
+      }
+      this.onFilter();
+    }
+  }
+
+  public isInRoles(role: Role): boolean {
+    return (
+      this.usersPagedRequest.role != undefined &&
+      this.usersPagedRequest.role.includes(role)
+    );
+  }
+
+  public clearFilterData(): void {
+    this.usersPagedRequest.name = undefined;
+    this.usersPagedRequest.dateOfEntryStart = undefined;
+    this.usersPagedRequest.dateOfEntryFinish = undefined;
+    this.usersPagedRequest.dateOfEndTrialStart = undefined;
+    this.usersPagedRequest.dateOfEndTrialFinish = undefined;
+    this.usersPagedRequest.group = undefined;
+    this.usersPagedRequest.position = undefined;
+    this.usersPagedRequest.role = [Role.ADMIN, Role.EMPLOYEE, Role.LEADER];
+  }
+
+  public clearEmptyFilter(): void {
+    if (this.usersPagedRequest.name == "") {
+      this.usersPagedRequest.name = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEntryStart == "") {
+      this.usersPagedRequest.dateOfEntryStart = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEntryFinish == "") {
+      this.usersPagedRequest.dateOfEntryFinish = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEndTrialStart == "") {
+      this.usersPagedRequest.dateOfEndTrialStart = undefined;
+    }
+    if (this.usersPagedRequest.dateOfEndTrialFinish == "") {
+      this.usersPagedRequest.dateOfEndTrialFinish = undefined;
+    }
+    if (this.usersPagedRequest.position == "") {
+      this.usersPagedRequest.position = undefined;
+    }
   }
 }

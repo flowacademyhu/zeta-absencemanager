@@ -3,105 +3,158 @@
     Szabadság hozzáadása
   </button>
   <button mat-flat-button color="primary" (click)="exportAsXLSX()">
-      Export
-    </button>  
-<mat-checkbox color="primary" [(ngModel)]="checkedFilter" #checkbox (change)='onFilterReset(checkbox.checked)'>Szűrés</mat-checkbox>
+    Export
+  </button>
+  <mat-checkbox
+    color="primary"
+    [(ngModel)]="checkedFilter"
+    #checkbox
+    (change)="onFilterReset(checkbox.checked)"
+    >Szűrés</mat-checkbox
+  >
 </div>
 
-<mat-table *ngIf="checkedFilter" class="mat-elevation-z8" >
-    <ng-container matColumnDef="administrationID">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field >
-                <input matInput type="number" placeholder="Azonosító" (change)='onFilter()' [(ngModel)]="absenceFilter.administrationID"/>
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
+<mat-table *ngIf="checkedFilter" class="mat-elevation-z8">
+  <ng-container matColumnDef="administrationID">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="number"
+          placeholder="Azonosító"
+          (change)="onFilter()"
+          [(ngModel)]="absenceFilter.administrationID"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="start">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Kezdő dátum" (change)='onFilter()' [(ngModel)]="absenceFilter.start" />
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
-    
-    <ng-container matColumnDef="finish">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field>
-                <input matInput type="datetime-local" placeholder="Befejező dátum" (change)='onFilter()' [(ngModel)]="absenceFilter.finish" />
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="start">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="datetime-local"
+          placeholder="Kezdő dátum"
+          (change)="onFilter()"
+          [(ngModel)]="absenceFilter.start"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="dayStart">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field>
-                <input matInput type="number" placeholder="Min. Nap" (change)='onFilter()' [(ngModel)]="absenceFilter.dayStart" />
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="finish">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="datetime-local"
+          placeholder="Befejező dátum"
+          (change)="onFilter()"
+          [(ngModel)]="absenceFilter.finish"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="dayEnd">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field>
-                <input matInput type="number" placeholder="Max. Nap" (change)='onFilter()' [(ngModel)]="absenceFilter.dayEnd" />
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="dayStart">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="number"
+          placeholder="Min. Nap"
+          (change)="onFilter()"
+          [(ngModel)]="absenceFilter.dayStart"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="absenceFilter.type" (selectionChange)='onFilter()' placeholder="Típus">
-                <mat-option *ngFor="let type of absenceType" [value]="type">
-                  {{ type | type }}
-                </mat-option>
-              </mat-select>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="dayEnd">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="number"
+          placeholder="Max. Nap"
+          (change)="onFilter()"
+          [(ngModel)]="absenceFilter.dayEnd"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-select [(ngModel)]="absenceFilter.status" (selectionChange)='onFilter()' placeholder="Státusz">
-                <mat-option *ngFor="let status of absenceStatus" [value]="status">
-                  {{ status | status }}
-                </mat-option>
-              </mat-select>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-select
+        [(ngModel)]="absenceFilter.type"
+        (selectionChange)="onFilter()"
+        placeholder="Típus"
+      >
+        <mat-option *ngFor="let type of absenceType" [value]="type">
+          {{ type | type }}
+        </mat-option>
+      </mat-select>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="reporter">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field>
-                <input matInput type="text" placeholder="Jogosult" (keyup)="this.stringFilter.next()" [(ngModel)]="absenceFilter.reporter" />
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-select
+        [(ngModel)]="absenceFilter.status"
+        (selectionChange)="onFilter()"
+        placeholder="Státusz"
+      >
+        <mat-option *ngFor="let status of absenceStatus" [value]="status">
+          {{ status | status }}
+        </mat-option>
+      </mat-select>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="assignee">
-        <mat-header-cell *matHeaderCellDef>
-            <mat-form-field>
-                <input matInput type="text" placeholder="Felettes" (keyup)="this.stringFilter.next()" [(ngModel)]="absenceFilter.assignee" />
-              </mat-form-field>
-        </mat-header-cell>
-    </ng-container>
+  <ng-container matColumnDef="reporter">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Jogosult"
+          (keyup)="this.stringFilter.next()"
+          [(ngModel)]="absenceFilter.reporter"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
-    <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    </ng-container>
-  
+  <ng-container matColumnDef="assignee">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          placeholder="Felettes"
+          (keyup)="this.stringFilter.next()"
+          [(ngModel)]="absenceFilter.assignee"
+        />
+      </mat-form-field>
+    </mat-header-cell>
+  </ng-container>
 
+  <ng-container matColumnDef="edit">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+  </ng-container>
 
-    <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: filterColumns"></mat-row>  
+  <mat-header-row *matHeaderRowDef="filterColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: filterColumns"></mat-row>
 </mat-table>
 
 <mat-table
   [dataSource]="absencesList"
-  class="table-responsive mat-elevation-z8" >
-
+  class="table-responsive mat-elevation-z8"
+>
   <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef>Azonosító
-      </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>Azonosító </mat-header-cell>
     <mat-cell *matCellDef="let absence">
       {{ absence.administrationID }}
     </mat-cell>
@@ -132,7 +185,7 @@
   <ng-container matColumnDef="status">
     <mat-header-cell *matHeaderCellDef> Státusz </mat-header-cell>
     <mat-cell *matCellDef="let absence">
-      {{ absence.status | status}}
+      {{ absence.status | status }}
     </mat-cell>
   </ng-container>
 
@@ -173,5 +226,13 @@
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
 
-<mat-paginator class="mat-elevation-z8" [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 25]" [showFirstLastButtons]="true" (page)="onPageChange($event)" > 
+<mat-paginator
+  class="mat-elevation-z8"
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 25]"
+  [showFirstLastButtons]="true"
+  (page)="onPageChange($event)"
+>
 </mat-paginator>

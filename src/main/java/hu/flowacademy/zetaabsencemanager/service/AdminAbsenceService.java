@@ -9,9 +9,9 @@ import hu.flowacademy.zetaabsencemanager.model.User;
 import hu.flowacademy.zetaabsencemanager.model.validator.AbsenceValidator;
 import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceDTO;
-import hu.flowacademy.zetaabsencemanager.utils.AbsenceMetadata;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
+import hu.flowacademy.zetaabsencemanager.utils.PageableDTO;
+import hu.flowacademy.zetaabsencemanager.utils.PageableMetadata;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
@@ -51,16 +51,16 @@ public class AdminAbsenceService {
   @Autowired
   private FilterService filterService;
 
-  public AbsenceDTO findAllAbsence(Long administrationID, Type type,
+  public PageableDTO<Absence> findAllAbsence(Long administrationID, Type type,
       Status status, String reporter, String assignee, LocalDate start, LocalDate finish,
       Integer dayStart, Integer dayEnd, Pageable pageable) {
     if (this.authenticationService.hasRole(Roles.ADMIN)) {
       Page<Absence> absencePage = this.absenceRepository.findAll(
           getFilteredAbsences(administrationID, type, status, reporter, assignee, start, finish,
               dayStart, dayEnd), pageable);
-      return AbsenceDTO.builder()
+      return PageableDTO.<Absence>builder()
           .embedded(absencePage.getContent())
-          .metadata(AbsenceMetadata.builder()
+          .metadata(PageableMetadata.builder()
               .totalElements(absencePage.getTotalElements())
               .totalPages(absencePage.getTotalPages())
               .pageNumber(absencePage.getNumber())
@@ -72,9 +72,9 @@ public class AdminAbsenceService {
           .findAll(
               getFilteredAbsencesLeader(administrationID, type, status, reporter, start, finish,
                   dayStart, dayEnd), pageable);
-      return AbsenceDTO.builder()
+      return PageableDTO.<Absence>builder()
           .embedded(absencePage.getContent())
-          .metadata(AbsenceMetadata.builder()
+          .metadata(PageableMetadata.builder()
               .totalElements(absencePage.getTotalElements())
               .totalPages(absencePage.getTotalPages())
               .pageNumber(absencePage.getNumber())

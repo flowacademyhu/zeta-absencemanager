@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AbsenceMetadata {
+public class PageableMetadata {
 
   private Long totalElements;
   private Integer totalPages;

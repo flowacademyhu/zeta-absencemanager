@@ -8,11 +8,17 @@ import hu.flowacademy.zetaabsencemanager.repository.AbsenceRepository;
 import hu.flowacademy.zetaabsencemanager.repository.GroupRepository;
 import hu.flowacademy.zetaabsencemanager.repository.UserRepository;
 import hu.flowacademy.zetaabsencemanager.utils.Constants;
+import hu.flowacademy.zetaabsencemanager.utils.PageableDTO;
+import hu.flowacademy.zetaabsencemanager.utils.PageableMetadata;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,10 +56,50 @@ public class AdminUserService {
   @Autowired
   private UserValidator userValidator;
 
+  @Autowired
+  private FilterService filterService;
+
   public User findByEmail(@NotNull String email) {
     return this.userRepository.findByEmailAndDeletedAtNull(email)
         .orElseThrow(
             () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, Constants.USER_NOT_FOUND));
+  }
+
+  public PageableDTO<User> findAllUserFilterPagination(String name, LocalDate dateOfEntryStart,
+      LocalDate dateOfEntryFinish, LocalDate dateOfEndTrialStart, LocalDate dateOfEndTrialFinish,
+      Group groupFilter, String position, Roles[] role, Pageable pageable) {
+    if (this.authenticationService.hasRole(Roles.ADMIN)) {
+      Page<User> userPage = this.userRepository
+          .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
+              dateOfEndTrialFinish, groupFilter, position, role), pageable);
+      return PageableDTO.<User>builder()
+          .embedded(userPage.getContent())
+          .metadata(PageableMetadata.builder()
+              .totalElements(userPage.getTotalElements())
+              .totalPages(userPage.getTotalPages())
+              .pageNumber(userPage.getNumber())
+              .pageSize(userPage.getSize())
+              .build())
+          .build();
+    } else {
+      Group group = this.groupRepository
+          .findByLeaderAndDeletedAtNull(this.authenticationService.getCurrentUser())
+          .orElseThrow(
+              () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                  Constants.GROUP_NOT_FOUND_YOU_ARE_NOT_LEADER));
+      Page<User> userPage = this.userRepository
+          .findAll(getFilteredUsers(name, dateOfEntryStart, dateOfEntryFinish, dateOfEndTrialStart,
+              dateOfEndTrialFinish, group, position, role), pageable);
+      return PageableDTO.<User>builder()
+          .embedded(userPage.getContent())
+          .metadata(PageableMetadata.builder()
+              .totalElements(userPage.getTotalElements())
+              .totalPages(userPage.getTotalPages())
+              .pageNumber(userPage.getNumber())
+              .pageSize(userPage.getSize())
+              .build())
+          .build();
+    }
   }
 
   public List<User> findAllUser() {
@@ -205,5 +251,20 @@ public class AdminUserService {
 
   public List<User> findEverybodyByGroup(Long groupId) {
     return userRepository.findByGroupAndDeletedAtNull(groupService.findOne(groupId));
+  }
+
+  public Specification<User> getFilteredUsers(String name, LocalDate dateOfEntryStart,
+      LocalDate dateOfEntryFinish, LocalDate dateOfEndTrialStart, LocalDate dateOfEndTrialFinish,
+      Group group, String position, Roles[] role) {
+    return Specification
+        .where(
+            filterService.userFilterByFirstname(name).or(filterService.userFilterByLastname(name)))
+        .and(filterService.userFilterByDateOfEntryStart(dateOfEntryStart))
+        .and(filterService.userFilterByDateOfEntryFinish(dateOfEntryFinish))
+        .and(filterService.userFilterByDateOfEndTrialStart(dateOfEndTrialStart))
+        .and(filterService.userFilterByDateOfEndTrialFinish(dateOfEndTrialFinish))
+        .and(filterService.userFilterByGroup(group))
+        .and(filterService.userFilterByPosition(position))
+        .and(filterService.userFilterByRole(role));
   }
 }

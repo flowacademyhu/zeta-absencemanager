@@ -2,6 +2,13 @@ import { Group } from "src/app/models/Group.model";
 import { Absence } from "./Absence.model";
 import { DataEntity } from "./DataEntity.model";
 
+export enum Role {
+  ADMIN = "ADMIN",
+  LEADER = "LEADER",
+  EMPLOYEE = "EMPLOYEE",
+  INACTIVE = "INACTIVE"
+}
+
 export class User extends DataEntity {
   public firstName: string;
   public lastName: string;
@@ -55,5 +62,9 @@ export class User extends DataEntity {
     this.totalSickLeaveDays = totalSickLeaveDays;
     this.usedSickLeaveDays = usedSickLeaveDays;
     this.usedChildSickPay = usedChildSickPay;
+  }
+
+  public static enumSelector(definition) {
+    return Object.keys(definition);
   }
 }

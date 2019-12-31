@@ -1,12 +1,29 @@
 import { AbstractApiConnector } from "./AbstractApiConnector";
 import { Observable } from "rxjs";
 import { User } from "../User.model";
+import { PagedResponse } from "../PagedResponse.model";
+import { UsersPagedRequest } from "../UsersPagedRequest";
+import { HttpParams } from "@angular/common/http";
 
 export class UserApiConnector extends AbstractApiConnector {
   protected apiRoute: string = this.apiBaseUrl + "admin/user";
 
   public getUser(id: number): Observable<any> {
     return this.http.get(this.apiRoute + "/" + id);
+  }
+
+  public getUsersPaginated(
+    pagedRequest: UsersPagedRequest
+  ): Observable<PagedResponse<User>> {
+    let httpParams = new HttpParams();
+    Object.keys(pagedRequest).forEach(function(key) {
+      if (pagedRequest[key]) {
+        httpParams = httpParams.append(key, pagedRequest[key]);
+      }
+    });
+    return this.http.get(this.apiRoute + "/paginated", {
+      params: httpParams
+    }) as Observable<PagedResponse<User>>;
   }
 
   public getUsers(): Observable<User[]> {
